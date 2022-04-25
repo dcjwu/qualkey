@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  qualkey-db:
+    container_name: qualkey_db
+    image: postgres:13
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: qualkey
+      POSTGRES_PASSWORD: qualkey
+      POSTGRES_DB: qualkey
+    networks:
+      - qualkey
+networks:
+  qualkey:
