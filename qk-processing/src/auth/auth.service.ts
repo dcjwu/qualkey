@@ -22,11 +22,11 @@ export class AuthService {
       return await this.prisma.user.create({
         data: {
           email: dto.email,
-
-          hash,
+          password: hash,
+          role: "ADMIN",
         },
         select: {
-          id: true,
+          uuid: true,
           email: true,
           createdAt: true,
         },
@@ -48,17 +48,17 @@ export class AuthService {
       throw new ForbiddenException("User with such email is not registered");
 
     const pwMatches = await argon.verify(
-      user.hash,
+      user.password,
       dto.password,
     );
 
     if (!pwMatches)
       throw new ForbiddenException("Password incorrect");
 
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.uuid, user.email);
   }
 
-  async signToken(userId: number, email: string): Promise<{ access_token: string }> {
+  async signToken(userId: string, email: string): Promise<{ access_token: string }> {
     const payload = {
       sub: userId,
       email,
