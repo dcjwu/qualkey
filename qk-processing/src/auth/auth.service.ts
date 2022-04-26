@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import * as argon from "argon2";
+import { Response } from "express";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthDto } from "./dto";
@@ -41,7 +42,7 @@ export class AuthService {
       throw error;
     }
   }
-  async login(dto: AuthDto) {
+  async login(dto: AuthDto, response: Response) {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
 
     if (!user)
@@ -55,10 +56,12 @@ export class AuthService {
     if (!pwMatches)
       throw new ForbiddenException("Password incorrect");
 
-    return this.signToken(user.uuid, user.email);
+    const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
+    const jwtToken = await this.signToken(user.uuid, user.email);
+    response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
   }
 
-  async signToken(userId: string, email: string): Promise<{ access_token: string }> {
+  async signToken(userId: string, email: string): Promise<string> {
     const payload = {
       sub: userId,
       email,
@@ -66,11 +69,9 @@ export class AuthService {
 
     const secret = this.config.get("JWT_SECRET");
 
-    const token = await this.jwt.signAsync(payload, {
+    return this.jwt.signAsync(payload, {
       expiresIn: "1h",
       secret: secret,
     });
-
-    return { access_token: token };
   }
 }
