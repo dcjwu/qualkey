@@ -1,0 +1,71 @@
+@import "../../../assets/styles/helpers/variables";
+@import "../../../assets/styles/helpers/mixins";
+
+.btn {
+  border: none;
+  border-radius: 1rem;
+  color: $color-secondary;
+  font-family: $font-primary;
+  font-size: 2rem;
+  text-align: center;
+  width: 38rem;
+  z-index: 1;
+
+  &:disabled {
+    background-color: #d1d1d1;
+    color: $color-primary;
+  }
+}
+
+.thin {
+  padding: 1.2rem 0;
+}
+
+.wide {
+  padding: 2.2rem 0;
+}
+
+.bold {
+  font-weight: $font-weight-lg;
+}
+
+.semiBold {
+  font-weight: $font-weight-md;
+}
+
+.blue {
+  background-color: $color-highlight;
+  transition: background-color 0.2s ease-in-out;
+
+  &:focus {
+    background-color: $color-highlight-dark;
+  }
+
+  &:hover {
+    background-color: rgba($color-highlight, 0.7);
+  }
+}
+
+.white {
+  background-color: $color-secondary;
+  border: 1px solid $color-highlight;
+  color: $color-highlight;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, fill 0.2s ease-in-out;
+
+  svg {
+    height: 2.4rem;
+    width: 2.4rem;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: rgba($color-highlight, 0.7);
+    border: 1px solid rgba($color-highlight, 0.7);
+    color: $color-secondary;
+
+    svg {
+      background-color: transparent;
+      fill: $color-secondary;
+    }
+  }
+}

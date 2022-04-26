@@ -1,0 +1,46 @@
+@import "../../../assets/styles/helpers/variables";
+@import "../../../assets/styles/helpers/mixins";
+
+.text {
+  font-size: 1.6rem;
+
+  span {
+    color: $color-highlight-dark;
+  }
+}
+
+.blue {
+  color: $color-highlight-dark;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+.medium {
+  font-size: 1.4rem;
+}
+
+.small {
+  font-size: 1.2rem;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.error {
+  color: $color-error;
+  font-family: $font-extra;
+  font-weight: $font-weight-xl;
+}
+
+.link {
+  transition: color 0.2s ease-in-out;
+
+  &:hover,
+  &:focus {
+    color: $color-highlight-dark;
+  }
+}

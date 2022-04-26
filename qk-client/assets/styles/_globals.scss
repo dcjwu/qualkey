@@ -1,0 +1,28 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+@import "auth";
+
+.container {
+  margin: 0 auto;
+  padding: 0 1.5rem;
+
+  @include breakpoint-min($screen-sm) {
+    max-width: 540px;
+  }
+
+  @include breakpoint-min($screen-md) {
+    max-width: 720px;
+  }
+
+  @include breakpoint-min($screen-lg) {
+    max-width: 960px;
+  }
+
+  @include breakpoint-min($screen-xl) {
+    max-width: 1140px;
+  }
+
+  @include breakpoint-min($screen-xxl) {
+    max-width: 1320px;
+  }
+}

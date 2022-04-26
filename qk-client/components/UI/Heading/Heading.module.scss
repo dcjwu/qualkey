@@ -1,0 +1,24 @@
+@import "../../../assets/styles/helpers/variables";
+@import "../../../assets/styles/helpers/mixins";
+
+.heading {
+  font-family: $font-extra;
+  font-weight: $font-weight-xl;
+  line-height: 1.2;
+}
+
+.h1 {
+  font-size: 4.8rem;
+}
+
+.h2 {
+  font-size: 3.2rem;
+}
+
+.blue {
+  color: $color-highlight;
+}
+
+.white {
+  color: $color-secondary;
+}

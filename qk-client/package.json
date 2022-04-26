@@ -6,16 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:globals": "stylelint --fix \"assets/styles/**/*.scss\" --custom-syntax postcss-scss",
+    "lint:components": "stylelint --fix \"components/**/*.scss\" --custom-syntax postcss-scss",
+    "lint:style": "npm run lint:globals & npm run lint:components"
   },
   "dependencies": {
     "next": "12.1.5",
+    "nextjs-progressbar": "^0.0.14",
+    "prop-types": "^15.8.1",
     "react": "18.0.0",
     "react-dom": "18.0.0"
   },
   "devDependencies": {
     "eslint": "8.14.0",
     "eslint-config-next": "12.1.5",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint-plugin-import": "^2.26.0",
+    "postcss": "^8.4.12",
+    "postcss-scss": "^4.0.4",
+    "sass": "^1.50.1",
+    "stylelint": "^14.7.1",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-order": "^5.0.0",
+    "stylelint-scss": "^4.2.0"
   }
 }
