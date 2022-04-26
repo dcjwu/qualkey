@@ -59,6 +59,8 @@ export class AuthService {
     const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
     const jwtToken = await this.signToken(user.uuid, user.email);
     response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
+    
+    return { role: user.role };
   }
 
   async signToken(userId: string, email: string): Promise<string> {
