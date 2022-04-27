@@ -5,7 +5,7 @@ import { ConfigModule } from "@nestjs/config";
 import { PrismaClient } from "@prisma/client";
 import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { CurrentAdmin } from "adminjs";
-import * as argon from "argon2";
+import bcrypt from "bcryptjs";
 
 import { AuthModule } from "./auth/auth.module";
 import { PrismaModule } from "./prisma/prisma.module";
@@ -36,7 +36,7 @@ const dmmf = ((prisma as any)._dmmf as DMMFClass);
           if (email !== "" && password !== "") {
             const user = await prisma.user.findUnique({ where: { email: email } });
             if (user && user.role === "SUPER_ADMIN") {
-              if (await argon.verify(
+              if (await bcrypt.compare(
                 user?.password,
                 password,
               )) {

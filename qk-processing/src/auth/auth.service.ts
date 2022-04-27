@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import * as argon from "argon2";
+import bcrypt from "bcryptjs";
 import { Response } from "express";
 
 import { PrismaService } from "../prisma/prisma.service";
@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async register(dto: AuthDto) {
-    const hash = await argon.hash(dto.password);
+    const hash = await bcrypt.hash(dto.password);
 
     try {
       return await this.prisma.user.create({
@@ -48,7 +48,7 @@ export class AuthService {
     if (!user)
       throw new ForbiddenException("User with such email is not registered");
 
-    const pwMatches = await argon.verify(
+    const pwMatches = await bcrypt.compare(
       user.password,
       dto.password,
     );
