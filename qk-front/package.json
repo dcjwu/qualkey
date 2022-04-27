@@ -1,10 +1,11 @@
 {
-  "name": "qk-client",
+  "name": "qk-front",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prod": "next start",
     "start": "next start",
     "lint": "next lint",
     "lint:globals": "stylelint --fix \"assets/styles/**/*.scss\" --custom-syntax postcss-scss",

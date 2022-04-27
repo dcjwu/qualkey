@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  qk_front:
+    command: dev
+    volumes:
+      - ./qk-front/:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+  qk_processing:
+    build:
+      context: ./qk-processing/
+    command: npm run start:dev
+    volumes:
+      - ./qk-processing/:/app
+      - /app/node_modules

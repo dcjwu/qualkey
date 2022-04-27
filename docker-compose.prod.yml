@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  qk_front:
+    command: prod
+  qk_processing:
+    build:
+      context: ./qk-processing/
+    command: npm run start:prod

@@ -1,15 +1,45 @@
 version: '3.8'
 services:
-  qualkey-db:
+  qk_front:
+    container_name: qk_front
+    build:
+      context: ./qk-front/
+    ports:
+      - 3000:3000
+    networks:
+      - qualkey
+    depends_on:
+      - qk_processing
+
+  qk_processing:
+    container_name: qk_processing
+    env_file:
+      - ./qk-processing/.env
+    ports:
+      - $PROCESSING_PORT:$PROCESSING_PORT
+      - 9229:9229
+    networks:
+      - qualkey
+    depends_on:
+      - qualkey_db
+    restart: always
+
+  qualkey_db:
     container_name: qualkey_db
     image: postgres:13
     ports:
-      - 5434:5432
+      - 5432:5432
     environment:
       POSTGRES_USER: qualkey
       POSTGRES_PASSWORD: qualkey
       POSTGRES_DB: qualkey
+      PG_DATA: /var/lib/postgresql/data
     networks:
       - qualkey
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
 networks:
   qualkey:
+volumes:
+  pgdata:

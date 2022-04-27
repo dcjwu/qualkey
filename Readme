@@ -1,0 +1,6 @@
+Qualkey project made by Web3App.agency
+
+After cloning the project start it by executing this command:
+    make go
+
+For other commands check Makefile
