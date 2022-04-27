@@ -128,4 +128,7 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
+  svg + p {
+    margin: 0;
+  }
 }
