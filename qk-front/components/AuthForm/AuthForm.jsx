@@ -79,7 +79,7 @@ const AuthForm = ({ login, forgot, twoFactor, newPassword }) => {
                email and then choose your new password</Text>
             <form>
                <Input pinCode/>
-               {/*<Text error small>Please enter all 4 digits</Text>*/}
+               <Text error small>Please enter all 4 digits</Text>
                <Button blue bold thin>Next</Button>
                <Text grey>Resend code</Text>
             </form>
