@@ -15,3 +15,9 @@
     @content;
   }
 }
+
+@mixin breakpoint-max-horizontal-max-vertical($bpw, $bph) {
+  @media (max-width: $bpw) and (max-height: $bph) {
+    @content
+  }
+}

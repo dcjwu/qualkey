@@ -9,6 +9,10 @@
   height: 100vh;
   justify-content: center;
 
+  @include breakpoint-max-horizontal-max-vertical($bp-screen-lg, $bp-vertical-875) {
+    height: initial;
+  }
+
   &__wrapper {
     align-items: center;
     display: flex;
@@ -26,8 +30,8 @@
       height: 100vh;
     }
 
-    @include breakpoint-max-vertical($bp-vertical-875) {
-      overflow-y: scroll;
+    @include breakpoint-max-horizontal-max-vertical($bp-screen-lg, $bp-vertical-875) {
+      height: initial;
     }
   }
 
@@ -50,6 +54,11 @@
     @include breakpoint-max($bp-screen-sm) {
       height: 55%;
       justify-content: space-around;
+      padding: 2rem;
+      width: calc(100% - 4rem);
+    }
+
+    @include breakpoint-max-horizontal-max-vertical($bp-screen-lg, $bp-vertical-875) {
       padding: 2rem;
       width: calc(100% - 4rem);
     }
