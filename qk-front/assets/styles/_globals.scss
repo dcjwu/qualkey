@@ -26,4 +26,13 @@
   @include breakpoint-min($screen-xxl) {
     max-width: 1320px;
   }
+
+  &.authenticate {
+    @include breakpoint-max($bp-screen-lg) {
+      margin: 0;
+      max-width: 100%;
+      padding: 0;
+      width: 100%;
+    }
+  }
 }

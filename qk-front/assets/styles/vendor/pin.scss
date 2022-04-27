@@ -1,0 +1,48 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.pinCode {
+  justify-content: space-between;
+
+  + p {
+    margin-top: -2rem !important;
+  }
+
+  input[name="pinCode"] {
+    background-color: $color-additional-light;
+    border: 1px solid $color-highlight;
+    border-radius: 1.2rem;
+    font-size: 3.4rem;
+    height: 7rem;
+    margin-bottom: 3rem !important;
+    width: 7rem !important;
+
+    &:focus {
+      border: 2px solid $color-highlight;
+      box-shadow: none !important;
+      caret-color: transparent;
+    }
+  }
+
+  .cqUYfR {
+    &:valid {
+      background-color: $color-additional-light !important;
+      border: 2px solid $color-success !important;
+      box-shadow: none !important;
+    }
+
+    &:invalid {
+      background-color: $color-additional-light !important;
+      border: 2px solid $color-error !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &.error {
+    input[name="pinCode"] {
+      background-color: $color-additional-light !important;
+      border: 2px solid $color-error !important;
+      box-shadow: none !important;
+    }
+  }
+}

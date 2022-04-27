@@ -10,6 +10,15 @@
   position: relative;
   width: 55%;
 
+  @include breakpoint-max($bp-screen-lg) {
+    padding: 4rem 0 12rem;
+    width: 100%;
+  }
+
+  @include breakpoint-max($bp-screen-sm) {
+    justify-content: flex-start;
+  }
+
   h1 {
     align-self: flex-start;
     margin-bottom: 4rem;
@@ -20,8 +29,6 @@
   }
 
   form {
-    padding: 0 1rem;
-
     input[type="email"],
     input[type="password"],
     input[type="text"] {
@@ -36,6 +43,12 @@
       margin-top: -0.8rem;
     }
 
+    p {
+      text-align: center;
+      margin-top: 2rem;
+      cursor: pointer;
+    }
+
     button {
       width: 100%;
     }
@@ -44,6 +57,23 @@
 
 .wrapper {
   padding: 0 8rem;
+
+  @include breakpoint-max($bp-screen-xl) {
+    padding: 4rem;
+  }
+
+  @include breakpoint-max($bp-screen-lg) {
+    margin: 0 auto;
+    width: 50%;
+  }
+
+  @include breakpoint-max($bp-screen-md) {
+    width: 55%;
+  }
+
+  @include breakpoint-max($bp-screen-sm) {
+    width: calc(100% - 8rem);
+  }
 }
 
 .forgot {
@@ -51,6 +81,12 @@
     button:last-child {
       margin-top: 10rem;
     }
+  }
+}
+
+.newPassword {
+  @include breakpoint-max($bp-screen-lg) {
+    padding: 4rem 0 5rem;
   }
 }
 
@@ -70,6 +106,21 @@
   position: absolute;
   transform: translateX(-50%);
   width: 90%;
+
+  @include breakpoint-max($bp-screen-xl) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @include breakpoint-max($bp-screen-lg) {
+    flex-direction: row;
+    gap: initial;
+  }
+
+  @include breakpoint-max($bp-screen-sm) {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
 }
 
 .buttonRow {

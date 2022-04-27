@@ -46,18 +46,19 @@
   appearance: none;
   border: 1px solid $color-highlight;
   border-radius: 0.2rem;
+  cursor: pointer;
   height: 1.8rem;
   transition: background-color 0.2s ease-in-out;
   width: 1.8rem;
 
-  &:hover {
-    background-color: $color-highlight;
-    background-image: url("../../../assets/images/checkbox-white.svg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 1.2rem;
-    border: 1px solid $color-highlight;
-  }
+  //&:hover {
+  //  background-color: $color-highlight;
+  //  background-image: url("../../../assets/images/checkbox-white.svg");
+  //  background-position: center;
+  //  background-repeat: no-repeat;
+  //  background-size: 1.2rem;
+  //  border: 1px solid $color-highlight;
+  //}
 
   &:focus {
     border: 1px solid $color-highlight-dark;

@@ -75,12 +75,13 @@ const AuthForm = ({ login, forgot, twoFactor, newPassword }) => {
       <div className={`${styles.loginPage}`}>
          <div className={styles.wrapper}>
             <Heading blue h1>Check your email</Heading>
-            <Text>Enter the 4-digit code we’ve sent to your
+            <Text grey>Enter the 4-digit code we’ve sent to your
                email and then choose your new password</Text>
             <form>
                <Input pinCode/>
                {/*<Text error small>Please enter all 4 digits</Text>*/}
                <Button blue bold thin>Next</Button>
+               <Text grey>Resend code</Text>
             </form>
          </div>
          <div className={styles.copyright}>
@@ -92,7 +93,7 @@ const AuthForm = ({ login, forgot, twoFactor, newPassword }) => {
    )
 
    if (newPassword) return (
-      <div className={`${styles.loginPage} ${styles.forgot}`}>
+      <div className={`${styles.loginPage} ${styles.forgot} ${styles.newPassword}`}>
          <div className={styles.wrapper}>
             <Heading blue h1>Set new password</Heading>
             <form>

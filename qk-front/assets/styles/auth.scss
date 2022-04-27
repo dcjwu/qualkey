@@ -15,6 +15,20 @@
     height: 70rem;
     margin: 0 auto;
     width: 90%;
+
+    @include breakpoint-max($bp-screen-xl) {
+      width: 100%;
+    }
+
+    @include breakpoint-max($bp-screen-lg) {
+      align-items: initial;
+      flex-direction: column-reverse;
+      height: 100vh;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-875) {
+      overflow-y: scroll;
+    }
   }
 
   .logo {
@@ -27,9 +41,48 @@
     padding: 0 5rem;
     width: 45%;
 
+    @include breakpoint-max($bp-screen-lg) {
+      height: 85%;
+      padding: 0;
+      width: 100%;
+    }
+
+    @include breakpoint-max($bp-screen-sm) {
+      height: 55%;
+      justify-content: space-around;
+      padding: 2rem;
+      width: calc(100% - 4rem);
+    }
+
+    &__image-wrapper {
+      height: 293px;
+      position: relative;
+      width: 426px;
+
+      @include breakpoint-max($bp-screen-lg) {
+        height: 200px;
+        width: 290px;
+      }
+
+      @include breakpoint-max($bp-screen-sm) {
+        height: 140px;
+        width: 203px;
+      }
+    }
+
     h2 {
       margin-top: 5rem;
       text-align: center;
+
+      @include breakpoint-max($bp-screen-lg) {
+        line-height: 1.5;
+        margin-top: 2rem;
+        width: 50%;
+      }
+
+      @include breakpoint-max($bp-screen-sm) {
+        width: 75%;
+      }
     }
   }
 }

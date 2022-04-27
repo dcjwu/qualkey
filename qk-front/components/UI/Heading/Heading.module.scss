@@ -22,3 +22,10 @@
 .white {
   color: $color-secondary;
 }
+
+.loginPage {
+  @include breakpoint-max($bp-screen-lg) {
+    font-size: 2rem;
+    font-weight: $font-weight-sm;
+  }
+}

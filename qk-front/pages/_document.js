@@ -9,7 +9,7 @@ export default function MyDocument() {
             <link href="/favicon.ico" rel="icon"/>
             <link href="https://fonts.googleapis.com" rel="preconnect"/>
             <link crossOrigin="true" href="https://fonts.gstatic.com" rel="preconnect"/>
-            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@700&display=swap"
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
                rel="stylesheet"/>
          </Head>
          <body>
