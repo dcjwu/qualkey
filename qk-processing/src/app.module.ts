@@ -33,13 +33,15 @@ const dmmf = ((prisma as any)._dmmf as DMMFClass);
       },
       auth: {
         authenticate: async (email: string, password: string) => {
-          const user = await prisma.user.findUnique({ where: { email: email } });
           if (email !== "" && password !== "") {
-            if (await argon.verify(
-              user?.password,
-              password,
-            )) {
-              return Promise.resolve<CurrentAdmin>({ email: email });
+            const user = await prisma.user.findUnique({ where: { email: email } });
+            if (user && user.role === "SUPER_ADMIN") {
+              if (await argon.verify(
+                user?.password,
+                password,
+              )) {
+                return Promise.resolve<CurrentAdmin>({ email: email });
+              }
             }
           }
         },
