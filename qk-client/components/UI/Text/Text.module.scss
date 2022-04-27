@@ -18,6 +18,10 @@
   }
 }
 
+.grey {
+  color: $color-additional;
+}
+
 .medium {
   font-size: 1.4rem;
 }
@@ -32,8 +36,6 @@
 
 .error {
   color: $color-error;
-  font-family: $font-extra;
-  font-weight: $font-weight-xl;
 }
 
 .link {

@@ -24,14 +24,15 @@ const AuthForm = ({ login, forgot, twoFactor, newPassword }) => {
                {/*<Text error small>Wrong password</Text>*/}
                <div className={styles.textRow}>
                   <Input checkbox checkboxText="Remember me" inputName="rememberMe"/>
-                  <Text blue medium link="/auth/forgot">Forgot Password?</Text>
+                  <Text blue medium link="/forgot">Forgot Password?</Text>
                </div>
                <Button blue bold thin>Login</Button>
             </form>
          </div>
          <div className={styles.copyright}>
-            <Text small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
-            <Text small underline link="/terms">Terms & Conditions</Text>
+            <Text grey small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
+            <Text grey small underline
+                  link="/terms">Terms & Conditions</Text>
          </div>
       </div>
    )
@@ -44,21 +45,28 @@ const AuthForm = ({ login, forgot, twoFactor, newPassword }) => {
                <Input email placeholder="Email"/>
                {/*<Text error small>Wrong email</Text>*/}
                <Button blue bold thin>Send 4-digit code</Button>
-               <Button semiBold thin white
-                       onClick={() => router.back()}>
+               <Button semiBold thin white>
                   <div className={styles.buttonRow}>
-                     <svg fill="#4a90d1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M360 224L272 224v-56c0-9.531-5.656-18.16-14.38-22C248.9 142.2 238.7 143.9 231.7 150.4l-96 88.75C130.8 243.7 128 250.1 128 256.8c.3125 7.781 2.875 13.25 7.844 17.75l96 87.25c7.031 6.406 17.19 8.031 25.88 4.188s14.28-12.44 14.28-21.94l-.002-56L360 288C373.3 288 384 277.3 384 264v-16C384 234.8 373.3 224 360 224zM256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464z"/>
+                     <svg fill="none" height="24" viewBox="0 0 24 24"
+                          width="24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                           stroke="#4A90D1" strokeLinecap="round"
+                           strokeLinejoin="round" strokeWidth="2"/>
+                        <path d="M12 8L8 12L12 16" stroke="#4A90D1" strokeLinecap="round"
+                              strokeLinejoin="round" strokeWidth="2"/>
+                        <path d="M16 12H8" stroke="#4A90D1" strokeLinecap="round"
+                              strokeLinejoin="round" strokeWidth="2"/>
                      </svg>
-                     {/*TODO change this icon and preventDefault!*/}
+                     {/*TODO: PreventDefault!*/}
                      <p>Back</p>
                   </div>
                </Button>
             </form>
          </div>
          <div className={styles.copyright}>
-            <Text small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
-            <Text small underline link="/terms">Terms & Conditions</Text>
+            <Text grey small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
+            <Text grey small underline
+                  link="/terms">Terms & Conditions</Text>
          </div>
       </div>
    )
@@ -70,14 +78,15 @@ const AuthForm = ({ login, forgot, twoFactor, newPassword }) => {
             <Text>Enter the 4-digit code we’ve sent to your
                email and then choose your new password</Text>
             <form>
-               <Input text inputName="2faCode" placeholder="4 digit code"/>
-               {/*<Text error small>Wrong email</Text>*/}
-               <Button blue bold thin>Set New Password</Button>
+               <Input pinCode/>
+               {/*<Text error small>Please enter all 4 digits</Text>*/}
+               <Button blue bold thin>Next</Button>
             </form>
          </div>
          <div className={styles.copyright}>
-            <Text small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
-            <Text small underline link="/terms">Terms & Conditions</Text>
+            <Text grey small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
+            <Text grey small underline
+                  link="/terms">Terms & Conditions</Text>
          </div>
       </div>
    )
@@ -106,14 +115,15 @@ const AuthForm = ({ login, forgot, twoFactor, newPassword }) => {
                               strokeLinejoin="round" strokeWidth="2"/>
                      </svg>
                      {/*TODO change this icon and preventDefault!*/}
-                     <p>Back</p>
+                     <p>Back to Login</p>
                   </div>
                </Button>
             </form>
          </div>
          <div className={styles.copyright}>
-            <Text small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
-            <Text small underline link="/terms">Terms & Conditions</Text>
+            <Text grey small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
+            <Text grey small underline
+                  link="/terms">Terms & Conditions</Text>
          </div>
       </div>
    )
