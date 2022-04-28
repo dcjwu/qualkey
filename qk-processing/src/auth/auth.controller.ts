@@ -6,18 +6,17 @@ import { AuthDto } from "./dto";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService) {}
 
-    @HttpCode(HttpStatus.OK)
-    @Post("register")
-  register(@Body() dto: AuthDto) {
+  @HttpCode(HttpStatus.OK)
+  @Post("register")
+  register(@Body() dto: AuthDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
     return this.authService.register(dto);
   }
 
-    @HttpCode(HttpStatus.OK)
-    @Post("login")
-    login(@Body() dto: AuthDto, @Res({ passthrough: true }) response: Response ) {
-      return this.authService.login(dto, response);
-    }
+  @HttpCode(HttpStatus.OK)
+  @Post("login")
+  login(@Body() dto: AuthDto, @Res({ passthrough: true }) response: Response ): Promise<string> {
+    return this.authService.login(dto, response);
+  }
 }

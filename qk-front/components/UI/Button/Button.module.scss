@@ -76,3 +76,9 @@
     }
   }
 }
+
+.loading {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}

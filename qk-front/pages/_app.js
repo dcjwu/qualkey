@@ -1,6 +1,7 @@
 import "../assets/styles/helpers/_reset.scss"
 import "../assets/styles/_globals.scss"
 import Head from "next/head"
+import { RecoilRoot } from "recoil"
 
 function MyApp({ Component, pageProps }) {
    return (
@@ -11,7 +12,9 @@ function MyApp({ Component, pageProps }) {
             <title>Certificate Authentication | QualKey</title>
          </Head>
 
-         <Component {...pageProps} />
+         <RecoilRoot>
+            <Component {...pageProps} />
+         </RecoilRoot>
       </>
    )
 }

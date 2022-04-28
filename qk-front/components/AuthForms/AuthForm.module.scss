@@ -1,6 +1,17 @@
 @import "assets/styles/helpers/variables";
 @import "assets/styles/helpers/mixins";
 
+.buttonRow {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+
+  svg + p {
+    margin: 0;
+  }
+}
+
 .loginPage {
   background-color: $color-secondary;
   display: flex;
@@ -36,17 +47,17 @@
       width: calc(100% - 5.4rem);
     }
 
+    button + p {
+      cursor: pointer;
+      margin-top: 2rem;
+      text-align: center;
+    }
+
     div + p,
     input[type="email"] + p {
       font-size: 1.5rem;
       margin-bottom: 1rem;
       margin-top: -0.8rem;
-    }
-
-    button + p {
-      text-align: center;
-      margin-top: 2rem;
-      cursor: pointer;
     }
 
     button {
@@ -120,15 +131,5 @@
   @include breakpoint-max($bp-screen-sm) {
     flex-direction: column-reverse;
     gap: 0.5rem;
-  }
-}
-
-.buttonRow {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  svg + p {
-    margin: 0;
   }
 }

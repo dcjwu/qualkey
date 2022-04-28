@@ -1,4 +1,4 @@
-.PHONY: help go build build-prod start start-prod stop restart shell shell-front shell-db shell-pg migrate dump
+.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump
 
 DOCKER_COMPOSE=docker-compose
 DOCKER_COMPOSE_RUN=$(DOCKER_COMPOSE) run --rm --no-deps
@@ -62,6 +62,18 @@ stop-prod:
 
 ## Restart project
 restart: stop start
+
+## Restart front container
+restart-front:
+	$(DOCKER_COMPOSE_DEV) restart $(front)
+
+## Restart processing container
+restart-back:
+	$(DOCKER_COMPOSE_DEV) restart $(processing)
+
+## Restart db container
+restart-db:
+	$(DOCKER_COMPOSE_DEV) restart $(db)
 
 ## Open processing container command line
 shell:

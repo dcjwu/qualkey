@@ -21,9 +21,7 @@ const Input = ({
    ...otherProps
 }) => {
 
-   const [pinValues, setPinValues] = useState(["", "", "", ""])
-
-   console.log(pinValues)
+   const [pinValues, setPinValues] = useState(["", "", "", ""]) //TODO: Move it to parent component :)
 
    if (email) return (
       <input {...otherProps} className={`${styles.input}

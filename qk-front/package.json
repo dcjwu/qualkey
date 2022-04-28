@@ -13,12 +13,14 @@
     "lint:style": "npm run lint:globals & npm run lint:components"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "next": "12.1.5",
     "nextjs-progressbar": "^0.0.14",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-input-pin-code": "^1.2.0",
+    "recoil": "^0.7.2",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
