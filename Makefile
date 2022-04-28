@@ -1,4 +1,4 @@
-.PHONY: go build build-prod start start-prod stop restart shell shell-front shell-db shell-pg migrate dump
+.PHONY: help go build build-prod start start-prod stop restart shell shell-front shell-db shell-pg migrate dump
 
 DOCKER_COMPOSE=docker-compose
 DOCKER_COMPOSE_RUN=$(DOCKER_COMPOSE) run --rm --no-deps
@@ -13,6 +13,21 @@ front = qk_front
 dev_db_user = qualkey
 dev_dv_volume = qk_pgdata
 dev_db_dump = qk_db-dev-dump.sql
+
+## Help
+help:
+	@printf "${COLOR_COMMENT}Usage:${COLOR_RESET}\n"
+	@printf " make [target]\n\n"
+	@printf "${COLOR_COMMENT}Available targets:${COLOR_RESET}\n"
+	@awk '/^[a-zA-Z\-\0-9\.@]+:/ { \
+		helpMessage = match(lastLine, /^## (.*)/); \
+		if (helpMessage) { \
+			helpCommand = substr($$1, 0, index($$1, ":")); \
+			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
+			printf " ${COLOR_INFO}%-16s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
+		} \
+	} \
+{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 ## One command to setup and start the project
 go: build start dump migrate
