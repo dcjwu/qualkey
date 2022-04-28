@@ -14,7 +14,7 @@ export default function Home() {
    const router = useRouter()
 
    const [formData, setFormData] = useRecoilState(loginFormState)
-   const [, setFormErrors] = useRecoilState(formValidationErrorsState)
+   const [, setFormError] = useRecoilState(formValidationErrorsState)
    const [, setLoading] = useRecoilState(loadingState)
 
    const handleFormChange = ({ target }) => {
@@ -32,26 +32,27 @@ export default function Home() {
       }
    }
 
-   const handleFormSubmit = event => {
+   const handleFormSubmit = async event => {
       event.preventDefault()
-      setFormErrors({})
+      setFormError({})
 
       const validation = validate(formData, setFormData, initialLoginFormState)
       if (Object.keys(validation).length) {
-         setFormErrors(validation)
+         setFormError(validation)
       } else {
          setLoading(true)
-         axios.post(`${processingUrl}/auth/login`, formData)
+         await axios.post(`${processingUrl}/auth/login`, formData)
             .then(response => {
                router.push(response.data)
+               setLoading(false)
             })
             .catch(error => {
                setLoading(false)
                console.log(error.response.data.message)
-               if (error.response?.data?.message.includes("credentials")) {
-                  setFormErrors({ email: error.response.data.message })
+               if (error.response.data.message.includes("Role")) {
+                  setFormError({ response: "Not authorized" })
                } else {
-                  setFormErrors({ email: "Unexpected error" })
+                  setFormError({ response: error.response.data.message })
                }
             })
       }

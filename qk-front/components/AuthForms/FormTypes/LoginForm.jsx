@@ -14,10 +14,13 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
    const loginForm = useRecoilValue(loginFormState)
    const loading = useRecoilValue(loadingState)
 
+   console.log(formError)
+
    return (
       <div className={styles.loginPage}>
          <div className={styles.wrapper}>
             <Heading blue h1>Login</Heading>
+            {formError.response && <Text error small>{formError.response}</Text>}
             <form onSubmit={submitFormHandler}>
                <Input email placeholder="Email" value={loginForm.email}
                       onChange={changeFormHandler}/>
@@ -32,7 +35,7 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
                   <Text blue medium link="/forgot">Forgot Password?</Text>
                </div>
                <Button blue bold loading
-thin
+                       thin
                        type="submit">
                   {loading
                      ? <svg fill="#fff" height="30" viewBox="0 0 120 30"

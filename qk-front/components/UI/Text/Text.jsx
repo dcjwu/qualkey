@@ -25,7 +25,7 @@ const Text = ({ blue, grey, small, medium, underline, link, error, children }) =
       ${small ? styles.small : ""}
       ${medium ? styles.medium : ""}
       ${underline ? styles.underline : ""}
-      ${error ? styles.error : ""}`}>
+      ${error ? styles.error + " form-error" : ""}`}>
          {children}
       </p>
    )

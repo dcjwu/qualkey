@@ -33,6 +33,13 @@
     @include breakpoint-max-horizontal-max-vertical($bp-screen-lg, $bp-vertical-875) {
       height: initial;
     }
+
+    h1 {
+      + .form-error {
+        margin-bottom: 1rem;
+        margin-top: -2rem;
+      }
+    }
   }
 
   .logo {
