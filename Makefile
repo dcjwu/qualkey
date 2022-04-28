@@ -14,6 +14,10 @@ dev_db_user = qualkey
 dev_dv_volume = qk_pgdata
 dev_db_dump = qk_db-dev-dump.sql
 
+COLOR_RESET   = \033[0m
+COLOR_INFO    = \033[32m
+COLOR_COMMENT = \033[33m
+
 ## Help
 help:
 	@printf "${COLOR_COMMENT}Usage:${COLOR_RESET}\n"
