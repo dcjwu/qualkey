@@ -14,8 +14,6 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
    const loginForm = useRecoilValue(loginFormState)
    const loading = useRecoilValue(loadingState)
 
-   console.log(formError)
-
    return (
       <div className={styles.loginPage}>
          <div className={styles.wrapper}>

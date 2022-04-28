@@ -48,7 +48,6 @@ export default function Home() {
             })
             .catch(error => {
                setLoading(false)
-               console.log(error.response.data.message)
                if (error.response.data.message.includes("Role")) {
                   setFormError({ response: "Not authorized" })
                } else {
