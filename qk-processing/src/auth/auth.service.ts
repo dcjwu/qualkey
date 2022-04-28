@@ -2,11 +2,13 @@ import { ForbiddenException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import bcrypt from "bcryptjs";
 import { Response } from "express";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthDto } from "./dto";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require("bcryptjs");
 
 @Injectable({})
 export class AuthService {
@@ -17,7 +19,8 @@ export class AuthService {
   ) {}
 
   async register(dto: AuthDto) {
-    const hash = await bcrypt.hash(dto.password);
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(dto.password, salt);
 
     try {
       return await this.prisma.user.create({
@@ -48,9 +51,9 @@ export class AuthService {
     if (!user)
       throw new ForbiddenException("User with such email is not registered");
 
-    const pwMatches = await bcrypt.compare(
-      user.password,
+    const pwMatches = await bcrypt.compareSync(
       dto.password,
+      user.password,
     );
 
     if (!pwMatches)

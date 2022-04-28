@@ -5,11 +5,13 @@ import { ConfigModule } from "@nestjs/config";
 import { PrismaClient } from "@prisma/client";
 import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { CurrentAdmin } from "adminjs";
-import bcrypt from "bcryptjs";
 
 import { AuthModule } from "./auth/auth.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { UserModule } from "./user/user.module";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require("bcryptjs");
 
 AdminJS.registerAdapter({ Database, Resource });
 const prisma = new PrismaClient();
@@ -36,9 +38,12 @@ const dmmf = ((prisma as any)._dmmf as DMMFClass);
           if (email !== "" && password !== "") {
             const user = await prisma.user.findUnique({ where: { email: email } });
             if (user && user.role === "SUPER_ADMIN") {
-              if (await bcrypt.compare(
-                user?.password,
+              if (bcrypt.compareSync(
                 password,
+                user?.password,
+                (err, res) => {
+                  console.log(err, res);
+                },
               )) {
                 return Promise.resolve<CurrentAdmin>({ email: email });
               }
