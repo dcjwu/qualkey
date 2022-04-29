@@ -7,7 +7,7 @@ import { response } from "express";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto";
-import { RouteProvider } from "./helper/route-provider";
+import { RouteProvider } from "./provider";
 
 type CreateUser = {
   uuid: string
@@ -65,6 +65,7 @@ describe("AuthService Unit Test", () => {
     const newUser: AuthDto = {
       email: "email@email.com",
       password: "password",
+      rememberMe: false,
     };
     it("Should register user and return it", async () => {
       expect(await service.register(newUser)).toEqual(mockCreateUser);
@@ -75,6 +76,7 @@ describe("AuthService Unit Test", () => {
     const loginUser: AuthDto = {
       email: "email@email.com",
       password: "student",
+      rememberMe: false,
     };
     it("Should login user", async () => {
       expect(await service.login(loginUser, response)).toEqual("");
