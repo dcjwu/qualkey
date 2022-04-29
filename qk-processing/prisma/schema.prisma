@@ -22,14 +22,52 @@ model User {
     uuid        String @id @default(uuid())
     email       String @unique
     password    String
-
     role        Role
-
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-
     firstName   String?
     lastName    String?
+    credentials Credential[]
 
     @@map("users")
+}
+
+
+enum CredentialStatus {
+    NEW
+    UPLOADING_TO_BLOCKCHAIN
+    FAILED_UPLOADING_TO_BLOCKCHAIN
+    UPLOADED_TO_BLOCKCHAIN
+    ACTIVATED
+    WITHDRAWN
+}
+
+model Credential {
+    uuid                String @id @default(uuid())
+    did                 String @unique
+    status              CredentialStatus
+    student             User @relation(fields: [studentUuid], references: [uuid])
+    studentUuid         String
+    institution         Institution @relation(fields: [institutionUuid], references: [uuid])
+    institutionUuid     String
+
+    @@map("credentials")
+}
+
+enum InsitutionStatus {
+    ACTIVE
+    CLOSED
+}
+
+model Institution {
+    uuid            String @id @default(uuid())
+    status          InsitutionStatus
+    emailDomain     String @unique
+    logoUrl         String
+    name            String
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    credentials     Credential[]
+
+    @@map("institutions")
 }
