@@ -32,7 +32,6 @@ model User {
     @@map("users")
 }
 
-
 enum CredentialStatus {
     NEW
     UPLOADING_TO_BLOCKCHAIN

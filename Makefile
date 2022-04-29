@@ -89,7 +89,7 @@ shell-db:
 
 ## Open postgres cli in db container
 shell-pg:
-	docker exec -ti $(db) bash -c "psql -U qualkey"
+	docker exec -ti $(db) bash -c "psql -U $(dev_db_user)"
 
 ## Run migrations
 migrate:
@@ -99,3 +99,7 @@ migrate:
 dump:
 	docker cp db.docker/$(dev_db_dump) $(db):/$(dev_dv_volume)
 	cat db.docker/$(dev_db_dump) | docker exec -i $(db) psql -U $(dev_db_user)
+
+## Apply changes from Prisma schema to DB
+schema-push:
+	docker exec -t $(processing) sh -c "npx prisma db push"
