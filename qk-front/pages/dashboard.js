@@ -8,7 +8,7 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
-export default function InstitutionDashboard({ value, serverErrorMessage }) {
+export default function Dashboard({ value, serverErrorMessage }) {
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
@@ -18,7 +18,7 @@ export default function InstitutionDashboard({ value, serverErrorMessage }) {
 export const getServerSideProps = async ({ req }) => {
    console.log(req.headers.cookie)
    try {
-      const response = await axios.get(`${apiUrl}/credentials/institution`, {
+      const response = await axios.get(`${apiUrl}/credentials`, {
          withCredentials: true,
          headers: { Cookie: req.headers.cookie }
       })
