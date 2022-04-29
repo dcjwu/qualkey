@@ -7,7 +7,7 @@ import { Response } from "express";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthDto } from "./dto";
-import { RouteProvider } from "./helper/route-provider";
+import { RouteProvider } from "./provider";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require("bcryptjs");
@@ -22,8 +22,7 @@ export class AuthService {
   ) {}
 
   async register(dto: AuthDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(dto.password, salt);
+    const hash = this.hashData(dto.password);
 
     try {
       return await this.prisma.user.create({
@@ -44,43 +43,44 @@ export class AuthService {
           throw new ForbiddenException("User with email " + dto.email + " already exists");
         }
       }
-
       throw error;
     }
   }
 
   async login(dto: AuthDto, response: Response): Promise<string> {
+
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
+    if (!user) throw new ForbiddenException("Invalid credentials");
 
-    if (!user)
-      throw new ForbiddenException("Invalid credentials");
-
-    const pwMatches = await bcrypt.compareSync(
-      dto.password,
-      user.password,
-    );
-
-    if (!pwMatches)
-      throw new ForbiddenException("Invalid credentials");
+    const pwMatches = await bcrypt.compareSync(dto.password, user.password);
+    if (!pwMatches) throw new ForbiddenException("Invalid credentials");
 
     const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
-    const jwtToken = await this.signToken(user.uuid, user.email);
+    const jwtToken = await this.signToken(user.uuid, user.email, user.role, dto.rememberMe);
     response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
 
     return this.routeProvider.onLogin(user);
   }
 
-  async signToken(userId: string, email: string): Promise<string> {
+  async signToken(userId: string, email: string, role: Role, rememberMe: boolean): Promise<string> {
     const payload = {
       sub: userId,
       email,
+      role,
     };
 
-    const secret = this.config.get("JWT_SECRET");
+    const secret = this.config.get<string>("JWT_SECRET");
+    const jwtShort = this.config.get<string>("JWT_EXPIRATION_SHORT");
+    const jwtLong = this.config.get<string>("JWT_EXPIRATION_LONG");
 
     return this.jwt.signAsync(payload, {
-      expiresIn: "1h",
+      expiresIn: !rememberMe ? jwtShort : jwtLong,
       secret: secret,
     });
+  }
+
+  hashData(data: string):string {
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(data, salt);
   }
 }

@@ -41,7 +41,7 @@ export default function Home() {
          setFormError(validation)
       } else {
          setLoading(true)
-         await axios.post(`${processingUrl}/auth/login`, formData)
+         await axios.post(`${processingUrl}/auth/login`, formData, { withCredentials: true })
             .then(response => {
                router.push(response.data)
                setLoading(false)

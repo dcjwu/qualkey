@@ -7,6 +7,7 @@ import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { CurrentAdmin } from "adminjs";
 
 import { AuthModule } from "./auth/auth.module";
+import { CredentialsModule } from "./credentials/credentials.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { UserModule } from "./user/user.module";
 
@@ -54,6 +55,7 @@ const dmmf = ((prisma as any)._dmmf as DMMFClass);
         cookiePassword: "admin",
       },
     }),
+    CredentialsModule,
   ],
 })
 export class AppModule {}
