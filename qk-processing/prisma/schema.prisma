@@ -50,6 +50,26 @@ model Credential {
     institution         Institution @relation(fields: [institutionUuid], references: [uuid])
     institutionUuid     String
 
+    certificateId       String?
+    graduatedName       String?
+    authenticatedBy     String? //User uuid
+    qualificationName   String?
+    majors              String?
+    minors              String?
+    authenticatedTitle  String?
+    awardingInstitution String?
+    qualificationLevel  String?
+    awardLevel          String?
+    studyLanguage       String?
+    info                String?
+    gpaFinalGrade       String?
+
+    authenticatedAt     DateTime?
+    studyStartedAt      DateTime?
+    studyEndedAt        DateTime?
+    graduatedAt         DateTime?
+    expiresAt           DateTime?
+
     @@map("credentials")
 }
 
@@ -60,13 +80,97 @@ enum InsitutionStatus {
 
 model Institution {
     uuid            String @id @default(uuid())
-    status          InsitutionStatus
+    status          InsitutionStatus @default(ACTIVE)
     emailDomain     String @unique
-    logoUrl         String
+    logoUrl         String?
     name            String
     createdAt       DateTime @default(now())
     updatedAt       DateTime @updatedAt
     credentials     Credential[]
 
     @@map("institutions")
+}
+
+enum UploadStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
+
+model Upload {
+    uuid                        String @id @default(uuid())
+    status                      UploadStatus @default(PENDING)
+    uploadedBy                  String // User uuid
+    confirmationsRequestedFrom  String // array with user_uuids
+    confirmedBy                 String // array with user_uuids
+    createdAt                   DateTime @default(now())
+    updatedAt                   DateTime @updatedAt
+
+    @@map("uploads")
+}
+
+model CredentialShare {
+    uuid                        String @id @default(uuid())
+    recipientEmail              String
+    viewsCount                  Int @default(0)
+    credentialUuid              String
+    temporaryPassword           String
+    expiresAt                   DateTime
+    createdAt                   DateTime @default(now())
+
+    @@map("credentialShares")
+}
+
+model CredentialChange {
+    id                          Int @id @default(autoincrement())
+    credentialUuid              String
+    changedByUuid               String // User uuid
+    changedFrom                 String // array with changes from   1;Peter;Dinklage
+    changedTo                   String // array with changes to     2;fyodor;Pupkin
+    fieldName                   String // array with field names    id;first_name;last_name
+    changedAt                   DateTime @default(now())
+    hash                        String
+
+    @@map("credentialChanges")
+}
+
+enum CredentialChangeRequestStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
+
+model CredentialChangeRequest {
+    uuid                        String @id @default(uuid())
+    status                      CredentialChangeRequestStatus @default(PENDING)
+    requestedBy                 String // User uuid
+    confirmedBy                 String // User uuid
+    changedFrom                 String // array with changes from   1;Peter;Dinklage
+    changedTo                   String // array with changes to     2;fyodor;Pupkin
+    fieldName                   String // array with field names    id;first_name;last_name
+    createdAt                   DateTime @default(now())
+    updatedAt                   DateTime @updatedAt
+
+    @@map("credentialChangeRequests")
+}
+
+
+enum TransactionStatus {
+    NEW
+    PENDING
+    CONFIRMED
+    FAILED
+}
+
+model Transaction {
+    uuid                        String @id @default(uuid())
+    status                      TransactionStatus @default(NEW)
+    credentialUuid              String
+    fee                         String?
+    hash                        String?
+    hex                         String?
+    createdAt                   DateTime @default(now())
+    confirmedAt                 DateTime?
+
+    @@map("transactions")
 }

@@ -1,7 +1,7 @@
 import { Role, User } from "@prisma/client";
 
-import { RoleNotFoundException } from "../exceptions/role-not-found.exception";
-import { RouteProvider } from "./route-provider";
+import { RoleNotFoundException } from "../exception";
+import { RouteProvider } from "./route.provider";
 
 describe("Route Provider Unit Tests", () => {
   const routeProvider: RouteProvider = new RouteProvider();
