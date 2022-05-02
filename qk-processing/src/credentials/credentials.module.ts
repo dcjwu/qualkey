@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 
-import { PrismaService } from "../prisma/prisma.service";
 import { CredentialsController } from "./credentials.controller";
+import { CredentialsRepository } from "./credentials.repository";
 import { CredentialsService } from "./credentials.service";
 
 @Module({
   controllers: [CredentialsController],
-  providers: [CredentialsService, PrismaService],
+  providers: [CredentialsService, CredentialsRepository],
 })
 export class CredentialsModule {}

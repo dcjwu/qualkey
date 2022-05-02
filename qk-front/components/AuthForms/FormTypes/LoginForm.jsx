@@ -34,6 +34,7 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
                </div>
                <Button blue bold loading
                        thin
+                       disabled={loading}
                        type="submit">
                   {loading
                      ? <svg fill="#fff" height="30" viewBox="0 0 120 30"

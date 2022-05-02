@@ -3,8 +3,8 @@ import { User } from "@prisma/client";
 import { RoleNotFoundException } from "../exception";
 
 const routeMapping = new Map([
-  ["STUDENT", "/student-dashboard"],
-  ["INSTITUTION_REPRESENTATIVE", "/institution-dashboard"],
+  ["STUDENT", "/dashboard"],
+  ["INSTITUTION_REPRESENTATIVE", "/dashboard"],
 ]);
 
 export class RouteProvider {

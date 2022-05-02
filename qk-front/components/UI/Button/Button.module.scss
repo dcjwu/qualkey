@@ -41,7 +41,7 @@
     background-color: $color-highlight-dark;
   }
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: rgba($color-highlight, 0.7);
   }
 }

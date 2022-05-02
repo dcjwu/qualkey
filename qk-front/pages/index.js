@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
@@ -44,7 +46,6 @@ export default function Home() {
          await axios.post(`${processingUrl}/auth/login`, formData, { withCredentials: true })
             .then(response => {
                router.push(response.data)
-               setLoading(false)
             })
             .catch(error => {
                setLoading(false)
@@ -56,6 +57,10 @@ export default function Home() {
             })
       }
    }
+
+   useEffect(() => {
+      setLoading(false)
+   }, [])
 
    return (
       <div className="auth">

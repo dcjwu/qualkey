@@ -1,13 +1,17 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
+import { User } from "@prisma/client";
+
+import { CredentialsRepository } from "./credentials.repository";
 
 @Injectable()
 export class CredentialsService {
-
-  getStudentCredentials():string {
-    return JSON.stringify("Student dashboard page!");
+  constructor(private credentialsRepository: CredentialsRepository) {
   }
 
-  getInstitutionCredentials():string {
-    return JSON.stringify("Institution dashboard page!");
+  getCredentials(user: User):string {
+    if (user.role === "STUDENT") return this.credentialsRepository.getStudentCredentials(user);
+    if (user.role === "INSTITUTION_REPRESENTATIVE") return this.credentialsRepository.getInstitutionCredentials(user);
+    
+    throw new ForbiddenException();
   }
 }
