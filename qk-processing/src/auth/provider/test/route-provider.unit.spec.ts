@@ -1,14 +1,14 @@
 import { Role, User } from "@prisma/client";
 
-import { RoleNotFoundException } from "../exception";
-import { RouteProvider } from "./route.provider";
+import { RoleNotFoundException } from "../../exception";
+import { RouteProvider } from "../route.provider";
 
 describe("Route Provider Unit Tests", () => {
   const routeProvider: RouteProvider = new RouteProvider();
 
   const dataSet = [
-    [Role.STUDENT, "/student-dashboard"],
-    [Role.INSTITUTION_REPRESENTATIVE, "/institution-dashboard"],
+    [Role.STUDENT, "/dashboard"],
+    [Role.INSTITUTION_REPRESENTATIVE, "/dashboard"],
   ];
 
   it.each(dataSet)("Should return correct redirect link", (role: Role, link: string) => {

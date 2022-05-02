@@ -1,4 +1,4 @@
-.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump
+.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump test test-watch
 
 DOCKER_COMPOSE=docker-compose
 DOCKER_COMPOSE_RUN=$(DOCKER_COMPOSE) run --rm --no-deps
@@ -103,3 +103,11 @@ dump:
 ## Apply changes from Prisma schema to DB
 schema-push:
 	docker exec -t $(processing) sh -c "npx prisma db push"
+
+## Run tests
+test:
+	docker exec -it qk_processing sh -c "npm run test"
+
+## Run tests in watch mode
+test-watch:
+	docker exec -it qk_processing sh -c "npm run test:watch"

@@ -34,6 +34,7 @@ export default function Home() {
       }
    }
 
+   // Processing login.
    const handleFormSubmit = async event => {
       event.preventDefault()
       setFormError({})
@@ -58,6 +59,7 @@ export default function Home() {
       }
    }
 
+   // Stop spinner (loading).
    useEffect(() => {
       setLoading(false)
    }, [])
