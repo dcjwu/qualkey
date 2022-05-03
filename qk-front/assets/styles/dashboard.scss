@@ -1,0 +1,8 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.dashboard {
+  background-color: $color-additional-medium;
+  height: calc(100vh - #{$topbar-height-xxl} - 7rem);
+  padding: 7rem 13rem 0 calc(13rem + #{$sidebar-width-xxl});
+}

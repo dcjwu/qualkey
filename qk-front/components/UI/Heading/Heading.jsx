@@ -2,13 +2,14 @@ import PropTypes from "prop-types"
 
 import styles from "./Heading.module.scss"
 
-const Heading = ({ h1, h2, blue, white, loginPage, children }) => {
+const Heading = ({ h1, h2, blue, white, loginPage, xxl, children }) => {
    if (h1) {
       return (
          <h1 className={`${styles.heading} ${styles.h1}
          ${blue ? styles.blue : ""}
          ${white ? styles.white : ""}
-         ${loginPage ? styles.loginPage : ""}`}>
+         ${loginPage ? styles.loginPage : ""}
+         ${xxl ? styles.xxl : ""}`}>
             {children}
          </h1>
       )
@@ -34,5 +35,6 @@ Heading.propTypes = {
    blue: PropTypes.bool,
    white: PropTypes.bool,
    loginPage: PropTypes.bool,
+   xxl: PropTypes.bool,
    children: PropTypes.string.isRequired
 }

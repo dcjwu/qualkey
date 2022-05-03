@@ -3,9 +3,22 @@ $color-secondary:#fff;
 $color-highlight:#4a90d1;
 $color-highlight-dark:#004996;
 $color-additional:#96999c;
+$color-additional-medium:#e5e5e5;
 $color-additional-light:#ebebeb;
 $color-error:#d6193d;
 $color-success:#4ca866;
+
+$font-primary:"Montserrat", sans-serif;
+$font-extra:"Poppins", sans-serif;
+
+$font-weight-xl:700;
+$font-weight-lg:600;
+$font-weight-md:500;
+$font-weight-sm:400;
+
+$sidebar-width-xxl:24rem;
+
+$topbar-height-xxl:7rem;
 
 $screen-xxl:1400px;
 $screen-xl:1200px;
@@ -20,11 +33,3 @@ $bp-screen-md:767px;
 $bp-screen-sm:575px;
 
 $bp-vertical-875:875px;
-
-$font-primary:"Montserrat", sans-serif;
-$font-extra:"Poppins", sans-serif;
-
-$font-weight-xl:700;
-$font-weight-lg:600;
-$font-weight-md:500;
-$font-weight-sm:400;

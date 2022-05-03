@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 
 import styles from "./Text.module.scss"
 
-const Text = ({ blue, grey, small, medium, underline, link, error, children }) => {
+const Text = ({ blue, grey, small, medium, underline, link, error, bold, sidebar, sidebarMin, active, children }) => {
    if (link) return (
       <Link href={link}>
          <a className={`${styles.text} ${styles.link}
@@ -11,7 +11,11 @@ const Text = ({ blue, grey, small, medium, underline, link, error, children }) =
          ${grey ? styles.grey : ""}
          ${small ? styles.small : ""}
          ${medium ? styles.medium : ""}
-         ${underline ? styles.underline : ""}`}>
+         ${underline ? styles.underline : ""}
+         ${bold ? styles.bold : ""}
+         ${sidebar ? styles.sidebar : ""}
+         ${sidebarMin ? styles.sidebarMin : ""}
+         ${active ? styles.active : ""}`}>
             {children}
          </a>
       </Link>
@@ -25,7 +29,11 @@ const Text = ({ blue, grey, small, medium, underline, link, error, children }) =
       ${small ? styles.small : ""}
       ${medium ? styles.medium : ""}
       ${underline ? styles.underline : ""}
-      ${error ? styles.error + " form-error" : ""}`}>
+      ${error ? styles.error + " form-error" : ""}
+      ${bold ? styles.bold : ""}
+      ${sidebar ? styles.sidebar : ""}
+      ${sidebarMin ? styles.sidebarMin : ""}
+      ${active ? styles.active : ""}`}>
          {children}
       </p>
    )
@@ -41,5 +49,9 @@ Text.propTypes = {
    underline: PropTypes.bool,
    link: PropTypes.string,
    error: PropTypes.bool,
+   bold: PropTypes.bool,
+   sidebar: PropTypes.bool,
+   sidebarMin: PropTypes.bool,
+   active: PropTypes.bool,
    children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired
 }

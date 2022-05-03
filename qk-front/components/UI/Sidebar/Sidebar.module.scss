@@ -1,0 +1,58 @@
+@import "../../../assets/styles/helpers/variables";
+@import "../../../assets/styles/helpers/mixins";
+
+.sidebar {
+  background-color: $color-highlight;
+  border-bottom-right-radius: 2rem 2rem;
+  border-top-right-radius: 2rem 2rem;
+  color: $color-secondary;
+  height: 100vh;
+  padding: 4rem 0 8rem;
+  position: fixed;
+  width: $sidebar-width-xxl;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 4rem - 8rem);
+  justify-content: space-between;
+}
+
+.top {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageWrapper {
+  height: 104px;
+  margin-bottom: 4rem;
+  position: relative;
+  width: 150px;
+}
+
+.hr {
+  background-color: $color-additional-medium;
+  border: none;
+  height: 1px;
+  mix-blend-mode: soft-light;
+  width: calc(#{$sidebar-width-xxl - 4rem});
+}
+
+.menu {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-top: 2.4rem;
+}
+
+.bottom {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.helpers {
+  padding-top: 2rem;
+}

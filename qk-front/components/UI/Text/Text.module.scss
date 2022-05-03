@@ -47,3 +47,39 @@
     color: $color-highlight-dark;
   }
 }
+
+.bold {
+  font-weight: $font-weight-lg;
+}
+
+.sidebar {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0 1rem 2rem;
+  transition: background-color 0.2s ease-in-out;
+
+  svg {
+    height: 5.5rem;
+    stroke: $color-secondary;
+    width: 5.5rem;
+  }
+
+  span {
+    color: $color-secondary;
+  }
+}
+
+.sidebarMin {
+  padding-left: 0;
+
+  svg {
+    height: 3rem;
+    width: 3rem;
+  }
+}
+
+.active {
+  background-color: $color-highlight-dark;
+}
