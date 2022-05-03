@@ -21,6 +21,13 @@ export class AuthService {
         private routeProvider: RouteProvider,
   ) {}
 
+  /**
+   * User registration.
+   * @desc Registers user or throws error if email already exists.
+   * @param dto {AuthDto} Validates data in request.
+   * @returns New user.
+   * @throws If email already exists.
+   */
   async register(dto: AuthDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
     const hash = this.hashData(dto.password);
 
@@ -47,6 +54,14 @@ export class AuthService {
     }
   }
 
+  /**
+   * User login.
+   * @desc Log in user and set jwt in cookies or throws error if credentials does not match.
+   * @param dto {AuthDto} Validates data in request.
+   * @param response {Response} Server response interface.
+   * @returns Sets jwt in httpOnly cookie.
+   * @throws If user does not exist or credentials are incorrect.
+   */
   async login(dto: AuthDto, response: Response): Promise<string> {
 
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
@@ -62,6 +77,15 @@ export class AuthService {
     return this.routeProvider.onLogin(user);
   }
 
+  /**
+   * Signs jwt token.
+   * @desc Signs new jwt token with data.
+   * @param userId {string}
+   * @param email {string}
+   * @param role {Role}
+   * @param rememberMe {boolean}
+   * @returns Jwt token with particular expiration date.
+   */
   async signToken(userId: string, email: string, role: Role, rememberMe: boolean): Promise<string> {
     const payload = {
       sub: userId,

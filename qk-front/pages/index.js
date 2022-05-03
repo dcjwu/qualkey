@@ -34,7 +34,13 @@ export default function Home() {
       }
    }
 
-   // Processing login.
+   /**
+    * Login processing.
+    * @desc Validates inputs and sends request to server.
+    * @param event Submit event.
+    * @returns Redirect to dashboard page.
+    * @throws Shows error in UI.
+    **/
    const handleFormSubmit = async event => {
       event.preventDefault()
       setFormError({})
@@ -59,7 +65,10 @@ export default function Home() {
       }
    }
 
-   // Stop spinner (loading).
+   /**
+    * Stops showing loading in UI.
+    * @desc Sets loading state to false.
+    */
    useEffect(() => {
       setLoading(false)
    }, [])
