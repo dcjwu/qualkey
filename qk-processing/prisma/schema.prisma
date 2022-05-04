@@ -99,6 +99,8 @@ enum UploadStatus {
 
 model Upload {
     uuid                        String @id @default(uuid())
+    file_url                    String
+    mapping                     String // array with mapping of the fields
     status                      UploadStatus @default(PENDING)
     uploadedBy                  String // User uuid
     confirmationsRequestedFrom  String // array with user_uuids
