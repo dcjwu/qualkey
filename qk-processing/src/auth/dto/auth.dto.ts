@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import { IsBoolean, IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class AuthDto {
@@ -10,5 +11,6 @@ export class AuthDto {
       password: string;
     
     @IsBoolean()
+    @Transform(({ value } ) => value === "true")
       rememberMe: boolean;
 }

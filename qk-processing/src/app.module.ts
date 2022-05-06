@@ -2,6 +2,8 @@ import { AdminModule, AdminModuleOptions } from "@adminjs/nestjs";
 import { Database, Resource } from "@adminjs/prisma";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { EventEmitterModule } from "@nestjs/event-emitter";
+import { Role } from "@prisma/client";
 import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { CurrentAdmin } from "adminjs";
 
@@ -9,6 +11,7 @@ import { AuthModule } from "./auth/auth.module";
 import { CredentialsModule } from "./credentials/credentials.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
+import { UploadModule } from "./upload/upload.module";
 import { UserModule } from "./user/user.module";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -19,6 +22,7 @@ AdminJS.registerAdapter({ Database, Resource });
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    EventEmitterModule.forRoot(),
     AuthModule,
     UserModule,
     PrismaModule,
@@ -42,7 +46,7 @@ AdminJS.registerAdapter({ Database, Resource });
             authenticate: async (email: string, password: string): Promise<CurrentAdmin> => {
               if (email !== "" && password !== "") {
                 const user = await prisma.user.findUnique({ where: { email: email } });
-                if (user && user.role === "SUPER_ADMIN") {
+                if (user && user.role === Role.SUPER_ADMIN) {
                   if (bcrypt.compareSync(
                     password,
                     user?.password,
@@ -61,7 +65,7 @@ AdminJS.registerAdapter({ Database, Resource });
         };
       },
     }),
-
+    UploadModule,
   ],
 })
 export class AppModule {
