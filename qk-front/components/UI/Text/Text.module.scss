@@ -22,6 +22,10 @@
   color: $color-additional;
 }
 
+.white {
+  color: $color-secondary;
+}
+
 .medium {
   font-size: 1.4rem;
 }
@@ -57,22 +61,29 @@
   cursor: pointer;
   display: flex;
   gap: 1rem;
-  padding: 1rem 0 1rem 2rem;
+  justify-content: center;
+  padding: 1.2rem 0;
   transition: background-color 0.2s ease-in-out;
+  width: 100%;
 
   svg {
-    height: 5.5rem;
-    stroke: $color-secondary;
-    width: 5.5rem;
+    height: 4rem;
+    stroke: $color-additional-medium;
+    width: 4rem;
   }
 
   span {
-    color: $color-secondary;
+    color: $color-additional-medium;
   }
 }
 
 .sidebarMin {
+  justify-content: flex-start;
   padding-left: 0;
+
+  span {
+    color: $color-secondary;
+  }
 
   svg {
     height: 3rem;
@@ -82,4 +93,16 @@
 
 .active {
   background-color: $color-highlight-dark;
+
+  span {
+    color: $color-secondary;
+  }
+
+  svg {
+    stroke: $color-secondary;
+  }
+}
+
+.modal {
+  font-size: 2.3rem;
 }

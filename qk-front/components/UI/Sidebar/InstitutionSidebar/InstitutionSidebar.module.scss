@@ -1,5 +1,5 @@
-@import "../../../assets/styles/helpers/variables";
-@import "../../../assets/styles/helpers/mixins";
+@import "../../../../assets/styles/helpers/variables";
+@import "../../../../assets/styles/helpers/mixins";
 
 .sidebar {
   background-color: $color-highlight;
@@ -15,7 +15,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 4rem - 8rem);
+  height: calc(100% - 4rem - 4rem);
   justify-content: space-between;
 }
 
@@ -45,6 +45,7 @@
   display: flex;
   flex-direction: column;
   padding-top: 2.4rem;
+  width: 100%;
 }
 
 .bottom {

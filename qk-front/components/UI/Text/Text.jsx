@@ -3,29 +3,32 @@ import PropTypes from "prop-types"
 
 import styles from "./Text.module.scss"
 
-const Text = ({ blue, grey, small, medium, underline, link, error, bold, sidebar, sidebarMin, active, children }) => {
+const Text = ({ blue, grey, white, small, medium, underline, link, error, bold, sidebar, sidebarMin, active, modal, children, ...otherProps }) => {
    if (link) return (
       <Link href={link}>
          <a className={`${styles.text} ${styles.link}
          ${blue ? styles.blue : ""}
          ${grey ? styles.grey : ""}
+         ${white ? styles.white : ""}
          ${small ? styles.small : ""}
          ${medium ? styles.medium : ""}
          ${underline ? styles.underline : ""}
          ${bold ? styles.bold : ""}
          ${sidebar ? styles.sidebar : ""}
          ${sidebarMin ? styles.sidebarMin : ""}
-         ${active ? styles.active : ""}`}>
+         ${active ? styles.active : ""}
+         ${modal ? styles.modal : ""}`}>
             {children}
          </a>
       </Link>
    )
 
    return (
-      <p className={`${styles.text}
+      <p {...otherProps} className={`${styles.text}
       ${underline ? styles.underline : ""}
       ${blue ? styles.blue : ""}
       ${grey ? styles.grey : ""}
+      ${white ? styles.white : ""}
       ${small ? styles.small : ""}
       ${medium ? styles.medium : ""}
       ${underline ? styles.underline : ""}
@@ -33,7 +36,8 @@ const Text = ({ blue, grey, small, medium, underline, link, error, bold, sidebar
       ${bold ? styles.bold : ""}
       ${sidebar ? styles.sidebar : ""}
       ${sidebarMin ? styles.sidebarMin : ""}
-      ${active ? styles.active : ""}`}>
+      ${active ? styles.active : ""}
+      ${modal ? styles.modal : ""}`}>
          {children}
       </p>
    )
@@ -44,6 +48,7 @@ export default Text
 Text.propTypes = {
    blue: PropTypes.bool,
    grey: PropTypes.bool,
+   white: PropTypes.bool,
    small: PropTypes.bool,
    medium: PropTypes.bool,
    underline: PropTypes.bool,
@@ -53,5 +58,6 @@ Text.propTypes = {
    sidebar: PropTypes.bool,
    sidebarMin: PropTypes.bool,
    active: PropTypes.bool,
+   modal: PropTypes.bool,
    children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired
 }

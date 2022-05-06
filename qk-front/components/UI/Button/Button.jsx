@@ -27,5 +27,5 @@ Button.propTypes = {
    blue: PropTypes.bool,
    white: PropTypes.bool,
    loading: PropTypes.bool,
-   children: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired
+   children: PropTypes.any
 }

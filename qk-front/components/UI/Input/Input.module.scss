@@ -36,6 +36,10 @@
   &::placeholder {
     color: #96999c;
   }
+
+  &:read-only {
+    border: none;
+  }
 }
 
 .error {
@@ -51,15 +55,6 @@
   transition: background-color 0.2s ease-in-out;
   width: 1.8rem;
 
-  //&:hover {
-  //  background-color: $color-highlight;
-  //  background-image: url("../../../assets/images/checkbox-white.svg");
-  //  background-position: center;
-  //  background-repeat: no-repeat;
-  //  background-size: 1.2rem;
-  //  border: 1px solid $color-highlight;
-  //}
-
   &:focus {
     border: 1px solid $color-highlight-dark;
   }
@@ -71,5 +66,46 @@
     background-repeat: no-repeat;
     background-size: 1.2rem;
     border: 1px solid $color-highlight;
+  }
+}
+
+.fileUpload {
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 0.1px;
+  z-index: -1;
+
+  + label {
+    align-items: center;
+    background-color: $color-highlight;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 1rem 0;
+
+    svg path {
+      stroke: $color-secondary;
+    }
+  }
+}
+
+.uploaded {
+  + label {
+    background-color: transparent;
+    border: 1px solid $color-additional;
+
+    svg {
+      path {
+        stroke: $color-additional;
+      }
+
+      + p {
+        color: $color-additional;
+      }
+    }
   }
 }

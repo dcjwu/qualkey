@@ -1,0 +1,8 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.main {
+  &__wrapper {
+    position: relative;
+  }
+}
