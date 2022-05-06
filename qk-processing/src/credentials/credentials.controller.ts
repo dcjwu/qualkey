@@ -5,7 +5,7 @@ import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
 import { CredentialsService } from "./credentials.service";
 
-@Controller("credentials")
+@Controller("credential")
 @UseGuards(JwtGuard)
 export class CredentialsController {
   constructor(private credentialsService: CredentialsService) {}

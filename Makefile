@@ -1,4 +1,4 @@
-.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump test test-watch
+.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump test test-watch backup
 
 DOCKER_COMPOSE=docker-compose
 DOCKER_COMPOSE_RUN=$(DOCKER_COMPOSE) run --rm --no-deps
@@ -94,6 +94,10 @@ shell-pg:
 ## Run migrations
 migrate:
 	docker exec -t $(processing) sh -c "npx prisma migrate dev"
+
+## Make back-up
+backup:
+	docker exec $(db) pg_dump -U $(dev_db_user) -F t qualkey > qk_db-dev-dump-new.sql
 
 ## Restore admin database
 dump:
