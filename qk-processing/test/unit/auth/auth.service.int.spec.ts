@@ -1,9 +1,9 @@
 import { Test } from "@nestjs/testing";
 
-import { AppModule } from "../../app.module";
-import { PrismaService } from "../../prisma/prisma.service";
-import { AuthService } from "../auth.service";
-import { AuthDto } from "../dto";
+import { AppModule } from "../../../src/app.module";
+import { PrismaService } from "../../../src/prisma/prisma.service";
+import { AuthService } from "../../../src/auth/auth.service";
+import { AuthDto } from "../../../src/auth/dto";
 
 describe("AuthService Int", () => {
   let prisma: PrismaService;

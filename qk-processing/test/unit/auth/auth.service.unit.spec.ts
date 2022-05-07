@@ -3,10 +3,10 @@ import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Role, User } from "@prisma/client";
 
-import { PrismaService } from "../../prisma/prisma.service";
-import { AuthService } from "../auth.service";
-import { AuthDto } from "../dto";
-import { RouteProvider } from "../provider";
+import { PrismaService } from "../../../src/prisma/prisma.service";
+import { AuthService } from "../../../src/auth/auth.service";
+import { AuthDto } from "../../../src/auth/dto";
+import { RouteProvider } from "../../../src/auth/provider";
 
 type CreateUser = {
     uuid: string
@@ -32,6 +32,7 @@ describe("AuthService Unit Test", () => {
     updatedAt: new Date(1651188244),
     firstName: null,
     lastName: null,
+    institutionUuid: "mock-uuid",
   };
 
   const mockSignToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
