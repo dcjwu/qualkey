@@ -3,6 +3,9 @@ import { Role, User } from "@prisma/client";
 
 import { CredentialsRepository } from "./credentials.repository";
 
+/**
+ * Master class for the work related to credentials
+ */
 @Injectable()
 export class CredentialsService {
   constructor(private credentialsRepository: CredentialsRepository) {

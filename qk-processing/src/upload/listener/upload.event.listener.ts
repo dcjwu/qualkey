@@ -3,15 +3,18 @@ import { OnEvent } from "@nestjs/event-emitter";
 
 import { UploadSucceededEvent, UploadFailedEvent } from "../event";
 
+/**
+ * Handles all events regarding Mass-uploads functionality
+ */
 @Injectable()
 export class UploadEventListener {
-    @OnEvent("upload.failed")
+  @OnEvent("upload.failed")
   handleUploadFailedEvent(event: UploadFailedEvent): void {
     console.log(event);
   }
 
-    @OnEvent("upload.succeeded")
-    handleUploadSucceededEvent(event: UploadSucceededEvent): void {
-      console.log(event);
-    }
+  @OnEvent("upload.succeeded")
+  handleUploadSucceededEvent(event: UploadSucceededEvent): void {
+    console.log(event);
+  }
 }

@@ -14,6 +14,9 @@ type JwtPayload = {
   role: Role
 }
 
+/**
+ * Helps validating and authenticating the user by Json Web Token
+ */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
   constructor(config: ConfigService, private prisma: PrismaService, private authService: AuthService) {

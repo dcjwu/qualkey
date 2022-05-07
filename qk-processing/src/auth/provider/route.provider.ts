@@ -7,6 +7,9 @@ const routeMapping = new Map([
   ["INSTITUTION_REPRESENTATIVE", "/dashboard"],
 ]);
 
+/**
+ * Helper class which provides Route depending on the Role of the User
+ */
 export class RouteProvider {
     
   onLogin(user: User):string {

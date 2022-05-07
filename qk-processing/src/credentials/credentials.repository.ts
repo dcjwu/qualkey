@@ -3,6 +3,9 @@ import { User } from "@prisma/client";
 
 import { PrismaService } from "../prisma/prisma.service";
 
+/**
+ * Class responsible for getting credentials from the data sources
+ */
 @Injectable()
 export class CredentialsRepository {
   constructor(private readonly prisma: PrismaService) {

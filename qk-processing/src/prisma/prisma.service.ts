@@ -2,6 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PrismaClient } from "@prisma/client";
 
+/**
+ * Prisma is the Object-Relational Mapping it helps with linking the Database with the NestJS framework
+ */
 @Injectable()
 export class PrismaService extends PrismaClient {
   constructor(config: ConfigService) {

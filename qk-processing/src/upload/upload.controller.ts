@@ -9,6 +9,9 @@ import { JwtGuard } from "../auth/guard";
 import { UploadDto } from "./dto";
 import { UploadService } from "./upload.service";
 
+/**
+ * This is the API gateway for mass-upload, all requests regarding mass-upload come here
+ */
 @Controller("upload")
 @UseGuards(JwtGuard)
 export class UploadController {

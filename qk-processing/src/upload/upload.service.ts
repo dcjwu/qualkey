@@ -6,6 +6,9 @@ import { PrismaService } from "../prisma/prisma.service";
 import { UploadSucceededEvent, UploadFailedEvent } from "./event";
 import { UploadFailedException } from "./exception";
 
+/**
+ * Master class for the work related to mass-upload
+ */
 @Injectable()
 export class UploadService {
   constructor(
@@ -13,6 +16,11 @@ export class UploadService {
       private eventEmitter: EventEmitter2,
   ) {}
 
+  /**
+   * This function gets everything needed for creation of the Upload Value Object
+   * It creates and saves the Upload VO as entry in the database if successful
+   * Or throws exception in case something went wrong
+   */
   async processUpload(filename: string, mapping: string, uploadedBy: User): Promise<void> {
     try {
       const institution = await this.prisma.institution.findUnique({
