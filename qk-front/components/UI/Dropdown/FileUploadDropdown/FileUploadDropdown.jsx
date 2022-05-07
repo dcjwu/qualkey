@@ -16,15 +16,24 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
       setShowDropdown(prev => !prev)
    }
 
-   const handleChooseOptionDropdown = e => {
+   /**
+    * Allows to choose item from dropdown.
+    * @desc Sets innerText of dropdown item to its default and adds value to listener array.
+    * @param event Choose option event.
+    * @returns Array of chosen values.
+    **/
+   const handleChooseOptionDropdown = event => {
       setShowDropdown(false)
-      setOptionDropdown(e.target.innerText)
+      setOptionDropdown(event.target.innerText)
       setDropdownSelectionListener([
-         ...dropdownSelectionListener, e.target.getAttribute("value")
+         ...dropdownSelectionListener, event.target.getAttribute("value")
       ])
-      handleOption(e, valueIndex)
+      handleOption(event, valueIndex)
    }
 
+   /**
+    * Allows to close dropdown by clicking outside it.
+    **/
    const outsideClickRef = useRef()
    useEffect(() => {
       const checkIfClickedOutside = event => {

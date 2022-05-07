@@ -43,6 +43,10 @@
   text-align: left !important;
 }
 
+.success {
+  color: $color-success;
+}
+
 .link {
   transition: color 0.2s ease-in-out;
 
@@ -79,7 +83,12 @@
 
 .sidebarMin {
   justify-content: flex-start;
-  padding-left: 0;
+  margin-bottom: 2.4rem;
+  padding: 0;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   span {
     color: $color-secondary;

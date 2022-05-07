@@ -1,4 +1,4 @@
-export const validate = (formData, formDataCb, initialValues ) => {
+export const validateLoginForm = (formData, formDataCb, initialValues ) => {
    const email = formData?.email.trim()
    const password = formData?.password.trim()
 

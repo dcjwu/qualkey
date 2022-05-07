@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 
 import styles from "./Text.module.scss"
 
-const Text = ({ blue, grey, white, small, medium, underline, link, error, bold, sidebar, sidebarMin, active, modal, children, ...otherProps }) => {
+const Text = ({ blue, grey, white, small, medium, underline, link, error, success, bold, sidebar, sidebarMin, active, modal, children, ...otherProps }) => {
    if (link) return (
       <Link href={link}>
          <a className={`${styles.text} ${styles.link}
@@ -33,6 +33,7 @@ const Text = ({ blue, grey, white, small, medium, underline, link, error, bold, 
       ${medium ? styles.medium : ""}
       ${underline ? styles.underline : ""}
       ${error ? styles.error + " form-error" : ""}
+      ${success ? styles.success + " form-error" : ""}
       ${bold ? styles.bold : ""}
       ${sidebar ? styles.sidebar : ""}
       ${sidebarMin ? styles.sidebarMin : ""}
@@ -54,6 +55,7 @@ Text.propTypes = {
    underline: PropTypes.bool,
    link: PropTypes.string,
    error: PropTypes.bool,
+   success: PropTypes.bool,
    bold: PropTypes.bool,
    sidebar: PropTypes.bool,
    sidebarMin: PropTypes.bool,

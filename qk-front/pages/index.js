@@ -9,7 +9,7 @@ import logo from "../assets/images/qk-logo-xl.png"
 import { formValidationErrorsState, initialLoginFormState, loadingState, loginFormState } from "../atoms"
 import AuthForms from "../components/AuthForms/AuthForms"
 import Heading from "../components/UI/Heading/Heading"
-import { processingUrl, validate } from "../utils"
+import { processingUrl, validateLoginForm } from "../utils"
 
 export default function Home() {
 
@@ -45,7 +45,7 @@ export default function Home() {
       event.preventDefault()
       setFormError({})
 
-      const validation = validate(formData, setFormData, initialLoginFormState)
+      const validation = validateLoginForm(formData, setFormData, initialLoginFormState)
       if (Object.keys(validation).length) {
          setFormError(validation)
       } else {
