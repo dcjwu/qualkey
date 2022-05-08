@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
 
 import { credentialsState, dropdownSelectionListenerState } from "../../../../atoms"
+import { requiredMappingFields, validateMappingFields } from "../../../../utils"
 import styles from "./FileUploadDropdown.module.scss"
 
 const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
@@ -62,10 +63,14 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
             </button>
             <div ref={outsideClickRef} className={styles.content} style={{ display: showDropdown ? "block" : "none" }}>
                <ul>
-                  {credentialsData.map(credential => (
-                     <li key={credential.value} value={credential.value}
-                         onClick={handleChooseOptionDropdown}>{credential.title}</li>
-                  ))}
+                  {credentialsData.map(credential => {
+                     if (requiredMappingFields.includes(credential.value)) {
+                        return <li key={credential.value} value={credential.value}
+                                   onClick={handleChooseOptionDropdown}>{credential.title}<span>*</span></li>
+                     }
+                     return <li key={credential.value} value={credential.value}
+                                onClick={handleChooseOptionDropdown}>{credential.title}</li>
+                  })}
                </ul>
             </div>
          </div>

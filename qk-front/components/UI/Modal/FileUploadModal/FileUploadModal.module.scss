@@ -19,7 +19,16 @@
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 55%;
+  width: 60%;
+  @include breakpoint-max($bp-screen-xxl) {
+    width: 65%;
+  }
+  @include breakpoint-max($bp-screen-xl) {
+    width: 70%;
+  }
+  @include breakpoint-max($bp-screen-lg) {
+    width: 95%;
+  }
 
   &Inner {
     padding: 6rem 5rem 0;
@@ -60,7 +69,7 @@
     overflow: hidden;
     white-space: nowrap;
     margin: 0 auto 4rem;
-    width: 40%;
+    width: 50%;
 
     + p {
       left: 50%;

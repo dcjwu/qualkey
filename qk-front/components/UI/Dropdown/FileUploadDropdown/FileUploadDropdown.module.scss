@@ -4,7 +4,7 @@
 .wrapper {
   align-items: center;
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 
   svg {
     cursor: pointer;
@@ -60,6 +60,10 @@
 
     &:hover {
       background-color: $color-additional-light;
+    }
+
+    span {
+      color: $color-error;
     }
   }
 }

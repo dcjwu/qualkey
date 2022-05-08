@@ -6,7 +6,8 @@ export const requiredMappingFields = [
    "studyStartedAt",
    "studyEndedAt",
    "graduatedAt",
-   "expiresAt"
+   "expiresAt",
+   "email"
 ]
 
 export const validateMappingFields = target => {

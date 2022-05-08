@@ -64,7 +64,10 @@ const initialValue = [
    },   {
       title: "Expires At",
       value: "expiresAt"
-   },
+   }, {
+      title: "Email",
+      value: "email"
+   }
 ]
 
 export const credentialsState = atom({
