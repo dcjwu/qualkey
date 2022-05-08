@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 
 import styles from "./Button.module.scss"
 
-const Button = ({ thin, wide, bold, semiBold, blue, white, loading, children, ...otherProps }) => {
+const Button = ({ thin, wide, bold, semiBold, blue, white, loading, errorModal, children, ...otherProps }) => {
    return (
       <button {...otherProps} className={`${styles.btn}
          ${thin ? styles.thin : ""}
@@ -11,7 +11,8 @@ const Button = ({ thin, wide, bold, semiBold, blue, white, loading, children, ..
          ${semiBold ? styles.semiBold : ""}
          ${blue ? styles.blue : ""}
          ${white ? styles.white : ""}
-         ${loading ? styles.loading: ""}`}>
+         ${loading ? styles.loading : ""}
+         ${errorModal ? styles.errorModal : ""}`}>
          {children}
       </button>
    )
@@ -27,5 +28,6 @@ Button.propTypes = {
    blue: PropTypes.bool,
    white: PropTypes.bool,
    loading: PropTypes.bool,
+   errorModal: PropTypes.bool,
    children: PropTypes.any
 }

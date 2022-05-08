@@ -82,3 +82,11 @@
   display: flex;
   flex-direction: column-reverse;
 }
+
+.errorModal {
+  width: 70% !important;
+  background-color: $color-error;
+  svg {
+    display: none;
+  }
+}

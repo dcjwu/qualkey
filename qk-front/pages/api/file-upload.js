@@ -6,6 +6,14 @@ import XLSX from "xlsx"
 
 export const config = { api: { bodyParser: false } }
 
+/**
+ * File upload to server processing.
+ * @desc Validates files type, saves it to folder and sends parsed array to front.
+ * @param req Request.
+ * @param res Response.
+ * @returns New array of parsed data from file.
+ * @throws If file type does not match csv, xls, xlsx.
+ **/
 export default async (req, res) => {
    if (req.method === "POST") {
       const data = await new Promise((resolve, reject) => {
