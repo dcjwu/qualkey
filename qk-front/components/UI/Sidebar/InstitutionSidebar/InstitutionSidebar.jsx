@@ -1,8 +1,8 @@
 import Image from "next/image"
 import { useRecoilState } from "recoil"
 
-import logo from "../../../../assets/images/qk-logo-xl.png"
-import { uploadModalState } from "../../../../atoms/uploadModal.atoms/uploadModalState"
+import logo from "../../../../assets/images/qk-logo-text.svg"
+import { uploadModalState } from "../../../../atoms"
 import Text from "../../Text/Text"
 import styles from "./InstitutionSidebar.module.scss"
 
