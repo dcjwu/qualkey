@@ -33,10 +33,11 @@
 }
 
 .hr {
-  background-color: $color-additional-medium;
+  background-color: $color-additional-light;
   border: none;
   height: 1px;
   mix-blend-mode: soft-light;
+  opacity: .4;
   width: calc(#{$sidebar-width-xxl - 4rem});
 }
 

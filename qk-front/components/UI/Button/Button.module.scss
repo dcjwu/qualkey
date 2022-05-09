@@ -46,6 +46,15 @@
   }
 }
 
+.errorModal {
+  background-color: $color-error;
+  width: 70% !important;
+
+  svg {
+    display: none;
+  }
+}
+
 .white {
   background-color: $color-secondary;
   border: 1px solid $color-highlight;
@@ -81,12 +90,4 @@
   align-items: center;
   display: flex;
   flex-direction: column-reverse;
-}
-
-.errorModal {
-  width: 70% !important;
-  background-color: $color-error;
-  svg {
-    display: none;
-  }
 }

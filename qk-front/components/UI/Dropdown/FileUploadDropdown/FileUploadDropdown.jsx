@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
 
 import { credentialsState, dropdownSelectionListenerState } from "../../../../atoms"
-import { requiredMappingFields, validateMappingFields } from "../../../../utils"
+import { requiredMappingFields } from "../../../../utils"
 import styles from "./FileUploadDropdown.module.scss"
 
 const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
