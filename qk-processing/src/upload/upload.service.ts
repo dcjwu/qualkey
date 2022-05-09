@@ -28,9 +28,10 @@ export class UploadService {
         include: { representatives: true },
       });
 
-      await this.prisma.upload.create({
+      const upload = await this.prisma.upload.create({
         data: {
-          file_url: filename,
+          uuid: filename.split('.')[0],
+          filename: filename,
           mapping: mapping,
           uploadedBy: uploadedBy.uuid,
           confirmationsRequestedFrom: institution.representatives.map(r => r.uuid).join(";"),
@@ -38,8 +39,7 @@ export class UploadService {
       });
 
       const uploadSucceededEvent = new UploadSucceededEvent();
-      uploadSucceededEvent.filename = filename;
-      uploadSucceededEvent.uploadedBy = uploadedBy.uuid;
+      uploadSucceededEvent.upload = upload;
       uploadSucceededEvent.representatives = institution.representatives;
       this.eventEmitter.emit("upload.succeeded", uploadSucceededEvent);
 
