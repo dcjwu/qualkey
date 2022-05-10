@@ -8,12 +8,12 @@ import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { CurrentAdmin } from "adminjs";
 
 import { AuthModule } from "./auth/auth.module";
+import { AwsModule } from "./aws/aws.module";
 import { CredentialsModule } from "./credentials/credentials.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
 import { UploadModule } from "./upload/upload.module";
 import { UserModule } from "./user/user.module";
-import { AwsModule } from './aws/aws.module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require("bcryptjs");
@@ -22,7 +22,7 @@ AdminJS.registerAdapter({ Database, Resource });
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env.local" }),
     EventEmitterModule.forRoot(),
     AuthModule,
     UserModule,
