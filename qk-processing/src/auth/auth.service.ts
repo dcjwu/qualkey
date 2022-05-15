@@ -6,7 +6,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { Response } from "express";
 
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthDto } from "./dto";
+import { AuthRequestDto } from "./dto";
 import { RouteProvider } from "./provider";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -24,11 +24,11 @@ export class AuthService {
   /**
    * User registration.
    * @desc Registers user or throws error if email already exists.
-   * @param dto {AuthDto} Validates data in request.
+   * @param dto {AuthRequestDto} Validates data in request.
    * @returns New user.
    * @throws If email already exists.
    */
-  async register(dto: AuthDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
+  async register(dto: AuthRequestDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
     const hash = this.hashData(dto.password);
 
     try {
@@ -57,12 +57,12 @@ export class AuthService {
   /**
    * User login.
    * @desc Log in user and set jwt in cookies or throws error if credentials does not match.
-   * @param dto {AuthDto} Validates data in request.
+   * @param dto {AuthRequestDto} Validates data in request.
    * @param response {Response} Server response interface.
    * @returns Sets jwt in httpOnly cookie.
    * @throws If user does not exist or credentials are incorrect.
    */
-  async login(dto: AuthDto, response: Response): Promise<string> {
+  async login(dto: AuthRequestDto, response: Response): Promise<string> {
 
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (!user) throw new ForbiddenException("Invalid credentials");

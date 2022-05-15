@@ -2,14 +2,14 @@ import { Test } from "@nestjs/testing";
 
 import { AppModule } from "../../../src/app.module";
 import { AuthService } from "../../../src/auth/auth.service";
-import { AuthDto } from "../../../src/auth/dto";
+import { AuthRequestDto } from "../../../src/auth/dto";
 import { PrismaService } from "../../../src/prisma/prisma.service";
 
 describe("AuthService Int", () => {
   let prisma: PrismaService;
   let authService: AuthService;
 
-  const newUserMock: AuthDto = {
+  const newUserMock: AuthRequestDto = {
     email: "email@email.com",
     password: "password",
     rememberMe: false,

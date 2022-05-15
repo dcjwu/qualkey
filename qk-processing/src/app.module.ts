@@ -3,8 +3,9 @@ import { Database, Resource } from "@adminjs/prisma";
 import { RedisModule } from "@liaoliaots/nestjs-redis";
 import { BullModule } from "@nestjs/bull";
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
+import { ThrottlerModule } from "@nestjs/throttler";
 import { Role } from "@prisma/client";
 import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { CurrentAdmin } from "adminjs";
@@ -82,6 +83,14 @@ AdminJS.registerAdapter({ Database, Resource });
       },
     }),
     BullModule.registerQueue({ name: "credentials-create" }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: config.get("THROTTLE_TTL"),
+        limit: config.get("THROTTLE_LIMIT"),
+      }),
+    }),
     UploadModule,
     AwsModule,
   ],

@@ -4,7 +4,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { Role, User } from "@prisma/client";
 
 import { AuthService } from "../../../src/auth/auth.service";
-import { AuthDto } from "../../../src/auth/dto";
+import { AuthRequestDto } from "../../../src/auth/dto";
 import { RouteProvider } from "../../../src/auth/provider";
 import { PrismaService } from "../../../src/prisma/prisma.service";
 
@@ -62,7 +62,7 @@ describe("AuthService Unit Test", () => {
   });
 
   describe("register() - unit", () => {
-    const newUser: AuthDto = {
+    const newUser: AuthRequestDto = {
       email: "email@email.com",
       password: "password",
       rememberMe: false,

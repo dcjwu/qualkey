@@ -36,6 +36,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/throttler": "^2.0.1",
     "@prisma/client": "^3.12.0",
     "adminjs": "^5.9.10",
     "aws-sdk": "^2.1130.0",

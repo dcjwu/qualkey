@@ -14,7 +14,7 @@ export class UploadNotifyConsumer {
     Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
     Logger.debug(`Sending notification to ${job.data.representativeEmail}`);
     try {
-      await this.ses.sendEmail(job.data.representativeEmail);
+      await this.ses.sendReviewUploadEmail(job.data.representativeEmail);
     } catch (err) {
       Logger.error(err, err.stack);
     }
