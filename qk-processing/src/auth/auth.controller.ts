@@ -3,7 +3,7 @@ import { Throttle } from "@nestjs/throttler";
 import { Response } from "express";
 
 import { AuthService } from "./auth.service";
-import { AuthRequestDto, OtpRequestDto, OtpResponseDto } from "./dto";
+import { AuthCheckCredentialsRequestDto, AuthRequestDto, OtpRequestDto, OtpResponseDto } from "./dto";
 import { OtpService } from "./otp.service";
 
 const rateLimitForOtp = 15;
@@ -43,5 +43,14 @@ export class AuthController {
   async login(@Body() dto: AuthRequestDto, @Res({ passthrough: true }) response: Response ): Promise<string> {
     await this.otpService.checkOtp(dto.otp, dto.otpUuid);
     return this.authService.login(dto, response);
+  }
+
+  /**
+   * Check credentials endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post("check")
+  async checkCredentials(@Body() dto: AuthCheckCredentialsRequestDto): Promise<void> {
+    await this.authService.checkCredentials(dto);
   }
 }
