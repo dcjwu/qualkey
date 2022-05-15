@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from "@nestjs/common";
+import { GoneException, Injectable, NotFoundException, UnprocessableEntityException } from "@nestjs/common";
 
 import { AwsSesService } from "../aws/aws.ses.service";
 import { UserNotFoundException } from "../common/exception";
@@ -49,6 +49,8 @@ export class OtpService {
     const otp = await this.prisma.oneTimePassword.findUnique({ where: { uuid: otpUuid } });
 
     if (! otp) throw new NotFoundException("code not found");
+
+    if (new Date() > otp.validUntil) throw new GoneException("code expired");
 
     if (otp.code !== code) throw new UnprocessableEntityException("incorrect code");
 
