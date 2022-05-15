@@ -1,6 +1,7 @@
 import axios from "axios"
 import getConfig from "next/config"
 import Head from "next/head"
+import { useRouter } from "next/router"
 
 import InstitutionDashboard from "../../components/Institution/InstitutionDashboard/InstitutionDashboard"
 import InstitutionView from "../../components/Institution/InstitutionView/InstitutionView"
@@ -13,6 +14,8 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
 export default function Dashboard({ data, serverErrorMessage }) {
+   
+   const { push } = useRouter()
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
@@ -35,7 +38,7 @@ export default function Dashboard({ data, serverErrorMessage }) {
       <Heading blue h1>{value}</Heading>
    )
 
-   else return null //TODO: Probably redirect user to /
+   else push("/")
 }
 
 export const getServerSideProps = async ({ req }) => {

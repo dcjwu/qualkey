@@ -1,6 +1,7 @@
 import axios from "axios"
 import getConfig from "next/config"
 import Head from "next/head"
+import { useRouter } from "next/router"
 import { useRecoilValue } from "recoil"
 
 import { showEditCredentialsState } from "../../atoms"
@@ -40,6 +41,8 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
 export default function CredentialsView({ data, serverErrorMessage }) {
+   
+   const { push } = useRouter()
 
    //TODO: Should be dynamic route!
    //TODO: Change request address according to logic and make it return role.
@@ -73,7 +76,7 @@ export default function CredentialsView({ data, serverErrorMessage }) {
       <Heading blue h1>{value}</Heading>
    )
 
-   else return null //TODO: Probably redirect user to /
+   else push("/")
 
 }
 
