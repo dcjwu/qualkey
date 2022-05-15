@@ -1,4 +1,4 @@
-export const validateLoginForm = (formData, formDataCb, initialValues ) => {
+export const validateLoginForm = (formData ) => {
    const email = formData?.email.trim()
    const password = formData?.password.trim()
 
@@ -17,8 +17,5 @@ export const validateLoginForm = (formData, formDataCb, initialValues ) => {
       }
    }
    if (Object.keys(errors).length) return errors
-   else {
-      formDataCb(initialValues)
-      return true
-   }
+   return true
 }

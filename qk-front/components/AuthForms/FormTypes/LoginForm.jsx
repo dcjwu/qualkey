@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import PropTypes from "prop-types"
 import { useRecoilValue } from "recoil"
 
@@ -14,6 +16,7 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
    const formError = useRecoilValue(formValidationErrorsState)
    const loginForm = useRecoilValue(loginFormState)
    const loading = useRecoilValue(loadingState)
+   const [showPassword, setShowPassword] = useState(false)
 
    return (
       <div className={styles.loginPage}>
@@ -21,14 +24,16 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
             <Heading blue h1>Login</Heading>
             {formError.response && <Text error small>{formError.response}</Text>}
             <form onSubmit={submitFormHandler}>
-               <Input email placeholder="Email" value={loginForm.email}
+               <Input placeholder="Email" type={"email"} value={loginForm.email}
                       onChange={changeFormHandler}/>
                {formError.email && <Text error small>{formError.email}</Text>}
-               <Input password placeholder="Password" value={loginForm.password}
+               <Input hidePassword={() => setShowPassword(prevState => !prevState)} inputName="password"
+                      placeholder="Password" type={!showPassword ? "password" : "text"}
+                      value={loginForm.password}
                       onChange={changeFormHandler}/>
                {formError.password && <Text error small>{formError.password}</Text>}
                <div className={styles.textRow}>
-                  <Input checkbox checkboxText="Remember me" inputName="rememberMe"
+                  <Input checkboxText="Remember me" inputName="rememberMe" type={"checkbox"}
                          value={loginForm.rememberMe}
                          onChange={changeFormHandler}/>
                   <Text blue medium link="/forgot">Forgot Password?</Text>
@@ -53,9 +58,9 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
    )
 }
 
+export default LoginForm
+
 LoginForm.propTypes = {
    submitFormHandler: PropTypes.func.isRequired,
    changeFormHandler: PropTypes.func.isRequired
 }
-
-export default LoginForm

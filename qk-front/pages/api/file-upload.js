@@ -43,8 +43,8 @@ export default async (req, res) => {
             const parsedData = []
             fs.createReadStream(pathToWriteFile)
                .pipe(parse({ delimiter: ",", relax_column_count: true }))
-               .on("data", res => {
-                  parsedData.push(res)
+               .on("data", response => {
+                  parsedData.push(response)
                })
                .on("end", () => {
                   res.status(200).json({

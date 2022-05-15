@@ -55,6 +55,11 @@
   }
 }
 
+.error {
+  background-color: $color-error;
+  width: 100%;
+}
+
 .confirmEdit {
   background-color: transparent;
   border: 1px solid $color-success;

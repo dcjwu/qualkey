@@ -1,4 +1,5 @@
 import moment from "moment"
+import PropTypes from "prop-types"
 
 import { IconVerified } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
@@ -112,3 +113,5 @@ const InstitutionCredentialsInfo = ({ data }) => {
 }
 
 export default InstitutionCredentialsInfo
+
+InstitutionCredentialsInfo.propTypes = { data: PropTypes.object.isRequired }

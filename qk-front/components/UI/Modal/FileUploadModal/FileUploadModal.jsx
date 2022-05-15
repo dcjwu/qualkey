@@ -4,7 +4,7 @@ import axios from "axios"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
 import { credentialsState, currentFileState, dropdownSelectionListenerState, filenameState, filePrefixState, fileUploadErrorState, uploadModalState } from "../../../../atoms"
-import { processingUrl, validateMappingFields } from "../../../../utils"
+import { frontUrl, processingUrl, validateMappingFields } from "../../../../utils"
 import { IconClose, IconLoading, IconUpload } from "../../_Icon"
 import Button from "../../Button/Button"
 import FileUploadDropdown from "../../Dropdown/FileUploadDropdown/FileUploadDropdown"
@@ -54,7 +54,7 @@ const FileUploadModal = () => {
          const formData = new FormData()
          formData.append("uploadedFile", event.target.files[0])
          try {
-            const response = await axios.post("/api/file-upload", formData, { headers: { "Content-type": "multipart/form-data" } })
+            const response = await axios.post(`${frontUrl}/api/file-upload`, formData, { headers: { "Content-type": "multipart/form-data" } })
             setParsedValuesFromUpload(response.data.file)
             setFilePrefix(response.data.prefix)
          } catch (error) {
@@ -114,7 +114,7 @@ const FileUploadModal = () => {
       const arrayOfValues = mappingToValues.map(mapping => mapping?.value)
       const validation = validateMappingFields(arrayOfValues)
 
-      if (!validation) {
+      if (validation) {
          setFileUploadModalError("")
          setFileUploadModalErrorButton("")
          const mapping = mappingToValues.map(mapping => mapping?.value).join(",")
@@ -129,7 +129,7 @@ const FileUploadModal = () => {
                   resetCurrentFile()
 
                   const data = JSON.stringify(`${filePrefix}-${fileName}`)
-                  axios.post("api/file-delete", data, { headers: { "Content-type": "application/json" } })
+                  axios.post(`${frontUrl}/api/file-delete`, data, { headers: { "Content-type": "application/json" } })
                      .then(response => {
                         if (response.data === "OK") {
                            setLoading(false)
@@ -234,8 +234,8 @@ const FileUploadModal = () => {
                   <div className={styles.top}>
                      <Heading blue h2 modal>Multi-Upload</Heading>
                      {fileUploadModalError && <Text error large>{fileUploadModalError}</Text>}
-                     <Input fileUpload fileName={fileName} inputName="csvUploader"
-                            isFileUploaded={!!parsedValuesFromUpload.length}
+                     <Input fileName={fileName} inputName="csvUploader" isFileUploaded={!!parsedValuesFromUpload.length}
+                            type={"fileUpload"}
                             onChange={uploadFileToClient}/>
                   </div>
                   {
@@ -244,7 +244,7 @@ const FileUploadModal = () => {
                         <div className={styles.middle}>
                            {parsedValuesFromUpload.map((value, index) => (
                               <div key={value} className={styles.row}>
-                                 <Input readOnly text inputName={value}
+                                 <Input readOnly inputName={value} type={"text"}
                                         value={value}/>
                                  <FileUploadDropdown key={value} handleOption={handleOption}
                                                      resetDropdown={resetDropdown} valueIndex={index}/>

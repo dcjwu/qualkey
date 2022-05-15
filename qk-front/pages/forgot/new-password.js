@@ -1,7 +1,7 @@
 import Image from "next/image"
 
 import logo from "../../assets/images/qk-logo-text.svg"
-import AuthForms from "../../components/AuthForms/AuthForms"
+import NewPasswordForm from "../../components/AuthForms/FormTypes/NewPasswordForm"
 import Heading from "../../components/UI/Heading/Heading"
 
 export default function NewPassword() {
@@ -12,10 +12,11 @@ export default function NewPassword() {
       <div className="auth">
          <div className="container authenticate">
             <div className="auth__wrapper">
-               <AuthForms newPassword/>
+               <NewPasswordForm/>
                <div className="logo">
                   <div className="logo__image-wrapper">
-                     <Image alt="Qualkey" layout="fill" quality={100}
+                     <Image priority alt="Qualkey" layout="fill"
+quality={100}
                             src={logo}/>
                   </div>
                   <Heading h2 loginPage white>Quickly, easily and securely authenticate your credentials</Heading>

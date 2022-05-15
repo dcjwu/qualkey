@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+import PropTypes from "prop-types"
 import { useRecoilState, useRecoilValue } from "recoil"
 
 import { credentialsState, dropdownSelectionListenerState } from "../../../../atoms"
@@ -49,8 +50,6 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
       }
    }, [showDropdown])
 
-   console.log(credentialsData)
-
    return (
       <div className={styles.wrapper}>
          <div className={styles.dropdown}>
@@ -81,6 +80,10 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
    )
 }
 
-FileUploadDropdown.displayName = "FileUploadDropdown"
-
 export default FileUploadDropdown
+
+FileUploadDropdown.propTypes = {
+   handleOption: PropTypes.func.isRequired,
+   valueIndex: PropTypes.number.isRequired,
+   resetDropdown: PropTypes.func.isRequired
+}

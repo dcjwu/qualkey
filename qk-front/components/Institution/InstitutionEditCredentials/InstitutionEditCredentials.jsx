@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
 import { showEditCredentialsState } from "../../../atoms"
@@ -130,3 +131,5 @@ const InstitutionEditCredentials = ({ data }) => {
 }
 
 export default InstitutionEditCredentials
+
+InstitutionEditCredentials.propTypes = { data: PropTypes.object }

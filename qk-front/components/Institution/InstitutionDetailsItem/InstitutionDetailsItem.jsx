@@ -1,4 +1,5 @@
 import moment from "moment"
+import PropTypes from "prop-types"
 
 import Text from "../../UI/Text/Text"
 import styles from "./InstitutionDetailsItem.module.scss"
@@ -15,3 +16,5 @@ const InstitutionDetailsItem = ({ data }) => {
 }
 
 export default InstitutionDetailsItem
+
+InstitutionDetailsItem.propTypes = { data: PropTypes.object.isRequired }

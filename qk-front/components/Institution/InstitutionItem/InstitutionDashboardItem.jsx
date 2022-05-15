@@ -4,6 +4,7 @@ import moment from "moment"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 import { useRecoilValue } from "recoil"
 
 import avatar from "../../../assets/images/avatarMock.webp"
@@ -163,3 +164,5 @@ const InstitutionDashboardItem = ({ data }) => {
 }
 
 export default InstitutionDashboardItem
+
+InstitutionDashboardItem.propTypes = { data: PropTypes.object.isRequired }

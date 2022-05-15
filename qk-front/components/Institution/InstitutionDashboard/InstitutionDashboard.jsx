@@ -75,7 +75,7 @@ const InstitutionDashboard = () => {
       <>
          <div className={styles.searchWrapper}>
             <Text blackSpan semiBold>Showing <span>5</span> from <span>5</span> results</Text>
-            <Input search/>
+            <Input type={"search"}/>
          </div>
          <div className={styles.contentWrapper}>
             {mockData.map(data => (
