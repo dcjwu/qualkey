@@ -15,7 +15,7 @@ export default async (req, res) => {
          fs.unlinkSync(filePath)
          res.status(200).send("OK")
       } else {
-         res.status(500).statusText("Something went wrong")
+         res.status(500).send("Something went wrong")
       }
    }
 }

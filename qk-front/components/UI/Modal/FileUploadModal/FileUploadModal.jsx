@@ -5,7 +5,7 @@ import { useRecoilState, useResetRecoilState } from "recoil"
 
 import { credentialsState, currentFileState, dropdownSelectionListenerState, filenameState, filePrefixState, fileUploadErrorState, uploadModalState } from "../../../../atoms"
 import { processingUrl, validateMappingFields } from "../../../../utils"
-import { IconClose, IconUpload } from "../../_Icon"
+import { IconClose, IconLoading, IconUpload } from "../../_Icon"
 import Button from "../../Button/Button"
 import FileUploadDropdown from "../../Dropdown/FileUploadDropdown/FileUploadDropdown"
 import Heading from "../../Heading/Heading"
@@ -31,11 +31,10 @@ const FileUploadModal = () => {
    const [parsedValuesFromUpload, setParsedValuesFromUpload] = useState([])
    const [mappingToValues, setMappingToValues] = useState([])
    const [uploadSuccess, setUploadSuccess] = useState(false)
+   const [loading, setLoading] = useState(false)
 
    //TODO: Make active field in dropdown according to figma ui — BLUE?
-
-   //TODO: Fix bug with adding * to value if it was cleared in dropdown.
-
+   
    //TODO: Make scroll to chosen option dropdown row so it is more user friendly.
 
    /**
@@ -80,8 +79,12 @@ const FileUploadModal = () => {
     * @returns Array of mapped data.
     **/
    const handleOption = (event, index) => {
+      let dropdownTitle = event.target.innerText
+      if (dropdownTitle[dropdownTitle.length - 1] === "*") {
+         dropdownTitle = dropdownTitle.slice(0, -1)
+      }
       mappingToValues[index] = {
-         title: event.target.innerText,
+         title: dropdownTitle,
          value: event.target.getAttribute("value")
       }
       setMappingToValues([...mappingToValues])
@@ -93,7 +96,7 @@ const FileUploadModal = () => {
     * @param index Index of chosen option.
     * @returns New array of sorted data for dropdown.
     **/
-   const resetDropdown = index => {
+   const resetDropdown = (index) => {
       setCredentialsFields([...credentialsFields, mappingToValues[index]]
          .sort((a, b) => a.title
             .localeCompare(b.title)))
@@ -111,7 +114,7 @@ const FileUploadModal = () => {
       const arrayOfValues = mappingToValues.map(mapping => mapping?.value)
       const validation = validateMappingFields(arrayOfValues)
 
-      if (validation) {
+      if (!validation) {
          setFileUploadModalError("")
          setFileUploadModalErrorButton("")
          const mapping = mappingToValues.map(mapping => mapping?.value).join(",")
@@ -119,6 +122,7 @@ const FileUploadModal = () => {
          formData.append("file", currentFile)
          formData.append("mapping", mapping)
 
+         setLoading(true)
          axios.post(`${processingUrl}/upload`, formData, { withCredentials: true })
             .then(response => {
                if (response.status === 201) {
@@ -128,14 +132,19 @@ const FileUploadModal = () => {
                   axios.post("api/file-delete", data, { headers: { "Content-type": "application/json" } })
                      .then(response => {
                         if (response.data === "OK") {
+                           setLoading(false)
                            setUploadSuccess(true)
                         }
                      })
-                     .catch(error => setFileUploadModalErrorButton(error.response.statusText))
+                     .catch(error => {
+                        setLoading(false)
+                        setFileUploadModalErrorButton(error.response.statusText)
+                     })
                }
             })
             .catch(error => {
                console.log(error)
+               setLoading(false)
                setFileUploadModalErrorButton(error.response.statusText || error.message)
             })
       } else {
@@ -248,10 +257,14 @@ const FileUploadModal = () => {
                                  <IconUpload/>
                                  <span>{fileUploadModalErrorButton}</span>
                               </Button>
-                              : <Button blue onClick={handleSubmitMapping}>
-                                 <IconUpload/>
-                                 <span>Upload Now</span>
-                              </Button>
+                              : loading
+                                 ? <Button disabled>
+                                    <IconLoading/>
+                                 </Button>
+                                 : <Button blue onClick={handleSubmitMapping}>
+                                    <IconUpload/>
+                                    <span>Upload Now</span>
+                                 </Button>
                         }
                      </>
                   }
