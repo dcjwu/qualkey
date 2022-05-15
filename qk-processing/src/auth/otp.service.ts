@@ -42,6 +42,9 @@ export class OtpService {
     return new OtpResponseDto(otp.uuid, otp.validUntil, otp.canBeResentAt);
   }
 
+  /**
+   * Check if One Time Password is correct
+   */
   public async checkOtp(code: string, otpUuid: string): Promise<void> {
     const otp = await this.prisma.oneTimePassword.findUnique({ where: { uuid: otpUuid } });
 

@@ -1,12 +1,13 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable, UnprocessableEntityException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Role } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { Response } from "express";
 
+import { UserNotFoundException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthRequestDto } from "./dto";
+import { AuthCheckCredentialsRequestDto, AuthRequestDto } from "./dto";
 import { RouteProvider } from "./provider";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -63,18 +64,28 @@ export class AuthService {
    * @throws If user does not exist or credentials are incorrect.
    */
   async login(dto: AuthRequestDto, response: Response): Promise<string> {
-
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
-    if (!user) throw new ForbiddenException("Invalid credentials");
+    if (!user) throw new UnprocessableEntityException("Invalid credentials");
 
     const pwMatches = await bcrypt.compareSync(dto.password, user.password);
-    if (!pwMatches) throw new ForbiddenException("Invalid credentials");
+    if (!pwMatches) throw new UnprocessableEntityException("Invalid credentials");
 
     const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
     const jwtToken = await this.signToken(user.uuid, user.email, user.role, dto.rememberMe);
     response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
 
     return this.routeProvider.onLogin(user);
+  }
+
+  /**
+   * Check user credentials
+   */
+  async checkCredentials(dto: AuthCheckCredentialsRequestDto): Promise<void> {
+    const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
+    if (!user) throw new UnprocessableEntityException("Invalid credentials");
+
+    const pwMatches = await bcrypt.compareSync(dto.password, user.password);
+    if (!pwMatches) throw new UnprocessableEntityException("Invalid credentials");
   }
 
   /**
