@@ -1,0 +1,21 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.historyItem {
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 0.6fr 1fr 0.2fr;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem 0.5rem 1.5rem;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $color-additional-light;
+  }
+
+  svg:last-child {
+    justify-self: end;
+  }
+}

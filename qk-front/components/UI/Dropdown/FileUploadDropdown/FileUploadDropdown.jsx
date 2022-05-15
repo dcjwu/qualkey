@@ -4,6 +4,7 @@ import { useRecoilState, useRecoilValue } from "recoil"
 
 import { credentialsState, dropdownSelectionListenerState } from "../../../../atoms"
 import { requiredMappingFields } from "../../../../utils"
+import { IconShowDropdown, IconX } from "../../_Icon"
 import styles from "./FileUploadDropdown.module.scss"
 
 const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
@@ -48,6 +49,8 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
       }
    }, [showDropdown])
 
+   console.log(credentialsData)
+
    return (
       <div className={styles.wrapper}>
          <div className={styles.dropdown}>
@@ -55,11 +58,7 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
                <span style={{ color: showDropdown ? "#e5e5e5" : "" }}>
                   {optionDropdown ? optionDropdown : "Choose"}
                </span>
-               <svg fill="none" height="20" viewBox="0 0 20 20"
-                    width="20" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15.5 7.5L10.5 12.5L5.5 7.5" stroke="#262626" strokeLinecap="round"
-                        strokeLinejoin="round" strokeWidth="2"/>
-               </svg>
+               <IconShowDropdown/>
             </button>
             <div ref={outsideClickRef} className={styles.content} style={{ display: showDropdown ? "block" : "none" }}>
                <ul>
@@ -74,18 +73,10 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
                </ul>
             </div>
          </div>
-         <svg fill="none" height="10" style={{ pointerEvents: optionDropdown ? "" : "none" }}
-              viewBox="0 0 9 10"
-              width="9"
-              xmlns="http://www.w3.org/2000/svg" onClick={() => {
-                 resetDropdown(valueIndex)
-                 setOptionDropdown("")
-              }}>
-            <path d="M1.12109 8.53516L8.19216 1.46409" stroke="#737373" strokeLinecap="round"
-                  strokeLinejoin="round" strokeWidth="1.5" style={{ stroke: optionDropdown ? "" : "#96999c" }}/>
-            <path d="M1.12109 1.46484L8.19216 8.53591" stroke="#737373" strokeLinecap="round"
-                  strokeLinejoin="round" strokeWidth="1.5" style={{ stroke: optionDropdown ? "" : "#96999c" }}/>
-         </svg>
+         <IconX optionDropdown={optionDropdown} style={{ pointerEvents: optionDropdown ? "" : "none" }} onClick={() => {
+            resetDropdown(valueIndex)
+            setOptionDropdown("")
+         }}/>
       </div>
    )
 }

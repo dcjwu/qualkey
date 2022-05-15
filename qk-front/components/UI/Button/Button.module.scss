@@ -55,6 +55,46 @@
   }
 }
 
+.confirmEdit {
+  background-color: transparent;
+  border: 1px solid $color-success;
+  color: $color-success;
+  font-size: 1.45rem;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  right: -9.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  width: fit-content !important;
+
+  &:hover,
+  &:focus {
+    background-color: $color-success;
+    color: $color-secondary;
+  }
+}
+
+.undoEdit {
+  background-color: transparent;
+  border: 1px solid $color-highlight;
+  color: $color-highlight;
+  font-size: 1.45rem;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  right: -8.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  width: fit-content !important;
+
+  &:hover,
+  &:focus {
+    background-color: $color-highlight;
+    color: $color-secondary;
+  }
+}
+
 .white {
   background-color: $color-secondary;
   border: 1px solid $color-highlight;

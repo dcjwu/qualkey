@@ -5,7 +5,171 @@
   align-items: center;
   background-color: $color-secondary;
   display: flex;
-  height: calc(#{$topbar-height-xxl - 1.2rem - 1.2rem});
+  height: $topbar-height-initial;
   justify-content: flex-end;
-  padding: 1.2rem 6rem 1.2rem 0;
+  padding-left: $sidebar-width-initial;
+
+  @include breakpoint-max($bp-screen-xxl) {
+    padding-left: $sidebar-width-xxl;
+  }
+
+  @include breakpoint-max($bp-screen-lg) {
+    height: $topbar-height-lg;
+    justify-content: space-between;
+    padding-left: 0;
+  }
+}
+
+.routes {
+  align-items: center;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 4rem;
+
+  @include breakpoint-max($bp-screen-xl) {
+    padding: 0 2rem;
+  }
+
+  @include breakpoint-max($bp-screen-lg) {
+    display: none;
+  }
+
+  p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+  }
+}
+
+.right {
+  align-items: center;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.imageWrapperNotification {
+  cursor: pointer;
+  height: 3.2rem;
+  position: relative;
+  width: 3.2rem;
+}
+
+.notification {
+  align-items: center;
+  background-color: $color-highlight;
+  border-radius: 50%;
+  bottom: 0;
+  color: $color-secondary;
+  display: flex;
+  font-size: 1.2rem;
+  height: 1.8rem;
+  justify-content: center;
+  position: absolute;
+  right: -0.5rem;
+  width: 1.8rem;
+}
+
+.imageWrapperLogo {
+  height: 50px;
+  position: relative;
+  width: 150px;
+
+  @include breakpoint-max($bp-screen-lg) {
+    display: none;
+  }
+}
+
+.logo {
+  border: 1px solid $color-additional-light !important;
+  border-radius: 15px;
+}
+
+.imageWrapperUser {
+  height: 4.5rem;
+  position: relative;
+  width: 4.5rem;
+}
+
+.userWrapper {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 5rem;
+  position: relative;
+
+  @include breakpoint-max($bp-screen-xl) {
+    padding-left: 1rem;
+    padding-right: 3rem;
+  }
+
+  @include breakpoint-max($bp-screen-lg) {
+    padding-right: 3.5rem;
+  }
+
+  @include breakpoint-max($bp-screen-md) {
+    padding-right: 2.5rem;
+  }
+
+  svg {
+    height: 0.8rem;
+    width: 1.68rem;
+  }
+}
+
+.user {
+  border: 1px solid $color-additional-medium-dark;
+  border-radius: 50%;
+}
+
+.menu {
+  background-color: $color-secondary;
+  border-radius: 0 0 15px 15px;
+  border-top: 1px solid $color-additional-medium;
+  position: absolute;
+  right: 0;
+  top: 5.7rem;
+  width: 100%;
+
+  @include breakpoint-max($bp-screen-lg) {
+    top: 6rem;
+  }
+
+  li {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0 1rem 2rem;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: $color-additional-light;
+    }
+
+    svg {
+      height: 2.4rem;
+      width: 2.4rem;
+
+      path {
+        stroke: $color-primary;
+      }
+    }
+
+    &:first-child {
+      svg {
+        path {
+          stroke-width: 2;
+        }
+      }
+    }
+
+    &:last-child {
+      border-radius: 0 0 15px 15px;
+    }
+  }
+}
+
+.burger {
+  margin-left: 3.5rem;
 }

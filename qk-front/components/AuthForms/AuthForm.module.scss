@@ -7,8 +7,14 @@
   gap: 1rem;
   justify-content: center;
 
-  svg + p {
-    margin: 0;
+  svg {
+    path {
+      stroke: $color-highlight;
+    }
+
+    + p {
+      margin: 0;
+    }
   }
 }
 

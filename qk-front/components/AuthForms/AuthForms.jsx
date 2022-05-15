@@ -1,6 +1,7 @@
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 
+import { IconBack } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
 import Heading from "../UI/Heading/Heading"
 import Input from "../UI/Input/Input"
@@ -24,16 +25,7 @@ const AuthForms = ({ login, forgot, twoFactor, newPassword, changeFormHandler, s
                <Button blue bold thin>Send 4-digit code</Button>
                <Button semiBold thin white>
                   <div className={styles.buttonRow}>
-                     <svg fill="none" height="24" viewBox="0 0 24 24"
-                          width="24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                           stroke="#4A90D1" strokeLinecap="round"
-                           strokeLinejoin="round" strokeWidth="2"/>
-                        <path d="M12 8L8 12L12 16" stroke="#4A90D1" strokeLinecap="round"
-                              strokeLinejoin="round" strokeWidth="2"/>
-                        <path d="M16 12H8" stroke="#4A90D1" strokeLinecap="round"
-                              strokeLinejoin="round" strokeWidth="2"/>
-                     </svg>
+                     <IconBack/>
                      {/*TODO: PreventDefault!*/}
                      <p>Back</p>
                   </div>
@@ -82,16 +74,7 @@ const AuthForms = ({ login, forgot, twoFactor, newPassword, changeFormHandler, s
                <Button semiBold thin white
                        onClick={() => router.back()}>
                   <div className={styles.buttonRow}>
-                     <svg fill="none" height="24" viewBox="0 0 24 24"
-                          width="24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                           stroke="#4A90D1" strokeLinecap="round"
-                           strokeLinejoin="round" strokeWidth="2"/>
-                        <path d="M12 8L8 12L12 16" stroke="#4A90D1" strokeLinecap="round"
-                              strokeLinejoin="round" strokeWidth="2"/>
-                        <path d="M16 12H8" stroke="#4A90D1" strokeLinecap="round"
-                              strokeLinejoin="round" strokeWidth="2"/>
-                     </svg>
+                     <IconBack/>
                      {/*TODO: PreventDefault!*/}
                      <p>Back to Login</p>
                   </div>

@@ -109,3 +109,18 @@
     }
   }
 }
+
+.search {
+  background: url("../../../assets/images/search.svg") no-repeat 10px 9px;
+  border: 1px solid $color-additional;
+  border-radius: 15px;
+  padding: 1.2rem 2rem 1.2rem 4rem;
+
+  &::placeholder {
+    color: $color-additional;
+  }
+
+  &:focus {
+    border: 1px solid $color-highlight;
+  }
+}
