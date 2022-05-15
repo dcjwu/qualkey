@@ -179,3 +179,17 @@ model Transaction {
 
     @@map("transactions")
 }
+
+enum UserActionType {
+    REVIEW_UPLOAD
+    REVIEW_WITHDRAWAL
+}
+
+model UserActions {
+    id              Int     @id @default(autoincrement())
+    userUuid        String
+    type            UserActionType
+    subjectUuid     String
+
+    @@map("userActions")
+}

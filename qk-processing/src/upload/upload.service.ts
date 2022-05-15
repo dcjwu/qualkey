@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { User } from "@prisma/client";
+import { UploadStatus, User, UserActionType } from "@prisma/client";
 
+import { LogicException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
-import { UploadSucceededEvent, UploadFailedEvent } from "./event";
+import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "./event";
 import { UploadFailedException } from "./exception";
 
 /**
@@ -28,21 +29,32 @@ export class UploadService {
         include: { representatives: true },
       });
 
+      const representatives = institution.representatives.filter(r => r.uuid !== uploadedBy.uuid);
+
       const upload = await this.prisma.upload.create({
         data: {
-          uuid: filename.split('.')[0],
+          uuid: filename.split(".")[0],
           filename: filename,
           mapping: mapping,
           uploadedBy: uploadedBy.uuid,
-          confirmationsRequestedFrom: institution.representatives.map(r => r.uuid).join(";"),
+          confirmationsRequestedFrom: representatives.map(r => r.uuid).join(";"),
         },
       });
 
       const uploadSucceededEvent = new UploadSucceededEvent();
       uploadSucceededEvent.upload = upload;
-      uploadSucceededEvent.representatives = institution.representatives;
+      uploadSucceededEvent.representatives = representatives;
       this.eventEmitter.emit("upload.succeeded", uploadSucceededEvent);
 
+      for (const representative of representatives) {
+        await this.prisma.userActions.create({
+          data: {
+            userUuid: representative.uuid,
+            type: UserActionType.REVIEW_UPLOAD,
+            subjectUuid: upload.uuid,
+          },
+        });
+      }
     } catch (e) {
       console.log(e);
 
@@ -53,5 +65,82 @@ export class UploadService {
 
       throw new UploadFailedException(filename, e.message);
     }
+  }
+
+  /**
+   * Process approval of the mass-upload from the institution representative
+   */
+  async approveUpload(uuid: string, approvedBy: User, actionId: number): Promise<void> {
+    // Get upload from DB
+    const upload = await this.prisma.upload.findUnique({ where: { uuid: uuid } });
+
+    // Check status
+    if (upload.status !== UploadStatus.PENDING) throw new LogicException("Wrong upload status.");
+
+    const requestedFrom = upload.confirmationsRequestedFrom.split(";");
+    if (! requestedFrom.includes(approvedBy.uuid)) throw new ForbiddenException();
+
+    // Check if user already approved
+    if (! upload.confirmedBy) {
+      await this.prisma.upload.update({
+        data: { confirmedBy: approvedBy.uuid },
+        where: { uuid: uuid },
+      });
+
+      await this.prisma.userActions.delete({ where: { id: actionId } });
+
+      return;
+    }
+
+    // add approve
+    const confirmedBy = upload.confirmedBy.split(";");
+    if (confirmedBy.includes(approvedBy.uuid)) throw new LogicException("Already approved.");
+
+    confirmedBy.push(approvedBy.uuid);
+
+    await this.prisma.upload.update({
+      data: { confirmedBy: confirmedBy.map(uuid => uuid).join(";") },
+      where: { uuid: uuid },
+    });
+
+    await this.prisma.userActions.delete({ where: { id: actionId } });
+
+    // if all approved emit UploadApprovedEvent
+    if (confirmedBy.length === requestedFrom.length) {
+      const uploadApprovedEvent = new UploadApprovedEvent();
+      uploadApprovedEvent.upload = upload;
+      this.eventEmitter.emit("upload.approved", uploadApprovedEvent);
+    }
+  }
+
+  /**
+   * Process rejection of the mass-upload from the institution representative
+   */
+  async rejectUpload(uuid: string, rejectedBy: User): Promise<void> {
+    // Get upload from DB
+    const upload = await this.prisma.upload.findUnique({ where: { uuid: uuid } });
+
+    // check status
+    if (upload.status !== UploadStatus.PENDING) throw new LogicException("Wrong upload status.");
+
+    const requestedFrom = upload.confirmationsRequestedFrom.split(";");
+    if (! requestedFrom.includes(rejectedBy.uuid)) throw new ForbiddenException();
+
+    // Get all userActions for this upload and delete them
+    const userActions = await this.prisma.userActions.findMany({
+      where: {
+        type: UserActionType.REVIEW_UPLOAD,
+        subjectUuid: uuid,
+      },
+    });
+
+    for (const action of userActions) {
+      await this.prisma.userActions.delete({ where: { id: action.id } });
+    }
+
+    const uploadRejectedEvent = new UploadRejectedEvent();
+    uploadRejectedEvent.upload = upload;
+    uploadRejectedEvent.rejectedBy = rejectedBy;
+    this.eventEmitter.emit("upload.rejected", uploadRejectedEvent);
   }
 }

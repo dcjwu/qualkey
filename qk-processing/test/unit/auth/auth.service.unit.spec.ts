@@ -3,10 +3,10 @@ import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Role, User } from "@prisma/client";
 
-import { PrismaService } from "../../../src/prisma/prisma.service";
 import { AuthService } from "../../../src/auth/auth.service";
 import { AuthDto } from "../../../src/auth/dto";
 import { RouteProvider } from "../../../src/auth/provider";
+import { PrismaService } from "../../../src/prisma/prisma.service";
 
 type CreateUser = {
     uuid: string

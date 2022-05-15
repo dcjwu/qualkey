@@ -1,5 +1,7 @@
 import { AdminModule, AdminModuleOptions } from "@adminjs/nestjs";
 import { Database, Resource } from "@adminjs/prisma";
+import { RedisModule } from "@liaoliaots/nestjs-redis";
+import { BullModule } from "@nestjs/bull";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
@@ -22,7 +24,7 @@ AdminJS.registerAdapter({ Database, Resource });
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env.local" }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: [".env.local", ".env"] }),
     EventEmitterModule.forRoot(),
     AuthModule,
     UserModule,
@@ -66,6 +68,20 @@ AdminJS.registerAdapter({ Database, Resource });
         };
       },
     }),
+    RedisModule.forRoot({
+      closeClient: true,
+      config: {
+        host: "redis",
+        port: 6379,
+      },
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: "redis",
+        port: 6379,
+      },
+    }),
+    BullModule.registerQueue({ name: "credentials-create" }),
     UploadModule,
     AwsModule,
   ],
