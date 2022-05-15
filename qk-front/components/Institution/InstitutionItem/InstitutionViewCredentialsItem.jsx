@@ -1,5 +1,5 @@
 import moment from "moment"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState } from "recoil"
 
 import { showEditCredentialsState } from "../../../atoms"
 import { IconAcademicCap, IconAcademicCapPerson, IconEdit, IconInfo } from "../../UI/_Icon"
