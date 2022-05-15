@@ -16,7 +16,7 @@ export default function ResetPassword() {
                <div className="logo">
                   <div className="logo__image-wrapper">
                      <Image alt="Qualkey" layout="fill" quality={100}
-src={logo}/>
+                            src={logo}/>
                   </div>
                   <Heading h2 loginPage white>Quickly, easily and securely authenticate your credentials</Heading>
                </div>
