@@ -1,6 +1,7 @@
 import "../assets/styles/helpers/_reset.scss"
 import "../assets/styles/_globals.scss"
 import Head from "next/head"
+import NextNProgress from "nextjs-progressbar"
 import { RecoilRoot } from "recoil"
 
 function MyApp({ Component, pageProps }) {
@@ -13,6 +14,11 @@ function MyApp({ Component, pageProps }) {
          </Head>
 
          <RecoilRoot>
+            <NextNProgress color="#0880ce" height={2} options={{
+               showSpinner: false,
+               easing: "ease",
+               speed: 500,
+            }}/>
             <Component {...pageProps} />
          </RecoilRoot>
       </>

@@ -1,6 +1,16 @@
 @import "../../../../assets/styles/helpers/variables";
 @import "../../../../assets/styles/helpers/mixins";
 
+.darken {
+  background-color: rgba($color-primary, 0.4);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
 .sidebar {
   background-color: $color-highlight;
   border-bottom-right-radius: 2rem 2rem;
@@ -9,7 +19,22 @@
   height: 100vh;
   padding: 4rem 0 8rem;
   position: fixed;
-  width: $sidebar-width-xxl;
+  width: $sidebar-width-initial;
+
+  &.active {
+    transform: translateX(0);
+  }
+
+  @include breakpoint-max($bp-screen-xxl) {
+    width: $sidebar-width-xxl;
+  }
+
+  @include breakpoint-max($bp-screen-lg) {
+    padding-top: 2.3rem;
+    transform: translateX(-100%);
+    transition: transform 0.15s linear;
+    width: $sidebar-width-initial;
+  }
 }
 
 .wrapper {
@@ -30,6 +55,10 @@
   margin-bottom: 4rem;
   position: relative;
   width: 165px;
+
+  @include breakpoint-max($bp-screen-lg) {
+    display: none;
+  }
 }
 
 .hr {
@@ -37,8 +66,8 @@
   border: none;
   height: 1px;
   mix-blend-mode: soft-light;
-  opacity: .4;
-  width: calc(#{$sidebar-width-xxl - 4rem});
+  opacity: 0.4;
+  width: calc(#{$sidebar-width-initial - 4rem});
 }
 
 .menu {

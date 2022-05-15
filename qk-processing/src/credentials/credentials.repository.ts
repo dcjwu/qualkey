@@ -12,10 +12,16 @@ export class CredentialsRepository {
   }
 
   getStudentCredentials(user: User): string {
-    return JSON.stringify(`Student dashboard page! Welcome, ${user.email}`);
+    return JSON.stringify({
+      value: `Student dashboard page! Welcome, ${user.email}`,
+      role: user.role,
+    });
   }
 
   getInstitutionCredentials(user: User): string {
-    return JSON.stringify(`Institution dashboard page! Welcome, ${user.email}`);
+    return JSON.stringify({
+      value: `Institution dashboard page! Welcome, ${user.email}`,
+      role: user.role,
+    });
   }
 }

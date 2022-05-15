@@ -1,0 +1,229 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.activated {
+  p {
+    color: $color-success;
+  }
+
+  path {
+    stroke: $color-success;
+  }
+}
+
+.uploaded {
+  p {
+    color: $color-pending;
+  }
+
+  path {
+    stroke: $color-pending;
+  }
+}
+
+.withdrawn {
+  p {
+    color: $color-error;
+  }
+
+  path {
+    stroke: $color-error;
+  }
+}
+
+.expired {
+  p {
+    color: $color-additional-medium-dark;
+  }
+
+  path {
+    stroke: $color-additional-medium-dark;
+  }
+}
+
+.wrapper {
+  background-color: $color-secondary;
+  margin-bottom: 1.2rem;
+}
+
+.left,
+.right {
+  > p {
+    margin: 2rem 0 2.5rem;
+  }
+}
+
+.status {
+  align-items: center;
+  display: flex;
+  gap: 0.8rem;
+
+  > svg {
+    cursor: pointer;
+  }
+
+  > p {
+    @include breakpoint-max($bp-screen-md) {
+      display: none;
+    }
+  }
+}
+
+.viewWrapper {
+  margin-bottom: 2.5rem;
+
+  p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+  }
+}
+
+.credentialWrapper {
+  align-items: center;
+  background-color: $color-secondary;
+  border: 1px solid $color-additional-medium;
+  display: grid;
+  grid-template-columns: 1.1fr 1.5fr 0.7fr 1.05fr 0.5fr;
+  height: 9rem;
+  justify-items: stretch;
+  padding: 0 2rem;
+  width: calc(100% - 2rem - 2rem);
+
+  @include breakpoint-max($bp-screen-lg) {
+    grid-template-columns: 0.9fr 1.5fr 0.7fr 1.05fr 0.5fr;
+  }
+
+  @include breakpoint-max($bp-screen-md) {
+    grid-template-columns: 0.9fr 1.5fr 0.4fr 1.05fr 0.5fr;
+  }
+
+  > *:not(:last-child) {
+    padding: 0 0.6rem;
+  }
+
+  > div:nth-child(3) {
+    @include breakpoint-max($bp-screen-md) {
+      justify-self: center;
+    }
+  }
+
+  > p:nth-child(4) {
+    justify-self: center;
+  }
+}
+
+.itemWrapper {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+
+  > span {
+    @include breakpoint-max($bp-screen-md) {
+      display: none !important;
+    }
+  }
+
+  > svg {
+    @include breakpoint-max($bp-screen-md) {
+      display: none;
+    }
+  }
+}
+
+.photo {
+  border: 1px solid $color-additional-medium-dark !important;
+  border-radius: 50%;
+}
+
+.actions {
+  align-items: center;
+  border-left: 1px solid $color-additional-medium;
+  display: flex;
+  gap: 2rem;
+  height: 100%;
+  justify-content: center;
+  padding-left: 1.5rem;
+
+  svg {
+    cursor: pointer;
+
+    @include breakpoint-max($bp-screen-md) {
+      &:first-child {
+        height: 3.5rem;
+        width: 3.5rem;
+      }
+
+      &:last-child {
+        width: 2.6rem;
+      }
+    }
+  }
+}
+
+.history {
+  border: 1px solid $color-additional-medium;
+  border-top: none;
+  display: grid;
+  grid-template-columns: 1fr 0.7fr;
+  height: 30rem;
+  padding: 0 3rem;
+  width: calc(100% - 3rem - 3rem);
+
+  @include breakpoint-max($bp-screen-lg) {
+    padding: 0 2rem;
+    width: calc(100% - 2rem - 2rem);
+  }
+
+  @include breakpoint-max($bp-screen-md) {
+    padding: 0 1rem;
+    width: calc(100% - 1rem - 1rem);
+  }
+}
+
+.left {
+  padding-right: 3rem;
+
+  @include breakpoint-max($bp-screen-md) {
+    padding-right: 1.5rem;
+  }
+}
+
+.historyItemWrapper {
+  height: 20rem;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.right {
+  border-left: 1px solid $color-additional-medium;
+  padding-left: 3rem;
+
+  @include breakpoint-max($bp-screen-md) {
+    padding-left: 1.5rem;
+  }
+}
+
+.rightWrapper {
+  position: relative;
+}
+
+.viewName {
+  svg {
+    height: 4.8rem;
+    width: 4.8rem;
+
+    path {
+      stroke: $color-primary;
+    }
+  }
+}
+
+.viewActions {
+  border-left: none;
+}
+
+.viewCredentialWrapper {
+  grid-template-columns: 1.1fr 1.5fr 0.7fr 1.05fr 0.3fr;
+}

@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-import logo from "../../assets/images/qk-logo-xl.png"
+import logo from "../../assets/images/qk-logo-text.svg"
 import AuthForms from "../../components/AuthForms/AuthForms"
 import Heading from "../../components/UI/Heading/Heading"
 
@@ -15,7 +15,8 @@ export default function ResetPassword() {
                <AuthForms twoFactor/>
                <div className="logo">
                   <div className="logo__image-wrapper">
-                     <Image alt="Qualkey" layout="fill" src={logo}/>
+                     <Image alt="Qualkey" layout="fill" quality={100}
+src={logo}/>
                   </div>
                   <Heading h2 loginPage white>Quickly, easily and securely authenticate your credentials</Heading>
                </div>

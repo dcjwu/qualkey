@@ -18,8 +18,12 @@
   }
 }
 
+.lightBlue {
+  color: $color-highlight;
+}
+
 .grey {
-  color: $color-additional;
+  color: $color-primary-light;
 }
 
 .white {
@@ -60,6 +64,10 @@
   font-weight: $font-weight-lg;
 }
 
+.semiBold {
+  font-weight: $font-weight-md;
+}
+
 .sidebar {
   align-items: center;
   cursor: pointer;
@@ -78,6 +86,7 @@
 
   span {
     color: $color-additional-medium;
+    width: 50%;
   }
 }
 
@@ -92,6 +101,8 @@
 
   span {
     color: $color-additional-light;
+    text-align: left;
+    width: initial;
   }
 
   svg {
@@ -112,6 +123,14 @@
   }
 }
 
-.modal {
+.large {
   font-size: 2.3rem;
+}
+
+.blackSpan {
+  color: $color-primary-light;
+
+  span {
+    color: $color-primary;
+  }
 }
