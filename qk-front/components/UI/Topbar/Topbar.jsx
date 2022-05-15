@@ -14,8 +14,6 @@ import Text from "../Text/Text"
 import styles from "./Topbar.module.scss"
 
 const Topbar = () => {
-
-   //TODO: Remove padding from right! + bp!
    
    const { pathname } = useRouter()
 
@@ -25,6 +23,19 @@ const Topbar = () => {
    
    const isScreenLg = useMediaQuery({ query: "(max-width: 991px)" })
    const isScreenMd = useMediaQuery({ query: "(max-width: 767px" })
+
+   const [lgMarginLeft, setLgMarginLeft] = useState("")
+   const [mdMarginLeft, setMdMarginLeft] = useState("")
+
+   useEffect(() => {
+      setMdMarginLeft("2.5rem")
+      setLgMarginLeft("")
+   }, [isScreenMd])
+
+   useEffect(() => {
+      setLgMarginLeft("3.5rem")
+      setMdMarginLeft("")
+   }, [isScreenLg])
 
    const [showMenu, setShowMenu] = useState(false)
 
@@ -56,7 +67,7 @@ const Topbar = () => {
             <IconArrowLeft/>
             <Text>View Credentials</Text>
          </div>}
-         <BurgerButton style={{ marginLeft: isScreenMd ? "2.5rem" : isScreenLg ? "3.5rem" : "" }}/>
+         <BurgerButton style={{ marginLeft: lgMarginLeft || mdMarginLeft }}/>
          <div className={styles.right}>
             <div className={styles.imageWrapperNotification}>
                <Image alt="bell" layout="fill" quality={100}

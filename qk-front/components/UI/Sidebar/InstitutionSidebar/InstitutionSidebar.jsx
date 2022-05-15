@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import Image from "next/image"
 import { useMediaQuery } from "react-responsive"
@@ -13,10 +13,21 @@ import styles from "./InstitutionSidebar.module.scss"
 
 const InstitutionSidebar = () => {
 
-   //TODO: Fix error with prop 'style' server and client difference.
-
    const isScreenLg = useMediaQuery({ query: "(max-width: 991px)" })
    const isScreenMd = useMediaQuery({ query: "(max-width: 767px" })
+   
+   const [lgMarginLeft, setLgMarginLeft] = useState("")
+   const [mdMarginLeft, setMdMarginLeft] = useState("")
+   
+   useEffect(() => {
+      setMdMarginLeft("-13rem")
+      setLgMarginLeft("")
+   }, [isScreenMd])
+
+   useEffect(() => {
+      setLgMarginLeft("-11rem")
+      setMdMarginLeft("")
+   }, [isScreenLg])
 
    const [openModal, setOpenModal] = useRecoilState(uploadModalState)
    const [burgerMenuActive, setBurgerMenuActive] = useRecoilState(burgerMenuActiveState)
@@ -44,7 +55,7 @@ const InstitutionSidebar = () => {
                             src={logo}/>
                   </div>
                   <BurgerButton style={
-                     { marginLeft: isScreenMd ? "-13rem" : isScreenLg ? "-11rem" : "", marginBottom: "1.7rem" }}/>
+                     { marginLeft: lgMarginLeft || mdMarginLeft, marginBottom: "1.7rem" }}/>
                   <hr className={styles.hr}/>
                   <div className={styles.menu}>
                      <Text bold sidebar active={!openModal}>
