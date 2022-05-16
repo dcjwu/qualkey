@@ -50,7 +50,8 @@ AdminJS.registerAdapter({ Database, Resource });
                       new: {
                         after: async (response) => {
                           // get first 8 chars of the generated password
-                          const password = response.record.params.password.substring(0, 8);
+                          const len = response.record.params.password.length;
+                          const password = response.record.params.password.substring(len - 8, len);
                           Logger.warn(password);
                           // encrypt password and save
                           await prisma.user.update({
