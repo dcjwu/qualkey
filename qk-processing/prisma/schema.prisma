@@ -21,7 +21,7 @@ enum Role {
 model User {
     uuid            String @id @default(uuid())
     email           String @unique
-    password        String
+    password        String @default(cuid())
     role            Role
     createdAt       DateTime @default(now())
     updatedAt       DateTime @updatedAt

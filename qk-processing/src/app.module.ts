@@ -2,16 +2,17 @@ import { AdminModule, AdminModuleOptions } from "@adminjs/nestjs";
 import { Database, Resource } from "@adminjs/prisma";
 import { RedisModule } from "@liaoliaots/nestjs-redis";
 import { BullModule } from "@nestjs/bull";
-import { Module } from "@nestjs/common";
+import { Logger, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { ThrottlerModule } from "@nestjs/throttler";
 import { Role } from "@prisma/client";
 import { DMMFClass } from "@prisma/client/runtime";
-import AdminJS, { CurrentAdmin } from "adminjs";
+import AdminJS, { buildFeature, CurrentAdmin } from "adminjs";
 
 import { AuthModule } from "./auth/auth.module";
 import { AwsModule } from "./aws/aws.module";
+import { AwsSesService } from "./aws/aws.ses.service";
 import { CredentialsModule } from "./credentials/credentials.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
@@ -32,9 +33,9 @@ AdminJS.registerAdapter({ Database, Resource });
     PrismaModule,
     CredentialsModule,
     AdminModule.createAdminAsync({
-      imports: [PrismaModule],
-      inject: [PrismaService],
-      useFactory: async (prisma: PrismaService): Promise<AdminModuleOptions> => {
+      imports: [PrismaModule, AwsModule],
+      inject: [PrismaService, AwsSesService],
+      useFactory: async (prisma: PrismaService, ses: AwsSesService): Promise<AdminModuleOptions> => {
         const dmmf = ((prisma as any)._dmmf as DMMFClass);
         return {
           adminJsOptions: {
@@ -42,6 +43,36 @@ AdminJS.registerAdapter({ Database, Resource });
             resources: [
               {
                 resource: { model: dmmf.modelMap.User, client: prisma },
+                options: { editProperties: ["email", "role", "firstName", "lastName", "institution"] },
+                features: [
+                  buildFeature({
+                    actions: {
+                      new: {
+                        after: async (response) => {
+                          // get first 8 chars of the generated password
+                          const password = response.record.params.password.substring(0, 8);
+                          Logger.warn(password);
+                          // encrypt password and save
+                          await prisma.user.update({
+                            data: { password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)) },
+                            where: { uuid: response.record.params.uuid },
+                          });
+                          // send notification email
+                          await ses.sendWelcomeUserEmail(
+                            response.record.params.email,
+                            response.record.params.firstName,
+                            password,
+                          );
+
+                          return response;
+                        },
+                      },
+                    },
+                  }),
+                ],
+              },
+              {
+                resource: { model: dmmf.modelMap.Institution, client: prisma },
                 options: {},
               },
             ],

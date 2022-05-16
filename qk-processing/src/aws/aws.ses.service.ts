@@ -11,6 +11,10 @@ export class AwsSesService {
 
     private NO_REPLY_EMAIL = "abramov.igor.n@gmail.com";
 
+    public async sendWelcomeUserEmail(recipientEmail: string, name: string, password: string): Promise<void> {
+      await this.sendEmailTemplate(recipientEmail, this.NO_REPLY_EMAIL, "welcome-user", `{ \"email\":\"${recipientEmail}\", \"name\":\"${name}\", \"password\":\"${password}\" }`);
+    }
+
     public async sendReviewUploadEmail(recipientEmail: string): Promise<void> {
       await this.sendEmailTemplate(recipientEmail, this.NO_REPLY_EMAIL, "review-upload");
     }
@@ -54,9 +58,9 @@ export class AwsSesService {
     public async createTemplate(): Promise<void> {
       const params = {
         Template: {
-          TemplateName: "review-upload",
-          HtmlPart: "<h1>Hello,</h1><p>There is a mass upload happening at this time, you better review it and then approve or reject.</p>",
-          SubjectPart: "Test email of upload",
+          TemplateName: "welcome-user",
+          HtmlPart: "<h1>Hello {{ name }},</h1><p>Welcome to Qualkey!</p><p>You can login to our website using your email {{ email }}, please use this password {{ password }}.</p><p>The password can be reset on our website.</p>",
+          SubjectPart: "Welcome to Qualkey!",
         },
       };
       this.getSES().createTemplate(params);
