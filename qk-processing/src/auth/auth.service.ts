@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Role } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { Response } from "express";
+import { Response, Request } from "express";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthCheckCredentialsRequestDto, AuthRequestDto, ResetPasswordRequestDto } from "./dto";
@@ -19,15 +19,16 @@ export class AuthService {
         private jwt: JwtService,
         private config: ConfigService,
         private routeProvider: RouteProvider,
-  ) {}
+  ) {
+  }
 
   /**
-   * User registration.
-   * @desc Registers user or throws error if email already exists.
-   * @param dto {AuthRequestDto} Validates data in request.
-   * @returns New user.
-   * @throws If email already exists.
-   */
+     * User registration.
+     * @desc Registers user or throws error if email already exists.
+     * @param dto {AuthRequestDto} Validates data in request.
+     * @returns New user.
+     * @throws If email already exists.
+     */
   public async register(dto: AuthRequestDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
     const hash = AuthService.hashData(dto.password);
 
@@ -55,13 +56,13 @@ export class AuthService {
   }
 
   /**
-   * User login.
-   * @desc Log in user and set jwt in cookies or throws error if credentials does not match.
-   * @param dto {AuthRequestDto} Validates data in request.
-   * @param response {Response} Server response interface.
-   * @returns Sets jwt in httpOnly cookie.
-   * @throws If user does not exist or credentials are incorrect.
-   */
+     * User login.
+     * @desc Log in user and set jwt in cookies or throws error if credentials does not match.
+     * @param dto {AuthRequestDto} Validates data in request.
+     * @param response {Response} Server response interface.
+     * @returns Sets jwt in httpOnly cookie.
+     * @throws If user does not exist or credentials are incorrect.
+     */
   public async login(dto: AuthRequestDto, response: Response): Promise<string> {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (!user) throw new UnprocessableEntityException("Invalid credentials");
@@ -79,8 +80,8 @@ export class AuthService {
   }
 
   /**
-   * Check user credentials
-   */
+     * Check user credentials
+     */
   public async checkCredentials(dto: AuthCheckCredentialsRequestDto): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (!user) throw new UnprocessableEntityException("Invalid credentials");
@@ -90,8 +91,30 @@ export class AuthService {
   }
 
   /**
-   * Reset user password
-   */
+     * Logout user
+     */
+  async logout(response: Response): Promise<string> {
+    const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
+    response.cookie("jwt", "", { httpOnly: true, domain: frontendDomain });
+    return "/";
+  }
+
+  /**
+     * Check if user got valid JWT
+     */
+  async checkJwt(request: Request): Promise<string> {
+    const secret = this.config.get<string>("JWT_SECRET");
+    try {
+      const isJwtValid = await this.jwt.verify(request.cookies.jwt, { secret });
+      if (isJwtValid) return JSON.stringify({ redirectTo: "/dashboard" });
+    } catch (error) {
+      return JSON.stringify({ redirectTo: "" });
+    }
+  }
+
+  /**
+     * Reset user password
+     */
   public async resetPassword(dto: ResetPasswordRequestDto, email: string): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { email: email } });
     // check if old password match
@@ -106,14 +129,14 @@ export class AuthService {
   }
 
   /**
-   * Signs jwt token.
-   * @desc Signs new jwt token with data.
-   * @param userId {string}
-   * @param email {string}
-   * @param role {Role}
-   * @param rememberMe {boolean}
-   * @returns Jwt token with particular expiration date.
-   */
+     * Signs jwt token.
+     * @desc Signs new jwt token with data.
+     * @param userId {string}
+     * @param email {string}
+     * @param role {Role}
+     * @param rememberMe {boolean}
+     * @returns Jwt token with particular expiration date.
+     */
   private async signToken(userId: string, email: string, role: Role, rememberMe: boolean): Promise<string> {
     const payload = {
       sub: userId,
@@ -131,7 +154,7 @@ export class AuthService {
     });
   }
 
-  private static hashData(data: string):string {
+  private static hashData(data: string): string {
     return bcrypt.hashSync(data, bcrypt.genSaltSync(10));
   }
 }

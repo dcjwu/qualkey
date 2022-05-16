@@ -1,8 +1,13 @@
+import axios from "axios"
+import getConfig from "next/config"
 import Image from "next/image"
 
 import logo from "../../assets/images/qk-logo-text.svg"
 import TwoFactorForm from "../../components/AuthForms/FormTypes/TwoFactorForm"
 import Heading from "../../components/UI/Heading/Heading"
+
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
+const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
 export default function ResetPassword() {
 
@@ -16,7 +21,7 @@ export default function ResetPassword() {
                <div className="logo">
                   <div className="logo__image-wrapper">
                      <Image priority alt="Qualkey" layout="fill"
-quality={100}
+                            quality={100}
                             src={logo}/>
                   </div>
                   <Heading h2 loginPage white>Quickly, easily and securely authenticate your credentials</Heading>
@@ -25,4 +30,25 @@ quality={100}
          </div>
       </div>
    )
+}
+
+export const getServerSideProps = async ({ req }) => {
+   try {
+      const response = await axios.get(`${apiUrl}/auth/verify`, {
+         withCredentials: true,
+         headers: { Cookie: req.headers.cookie || "" }
+      })
+      const { data } = response
+      if (data.redirectTo === "/dashboard") {
+         return {
+            redirect: {
+               permanent: false,
+               destination: "/dashboard"
+            }
+         }
+      }
+      return { props: { data } }
+   } catch (error) {
+      return { props: { serverErrorMessage: error.response.statusText } }
+   }
 }

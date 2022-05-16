@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import axios from "axios"
 import moment from "moment"
+import getConfig from "next/config"
 import Image from "next/image"
 import { useRecoilState } from "recoil"
 
@@ -11,6 +12,9 @@ import LoginForm from "../components/AuthForms/FormTypes/LoginForm"
 import TwoFactorForm from "../components/AuthForms/FormTypes/TwoFactorForm"
 import Heading from "../components/UI/Heading/Heading"
 import { processingUrl, validateLoginForm } from "../utils"
+
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
+const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
 export default function Home() {
 
@@ -90,7 +94,7 @@ export default function Home() {
    useEffect(() => {
       setLoading(false)
    }, [])
-
+   
    return (
       <div className="auth">
          <div className="container authenticate">
@@ -112,4 +116,26 @@ export default function Home() {
          </div>
       </div>
    )
+   
+}
+
+export const getServerSideProps = async ({ req }) => {
+   try {
+      const response = await axios.get(`${apiUrl}/auth/verify`, {
+         withCredentials: true,
+         headers: { Cookie: req.headers.cookie || "" }
+      })
+      const { data } = response
+      if (data.redirectTo === "/dashboard") {
+         return {
+            redirect: {
+               permanent: false,
+               destination: "/dashboard"
+            }
+         }
+      }
+      return { props: { data } }
+   } catch (error) {
+      return { props: { serverErrorMessage: error.response.statusText } }
+   }
 }

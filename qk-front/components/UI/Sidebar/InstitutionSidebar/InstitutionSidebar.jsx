@@ -1,23 +1,36 @@
 import { useEffect, useRef, useState } from "react"
 
+import axios from "axios"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { useMediaQuery } from "react-responsive"
 import { useRecoilState } from "recoil"
 
 import logo from "../../../../assets/images/qk-logo-text.svg"
 import { burgerMenuActiveState, uploadModalState } from "../../../../atoms"
+import { processingUrl } from "../../../../utils"
 import { IconAcademicCapPerson, IconKey, IconLogout, IconMessage, IconPlus, IconPolicy, IconQuestion } from "../../_Icon"
 import BurgerButton from "../../BurgerButton/BurgerButton"
 import Text from "../../Text/Text"
 import styles from "./InstitutionSidebar.module.scss"
 
 const InstitutionSidebar = () => {
+   
+   const { push } = useRouter()
 
    const isScreenLg = useMediaQuery({ query: "(max-width: 991px)" })
    const isScreenMd = useMediaQuery({ query: "(max-width: 767px" })
    
    const [lgMarginLeft, setLgMarginLeft] = useState("")
    const [mdMarginLeft, setMdMarginLeft] = useState("")
+   
+   const handleLogout = () => {
+      axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true } )
+         .then(response => {
+            push(response.data)
+         })
+         .catch(error => console.log(error))
+   }
    
    useEffect(() => {
       setMdMarginLeft("-13rem")
@@ -88,7 +101,7 @@ const InstitutionSidebar = () => {
                         <IconPolicy/>
                         <span>Privacy Policy</span>
                      </Text>
-                     <Text sidebar sidebarMin>
+                     <Text sidebar sidebarMin onClick={handleLogout}>
                         <IconLogout/>
                         <span>Log Out</span>
                      </Text>

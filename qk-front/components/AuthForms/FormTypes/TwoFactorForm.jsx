@@ -3,7 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import axios from "axios"
 import moment from "moment"
 import { useRouter } from "next/router"
+import { useRecoilValue, useResetRecoilState } from "recoil"
 
+import { loginFormState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
 import { IconLoading } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
@@ -12,12 +14,14 @@ import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "../AuthForm.module.scss"
 
-const TwoFactorForm = ({ canBeResendAt, formData }) => {
+const TwoFactorForm = ({ canBeResendAt }) => {
    
    const { push } = useRouter()
 
    const calculateDuration = eventTime => moment.duration(Math.max(eventTime - (Math.floor(moment.utc(new Date().toISOString()).valueOf() / 1000)), 0), "seconds")
 
+   const resetFormData = useResetRecoilState(loginFormState)
+   const formData = useRecoilValue(loginFormState)
    const [hideResendButton, setHideResendButton] = useState(false)
    const [duration, setDuration] = useState(calculateDuration(canBeResendAt))
    const [pinValues, setPinValues] = useState(["", "", "", ""])
@@ -44,6 +48,7 @@ const TwoFactorForm = ({ canBeResendAt, formData }) => {
          axios.post(`${processingUrl}/auth/login`, { ...formData, otp: pinValues.join("") }, { withCredentials: true })
             .then(response => {
                push(response.data)
+               resetFormData()
             })
             .catch(error => {
                setLoading(false)

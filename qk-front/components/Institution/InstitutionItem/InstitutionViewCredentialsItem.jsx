@@ -5,7 +5,6 @@ import { useRecoilState } from "recoil"
 import { showEditCredentialsState } from "../../../atoms"
 import { IconAcademicCap, IconAcademicCapPerson, IconEdit, IconInfo } from "../../UI/_Icon"
 import Text from "../../UI/Text/Text"
-import InstitutionDashboardItem from "./InstitutionDashboardItem"
 import styles from "./InstitutionItem.module.scss"
 
 const InstitutionViewCredentialsItem = ({ data }) => {

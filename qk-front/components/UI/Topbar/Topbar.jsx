@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+import axios from "axios"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -8,6 +9,7 @@ import { useMediaQuery } from "react-responsive"
 import avatar from "../../../assets/images/avatarMock.webp"
 import bell from "../../../assets/images/bell.svg"
 import uniLogo from "../../../assets/images/mockUniLogo.webp"
+import { processingUrl } from "../../../utils"
 import { IconAcademicCap, IconArrowLeft, IconHideDropdownBig, IconLogout, IconMessage, IconSettings } from "../_Icon"
 import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
@@ -15,7 +17,7 @@ import styles from "./Topbar.module.scss"
 
 const Topbar = () => {
    
-   const { pathname } = useRouter()
+   const { pathname, push } = useRouter()
 
    const checkIfPathIncludesView = () => {
       if (pathname.includes("/credentials-view")) return true
@@ -26,6 +28,14 @@ const Topbar = () => {
 
    const [lgMarginLeft, setLgMarginLeft] = useState("")
    const [mdMarginLeft, setMdMarginLeft] = useState("")
+
+   const handleLogout = () => {
+      axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true } )
+         .then(response => {
+            push(response.data)
+         })
+         .catch(error => console.log(error))
+   }
 
    useEffect(() => {
       setMdMarginLeft("2.5rem")
@@ -100,7 +110,7 @@ const Topbar = () => {
                         <IconMessage/>
                         <Text>Give feedback</Text>
                      </li>
-                     <li>
+                     <li onClick={handleLogout}>
                         <IconLogout/>
                         <Text>Log out</Text>
                      </li>

@@ -1,7 +1,7 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 import { User } from "@prisma/client";
-import { Response } from "express";
+import { Request, Response } from "express";
 
 import { AuthService } from "./auth.service";
 import { GetUser } from "./decorator";
@@ -61,6 +61,25 @@ export class AuthController {
   @Post("check")
   async checkCredentials(@Body() dto: AuthCheckCredentialsRequestDto): Promise<void> {
     await this.authService.checkCredentials(dto);
+  }
+
+  /**
+<<<<<<< HEAD
+   * Logout endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post("logout")
+  async logout(@Res({ passthrough: true }) response: Response): Promise<string> {
+    return this.authService.logout(response);
+  }
+
+  /**
+   * Check if user has JWT
+   */
+  @HttpCode(HttpStatus.OK)
+  @Get("verify")
+  async checkJwt(@Req() request: Request): Promise<string> {
+    return this.authService.checkJwt(request);
   }
 
   /**
