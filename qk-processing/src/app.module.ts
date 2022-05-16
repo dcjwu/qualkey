@@ -43,7 +43,20 @@ AdminJS.registerAdapter({ Database, Resource });
             resources: [
               {
                 resource: { model: dmmf.modelMap.User, client: prisma },
-                options: { editProperties: ["email", "role", "firstName", "lastName", "institution"] },
+                options: {
+                  editProperties: ["email", "role", "firstName", "lastName", "institution"],
+                  actions: {
+                    new: { isAccessible: ({ currentAdmin }) => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                    }},
+                    edit: { isAccessible: ({ currentAdmin }) => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                    }},
+                    delete: { isAccessible: ({ currentAdmin }) => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                    }},
+                  },
+                },
                 features: [
                   buildFeature({
                     actions: {
@@ -74,7 +87,19 @@ AdminJS.registerAdapter({ Database, Resource });
               },
               {
                 resource: { model: dmmf.modelMap.Institution, client: prisma },
-                options: {},
+                options: {
+                  actions: {
+                    new: { isAccessible: ({ currentAdmin }) => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                      }},
+                    edit: { isAccessible: ({ currentAdmin }) => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                      }},
+                    delete: { isAccessible: ({ currentAdmin }) => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                      }},
+                  },
+                },
               },
             ],
           },
@@ -82,15 +107,15 @@ AdminJS.registerAdapter({ Database, Resource });
             authenticate: async (email: string, password: string): Promise<CurrentAdmin> => {
               if (email !== "" && password !== "") {
                 const user = await prisma.user.findUnique({ where: { email: email } });
-                if (user && user.role === Role.SUPER_ADMIN) {
+                if (user && (user.role === Role.SUPER_ADMIN || user.role === Role.ADMIN)) {
                   if (bcrypt.compareSync(
                     password,
-                    user?.password,
+                    user.password,
                     (err, res) => {
-                      console.log(err, res);
+                      Logger.error(err, res);
                     },
                   )) {
-                    return Promise.resolve<CurrentAdmin>({ email: email });
+                    return Promise.resolve<CurrentAdmin>({ email: email, role: user.role });
                   }
                 }
               }
