@@ -46,15 +46,21 @@ AdminJS.registerAdapter({ Database, Resource });
                 options: {
                   editProperties: ["email", "role", "firstName", "lastName", "institution"],
                   actions: {
-                    new: { isAccessible: ({ currentAdmin }) => {
+                    new: {
+                      isAccessible: ({ currentAdmin }): boolean => {
                         return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
-                    }},
-                    edit: { isAccessible: ({ currentAdmin }) => {
+                      }, 
+                    },
+                    edit: {
+                      isAccessible: ({ currentAdmin }): boolean => {
                         return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
-                    }},
-                    delete: { isAccessible: ({ currentAdmin }) => {
+                      }, 
+                    },
+                    delete: {
+                      isAccessible: ({ currentAdmin }): boolean => {
                         return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
-                    }},
+                      }, 
+                    },
                   },
                 },
                 features: [
@@ -89,15 +95,21 @@ AdminJS.registerAdapter({ Database, Resource });
                 resource: { model: dmmf.modelMap.Institution, client: prisma },
                 options: {
                   actions: {
-                    new: { isAccessible: ({ currentAdmin }) => {
+                    new: {
+                      isAccessible: ({ currentAdmin }): boolean => {
                         return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
-                      }},
-                    edit: { isAccessible: ({ currentAdmin }) => {
+                      }, 
+                    },
+                    edit: {
+                      isAccessible: ({ currentAdmin }): boolean => {
                         return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
-                      }},
-                    delete: { isAccessible: ({ currentAdmin }) => {
+                      }, 
+                    },
+                    delete: {
+                      isAccessible: ({ currentAdmin }): boolean => {
                         return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
-                      }},
+                      }, 
+                    },
                   },
                 },
               },
