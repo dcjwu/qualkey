@@ -1,9 +1,18 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
+import { User } from "@prisma/client";
 import { Response } from "express";
 
 import { AuthService } from "./auth.service";
-import { AuthCheckCredentialsRequestDto, AuthRequestDto, OtpRequestDto, OtpResponseDto } from "./dto";
+import { GetUser } from "./decorator";
+import {
+  AuthCheckCredentialsRequestDto,
+  AuthRequestDto,
+  OtpRequestDto,
+  OtpResponseDto,
+  ResetPasswordRequestDto,
+} from "./dto";
+import { JwtGuard } from "./guard";
 import { OtpService } from "./otp.service";
 
 const rateLimitForOtp = 15;
@@ -52,5 +61,15 @@ export class AuthController {
   @Post("check")
   async checkCredentials(@Body() dto: AuthCheckCredentialsRequestDto): Promise<void> {
     await this.authService.checkCredentials(dto);
+  }
+
+  /**
+   * Reset password endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
+  @Post("password-reset")
+  async resetPassword(@GetUser() user: User, @Body() dto: ResetPasswordRequestDto): Promise<void> {
+    await this.authService.resetPassword(dto, user.email);
   }
 }

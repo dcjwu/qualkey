@@ -55,7 +55,7 @@ AdminJS.registerAdapter({ Database, Resource });
                           // encrypt password and save
                           await prisma.user.update({
                             data: { password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)) },
-                            where: { uuid: response.record.params.uuid },
+                            where: { email: response.record.params.email },
                           });
                           // send notification email
                           await ses.sendWelcomeUserEmail(

@@ -6,7 +6,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { Response } from "express";
 
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthCheckCredentialsRequestDto, AuthRequestDto } from "./dto";
+import { AuthCheckCredentialsRequestDto, AuthRequestDto, ResetPasswordRequestDto } from "./dto";
 import { RouteProvider } from "./provider";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -28,8 +28,8 @@ export class AuthService {
    * @returns New user.
    * @throws If email already exists.
    */
-  async register(dto: AuthRequestDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
-    const hash = this.hashData(dto.password);
+  public async register(dto: AuthRequestDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
+    const hash = AuthService.hashData(dto.password);
 
     try {
       return await this.prisma.user.create({
@@ -62,7 +62,7 @@ export class AuthService {
    * @returns Sets jwt in httpOnly cookie.
    * @throws If user does not exist or credentials are incorrect.
    */
-  async login(dto: AuthRequestDto, response: Response): Promise<string> {
+  public async login(dto: AuthRequestDto, response: Response): Promise<string> {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (!user) throw new UnprocessableEntityException("Invalid credentials");
 
@@ -73,18 +73,36 @@ export class AuthService {
     const jwtToken = await this.signToken(user.uuid, user.email, user.role, dto.rememberMe);
     response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
 
+    await this.prisma.user.update({ data: { lastLoginAt: new Date() }, where: { email: user.email } });
+
     return this.routeProvider.onLogin(user);
   }
 
   /**
    * Check user credentials
    */
-  async checkCredentials(dto: AuthCheckCredentialsRequestDto): Promise<void> {
+  public async checkCredentials(dto: AuthCheckCredentialsRequestDto): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (!user) throw new UnprocessableEntityException("Invalid credentials");
 
     const pwMatches = await bcrypt.compareSync(dto.password, user.password);
     if (!pwMatches) throw new UnprocessableEntityException("Invalid credentials");
+  }
+
+  /**
+   * Reset user password
+   */
+  public async resetPassword(dto: ResetPasswordRequestDto, email: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({ where: { email: email } });
+    // check if old password match
+    const pwMatches = await bcrypt.compareSync(dto.oldPassword, user.password);
+    if (!pwMatches) throw new UnprocessableEntityException("Wrong password");
+
+    // encrypt password and save
+    await this.prisma.user.update({
+      data: { password: await bcrypt.hashSync(dto.newPassword, bcrypt.genSaltSync(10)) },
+      where: { email: user.email },
+    });
   }
 
   /**
@@ -96,7 +114,7 @@ export class AuthService {
    * @param rememberMe {boolean}
    * @returns Jwt token with particular expiration date.
    */
-  async signToken(userId: string, email: string, role: Role, rememberMe: boolean): Promise<string> {
+  private async signToken(userId: string, email: string, role: Role, rememberMe: boolean): Promise<string> {
     const payload = {
       sub: userId,
       email,
@@ -113,8 +131,7 @@ export class AuthService {
     });
   }
 
-  hashData(data: string):string {
-    const salt = bcrypt.genSaltSync(10);
-    return bcrypt.hashSync(data, salt);
+  private static hashData(data: string):string {
+    return bcrypt.hashSync(data, bcrypt.genSaltSync(10));
   }
 }
