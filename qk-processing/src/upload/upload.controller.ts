@@ -1,9 +1,9 @@
 import {
   Body,
   Controller,
-  ForbiddenException, HttpCode, HttpStatus,
+  ForbiddenException, Get, HttpCode, HttpStatus,
   Inject,
-  Post,
+  Post, Query, StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -15,7 +15,7 @@ import { Express } from "express";
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
 import { AwsS3Service } from "../aws/aws.s3.service";
-import { UploadDecisionDto, UploadDto } from "./dto";
+import { UploadDecisionDto, UploadDto, UploadGetFileDto } from "./dto";
 import { UploadService } from "./upload.service";
 
 /**
@@ -67,5 +67,19 @@ export class UploadController {
     if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
 
     await this.uploadService.rejectUpload(dto.uuid, user);
+  }
+
+  /**
+   * Get upload file by upload uuid
+   */
+  @Get()
+  async getUploadFile(
+      @GetUser() user: User,
+      @Query() dto: UploadGetFileDto,
+  ): Promise<StreamableFile> {
+    if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
+    const upload = await this.uploadService.getCheckedUpload(dto.uuid, user);
+
+    return new StreamableFile(this.awsS3Service.get(upload.filename));
   }
 }

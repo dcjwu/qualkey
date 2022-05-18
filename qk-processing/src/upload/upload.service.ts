@@ -1,6 +1,6 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { UploadStatus, User, UserActionType } from "@prisma/client";
+import { Upload, UploadStatus, User, UserActionType } from "@prisma/client";
 
 import { LogicException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
@@ -71,14 +71,8 @@ export class UploadService {
    * Process approval of the mass-upload from the institution representative
    */
   async approveUpload(uuid: string, approvedBy: User, actionId: number): Promise<void> {
-    // Get upload from DB
-    const upload = await this.prisma.upload.findUnique({ where: { uuid: uuid } });
-
-    // Check status
-    if (upload.status !== UploadStatus.PENDING) throw new LogicException("Wrong upload status.");
-
+    const upload = await this.getCheckedUpload(uuid, approvedBy);
     const requestedFrom = upload.confirmationsRequestedFrom.split(";");
-    if (! requestedFrom.includes(approvedBy.uuid)) throw new ForbiddenException();
 
     // Check if user already approved
     if (! upload.confirmedBy) {
@@ -117,14 +111,7 @@ export class UploadService {
    * Process rejection of the mass-upload from the institution representative
    */
   async rejectUpload(uuid: string, rejectedBy: User): Promise<void> {
-    // Get upload from DB
-    const upload = await this.prisma.upload.findUnique({ where: { uuid: uuid } });
-
-    // check status
-    if (upload.status !== UploadStatus.PENDING) throw new LogicException("Wrong upload status.");
-
-    const requestedFrom = upload.confirmationsRequestedFrom.split(";");
-    if (! requestedFrom.includes(rejectedBy.uuid)) throw new ForbiddenException();
+    const upload = await this.getCheckedUpload(uuid, rejectedBy);
 
     // Get all userActions for this upload and delete them
     const userActions = await this.prisma.userActions.findMany({
@@ -142,5 +129,22 @@ export class UploadService {
     uploadRejectedEvent.upload = upload;
     uploadRejectedEvent.rejectedBy = rejectedBy;
     this.eventEmitter.emit("upload.rejected", uploadRejectedEvent);
+  }
+
+  /**
+   * Verifies upload exists and is in the correct status
+   */
+  public async getCheckedUpload(uuid: string, actionMadeBy: User): Promise<Upload> {
+    // Get upload from DB
+    const upload = await this.prisma.upload.findUnique({ where: { uuid: uuid } });
+    if (! upload) throw new NotFoundException("upload not found");
+
+    // check status
+    if (upload.status !== UploadStatus.PENDING) throw new LogicException("Wrong upload status.");
+
+    const requestedFrom = upload.confirmationsRequestedFrom.split(";");
+    if (! requestedFrom.includes(actionMadeBy.uuid)) throw new ForbiddenException();
+
+    return upload;
   }
 }

@@ -64,7 +64,6 @@ export class AuthController {
   }
 
   /**
-<<<<<<< HEAD
    * Logout endpoint
    */
   @HttpCode(HttpStatus.OK)

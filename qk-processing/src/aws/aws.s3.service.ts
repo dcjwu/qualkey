@@ -1,4 +1,5 @@
 import { extname } from "path";
+import stream from "stream";
 
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -10,7 +11,7 @@ export class AwsS3Service {
     @Inject(ConfigService)
   public config: ConfigService;
 
-    async upload(file): Promise<string> {
+    public async upload(file): Promise<string> {
       const filename = `${uuid()}${extname(file.originalname)}`;
 
       const s3 = this.getS3();
@@ -35,7 +36,7 @@ export class AwsS3Service {
       return filename;
     }
 
-    async remove(filename): Promise<void> {
+    public async remove(filename): Promise<void> {
       const s3 = this.getS3();
 
       const params = {
@@ -56,7 +57,18 @@ export class AwsS3Service {
       });
     }
 
-    getS3(): S3 {
+    public get(filename): stream.Readable {
+      const s3 = this.getS3();
+
+      const params = {
+        Bucket: this.config.get("AWS_S3_BUCKET"),
+        Key: String(filename),
+      };
+
+      return s3.getObject(params).createReadStream();
+    }
+
+    private getS3(): S3 {
       return new S3({
         accessKeyId: this.config.get("AWS_ACCESS_KEY_ID"),
         secretAccessKey: this.config.get("AWS_SECRET_ACCESS_KEY"),
