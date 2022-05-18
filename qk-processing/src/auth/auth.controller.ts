@@ -1,4 +1,15 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
@@ -6,7 +17,7 @@ import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { GetUser } from "./decorator";
 import {
-  AuthCheckCredentialsRequestDto,
+  AuthCheckCredentialsRequestDto, AuthOtpRequestDto,
   AuthRequestDto, ForgotPasswordRequestDto,
   OtpRequestDto,
   OtpResponseDto,
@@ -42,6 +53,16 @@ export class AuthController {
   @Post("register")
   register(@Body() dto: AuthRequestDto): Promise<{ uuid: string, email: string, createdAt: Date }> {
     return this.authService.register(dto);
+  }
+
+  /**
+   * Login with otp endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post("login-otp")
+  async authWithOtp(@Body() dto: AuthOtpRequestDto, @Res({ passthrough: true }) response: Response): Promise<string> {
+    await this.otpService.checkOtp(dto.otp, dto.otpUuid);
+    return this.authService.loginOtp(dto, response);
   }
 
   /**
@@ -95,9 +116,11 @@ export class AuthController {
    * Forgot password endpoint
    */
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
   @Post("password-forgot")
-  async forgotPassword(@Body() dto: ForgotPasswordRequestDto): Promise<void> {
-    await this.otpService.checkOtp(dto.otp, dto.otpUuid);
+  async forgotPassword(@GetUser() user: User, @Body() dto: ForgotPasswordRequestDto): Promise<void> {
+    if (user.email !== dto.email) throw new ForbiddenException();
+
     await this.authService.forgotPassword(dto);
   }
 }

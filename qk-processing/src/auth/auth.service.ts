@@ -7,7 +7,13 @@ import { Response, Request } from "express";
 
 import { UserNotFoundException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthCheckCredentialsRequestDto, AuthRequestDto, ForgotPasswordRequestDto, ResetPasswordRequestDto } from "./dto";
+import {
+  AuthCheckCredentialsRequestDto,
+  AuthOtpRequestDto,
+  AuthRequestDto,
+  ForgotPasswordRequestDto,
+  ResetPasswordRequestDto,
+} from "./dto";
 import { RouteProvider } from "./provider";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -76,6 +82,20 @@ export class AuthService {
     response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
 
     await this.prisma.user.update({ data: { lastLoginAt: new Date() }, where: { email: user.email } });
+
+    return this.routeProvider.onLogin(user);
+  }
+
+  /**
+   * User login with OTP.
+   */
+  public async loginOtp(dto: AuthOtpRequestDto, response: Response): Promise<string> {
+    const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
+    if (!user) throw new UserNotFoundException(dto.email);
+
+    const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
+    const jwtToken = await this.signToken(user.uuid, user.email, user.role);
+    response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
 
     return this.routeProvider.onLogin(user);
   }
@@ -154,7 +174,7 @@ export class AuthService {
      * @param rememberMe {boolean}
      * @returns Jwt token with particular expiration date.
      */
-  private async signToken(userId: string, email: string, role: Role, rememberMe: boolean): Promise<string> {
+  private async signToken(userId: string, email: string, role: Role, rememberMe?: boolean): Promise<string> {
     const payload = {
       sub: userId,
       email,
