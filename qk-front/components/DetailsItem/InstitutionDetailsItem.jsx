@@ -1,8 +1,8 @@
 import moment from "moment"
 import PropTypes from "prop-types"
 
-import Text from "../../UI/Text/Text"
-import styles from "./InstitutionDetailsItem.module.scss"
+import Text from "../UI/Text/Text"
+import styles from "./DetailsItem.module.scss"
 
 const InstitutionDetailsItem = ({ data }) => {
    return (

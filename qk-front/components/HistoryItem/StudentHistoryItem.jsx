@@ -1,14 +1,13 @@
 import moment from "moment"
-import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
-import { credentialsDetailsState, credentialsShowDetailsState } from "../../../atoms"
-import Text from "../../UI/Text/Text"
-import styles from "./InstitutionHistoryItem.module.scss"
+import { credentialsDetailsState, credentialsShowDetailsState } from "../../atoms"
+import Text from "../UI/Text/Text"
+import styles from "./HistoryItem.module.scss"
 
-const InstitutionHistoryItem = ({ data }) => {
-   const { date, action, details } = data
-   
+const StudentHistoryItem = ({ data }) => {
+   const { date, details } = data
+
    const [, setShowDetails] = useRecoilState(credentialsShowDetailsState)
    const [, setDetails] = useRecoilState(credentialsDetailsState)
 
@@ -16,13 +15,13 @@ const InstitutionHistoryItem = ({ data }) => {
       setShowDetails(true)
       setDetails(details)
    }
-   
-   //TODO: Manage state so only one item is chosen
 
+   //TODO: Manage state so only one item is chosen
+   
    return (
       <div className={styles.historyItem} /*style={{ backgroundColor: activeHistory ? "#f5f5f5" : "" }}*/ onClick={handleShowDetails}>
          <Text grey>{moment(date * 1000).format("DD.MM.YYYY")}</Text>
-         <Text bold>{action}</Text>
+         <Text blackSpan>Shared with: <span>{details.sharedWith}</span></Text>
          <svg fill="none" height="17" viewBox="0 0 16 17"
               width="16" xmlns="http://www.w3.org/2000/svg">
             <g clipPath="url(#clip0_462_14165)">
@@ -40,6 +39,4 @@ const InstitutionHistoryItem = ({ data }) => {
    )
 }
 
-export default InstitutionHistoryItem
-
-InstitutionHistoryItem.propTypes = { data: PropTypes.object.isRequired }
+export default StudentHistoryItem

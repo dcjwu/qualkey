@@ -15,7 +15,7 @@ import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
 import styles from "./Topbar.module.scss"
 
-const Topbar = () => {
+const Topbar = ({ institution }) => {
    
    const { pathname, push } = useRouter()
 
@@ -84,11 +84,11 @@ const Topbar = () => {
                       src={bell}/>
                <span className={styles.notification}>3</span>
             </div>
-            <div className={styles.imageWrapperLogo}>
+            {institution && <div className={styles.imageWrapperLogo}>
                <Image alt="uni" className={styles.logo} layout="fill"
                       objectFit={"contain"}
                       quality={100} src={uniLogo}/>
-            </div>
+            </div>}
             <div className={styles.userWrapper} onClick={handleShowMenu}>
                <div className={styles.imageWrapperUser}>
                   <Image alt="user" className={styles.user} layout="fill"

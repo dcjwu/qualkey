@@ -5,6 +5,8 @@ import { useRouter } from "next/router"
 
 import InstitutionDashboard from "../../components/Institution/InstitutionDashboard/InstitutionDashboard"
 import InstitutionView from "../../components/Institution/InstitutionView/InstitutionView"
+import StudentDashboard from "../../components/Student/StudentDashboard/StudentDashboard"
+import StudentView from "../../components/Student/StudentView/StudentView"
 import Heading from "../../components/UI/Heading/Heading"
 import Text from "../../components/UI/Text/Text"
 import { userRoles } from "../../utils"
@@ -19,14 +21,14 @@ export default function Dashboard({ data, serverErrorMessage }) {
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
-   const { role, value } = data
+   const { role } = data
 
    if (role === userRoles.institution) return (
       <>
          <Head>
             <title>University Dashboard | QualKey</title>
          </Head>
-         <InstitutionView>
+         <InstitutionView institution>
             <Heading blue h1 xxl>University Dashboard</Heading>
             <Text large>browse all credential records</Text>
             <InstitutionDashboard/>
@@ -35,7 +37,16 @@ export default function Dashboard({ data, serverErrorMessage }) {
    )
 
    if (role === userRoles.student) return (
-      <Heading blue h1>{value}</Heading>
+      <>
+         <Head>
+            <title>Credentials Dashboard | QualKey</title>
+         </Head>
+         <StudentView>
+            <Heading blue h1 xxl>Credentials Dashboard</Heading>
+            <Text large>view, share and manage your credentials</Text>
+            <StudentDashboard/>
+         </StudentView>
+      </>
    )
 
    else push("/")

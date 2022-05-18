@@ -7,13 +7,13 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilValue } from "recoil"
 
-import avatar from "../../../assets/images/avatarMock.webp"
-import { credentialsDetailsState, credentialsShowDetailsState } from "../../../atoms"
-import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconOpenViewPage, IconShowDropdownBig } from "../../UI/_Icon"
-import Text from "../../UI/Text/Text"
-import InstitutionDetailsItem from "../InstitutionDetailsItem/InstitutionDetailsItem"
-import InstitutionHistoryItem from "../InstitutionHistoryItem/InstitutionHistoryItem"
-import styles from "./InstitutionItem.module.scss"
+import avatar from "../../assets/images/avatarMock.webp"
+import { credentialsDetailsState, credentialsShowDetailsState } from "../../atoms"
+import InstitutionDetailsItem from "../DetailsItem/InstitutionDetailsItem"
+import InstitutionHistoryItem from "../HistoryItem/InstitutionHistoryItem"
+import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconOpenViewPage, IconShowDropdownBig } from "../UI/_Icon"
+import Text from "../UI/Text/Text"
+import styles from "./DashboardItem.module.scss"
 
 const mockDataHistory = [
    {
@@ -113,15 +113,11 @@ const InstitutionDashboardItem = ({ data }) => {
             <div className={styles.itemWrapper}>
                <Image alt="portrait" className={styles.photo} height={50}
                       quality={100} src={avatar} width={50}/>
-               <div>
-                  <Text bold>{student}</Text>
-               </div>
+               <Text bold>{student}</Text>
             </div>
             <div className={styles.itemWrapper}>
                <IconAcademicCap/>
-               <div className={styles}>
-                  <Text>{`${diploma.slice(0, 27).trim()}...`}</Text>
-               </div>
+               <Text>{`${diploma.slice(0, 27).trim()}...`}</Text>
             </div>
             <div className={`${styles.status} ${validateStatus()}`}>
                <IconInfo/>

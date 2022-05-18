@@ -1,6 +1,6 @@
+import InstitutionDashboardItem from "../../DashboardItem/InstitutionDashboardItem"
 import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
-import InstitutionDashboardItem from "../InstitutionItem/InstitutionDashboardItem"
 import styles from "./InstitutionDashboard.module.scss"
 
 const mockData = [

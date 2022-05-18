@@ -1,12 +1,12 @@
 import moment from "moment"
 import PropTypes from "prop-types"
 
-import { IconVerified } from "../../UI/_Icon"
-import Button from "../../UI/Button/Button"
-import Text from "../../UI/Text/Text"
-import styles from "./InstitutionCredentialsInfo.module.scss"
+import { IconVerified } from "../UI/_Icon"
+import Button from "../UI/Button/Button"
+import Text from "../UI/Text/Text"
+import styles from "./CredentialsInfo.module.scss"
 
-const InstitutionCredentialsInfo = ({ data }) => {
+const CredentialsInfo = ({ data }) => {
    return (
       <>
          <div className={styles.tab}>
@@ -112,6 +112,6 @@ const InstitutionCredentialsInfo = ({ data }) => {
    )
 }
 
-export default InstitutionCredentialsInfo
+export default CredentialsInfo
 
-InstitutionCredentialsInfo.propTypes = { data: PropTypes.object.isRequired }
+CredentialsInfo.propTypes = { data: PropTypes.object.isRequired }

@@ -2,10 +2,10 @@ import moment from "moment"
 import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
-import { showEditCredentialsState } from "../../../atoms"
-import { IconAcademicCap, IconAcademicCapPerson, IconEdit, IconInfo } from "../../UI/_Icon"
-import Text from "../../UI/Text/Text"
-import styles from "./InstitutionItem.module.scss"
+import { showEditCredentialsState } from "../../atoms"
+import { IconAcademicCap, IconAcademicCapPerson, IconEdit, IconInfo } from "../UI/_Icon"
+import Text from "../UI/Text/Text"
+import styles from "./DashboardItem.module.scss"
 
 const InstitutionViewCredentialsItem = ({ data }) => {
    const { diploma, lastModified, status, student } = data

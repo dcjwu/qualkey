@@ -6,10 +6,10 @@ import { useRecoilValue } from "recoil"
 import { currentFileState, filenameState, filePrefixState, uploadModalState } from "../../../atoms"
 import { frontUrl } from "../../../utils"
 import FileUploadModal from "../../UI/Modal/FileUploadModal/FileUploadModal"
-import InstitutionSidebar from "../../UI/Sidebar/InstitutionSidebar/InstitutionSidebar"
+import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
 
-const InstitutionView = ({ children }) => {
+const InstitutionView = ({ children, institution }) => {
 
    const openModal = useRecoilValue(uploadModalState)
    const currentFile = useRecoilValue(currentFileState)
@@ -40,8 +40,8 @@ const InstitutionView = ({ children }) => {
 
    return (
       <div className="main__wrapper">
-         <InstitutionSidebar/>
-         <Topbar/>
+         <Sidebar institution={institution}/>
+         <Topbar institution={institution}/>
          <div className="dashboard">
             {children}
          </div>

@@ -5,10 +5,12 @@ import { useRouter } from "next/router"
 import { useRecoilValue } from "recoil"
 
 import { showEditCredentialsState } from "../../atoms"
-import InstitutionCredentialsInfo from "../../components/Institution/InstitutionCredentialsInfo/InstitutionCredentialsInfo"
+import CredentialsInfo from "../../components/CredentialsInfo/CredentialsInfo"
+import InstitutionViewCredentialsItem from "../../components/DashboardItem/InstitutionViewCredentialsItem"
+import StudentViewCredentialsItem from "../../components/DashboardItem/StudentViewCredentialsItem"
 import InstitutionEditCredentials from "../../components/Institution/InstitutionEditCredentials/InstitutionEditCredentials"
-import InstitutionViewCredentialsItem from "../../components/Institution/InstitutionItem/InstitutionViewCredentialsItem"
 import InstitutionView from "../../components/Institution/InstitutionView/InstitutionView"
+import StudentView from "../../components/Student/StudentView/StudentView"
 import Heading from "../../components/UI/Heading/Heading"
 import Text from "../../components/UI/Text/Text"
 import { userRoles } from "../../utils"
@@ -63,7 +65,7 @@ export default function CredentialsView({ data, serverErrorMessage }) {
             <Text large>browse all credential records</Text>
             <InstitutionViewCredentialsItem data={mockDataView}/>
             {!showEditCredentials
-               ? <InstitutionCredentialsInfo data={mockDataView.information}/>
+               ? <CredentialsInfo data={mockDataView.information}/>
                : <InstitutionEditCredentials data={mockDataView.information}/>}
             <div className="withdraw__button">
                <Text grey>- Withdraw Credentials -</Text>
@@ -73,7 +75,20 @@ export default function CredentialsView({ data, serverErrorMessage }) {
    )
 
    if (role === userRoles.student) return (
-      <Heading blue h1>{value}</Heading>
+      <>
+         <Head>
+            <title>View Credentials | QualKey</title>
+         </Head>
+         <StudentView>
+            <Heading blue h1>View Credentials</Heading>
+            <Text large>view, share and manage your credentials</Text>
+            <StudentViewCredentialsItem data={mockDataView}/>
+            <CredentialsInfo data={mockDataView.information}/>
+            <div className="withdraw__button">
+               <Text grey>- Delete Credentials -</Text>
+            </div>
+         </StudentView>
+      </>
    )
 
    else push("/")

@@ -1,5 +1,5 @@
-@import "assets/styles/helpers/variables";
-@import "assets/styles/helpers/mixins";
+@import "../../assets/styles/helpers/variables";
+@import "../../assets/styles/helpers/mixins";
 
 .activated {
   p {
@@ -21,6 +21,45 @@
   }
 }
 
+.expired {
+  p {
+    color: $color-additional-medium-dark;
+  }
+
+  path {
+    stroke: $color-additional-medium-dark;
+  }
+
+  &.student {
+    + div {
+      > svg {
+        &:first-child {
+          pointer-events: none;
+
+          path {
+            stroke: $color-additional-medium;
+          }
+        }
+      }
+
+      > a {
+        pointer-events: none;
+
+        svg {
+          path {
+            stroke: $color-additional-medium;
+
+            &:nth-child(3),
+            &:nth-child(4) {
+              fill: $color-additional-medium;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .withdrawn {
   p {
     color: $color-error;
@@ -29,15 +68,50 @@
   path {
     stroke: $color-error;
   }
+
+  &.student {
+    + div {
+      > svg {
+        &:first-child {
+          pointer-events: none;
+
+          path {
+            stroke: $color-additional-medium;
+          }
+        }
+      }
+    }
+  }
 }
 
-.expired {
+.activateCredentials {
+  cursor: pointer;
+
   p {
-    color: $color-additional-medium-dark;
+    color: $color-pending;
   }
 
   path {
-    stroke: $color-additional-medium-dark;
+    stroke: $color-pending;
+  }
+
+  &.student {
+    + div {
+      > svg:first-child,
+      > svg:last-child {
+        pointer-events: none;
+
+        path {
+          stroke: $color-additional-medium;
+        }
+
+        &:last-child {
+          path {
+            fill: $color-additional-medium;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -99,7 +173,7 @@
   }
 
   > *:not(:last-child) {
-    padding: 0 0.6rem;
+    padding: 0 0.6rem !important;
   }
 
   > div:nth-child(3) {
@@ -110,6 +184,22 @@
 
   > p:nth-child(4) {
     justify-self: center;
+  }
+
+  &.student {
+    grid-template-columns: 0.2fr 0.6fr 1.3fr 0.8fr 0.7fr;
+
+    @include breakpoint-max($bp-screen-md) {
+      grid-template-columns: 0.2fr 0.6fr 1.3fr 0.3fr 0.7fr;
+    }
+
+    > *:not(:last-child) {
+      padding: 0 1rem !important;
+    }
+
+    > div:nth-child(2) {
+      padding-left: 3rem !important;
+    }
   }
 }
 
@@ -130,6 +220,12 @@
       display: none;
     }
   }
+
+  .expired {
+    p {
+      color: $color-additional-medium;
+    }
+  }
 }
 
 .photo {
@@ -146,7 +242,7 @@
   justify-content: center;
   padding-left: 1.5rem;
 
-  svg {
+  > svg {
     cursor: pointer;
 
     @include breakpoint-max($bp-screen-md) {
@@ -159,6 +255,34 @@
         width: 2.6rem;
       }
     }
+  }
+
+  &.student {
+    > svg {
+      height: 3.5rem;
+      width: 3.5rem;
+
+      @include breakpoint-max($bp-screen-md) {
+        height: 3rem;
+        width: 3rem;
+      }
+
+      path {
+        stroke: $color-primary;
+      }
+    }
+
+    > a svg {
+      @include breakpoint-max($bp-screen-md) {
+        height: 3rem;
+        width: 3rem;
+      }
+    }
+  }
+
+  > button {
+    width: fit-content;
+    padding: 1rem 2rem;
   }
 }
 
@@ -226,4 +350,34 @@
 
 .viewCredentialWrapper {
   grid-template-columns: 1.1fr 1.5fr 0.7fr 1.05fr 0.3fr;
+
+  &.student {
+    grid-template-columns: 0.6fr 1.3fr 0.8fr 0.5fr;
+
+    @include breakpoint-max($bp-screen-xl) {
+      grid-template-columns: 0.6fr 1.3fr 0.8fr 1.1fr;
+    }
+
+    @include breakpoint-max($bp-screen-md) {
+      grid-template-columns: 0.6fr 1.3fr 0.3fr 1.3fr;
+    }
+
+    > div:nth-child(3) {
+      justify-self: center;
+      @include breakpoint-max($bp-screen-xxl) {
+        justify-self: self-start;
+      }
+    }
+  }
+}
+
+.studentSchoolLogo {
+  border: 1px solid $color-additional-light !important;
+  border-radius: 15px;
+}
+
+.buttonRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }

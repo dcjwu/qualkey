@@ -19,6 +19,7 @@ const Input = ({
    setPinValues,
    pinError,
    loading,
+   checkboxSolo,
    ...otherProps
 }) => {
    
@@ -46,7 +47,7 @@ const Input = ({
          <input {...otherProps} className={`${styles.checkbox}`}
                 name={inputName}
                 type="checkbox"/>
-         <Text medium>{checkboxText}</Text>
+         {!checkboxSolo && <Text medium>{checkboxText}</Text>}
       </div>
    )
 
@@ -115,5 +116,6 @@ Input.propTypes = {
    pinValues: PropTypes.array,
    setPinValues: PropTypes.func,
    pinError: PropTypes.bool,
-   loading: PropTypes.bool
+   loading: PropTypes.bool,
+   checkboxSolo: PropTypes.bool
 }

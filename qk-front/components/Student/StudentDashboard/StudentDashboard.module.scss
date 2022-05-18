@@ -1,0 +1,38 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.searchShareWrapper {
+  align-items: center;
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-end;
+  margin-bottom: 3rem;
+
+  > button {
+    padding: 1rem 2rem;
+    width: fit-content;
+
+    &:disabled {
+      color: $color-secondary;
+    }
+  }
+}
+
+.buttonRow {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.contentWrapper {
+  height: 62%;
+  overflow: hidden;
+  overflow-y: scroll;
+
+  p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+  }
+}

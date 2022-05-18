@@ -59,6 +59,10 @@
     border: 1px solid $color-highlight-dark;
   }
 
+  &:disabled {
+    border: 1px solid $color-additional-medium;
+  }
+
   &:checked {
     background-color: $color-secondary;
     background-image: url("../../../assets/images/checkbox.svg");
