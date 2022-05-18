@@ -7,7 +7,7 @@ import { AuthService } from "./auth.service";
 import { GetUser } from "./decorator";
 import {
   AuthCheckCredentialsRequestDto,
-  AuthRequestDto,
+  AuthRequestDto, ForgotPasswordRequestDto,
   OtpRequestDto,
   OtpResponseDto,
   ResetPasswordRequestDto,
@@ -90,5 +90,15 @@ export class AuthController {
   @Post("password-reset")
   async resetPassword(@GetUser() user: User, @Body() dto: ResetPasswordRequestDto): Promise<void> {
     await this.authService.resetPassword(dto, user.email);
+  }
+
+  /**
+   * Forgot password endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post("password-forgot")
+  async forgotPassword(@Body() dto: ForgotPasswordRequestDto): Promise<void> {
+    await this.otpService.checkOtp(dto.otp, dto.otpUuid);
+    await this.authService.forgotPassword(dto);
   }
 }
