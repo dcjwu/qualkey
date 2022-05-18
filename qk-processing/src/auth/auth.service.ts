@@ -5,6 +5,7 @@ import { Role } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { Response, Request } from "express";
 
+import { UserNotFoundException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthCheckCredentialsRequestDto, AuthRequestDto, ForgotPasswordRequestDto, ResetPasswordRequestDto } from "./dto";
 import { RouteProvider } from "./provider";
@@ -117,6 +118,8 @@ export class AuthService {
      */
   public async resetPassword(dto: ResetPasswordRequestDto, email: string): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { email: email } });
+    if (! user) throw new UserNotFoundException(email);
+
     // check if old password match
     const pwMatches = await bcrypt.compareSync(dto.oldPassword, user.password);
     if (!pwMatches) throw new UnprocessableEntityException("Wrong password");
@@ -133,6 +136,7 @@ export class AuthService {
    */
   public async forgotPassword(dto: ForgotPasswordRequestDto): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
+    if (! user) throw new UserNotFoundException(dto.email);
 
     // encrypt password and save
     await this.prisma.user.update({
