@@ -8,7 +8,7 @@ import { PrismaService } from "../prisma/prisma.service";
  */
 @Injectable()
 export class CredentialsRepository {
-  constructor(private readonly prisma: PrismaService) {
+  constructor(private readonly prismaService: PrismaService) {
   }
 
   getStudentCredentials(user: User): string {

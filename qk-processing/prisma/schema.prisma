@@ -175,6 +175,9 @@ model Transaction {
     fee                         String?
     hash                        String?
     hex                         String?
+    smartContract               SmartContract? @relation(fields: [smartContractId], references: [id])
+    smartContractId             String?
+
     createdAt                   DateTime @default(now())
     confirmedAt                 DateTime?
 
@@ -202,4 +205,18 @@ model OneTimePassword {
     canBeResentAt   DateTime
 
     @@map("oneTimePasswords")
+}
+
+enum SmartContractStatus {
+    ACTIVE
+    STORAGE_EXCEEDED
+}
+
+model SmartContract {
+    id              String @unique
+    status          SmartContractStatus @default(ACTIVE)
+    deployedAt      DateTime @default(now())
+    transactions    Transaction[]
+
+    @@map("smartContracts")
 }

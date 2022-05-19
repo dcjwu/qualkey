@@ -1,3 +1,4 @@
-export class CredentialsFactory {
+import { Injectable } from "@nestjs/common";
 
-}
+@Injectable()
+export class CredentialsFactory {}

@@ -8,13 +8,14 @@ import { CredentialsRepository } from "./credentials.repository";
  */
 @Injectable()
 export class CredentialsService {
-  constructor(private credentialsRepository: CredentialsRepository) {
+  constructor(
+        private readonly credentialsRepository: CredentialsRepository) {
   }
 
-  getCredentials(user: User):string {
+  getCredentials(user: User): string {
     if (user.role === Role.STUDENT) return this.credentialsRepository.getStudentCredentials(user);
     if (user.role === Role.INSTITUTION_REPRESENTATIVE) return this.credentialsRepository.getInstitutionCredentials(user);
-    
+
     throw new ForbiddenException();
   }
 }
