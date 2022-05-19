@@ -55,7 +55,7 @@ export default function Home() {
          setFormError(validation)
       } else {
          setLoading(true)
-         await axios.post(`${processingUrl}/auth/check`, formData, { withCredentials: true })
+         await axios.post(`${processingUrl}/auth/check`, formData)
             .then(response => {
                if (response.status === 200) {
                   setShowTwoFactor(true)
@@ -75,7 +75,7 @@ export default function Home() {
 
    useEffect(() => {
       if (showTwoFactor) {
-         axios.post(`${processingUrl}/auth/otp`, { email: formData.email } , { withCredentials: true })
+         axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
             .then(response => {
                setCanBeResendAt(moment.utc(response.data.canBeResentAt).valueOf() / 1000)
                setFormData({

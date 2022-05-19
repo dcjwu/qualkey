@@ -1,23 +1,69 @@
+import { useEffect, useState } from "react"
+
 import axios from "axios"
-import getConfig from "next/config"
 import Image from "next/image"
+import { useRouter } from "next/router"
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 
 import logo from "../../assets/images/qk-logo-text.svg"
+import { forgotFormState, repeatPasswordState } from "../../atoms"
 import NewPasswordForm from "../../components/AuthForms/FormTypes/NewPasswordForm"
 import Heading from "../../components/UI/Heading/Heading"
-
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
-const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
+import { processingUrl } from "../../utils"
 
 export default function NewPassword() {
+   
+   const { push } = useRouter()
+   
+   const resetRepeatPasswordFormData = useResetRecoilState(repeatPasswordState)
+   const forgotFormData = useRecoilValue(forgotFormState)
+   const [repeatPasswordFormData, setRepeatPasswordFormData] = useRecoilState(repeatPasswordState)
+   const [loading, setLoading] = useState(false)
+   const [buttonError, setButtonError] = useState("")
 
-   // TODO: Declare callback axios post request to API and pass to AuthForms
+   const handleFormChange = ({ target }) => {
+      const { name, value } = target
+      setRepeatPasswordFormData({
+         ...repeatPasswordFormData,
+         [name]: value
+      })
+   }
+
+   const handleFormSubmit = e => {
+      e.preventDefault()
+      if (repeatPasswordFormData.password !== repeatPasswordFormData.passwordRepeat) {
+         setButtonError("Password no match")
+      } else if (repeatPasswordFormData.password.trim() === "" || repeatPasswordFormData.passwordRepeat.trim() === "") {
+         setButtonError("Field cannot be empty")
+      } else {
+         setLoading(true)
+         axios.post(`${processingUrl}/auth/password-forgot`, { ...forgotFormData, newPassword: repeatPasswordFormData.password }, { withCredentials: true })
+            .then(response => {
+               if (response.status === 200) {
+                  push("/dashboard")
+               } else {
+                  setButtonError("Unexpected error")
+               }
+            })
+            .catch(error => {
+               console.log(error)
+               setButtonError(error.response.statusText)
+            })
+      }
+   }
+
+   useEffect(() => {
+      resetRepeatPasswordFormData()
+   }, [])
+
 
    return (
       <div className="auth">
          <div className="container authenticate">
             <div className="auth__wrapper">
-               <NewPasswordForm/>
+               <NewPasswordForm buttonError={buttonError} formChangeHandler={handleFormChange}
+                                formSubmitHandler={handleFormSubmit}
+                                loading={loading}/>
                <div className="logo">
                   <div className="logo__image-wrapper">
                      <Image priority alt="Qualkey" layout="fill"
@@ -30,25 +76,4 @@ export default function NewPassword() {
          </div>
       </div>
    )
-}
-
-export const getServerSideProps = async ({ req }) => {
-   try {
-      const response = await axios.get(`${apiUrl}/auth/verify`, {
-         withCredentials: true,
-         headers: { Cookie: req.headers.cookie || "" }
-      })
-      const { data } = response
-      if (data.redirectTo === "/dashboard") {
-         return {
-            redirect: {
-               permanent: false,
-               destination: "/dashboard"
-            }
-         }
-      }
-      return { props: { data } }
-   } catch (error) {
-      return { props: { serverErrorMessage: error.response.statusText } }
-   }
 }

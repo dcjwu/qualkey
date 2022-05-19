@@ -53,7 +53,7 @@ export default function CredentialsView({ data, serverErrorMessage }) {
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
-   const { role, value } = data
+   const { role } = data
 
    if (role === userRoles.institution) return (
       <>

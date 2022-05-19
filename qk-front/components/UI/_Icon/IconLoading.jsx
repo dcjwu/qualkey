@@ -1,6 +1,7 @@
-export const IconLoading = () => {
+export const IconLoading = ({ ...otherProps }) => {
    return (
       <svg fill="#fff" height="30" viewBox="0 0 120 30"
+{...otherProps}
            width="60" xmlns="http://www.w3.org/2000/svg">
          <circle cx="15" cy="15" r="15">
             <animate attributeName="r" begin="0s" calcMode="linear"

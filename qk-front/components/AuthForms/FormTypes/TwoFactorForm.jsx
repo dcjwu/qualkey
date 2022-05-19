@@ -5,7 +5,7 @@ import moment from "moment"
 import { useRouter } from "next/router"
 import { useRecoilValue, useResetRecoilState } from "recoil"
 
-import { loginFormState } from "../../../atoms"
+import { forgotFormState, loginFormState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
 import { IconLoading } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
@@ -14,14 +14,15 @@ import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "../AuthForm.module.scss"
 
-const TwoFactorForm = ({ canBeResendAt }) => {
-   
+const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
+
    const { push } = useRouter()
 
    const calculateDuration = eventTime => moment.duration(Math.max(eventTime - (Math.floor(moment.utc(new Date().toISOString()).valueOf() / 1000)), 0), "seconds")
 
    const resetFormData = useResetRecoilState(loginFormState)
    const formData = useRecoilValue(loginFormState)
+   const forgotFormData = useRecoilValue(forgotFormState)
    const [hideResendButton, setHideResendButton] = useState(false)
    const [duration, setDuration] = useState(calculateDuration(canBeResendAt))
    const [pinValues, setPinValues] = useState(["", "", "", ""])
@@ -45,19 +46,39 @@ const TwoFactorForm = ({ canBeResendAt }) => {
          setButtonError("")
          setPinError(false)
          setLoading(true)
-         axios.post(`${processingUrl}/auth/login`, { ...formData, otp: pinValues.join("") }, { withCredentials: true })
-            .then(response => {
-               push(response.data)
-               resetFormData()
-            })
-            .catch(error => {
-               setLoading(false)
-               if (error.response.statusText === "Unprocessable Entity") {
-                  setButtonError("Incorrect code")
-               } else {
-                  setButtonError(error.response.statusText)
-               }
-            })
+         if (forgotPassword) {
+            axios.post(`${processingUrl}/auth/login-otp`, {
+               ...forgotFormData,
+               otp: pinValues.join("")
+            }, { withCredentials: true })
+               .then(response => {
+                  if (response.status === 200) {
+                     push("forgot/new-password")
+                  }
+               })
+               .catch(error => {
+                  setLoading(false)
+                  if (error.response.statusText === "Unprocessable Entity") {
+                     setButtonError("Incorrect code")
+                  } else {
+                     setButtonError(error.response.statusText)
+                  }
+               })
+         } else {
+            axios.post(`${processingUrl}/auth/login`, { ...formData, otp: pinValues.join("") }, { withCredentials: true })
+               .then(response => {
+                  push(response.data)
+                  resetFormData()
+               })
+               .catch(error => {
+                  setLoading(false)
+                  if (error.response.statusText === "Unprocessable Entity") {
+                     setButtonError("Incorrect code")
+                  } else {
+                     setButtonError(error.response.statusText)
+                  }
+               })
+         }
       } else {
          setButtonError("Please, fill all numbers")
          setPinError(true)
@@ -75,6 +96,7 @@ const TwoFactorForm = ({ canBeResendAt }) => {
       setHideResendButton(true)
       return () => {
          setLoading(false)
+
       }
    }, [])
 

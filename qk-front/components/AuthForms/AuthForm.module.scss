@@ -90,6 +90,14 @@
   @include breakpoint-max($bp-screen-sm) {
     width: calc(100% - 8rem);
   }
+
+  form {
+    > button:nth-child(3) {
+      > svg {
+        height: 15px;
+      }
+    }
+  }
 }
 
 .forgot {
