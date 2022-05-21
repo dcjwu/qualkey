@@ -5,8 +5,11 @@ import { UploadStatus, User } from "@prisma/client";
 import { Queue } from "bull";
 
 import { AwsS3Service } from "../../aws/aws.s3.service";
+import { CredentialHashableDataDto } from "../../credentials/dto/credential.hashable-data.dto";
+import { CredentialsCheckEvent } from "../../credentials/event/credentials.check-event";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "../event";
+import { FileParser } from "../parser/file-parser";
 
 /**
  * Handles all events regarding Mass-uploads functionality
@@ -18,6 +21,7 @@ export class UploadEventListener {
       private eventEmitter: EventEmitter2,
       private awsS3Service: AwsS3Service,
       private prisma: PrismaService,
+      private fileParser: FileParser,
   ) {
   }
 
@@ -58,25 +62,38 @@ export class UploadEventListener {
     });
     Logger.debug(`upload status changed to APPROVED ${event.upload.uuid}`);
 
-    // TODO: Notify representatives about approve
+    if (0 === event.representatives.length) return;
+    // Notify representatives about approve
+    event.representatives.forEach((user: User) => {
+      Logger.debug(`Dispatching ${user.uuid}`);
+      this.uploadNotifyQueue.add("approved",{
+        representativeUuid: user.uuid,
+        representativeEmail: user.email,
+      });
+    });
 
-    // load file
+    // parse file into hashable data DTOs
+    const credentialDataArray: CredentialHashableDataDto[] = await this.fileParser
+      .parseUpload(
+        this.awsS3Service.get(event.upload.filename),
+        event.upload.mapping.split(","),
+        event.upload.filename,
+      )
+    ;
 
-    // get the extension, check if it is supported
+    // foreach entry create CredentialsCheckEvent with data from entry
+    credentialDataArray.forEach(credentialData => {
+      const credentialCheckEvent = new CredentialsCheckEvent();
+      credentialCheckEvent.credentialHashableDataDto = credentialData;
+      this.eventEmitter.emit("credentials.check", credentialCheckEvent);
+    });
 
-    // parse depending on the extension
-
-    // foreach entry create CredentialsCreateMessage with data from entry
-
-    // dispatch CredentialsCreateMessage to queue https://github.com/bbc/sqs-producer
-    // sqs queue url: https://sqs.eu-north-1.amazonaws.com/594068861847/CreateCredentialsQueue.fifo
-
-    // TODO: remove file
-    // try {
-    //   await this.awsS3Service.remove(event.upload.filename)
-    // } catch(err) {
-    //   console.error(err)
-    // }
+    // remove file
+    try {
+      await this.awsS3Service.remove(event.upload.filename);
+    } catch(err) {
+      console.error(err);
+    }
   }
 
   @OnEvent("upload.rejected")
@@ -89,7 +106,14 @@ export class UploadEventListener {
     });
     Logger.debug(`upload status changed to REJECTED ${event.upload.uuid}`);
 
-    // TODO: Notify representatives about reject
+    // Notify representatives about reject
+    event.representatives.forEach((user: User) => {
+      Logger.debug(`Dispatching ${user.uuid}`);
+      this.uploadNotifyQueue.add("rejected",{
+        representativeUuid: user.uuid,
+        representativeEmail: user.email,
+      });
+    });
 
     // remove file
     try {

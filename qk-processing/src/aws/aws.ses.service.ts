@@ -12,24 +12,32 @@ export class AwsSesService {
     private NO_REPLY_EMAIL = "abramov.igor.n@gmail.com";
 
     public async sendWelcomeUserEmail(recipientEmail: string, name: string, password: string): Promise<void> {
-      await this.sendEmailTemplate(recipientEmail, this.NO_REPLY_EMAIL, "welcome-user", `{ \"email\":\"${recipientEmail}\", \"name\":\"${name}\", \"password\":\"${password}\" }`);
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "welcome-user", `{ \"email\":\"${recipientEmail}\", \"name\":\"${name}\", \"password\":\"${password}\" }`);
     }
 
     public async sendReviewUploadEmail(recipientEmail: string): Promise<void> {
-      await this.sendEmailTemplate(recipientEmail, this.NO_REPLY_EMAIL, "review-upload");
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "review-upload");
     }
 
     public async sendOtpEmail(recipientEmail: string, otp: string): Promise<void> {
-      await this.sendEmailTemplate(recipientEmail, this.NO_REPLY_EMAIL, "send-otp", `{ \"otp\":\"${otp}\"}`);
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "send-otp", `{ \"otp\":\"${otp}\"}`);
     }
 
-    private async sendEmailTemplate(recipientEmail: string, senderEmail: string, template: string, templateData?: string): Promise<void> {
+    public async sendUploadApproved(recipientEmail: string): Promise<void> {
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "upload-approved");
+    }
+
+    public async sendUploadRejected(recipientEmail: string): Promise<void> {
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "upload-rejected");
+    }
+
+    private async sendEmailTemplate(recipientEmails: string[], senderEmail: string, template: string, templateData?: string): Promise<void> {
       const ses = this.getSES();
 
       const params = {
         Source: senderEmail,
         Template: template,
-        Destination: { ToAddresses: [recipientEmail] },
+        Destination: { ToAddresses: recipientEmails },
         TemplateData: templateData ?? "{\"data\":\"data\"}",
       };
 
@@ -58,9 +66,9 @@ export class AwsSesService {
     public async createTemplate(): Promise<void> {
       const params = {
         Template: {
-          TemplateName: "welcome-user",
-          HtmlPart: "<h1>Hello {{ name }},</h1><p>Welcome to Qualkey!</p><p>You can login to our website using your email {{ email }}, please use this password {{ password }}.</p><p>The password can be reset on our website.</p>",
-          SubjectPart: "Welcome to Qualkey!",
+          TemplateName: "upload-rejected",
+          HtmlPart: "<h1>Hello,</h1><p>The Mass upload has been rejected by one of the institution representatives.</p>",
+          SubjectPart: "Mass upload has been rejected!",
         },
       };
       this.getSES().createTemplate(params);

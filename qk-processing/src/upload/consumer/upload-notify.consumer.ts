@@ -10,7 +10,7 @@ export class UploadNotifyConsumer {
   }
 
     @Process("pending")
-  async transcode(job: Job): Promise<void> {
+  async handlePending(job: Job): Promise<void> {
     Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
     Logger.debug(`Sending notification to ${job.data.representativeEmail}`);
     try {
@@ -19,6 +19,28 @@ export class UploadNotifyConsumer {
       Logger.error(err, err.stack);
     }
   }
+
+    @Process("approved")
+    async handleApproved(job: Job): Promise<void> {
+      Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
+      Logger.debug(`Sending notification to ${job.data.representativeEmails}`);
+      try {
+        await this.ses.sendUploadApproved(job.data.representativeEmails);
+      } catch (err) {
+        Logger.error(err, err.stack);
+      }
+    }
+
+    @Process("rejected")
+    async handleRejected(job: Job): Promise<void> {
+      Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
+      Logger.debug(`Sending notification to ${job.data.representativeEmails}`);
+      try {
+        await this.ses.sendUploadRejected(job.data.representativeEmails);
+      } catch (err) {
+        Logger.error(err, err.stack);
+      }
+    }
 
     @OnQueueActive()
     onActive(job: Job): void {

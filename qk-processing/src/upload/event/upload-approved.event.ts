@@ -1,5 +1,6 @@
-import { Upload } from "@prisma/client";
+import { Upload, User } from "@prisma/client";
 
 export class UploadApprovedEvent {
   upload: Upload;
+  representatives: User[];
 }

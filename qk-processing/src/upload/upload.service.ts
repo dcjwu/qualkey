@@ -28,6 +28,7 @@ export class UploadService {
         where: { uuid: uploadedBy.institutionUuid },
         include: { representatives: true },
       });
+      if (! institution) throw new NotFoundException("institution not found");
 
       const representatives = institution.representatives.filter(r => r.uuid !== uploadedBy.uuid);
 
@@ -45,6 +46,16 @@ export class UploadService {
       uploadSucceededEvent.upload = upload;
       uploadSucceededEvent.representatives = representatives;
       this.eventEmitter.emit("upload.succeeded", uploadSucceededEvent);
+
+      //  If there is no other representatives - Approve upload right away
+      if (0 === representatives.length) {
+        const uploadApprovedEvent = new UploadApprovedEvent();
+        uploadApprovedEvent.upload = upload;
+        uploadApprovedEvent.representatives = [];
+        this.eventEmitter.emit("upload.approved", uploadApprovedEvent);
+
+        return;
+      }
 
       for (const representative of representatives) {
         await this.prisma.userActions.create({
@@ -125,9 +136,16 @@ export class UploadService {
       await this.prisma.userActions.delete({ where: { id: action.id } });
     }
 
+    const institution = await this.prisma.institution.findUnique({
+      where: { uuid: rejectedBy.institutionUuid },
+      include: { representatives: true },
+    });
+    if (! institution) throw new NotFoundException("institution not found");
+
     const uploadRejectedEvent = new UploadRejectedEvent();
     uploadRejectedEvent.upload = upload;
     uploadRejectedEvent.rejectedBy = rejectedBy;
+    uploadRejectedEvent.representatives = institution.representatives;
     this.eventEmitter.emit("upload.rejected", uploadRejectedEvent);
   }
 

@@ -71,7 +71,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post("login")
   async login(@Body() dto: AuthRequestDto, @Res({ passthrough: true }) response: Response ): Promise<string> {
-    await this.otpService.checkOtp(dto.otp, dto.otpUuid);
+    // await this.otpService.checkOtp(dto.otp, dto.otpUuid);
     return this.authService.login(dto, response);
   }
 
