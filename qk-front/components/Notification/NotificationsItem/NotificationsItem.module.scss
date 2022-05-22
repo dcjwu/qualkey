@@ -1,0 +1,31 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.wrapper {
+  align-items: center;
+  border-bottom: 1px solid $color-additional-medium;
+  display: grid;
+  grid-template-columns: 1fr .3fr;
+  padding: 2rem 1.5rem;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-additional-light;
+  }
+}
+
+.left {
+  align-items: center;
+  display: grid;
+  grid-template-columns: .1fr .8fr;
+  gap: 1rem;
+  svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    rect {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
+}
