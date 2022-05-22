@@ -24,12 +24,19 @@ export class CredentialsController {
    */
     @HttpCode(HttpStatus.OK)
     @Get()
-  async getCredentials(@GetUser() user: User): Promise<Credential[]> {
+  async getCredentials(
+      @GetUser() user: User,
+      @Query("uuid") uuid: string,
+      @Query("filter") filter: string,
+  ): Promise<Credential[]> {
+    if (uuid && uuid !== "") {
+      return [await this.credentialsRepository.getByUuid(uuid, user)];
+    }
     if (user.role === Role.STUDENT) {
-      return this.credentialsRepository.getAllForStudent(user);
+      return this.credentialsRepository.getAllForStudent(user, filter);
     }
     if (user.role === Role.INSTITUTION_REPRESENTATIVE) {
-      return this.credentialsRepository.getAllForInstitution(user);
+      return this.credentialsRepository.getAllForInstitution(user, filter);
     }
 
     throw new ForbiddenException();
