@@ -10,6 +10,7 @@ import avatar from "../../../assets/images/avatarMock.webp"
 import bell from "../../../assets/images/bell.svg"
 import uniLogo from "../../../assets/images/mockUniLogo.webp"
 import { processingUrl } from "../../../utils"
+import NotificationWrapper from "../../Notification/NotificationWrapper/NotificationWrapper"
 import { IconAcademicCap, IconArrowLeft, IconHideDropdownBig, IconLogout, IconMessage, IconSettings } from "../_Icon"
 import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
@@ -48,9 +49,14 @@ const Topbar = ({ institution }) => {
    }, [isScreenLg])
 
    const [showMenu, setShowMenu] = useState(false)
+   const [showNotifications, setShowNotifications] = useState(false)
 
    const handleShowMenu = () => {
       setShowMenu(prevState => !prevState)
+   }
+   
+   const handleShowNotifications = () => {
+      setShowNotifications(prevState => !prevState)
    }
 
    const outsideClickRef = useRef()
@@ -79,10 +85,11 @@ const Topbar = ({ institution }) => {
          </div>}
          <BurgerButton style={{ marginLeft: lgMarginLeft || mdMarginLeft }}/>
          <div className={styles.right}>
-            <div className={styles.imageWrapperNotification}>
+            <div className={styles.imageWrapperNotification} onClick={handleShowNotifications}>
                <Image alt="bell" layout="fill" quality={100}
                       src={bell}/>
                <span className={styles.notification}>3</span>
+               <NotificationWrapper setShow={setShowNotifications} show={showNotifications}/>
             </div>
             {institution && <div className={styles.imageWrapperLogo}>
                <Image alt="uni" className={styles.logo} layout="fill"

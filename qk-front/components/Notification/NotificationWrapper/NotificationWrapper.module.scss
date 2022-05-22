@@ -1,0 +1,39 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.wrapper {
+  background-color: $color-secondary;
+  border-radius: 15px;
+  box-shadow: 0 4px 34px rgb(0 0 0 / 15%);
+  cursor: default;
+  height: 55rem;
+  left: 50%;
+  position: absolute;
+  top: calc(6.1rem + 1.5rem);
+  transform: translateX(-50%);
+  width: 45rem;
+  z-index: 99;
+
+  &::before {
+    border-color: transparent transparent $color-secondary transparent;
+    border-style: solid;
+    border-width: 0 20px 15px;
+    content: "\A";
+    left: 50%;
+    position: absolute;
+    top: -1.5rem;
+    transform: translateX(-50%);
+  }
+}
+
+.top {
+  align-items: center;
+  border-bottom: 1px solid $color-additional-medium;
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 1.5rem;
+
+  svg {
+    cursor: pointer;
+  }
+}
