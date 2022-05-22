@@ -19,6 +19,7 @@ export class CsvParser {
         .on("data", function (data) {
           try {
             const dto = new CredentialHashableDataDto();
+            dto.email = data.email;
             dto.certificateId = data.certificateId;
             dto.graduatedName = data.graduatedName;
             dto.authenticatedBy = data.authenticatedBy;

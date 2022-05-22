@@ -8,6 +8,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Role, User } from "@prisma/client";
 import { Express } from "express";
@@ -15,7 +16,9 @@ import { Express } from "express";
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
 import { AwsS3Service } from "../aws/aws.s3.service";
+import { PrismaService } from "../prisma/prisma.service";
 import { UploadDecisionDto, UploadDto, UploadGetFileDto } from "./dto";
+import { UploadApprovedEvent } from "./event";
 import { UploadService } from "./upload.service";
 
 /**
@@ -28,7 +31,19 @@ export class UploadController {
       private uploadService: UploadService,
       @Inject(AwsS3Service)
       private awsS3Service: AwsS3Service,
+      private eventEmitter: EventEmitter2,
+      private prisma: PrismaService,
   ) {}
+
+  @Get("test")
+  async getMe(@GetUser() user: User, @Query("uuid") uuid: string): Promise<void> {
+    const upload = await this.prisma.upload.findUnique({ where:{ uuid: uuid } });
+    const uploadApprovedEvent = new UploadApprovedEvent();
+    uploadApprovedEvent.upload = upload;
+    uploadApprovedEvent.representatives = [];
+    uploadApprovedEvent.approvedBy = user;
+    this.eventEmitter.emit("upload.approved", uploadApprovedEvent);
+  }
 
   /**
    * Post mass-upload endpoint

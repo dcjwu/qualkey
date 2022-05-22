@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["extendedIndexes"]
   binaryTargets = ["native", "linux-musl"]
 }
 
@@ -47,7 +48,7 @@ enum CredentialStatus {
 model Credential {
     uuid                String @id @default(uuid())
     did                 String @unique
-    status              CredentialStatus
+    status              CredentialStatus @default(NEW)
     student             User @relation(fields: [studentUuid], references: [uuid])
     studentUuid         String
     institution         Institution @relation(fields: [institutionUuid], references: [uuid])
@@ -72,6 +73,8 @@ model Credential {
     studyEndedAt        DateTime?
     graduatedAt         DateTime?
     expiresAt           DateTime?
+
+    credentialChanges   CredentialChange[]
 
     @@map("credentials")
 }
@@ -129,13 +132,15 @@ model CredentialShare {
 
 model CredentialChange {
     id                          Int @id @default(autoincrement())
+    credential                  Credential @relation(fields: [credentialUuid], references: [uuid])
     credentialUuid              String
-    changedByUuid               String // User uuid
-    changedFrom                 String // array with changes from   1;Peter;Dinklage
-    changedTo                   String // array with changes to     2;fyodor;Pupkin
-    fieldName                   String // array with field names    id;first_name;last_name
+    credentialDid               String
+    changedByUuid               String? // User uuid
+    changedFrom                 String? // array with changes from   1;Peter;Dinklage
+    changedTo                   String? // array with changes to     2;fyodor;Pupkin
+    fieldName                   String? // array with field names    id;first_name;last_name
     changedAt                   DateTime @default(now())
-    hash                        String
+    hash                        String @unique
 
     @@map("credentialChanges")
 }

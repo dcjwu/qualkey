@@ -52,6 +52,7 @@ export class UploadService {
         const uploadApprovedEvent = new UploadApprovedEvent();
         uploadApprovedEvent.upload = upload;
         uploadApprovedEvent.representatives = [];
+        uploadApprovedEvent.approvedBy = uploadedBy;
         this.eventEmitter.emit("upload.approved", uploadApprovedEvent);
 
         return;
@@ -112,8 +113,16 @@ export class UploadService {
 
     // if all approved emit UploadApprovedEvent
     if (confirmedBy.length === requestedFrom.length) {
+      const institution = await this.prisma.institution.findUnique({
+        where: { uuid: approvedBy.institutionUuid },
+        include: { representatives: true },
+      });
+      if (! institution) throw new NotFoundException("institution not found");
+
       const uploadApprovedEvent = new UploadApprovedEvent();
       uploadApprovedEvent.upload = upload;
+      uploadApprovedEvent.representatives = institution.representatives;
+      uploadApprovedEvent.approvedBy = approvedBy;
       this.eventEmitter.emit("upload.approved", uploadApprovedEvent);
     }
   }

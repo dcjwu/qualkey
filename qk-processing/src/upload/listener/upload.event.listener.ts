@@ -6,7 +6,6 @@ import { Queue } from "bull";
 
 import { AwsS3Service } from "../../aws/aws.s3.service";
 import { CredentialHashableDataDto } from "../../credentials/dto/credential.hashable-data.dto";
-import { CredentialsCheckEvent } from "../../credentials/event/credentials.check-event";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "../event";
 import { FileParser } from "../parser/file-parser";
@@ -18,6 +17,7 @@ import { FileParser } from "../parser/file-parser";
 export class UploadEventListener {
   constructor(
       @InjectQueue("upload-notify") private uploadNotifyQueue: Queue,
+      @InjectQueue("credentials-create") private credentialsCreateQueue: Queue,
       private eventEmitter: EventEmitter2,
       private awsS3Service: AwsS3Service,
       private prisma: PrismaService,
@@ -62,15 +62,16 @@ export class UploadEventListener {
     });
     Logger.debug(`upload status changed to APPROVED ${event.upload.uuid}`);
 
-    if (0 === event.representatives.length) return;
-    // Notify representatives about approve
-    event.representatives.forEach((user: User) => {
-      Logger.debug(`Dispatching ${user.uuid}`);
-      this.uploadNotifyQueue.add("approved",{
-        representativeUuid: user.uuid,
-        representativeEmail: user.email,
+    if (0 !== event.representatives.length) {
+      // Notify representatives about approve
+      event.representatives.forEach((user: User) => {
+        Logger.debug(`Dispatching ${user.uuid}`);
+        this.uploadNotifyQueue.add("approved", {
+          representativeUuid: user.uuid,
+          representativeEmail: user.email,
+        });
       });
-    });
+    }
 
     // parse file into hashable data DTOs
     const credentialDataArray: CredentialHashableDataDto[] = await this.fileParser
@@ -80,20 +81,21 @@ export class UploadEventListener {
         event.upload.filename,
       )
     ;
+    Logger.debug(`Upload parsed into DTOs ${event.upload.uuid}`);
 
-    // foreach entry create CredentialsCheckEvent with data from entry
+    // foreach entry create credentialsCreateMessage with data from entry
     credentialDataArray.forEach(credentialData => {
-      const credentialCheckEvent = new CredentialsCheckEvent();
-      credentialCheckEvent.credentialHashableDataDto = credentialData;
-      this.eventEmitter.emit("credentials.check", credentialCheckEvent);
+      credentialData.institutionUuid = event.approvedBy.institutionUuid;
+      Logger.debug(`Dispatching credentialsCreateMessage ${credentialData.graduatedName}`);
+      this.credentialsCreateQueue.add("create", { credentialHashableDataDto: credentialData });
     });
 
-    // remove file
-    try {
-      await this.awsS3Service.remove(event.upload.filename);
-    } catch(err) {
-      console.error(err);
-    }
+    // TODO: enable remove file
+    // try {
+    //   await this.awsS3Service.remove(event.upload.filename);
+    // } catch(err) {
+    //   Logger.error(err);
+    // }
   }
 
   @OnEvent("upload.rejected")

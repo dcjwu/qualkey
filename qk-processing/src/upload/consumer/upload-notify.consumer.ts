@@ -17,7 +17,9 @@ export class UploadNotifyConsumer {
       await this.ses.sendReviewUploadEmail(job.data.representativeEmail);
     } catch (err) {
       Logger.error(err, err.stack);
+      return;
     }
+    await job.moveToCompleted();
   }
 
     @Process("approved")
@@ -28,7 +30,9 @@ export class UploadNotifyConsumer {
         await this.ses.sendUploadApproved(job.data.representativeEmails);
       } catch (err) {
         Logger.error(err, err.stack);
+        return;
       }
+      await job.moveToCompleted();
     }
 
     @Process("rejected")
@@ -39,7 +43,9 @@ export class UploadNotifyConsumer {
         await this.ses.sendUploadRejected(job.data.representativeEmails);
       } catch (err) {
         Logger.error(err, err.stack);
+        return;
       }
+      await job.moveToCompleted();
     }
 
     @OnQueueActive()

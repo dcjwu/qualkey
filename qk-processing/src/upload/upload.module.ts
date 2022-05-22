@@ -13,7 +13,22 @@ import { UploadService } from "./upload.service";
 @Module({
   imports: [
     AwsModule,
-    BullModule.registerQueue({ name: "upload-notify" }),
+    BullModule.registerQueue({
+      name: "upload-notify",
+      limiter: {
+        max: 1,
+        duration: 100,
+        bounceBack: true,
+      },
+    }),
+    BullModule.registerQueue({
+      name: "credentials-create",
+      limiter: {
+        max: 1,
+        duration: 1000,
+        bounceBack: true,
+      },
+    }),
   ],
   controllers: [UploadController],
   providers: [

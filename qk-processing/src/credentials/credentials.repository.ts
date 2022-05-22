@@ -1,27 +1,23 @@
+import * as assert from "assert";
+
 import { Injectable } from "@nestjs/common";
-import { User } from "@prisma/client";
+import { Credential } from "@prisma/client";
 
 import { PrismaService } from "../prisma/prisma.service";
-
 /**
  * Class responsible for getting credentials from the data sources
  */
 @Injectable()
 export class CredentialsRepository {
-  constructor(private readonly prismaService: PrismaService) {
+  constructor(
+      private prismaService: PrismaService,
+  ) {
   }
 
-  getStudentCredentials(user: User): string {
-    return JSON.stringify({
-      value: `Student dashboard page! Welcome, ${user.email}`,
-      role: user.role,
-    });
-  }
+  public async getByUuid(uuid: string): Promise<Credential> {
+    const credentials = await this.prismaService.credential.findUnique({ where:{ uuid:uuid } });
+    assert(null !== credentials, "credentials should not be null");
 
-  getInstitutionCredentials(user: User): string {
-    return JSON.stringify({
-      value: `Institution dashboard page! Welcome, ${user.email}`,
-      role: user.role,
-    });
+    return credentials;
   }
 }

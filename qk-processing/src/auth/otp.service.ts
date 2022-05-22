@@ -37,7 +37,8 @@ export class OtpService {
       },
     });
 
-    await this.ses.sendOtpEmail(email, otp.code);
+    // TODO: enable it back
+    // await this.ses.sendOtpEmail(email, otp.code);
 
     return new OtpResponseDto(otp.uuid, otp.validUntil, otp.canBeResentAt);
   }

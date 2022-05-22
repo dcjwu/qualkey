@@ -71,6 +71,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post("login")
   async login(@Body() dto: AuthRequestDto, @Res({ passthrough: true }) response: Response ): Promise<string> {
+    // TODO: enable it back
     // await this.otpService.checkOtp(dto.otp, dto.otpUuid);
     return this.authService.login(dto, response);
   }

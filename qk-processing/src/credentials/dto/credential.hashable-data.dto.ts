@@ -1,4 +1,11 @@
+import { IsEmail, IsNotEmpty } from "class-validator";
+
 export class CredentialHashableDataDto {
+  @IsNotEmpty()
+  @IsEmail()
+    email: string;
+  institutionUuid?: string;
+
   certificateId?: string;
   graduatedName?: string;
   authenticatedBy?: string;

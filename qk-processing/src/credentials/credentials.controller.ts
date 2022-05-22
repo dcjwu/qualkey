@@ -1,8 +1,10 @@
-import { Controller, Get, HttpCode, HttpStatus, UseGuards } from "@nestjs/common";
-import { User } from "@prisma/client";
+import { Controller, Get, HttpCode, HttpStatus, Query, UseGuards } from "@nestjs/common";
+import { Credential, User } from "@prisma/client";
 
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
+import { CredentialsChangeRepository } from "./credentials-change.repository";
+import { CredentialsRepository } from "./credentials.repository";
 import { CredentialsService } from "./credentials.service";
 
 /**
@@ -11,14 +13,28 @@ import { CredentialsService } from "./credentials.service";
 @Controller("credential")
 @UseGuards(JwtGuard)
 export class CredentialsController {
-  constructor(private credentialsService: CredentialsService) {}
+  constructor(
+      private credentialsService: CredentialsService,
+      private credentialsRepository: CredentialsRepository,
+      private credentialsChangeRepository: CredentialsChangeRepository,
+  ) {}
 
   /**
    * Get credentials endpoint
    */
     @HttpCode(HttpStatus.OK)
     @Get()
-  getCredentials(@GetUser() user: User):string {
-    return this.credentialsService.getCredentials(user);
+  async getCredentials(@GetUser() user: User, @Query("uuid") uuid: string): Promise<Credential> {
+    return await this.credentialsRepository.getByUuid(uuid);
   }
+
+  /**
+   * Get credentialChange endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Get("change")
+    async getCredentialChange(@GetUser() user: User, @Query("uuid") uuid: string): Promise<boolean> {
+    // TODO: implement
+      return await this.credentialsChangeRepository.hasHash(uuid);
+    }
 }

@@ -9,6 +9,7 @@ import { ThrottlerModule } from "@nestjs/throttler";
 import { Role } from "@prisma/client";
 import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { buildFeature, CurrentAdmin } from "adminjs";
+import * as bcrypt from "bcryptjs";
 
 import { AuthModule } from "./auth/auth.module";
 import { AwsModule } from "./aws/aws.module";
@@ -19,9 +20,6 @@ import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
 import { UploadModule } from "./upload/upload.module";
 import { UserModule } from "./user/user.module";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const bcrypt = require("bcryptjs");
 
 AdminJS.registerAdapter({ Database, Resource });
 
