@@ -1,5 +1,5 @@
-import { Controller, Get, HttpCode, HttpStatus, Query, UseGuards } from "@nestjs/common";
-import { Credential, User } from "@prisma/client";
+import { Controller, ForbiddenException, Get, HttpCode, HttpStatus, Query, UseGuards } from "@nestjs/common";
+import { Credential, Role, User } from "@prisma/client";
 
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
@@ -24,8 +24,15 @@ export class CredentialsController {
    */
     @HttpCode(HttpStatus.OK)
     @Get()
-  async getCredentials(@GetUser() user: User, @Query("uuid") uuid: string): Promise<Credential> {
-    return await this.credentialsRepository.getByUuid(uuid);
+  async getCredentials(@GetUser() user: User): Promise<Credential[]> {
+    if (user.role === Role.STUDENT) {
+      return this.credentialsRepository.getAllForStudent(user);
+    }
+    if (user.role === Role.INSTITUTION_REPRESENTATIVE) {
+      return this.credentialsRepository.getAllForInstitution(user);
+    }
+
+    throw new ForbiddenException();
   }
 
   /**

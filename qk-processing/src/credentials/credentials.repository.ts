@@ -1,7 +1,7 @@
 import * as assert from "assert";
 
 import { Injectable } from "@nestjs/common";
-import { Credential } from "@prisma/client";
+import { Credential, User } from "@prisma/client";
 
 import { PrismaService } from "../prisma/prisma.service";
 /**
@@ -19,5 +19,13 @@ export class CredentialsRepository {
     assert(null !== credentials, "credentials should not be null");
 
     return credentials;
+  }
+
+  public async getAllForStudent(user: User): Promise<Credential[]> {
+    return await this.prismaService.credential.findMany({ where:{ studentUuid: user.uuid } });
+  }
+
+  public async getAllForInstitution(user: User): Promise<Credential[]> {
+    return await this.prismaService.credential.findMany({ where:{ institutionUuid: user.institutionUuid } });
   }
 }
