@@ -12,11 +12,12 @@ import LoginForm from "../components/AuthForms/FormTypes/LoginForm"
 import TwoFactorForm from "../components/AuthForms/FormTypes/TwoFactorForm"
 import Heading from "../components/UI/Heading/Heading"
 import { processingUrl, validateLoginForm } from "../utils"
+import Error from "./_error"
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
-export default function Home() {
+export default function Home({ serverErrorMessage }) {
 
    const [formData, setFormData] = useRecoilState(loginFormState)
    const [, setFormError] = useRecoilState(formValidationErrorsState)
@@ -94,6 +95,8 @@ export default function Home() {
    useEffect(() => {
       setLoading(false)
    }, [])
+
+   if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
    
    return (
       <div className="auth">
@@ -136,6 +139,6 @@ export const getServerSideProps = async ({ req }) => {
       }
       return { props: { data } }
    } catch (error) {
-      return { props: { serverErrorMessage: error.response.statusText } }
+      return { props: { serverErrorMessage: error.response ? error.response.statusText : "Something went wrong" } }
    }
 }
