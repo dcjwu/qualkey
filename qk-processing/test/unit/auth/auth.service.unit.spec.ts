@@ -1,91 +1,245 @@
+import { UnprocessableEntityException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
-import { Role, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import { response } from "express";
 
 import { AuthService } from "../../../src/auth/auth.service";
-import { AuthRequestDto } from "../../../src/auth/dto";
+import {
+  AuthCheckCredentialsRequestDto,
+  AuthOtpRequestDto,
+  AuthRequestDto, ForgotPasswordRequestDto,
+  ResetPasswordRequestDto,
+} from "../../../src/auth/dto";
 import { RouteProvider } from "../../../src/auth/provider";
+import { UserNotFoundException } from "../../../src/common/exception";
 import { PrismaService } from "../../../src/prisma/prisma.service";
 
-type CreateUser = {
-    uuid: string
-    email: string
-    createdAt: Date
-}
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require("bcryptjs");
 
 describe("AuthService Unit Test", () => {
   let service: AuthService;
-
-  const mockCreateUser: CreateUser = {
-    uuid: "uuid2",
+  let prismaService: PrismaService;
+  let routeProvider: RouteProvider;
+  
+  const mockLogin: AuthRequestDto = {
     email: "email@email.com",
-    createdAt: new Date(1651188244),
+    password: "123",
+    otp: "9101",
+    otpUuid: "baa3261d-b36a-4d5d-9f26-5fce27321df8",
+    rememberMe: false,
   };
-
-  const mockFindUser: User = {
-    uuid: "uuid",
+  
+  const mockLoginOtp: AuthOtpRequestDto = {
     email: "email@email.com",
-    password: "$2a$10$szluigxiqw0EjjrAULtU.OrQH9ar/aTkZttoaqwvnS0u39tcVuxG.",
-    role: Role.STUDENT,
-    createdAt: new Date(1651188244),
-    updatedAt: new Date(1651188244),
-    firstName: null,
-    lastName: null,
-    institutionUuid: "mock-uuid",
+    otp: "9101",
+    otpUuid: "baa3261d-b36a-4d5d-9f26-5fce27321df8",
   };
-
-  const mockSignToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-
+  
+  const mockAuth: AuthCheckCredentialsRequestDto = {
+    email: "email@email.com",
+    password: "123",
+  };
+  
+  const mockResetPassword: ResetPasswordRequestDto = {
+    oldPassword: "123",
+    newPassword: "321",
+  };
+  
+  const mockForgotPassword: ForgotPasswordRequestDto = {
+    email: "email@email.com",
+    newPassword: "321",
+  };
+  
+  const mockUser: User = {
+    uuid: "e7c66694-648e-4195-9558-b27b1a061512",
+    email: "email@email.com",
+    password: "123",
+    role: "STUDENT",
+    createdAt: new Date(1652991260 * 1000),
+    updatedAt: new Date(1652991260 * 1000),
+    lastLoginAt: null,
+    firstName: "A",
+    lastName: "K",
+    institutionUuid: "413989c5-151b-4b18-980c-a5ecf78028dc",
+  };
+  
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [AuthService, ConfigService, RouteProvider, {
         provide: PrismaService,
         useValue: {
           user: {
-            create: jest.fn().mockReturnValue(Promise.resolve(mockCreateUser)),
-            findUnique: jest.fn().mockReturnValue(Promise.resolve(mockFindUser)),
+            update: jest.fn(),
+            findUnique: jest.fn().mockReturnValue(Promise.resolve(mockUser)),
           },
         },
       }, {
         provide: JwtService,
-        useValue: { signAsync: jest.fn().mockReturnValue(Promise.resolve(mockSignToken)) },
+        useValue: { signAsync: jest.fn(), verify: jest.fn() },
       },
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    prismaService = module.get<PrismaService>(PrismaService);
+    routeProvider = module.get<RouteProvider>(RouteProvider);
   });
 
   it("Should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  describe("register() - unit", () => {
-    const newUser: AuthRequestDto = {
-      email: "email@email.com",
-      password: "password",
-      rememberMe: false,
-    };
-    it("Should register user and return it", async () => {
-      expect(await service.register(newUser)).toEqual(mockCreateUser);
+  describe("login() - unit", () => {
+
+    it("Should login user", async () => {
+      const bcryptReturnMatch = jest.fn().mockReturnValue(Promise.resolve(true));
+      jest
+        .spyOn(bcrypt, "compareSync")
+        .mockImplementationOnce(bcryptReturnMatch);
+
+      const responseSetCookies = jest.fn();
+      jest
+        .spyOn(response, "cookie")
+        .mockImplementation(responseSetCookies);
+      
+      jest
+        .spyOn(routeProvider, "onLogin");
+
+      await service.login(mockLogin, response);
+      expect(await prismaService.user.update).toBeCalledTimes(1);
+      expect(routeProvider.onLogin).toBeCalledWith(mockUser);
+      expect(routeProvider.onLogin(mockUser)).toEqual("/dashboard");
+    });
+
+    it("Should throw UnprocessableEntityException if user not found", () => {
+      const mockPrismaFindUnique = jest.fn().mockReturnValue(Promise.resolve(null));
+      jest
+        .spyOn(prismaService.user, "findUnique")
+        .mockImplementationOnce(mockPrismaFindUnique);
+
+      expect(async () => await service.login(mockLogin, response)).rejects.toThrowError(
+        new UnprocessableEntityException("Invalid credentials"),
+      );
+    });
+    
+    it("Should throw UnprocessableEntityException if password no match", () => {
+      const bcryptReturnNoMatch = jest.fn().mockReturnValue(Promise.resolve(false));
+      jest
+        .spyOn(bcrypt, "compareSync")
+        .mockImplementationOnce(bcryptReturnNoMatch);
+      
+      expect(async () => await service.login(mockLogin, response)).rejects.toThrow(
+        new UnprocessableEntityException("Invalid credentials"),
+      );
+    });
+  });
+  
+  describe("loginOtp() - unit", () => {
+
+    it("Should login user with OTP", async () => {
+      await service.loginOtp(mockLoginOtp, response);
+      expect(routeProvider.onLogin(mockUser)).toEqual("/dashboard");
+    });
+
+    it("Should throw UserNotFoundException if user not found", () => {
+      const mockPrismaFindUnique = jest.fn().mockReturnValue(Promise.resolve(null));
+      jest
+        .spyOn(prismaService.user, "findUnique")
+        .mockImplementationOnce(mockPrismaFindUnique);
+      
+      expect(async () => service.loginOtp(mockLoginOtp, response)).rejects.toThrowError(
+        new UserNotFoundException(mockLoginOtp.email),
+      );
+    });
+  });
+  
+  describe("checkCredentials() - unit", () => {
+    it("Should throw UnprocessableEntityException if user not found", () => {
+      const mockPrismaFindUnique = jest.fn().mockReturnValue(Promise.resolve(null));
+      jest
+        .spyOn(prismaService.user, "findUnique")
+        .mockImplementationOnce(mockPrismaFindUnique);
+      
+      expect(async () => service.checkCredentials(mockAuth)).rejects.toThrowError(
+        new UnprocessableEntityException("Invalid credentials"),
+      );
+    });
+    it("Should throw UnprocessableEntityException if password no match", () => {
+      const bcryptReturnNoMatch = jest.fn().mockReturnValue(Promise.resolve(false));
+      jest
+        .spyOn(bcrypt, "compareSync")
+        .mockImplementationOnce(bcryptReturnNoMatch);
+
+      expect(async () => service.checkCredentials(mockAuth)).rejects.toThrowError(
+        new UnprocessableEntityException("Invalid credentials"),
+      );
+    });
+  });
+  
+  describe("logout() - unit", () => {
+    it("Should logout user and redirect to /", async () => {
+      const result = await service.logout(response);
+      expect(await service.logout(response)).toEqual(result);
     });
   });
 
-  // describe("login() - unit", () => {
-  //   const userIncorrectPassword: AuthDto = {
-  //     email: "email@email.com",
-  //     password: "incorrect-pswrd",
-  //     rememberMe: false,
-  //   };
-  //   it("Should login user and set jwt", async () => {
-  //     expect(await service.login(userIncorrectPassword, response)).toHaveBeenCalled();
-  //   });
-  // });
+  describe("resetPassword() - unit", () => {
+    
+    it("Should encrypt password and save new", async () => {
+      const bcryptReturnNoMatch = jest.fn().mockReturnValue(Promise.resolve(true));
+      jest
+        .spyOn(bcrypt, "compareSync")
+        .mockImplementationOnce(bcryptReturnNoMatch);
+      
+      await service.resetPassword(mockResetPassword, mockAuth.email);
+      expect(await prismaService.user.update).toBeCalledTimes(1);
+    });
+    
+    it("Should throw UserNotFoundException", () => {
+      const mockPrismaFindUnique = jest.fn().mockReturnValue(Promise.resolve(null));
+      jest
+        .spyOn(prismaService.user, "findUnique")
+        .mockImplementationOnce(mockPrismaFindUnique);
+      
+      expect(async () => await service.resetPassword(mockResetPassword, mockAuth.email)).rejects.toThrowError(
+        new UserNotFoundException(mockAuth.email),
+      );
+    });
+    
+    it("Should throw UnprocessableEntityException", () => {
+      const bcryptReturnNoMatch = jest.fn().mockReturnValue(Promise.resolve(false));
+      jest
+        .spyOn(bcrypt, "compareSync")
+        .mockImplementationOnce(bcryptReturnNoMatch);
+      
+      expect(async () => await service.resetPassword(mockResetPassword, mockAuth.email)).rejects.toThrowError(
+        new UnprocessableEntityException("Wrong password"),
+      );
+    });
+  });
+  
+  describe("forgotPassword() - unit", () => {
+    it("Should encrypt password and save new", async () => {
+      const bcryptReturnNoMatch = jest.fn().mockReturnValue(Promise.resolve(true));
+      jest
+        .spyOn(bcrypt, "compareSync")
+        .mockImplementationOnce(bcryptReturnNoMatch);
 
-  describe("signToken() - unit", () => {
-    it("Should sign jwt for user", async () => {
-      expect(await service.signToken("uuid123", "a@k.com", Role.STUDENT, true)).toEqual(mockSignToken);
+      await service.forgotPassword(mockForgotPassword);
+      expect(await prismaService.user.update).toBeCalledTimes(1);
+    });
+    it("Should throw UserNotFoundException if user not found", () => {
+      const mockPrismaFindUnique = jest.fn().mockReturnValue(Promise.resolve(null));
+      jest
+        .spyOn(prismaService.user, "findUnique")
+        .mockImplementationOnce(mockPrismaFindUnique);
+
+      expect(async () => await service.forgotPassword(mockForgotPassword)).rejects.toThrowError(
+        new UserNotFoundException(mockAuth.email),
+      );
     });
   });
 });

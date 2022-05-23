@@ -115,7 +115,7 @@ schema-push:
 
 ## Run tests
 test:
-	docker exec -it qk_processing sh -c "npm run test"
+	docker exec -it qk_processing sh -c "npm test --max-workers=1"
 
 ## Run tests in watch mode
 test-watch:

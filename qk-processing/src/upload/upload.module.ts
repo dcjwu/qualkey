@@ -2,6 +2,7 @@ import { BullModule } from "@nestjs/bull";
 import { Module } from "@nestjs/common";
 
 import { AwsModule } from "../aws/aws.module";
+import { PrismaService } from "../prisma/prisma.service";
 import { UploadNotifyConsumer } from "./consumer/upload-notify.consumer";
 import { UploadEventListener } from "./listener/upload.event.listener";
 import { CsvParser } from "./parser/csv.parser";
@@ -38,6 +39,7 @@ import { UploadService } from "./upload.service";
     FileParser,
     XlsxParser,
     CsvParser,
+    PrismaService,
   ],
 })
 export class UploadModule {}

@@ -1,7 +1,7 @@
 import { Role, User } from "@prisma/client";
 
 import { RoleNotFoundException } from "../../../../src/auth/exception";
-import { RouteProvider } from "../../../../src/auth/provider/route.provider";
+import { RouteProvider } from "../../../../src/auth/provider";
 
 describe("Route Provider Unit Tests", () => {
   const routeProvider: RouteProvider = new RouteProvider();
@@ -22,6 +22,7 @@ describe("Route Provider Unit Tests", () => {
       firstName: "",
       lastName: "",
       institutionUuid: "uuid-inst",
+      lastLoginAt: null,
     };
     expect(routeProvider.onLogin(user)).toEqual(link);
   });
@@ -37,6 +38,7 @@ describe("Route Provider Unit Tests", () => {
       firstName: "",
       lastName: "",
       institutionUuid: "uuid-inst",
+      lastLoginAt: null,
     };
     expect(() => routeProvider.onLogin(user)).toThrowError(new RoleNotFoundException(user.role));
     expect(() => routeProvider.onLogin(user)).toThrowError(`Role not found ${user.role}`);
