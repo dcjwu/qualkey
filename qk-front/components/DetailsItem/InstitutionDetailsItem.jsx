@@ -10,7 +10,7 @@ const InstitutionDetailsItem = ({ data }) => {
          <Text blackSpan>Action: <span>{data.action}</span></Text>
          <Text blackSpan>Status: <span>{data.status}</span></Text>
          <Text blackSpan>Registered by: <span>{data.registrar}</span></Text>
-         <Text blackSpan>Date: <span>{moment(data.date * 1000).format("DD.MM.YYYY")}</span></Text>
+         <Text blackSpan>Date: <span>{moment.utc(data.date * 1000).format("DD.MM.YYYY")}</span></Text>
       </div>
    )
 }

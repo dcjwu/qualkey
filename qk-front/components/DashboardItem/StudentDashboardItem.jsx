@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil"
 
 import schoolLogo from "../../assets/images/mockUniLogo.webp"
 import { credentialsDetailsState, credentialsShowDetailsState } from "../../atoms"
+import { validateStatus, validateStatusStyles } from "../../utils"
 import StudentDetailsItem from "../DetailsItem/StudentDetailsItem"
 import StudentHistoryItem from "../HistoryItem/StudentHistoryItem"
 import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconOpenViewPage, IconShare, IconShowDropdownBig, IconWarning } from "../UI/_Icon"
@@ -50,16 +51,8 @@ const mockDataHistory = [
 ]
 
 const StudentDashboardItem = ({ data }) => {
-   const { diploma, status } = data
 
    const { pathname } = useRouter()
-
-   const validateStatus = () => {
-      if (status === "Activated") return `${styles.activated} ${styles.student}`
-      if (status === "Withdrawn") return `${styles.withdrawn} ${styles.student}`
-      if (status === "Expired") return `${styles.expired} ${styles.student}`
-      if (status === "Activate Credentials") return `${styles.activateCredentials} ${styles.student}`
-   }
 
    const showDetails = useRecoilValue(credentialsShowDetailsState)
    const details = useRecoilValue(credentialsDetailsState)
@@ -80,28 +73,27 @@ const StudentDashboardItem = ({ data }) => {
                ? "15px 15px 15px 15px"
                : "15px 15px 0 0"
          }}>
-            <Input checkboxSolo disabled={status !== "Activated"} type="checkbox"/>
+            <Input checkboxSolo disabled={data.status !== "ACTIVATED"} type="checkbox"/>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
                    objectFit="contain" src={schoolLogo} width={196}/>
-            <div className={`${styles.itemWrapper} ${status === "Expired" ? styles.expired : ""}`}>
+            <div className={`${styles.itemWrapper} ${data.status === "EXPIRED" ? styles.expired : ""}`}>
                <IconAcademicCap/>
-               {/*<Text>{`${diploma.slice(0, 27).trim()}...`}</Text>*/}
-               <Text semiBold>{diploma}</Text>
+               <Text semiBold>{data.qualificationName}</Text>
             </div>
-            <div className={`${styles.status} ${validateStatus()}`}>
-               {status === "Activate Credentials"
+            <div className={`${styles.status} ${validateStatusStyles(data.status, true)}`}>
+               {data.status === "UPLOADED_TO_BLOCKCHAIN"
                   ? <>
                      <IconWarning/>
-                     <Text bold>{status}</Text>
+                     <Text bold>{validateStatus(data.status, true)}</Text>
                   </>
                   : <>
                      <IconInfo/>
-                     <Text bold>{status}</Text>
+                     <Text bold>{validateStatus(data.status, true)}</Text>
                   </>}
             </div>
             <div className={`${styles.actions} ${styles.student}`}>
                <IconShare/>
-               <Link passHref href={`${pathname}/credentials-view`}>
+               <Link passHref href={`${pathname}/${data.uuid}`}>
                   <a>
                      <IconOpenViewPage/>
                   </a>

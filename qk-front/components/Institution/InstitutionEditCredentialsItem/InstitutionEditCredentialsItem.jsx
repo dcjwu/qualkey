@@ -1,3 +1,4 @@
+import moment from "moment"
 import PropTypes from "prop-types"
 
 import Button from "../../UI/Button/Button"
@@ -22,7 +23,16 @@ const InstitutionEditCredentialsItem = ({
       <div className={styles.wrapper}>
          <div className={styles.infoItem}>
             <Text grey>{mapping.get(mappingKey)}:</Text>
-            <Input inputName={mappingKey} placeholder={data[mappingKey].toString()} style={{
+            <Input inputName={mappingKey} placeholder={
+               mappingKey === "studyStartedAt"
+               || mappingKey === "graduatedAt"
+               || mappingKey === "studyEndedAt"
+               || mappingKey === "expiresAt"
+                  ? data[mappingKey] === null
+                     ? null
+                     : moment(data[mappingKey]).format("DD/MM/YYYY")
+                  : data[mappingKey]?.toString()
+            } style={{
                borderBottom: isInputValid.includes(mappingKey) ? "1px solid #ef4444" : "",
                color: isInputValid.includes(mappingKey) ? "#ef4444" : ""
             }}

@@ -4,11 +4,11 @@
 .wrapper {
   align-items: center;
   border-bottom: 1px solid $color-additional-medium;
+  cursor: pointer;
   display: grid;
-  grid-template-columns: 1fr .3fr;
+  grid-template-columns: 1fr 0.3fr;
   padding: 2rem 1.5rem;
   transition: background-color 0.2s ease-in-out;
-  cursor: pointer;
 
   &:hover {
     background-color: $color-additional-light;
@@ -18,14 +18,16 @@
 .left {
   align-items: center;
   display: grid;
-  grid-template-columns: .1fr .8fr;
   gap: 1rem;
+  grid-template-columns: 0.1fr 0.8fr;
+
   svg {
-    width: 2.4rem;
     height: 2.4rem;
+    width: 2.4rem;
+
     rect {
-      width: 2.4rem;
       height: 2.4rem;
+      width: 2.4rem;
     }
   }
 }

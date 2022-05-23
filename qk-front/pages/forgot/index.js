@@ -61,8 +61,6 @@ export default function ForgotPassword() {
       }
    }
 
-   console.log(formData)
-
    useEffect(() => {
       resetFormData()
    }, [])

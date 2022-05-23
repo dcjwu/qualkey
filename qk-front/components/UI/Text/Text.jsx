@@ -71,6 +71,5 @@ Text.propTypes = {
    sidebar: PropTypes.bool,
    sidebarMin: PropTypes.bool,
    active: PropTypes.bool,
-   blackSpan: PropTypes.bool,
-   children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired
+   blackSpan: PropTypes.bool
 }

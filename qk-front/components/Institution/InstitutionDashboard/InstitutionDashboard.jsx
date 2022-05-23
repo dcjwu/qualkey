@@ -1,85 +1,42 @@
+import { useState } from "react"
+
+import { useRouter } from "next/router"
+
 import InstitutionDashboardItem from "../../DashboardItem/InstitutionDashboardItem"
 import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "./InstitutionDashboard.module.scss"
 
-const mockData = [
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "Andrew Feinstein",
-      diploma: "BA Computer Science and Engineering",
-      status: "Uploaded",
-      lastModified: 1652112363
-   },
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "Brian Herrera",
-      diploma: "MA International Relations",
-      status: "Activated",
-      lastModified: 1652112363
-   },
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "Isabelle Portre",
-      diploma: "BA Computer Science and Engineering",
-      status: "Withdrawn",
-      lastModified: 1652112363
-   },
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "Adrian Portre",
-      diploma: "MSc Data Science in Business",
-      status: "Expired",
-      lastModified: 1652112363
-   },
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "Adrian Gibbs",
-      diploma: "MSc Data Science in Business",
-      status: "Expired",
-      lastModified: 1652112363
-   },
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "John Black",
-      diploma: "MSc Data Science in Business",
-      status: "Expired",
-      lastModified: 1652112363
-   },
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "Joseph White",
-      diploma: "MSc Data Science in Business",
-      status: "Expired",
-      lastModified: 1652112363
-   },
-   {
-      auditName: "L. Wade",
-      auditFrom: "University Registrar",
-      student: "Sergio Aguero",
-      diploma: "MSc Data Science in Business",
-      status: "Expired",
-      lastModified: 1652112363
-   }
-]
+const InstitutionDashboard = ({ data }) => {
 
-const InstitutionDashboard = () => {
+   const router = useRouter()
+   const [searchValue, setSearchValue] = useState("")
+
+   const handleInputChange = ({ target }) => {
+      setSearchValue(target.value)
+   }
+
+   const handleSubmitSearch = e => {
+      if (searchValue.trim() !== "") {
+         if (e.key === "Enter") {
+            router.push({
+               pathname: "/dashboard",
+               query: { filter: searchValue }
+            })
+         }
+      }
+   }
+
    return (
       <>
          <div className={styles.searchWrapper}>
-            <Text blackSpan semiBold>Showing <span>5</span> from <span>5</span> results</Text>
-            <Input type={"search"}/>
+            <Text blackSpan semiBold>Showing <span>5</span> from <span>{data.length}</span> results</Text>
+            {/*TODO: Ask Igor, really dva zaprosa or what?*/}
+            <Input type={"search"} onChange={handleInputChange} onKeyDown={handleSubmitSearch}/>
          </div>
          <div className={styles.contentWrapper}>
-            {mockData.map(data => (
-               <InstitutionDashboardItem key={data.student} data={data}/>
+            {data.map(data => (
+               <InstitutionDashboardItem key={data.uuid} data={data}/>
             ))}
          </div>
       </>

@@ -21,7 +21,7 @@ const Topbar = ({ institution }) => {
    const { pathname, push } = useRouter()
 
    const checkIfPathIncludesView = () => {
-      if (pathname.includes("/credentials-view")) return true
+      if (pathname.includes("[uuid]")) return true
    }
    
    const isScreenLg = useMediaQuery({ query: "(max-width: 991px)" })

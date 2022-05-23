@@ -1,7 +1,6 @@
 import axios from "axios"
 import getConfig from "next/config"
 import Head from "next/head"
-import { useRouter } from "next/router"
 
 import InstitutionDashboard from "../../components/Institution/InstitutionDashboard/InstitutionDashboard"
 import InstitutionView from "../../components/Institution/InstitutionView/InstitutionView"
@@ -16,12 +15,10 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
 export default function Dashboard({ data, serverErrorMessage }) {
-   
-   const { push } = useRouter()
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
-   const { role } = data
+   const { role, data: credentialData } = data
 
    if (role === userRoles.institution) return (
       <>
@@ -31,7 +28,7 @@ export default function Dashboard({ data, serverErrorMessage }) {
          <InstitutionView institution>
             <Heading blue h1 xxl>University Dashboard</Heading>
             <Text large>browse all credential records</Text>
-            <InstitutionDashboard/>
+            <InstitutionDashboard data={credentialData}/>
          </InstitutionView>
       </>
    )
@@ -44,23 +41,37 @@ export default function Dashboard({ data, serverErrorMessage }) {
          <StudentView>
             <Heading blue h1 xxl>Credentials Dashboard</Heading>
             <Text large>view, share and manage your credentials</Text>
-            <StudentDashboard/>
+            <StudentDashboard data={credentialData}/>
          </StudentView>
       </>
    )
-
-   else push("/")
 }
 
-export const getServerSideProps = async ({ req }) => {
-   try {
-      const response = await axios.get(`${apiUrl}/credential`, {
-         withCredentials: true,
-         headers: { Cookie: req.headers.cookie || "" }
-      })
-      const { data } = response
-      return { props: { data } }
-   } catch (error) {
-      return { props: { serverErrorMessage: error.response.statusText } }
+export const getServerSideProps = async (ctx) => {
+   const { req, query } = ctx
+   let response
+
+   if (query.filter) {
+      try {
+         response = await axios.get(`${apiUrl}/credential?filter=${query.filter}`, {
+            withCredentials: true,
+            headers: { Cookie: req.headers.cookie || "" }
+         })
+         const { data } = response
+         return { props: { data } }
+      } catch (error) {
+         return { props: { serverErrorMessage: error.response.statusText } }
+      }
+   } else {
+      try {
+         response = await axios.get(`${apiUrl}/credential`, {
+            withCredentials: true,
+            headers: { Cookie: req.headers.cookie || "" }
+         })
+         const { data } = response
+         return { props: { data } }
+      } catch (error) {
+         return { props: { serverErrorMessage: error.response.statusText } }
+      }
    }
 }

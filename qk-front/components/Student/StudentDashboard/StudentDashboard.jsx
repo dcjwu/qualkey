@@ -1,3 +1,7 @@
+import { useState } from "react"
+
+import { useRouter } from "next/router"
+
 import StudentDashboardItem from "../../DashboardItem/StudentDashboardItem"
 import { IconShare } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
@@ -5,44 +9,31 @@ import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "./StudentDashboard.module.scss"
 
-const mockData = [
-   {
-      id: 1,
-      diploma: "BA Computer Science and Engineering",
-      status: "Activated",
-   },
-   {
-      id: 2,
-      diploma: "BA Computer Science and Engineering",
-      status: "Expired",
-   },
-   {
-      id: 3,
-      diploma: "MSc Data Science in Business",
-      status: "Withdrawn",
-   },
-   {
-      id: 4,
-      diploma: "MA International Relations",
-      status: "Activated",
-   },
-   {
-      id: 5,
-      diploma: "BA Computer Science and Engineering",
-      status: "Activate Credentials",
-   },
-   {
-      id: 6,
-      diploma: "BA Computer Science and Engineering",
-      status: "Activate Credentials",
-   },
-]
+const StudentDashboard = ({ data }) => {
 
-const StudentDashboard = () => {
+   const router = useRouter()
+   const [searchValue, setSearchValue] = useState("")
+
+   const handleInputChange = ({ target }) => {
+      setSearchValue(target.value)
+   }
+
+   const handleSubmitSearch = e => {
+      if (searchValue.trim() !== "") {
+         if (e.key === "Enter") {
+            router.push({
+               pathname: "/dashboard",
+               query: { filter: searchValue }
+            })
+         }
+      }
+   }
+
    return (
       <>
          <div className={styles.searchShareWrapper}>
-            <Input type={"search"}/>
+            <Input type={"search"} value={searchValue} onChange={handleInputChange}
+                   onKeyDown={handleSubmitSearch}/>
             <Button blue disabled thin>
                <div className={styles.buttonRow}>
                   <IconShare/>
@@ -51,8 +42,8 @@ const StudentDashboard = () => {
             </Button>
          </div>
          <div className={styles.contentWrapper}>
-            {mockData.map(data => (
-               <StudentDashboardItem key={data.id} data={data}/>
+            {data.map(data => (
+               <StudentDashboardItem key={data.uuid} data={data}/>
             ))}
          </div>
       </>

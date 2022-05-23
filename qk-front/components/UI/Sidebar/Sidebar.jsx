@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 import axios from "axios"
 import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { useMediaQuery } from "react-responsive"
 import { useRecoilState } from "recoil"
@@ -71,10 +72,14 @@ const Sidebar = ({ institution }) => {
                      { marginLeft: lgMarginLeft || mdMarginLeft, marginBottom: "1.7rem" }}/>
                   <hr className={styles.hr}/>
                   <div className={styles.menu}>
-                     <Text bold sidebar active={!openModal}>
-                        <IconAcademicCapPerson/>
-                        {institution ? <span>University Dashboard</span> : <span>Credentials Dashboard</span>}
-                     </Text>
+                     <Link href="/dashboard">
+                        <a>
+                           <Text bold sidebar active={!openModal}>
+                              <IconAcademicCapPerson/>
+                              {institution ? <span>University Dashboard</span> : <span>Credentials Dashboard</span>}
+                           </Text>
+                        </a>
+                     </Link>
                      {institution && <Text bold sidebar active={openModal}
                                            onClick={() => setOpenModal(true)}>
                         <IconPlus/>

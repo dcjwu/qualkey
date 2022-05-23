@@ -26,7 +26,7 @@ const CredentialsInfo = ({ data }) => {
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Date authenticated:</Text>
-                        <Text semiBold>{moment(data.authenticatedDate * 1000).format("DD/MM/YYYY")}</Text>
+                        <Text semiBold>{moment.utc(data.authenticatedDate).format("DD/MM/YYYY")}</Text>
                      </div>
                   </div>
                   <div className={styles.infoBlock}>
@@ -62,15 +62,15 @@ const CredentialsInfo = ({ data }) => {
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Study start date:</Text>
-                        <Text semiBold>{data.studyStartedAt}</Text>
+                        <Text semiBold>{moment.utc(data.studyStartedAt).format("DD/MM/YYYY")}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Study end date:</Text>
-                        <Text semiBold>{data.studyEndedAt}</Text>
+                        <Text semiBold>{moment.utc(data.studyEndedAt).format("DD/MM/YYYY")}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Graduation date:</Text>
-                        <Text semiBold>{data.graduatedAt}</Text>
+                        <Text semiBold>{moment.utc(data.graduatedAt).format("DD/MM/YYYY")}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Language of study:</Text>
@@ -93,11 +93,11 @@ const CredentialsInfo = ({ data }) => {
                <div className={styles.bottomItemLeft}>
                   <div className={styles.bottomItem}>
                      <Text lightBlue semiBold>Certificate ID:</Text>
-                     <Text>some-sort-of-id-here-i-gues-7890</Text>
+                     <Text>{data.did}</Text>
                   </div>
                   <div className={styles.bottomItem}>
                      <Text lightBlue semiBold>Hedera Blockchain ID:</Text>
-                     <Text>78jcHvxX3nM8NHYRXxhDGJ99HBDRphNdnM7oXCLiXWWu</Text>
+                     <Text>{data?.hash}</Text>
                   </div>
                </div>
                <Button blue thin>
