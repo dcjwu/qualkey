@@ -30,13 +30,18 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
    const [pinError, setPinError] = useState(false)
    const [loading, setLoading] = useState(false)
 
+   /**
+    * Countdown setter logic.
+    **/
    const timerRef = useRef(0)
-
    const timerCallback = useCallback(() => {
       setDuration(calculateDuration(canBeResendAt))
       setHideResendButton(false)
    }, [canBeResendAt])
 
+   /**
+    * Form submit handling.
+    **/
    const handleSubmitForm = event => {
       event.preventDefault()
       const validation = () => {
@@ -85,13 +90,19 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
       }
    }
 
+   /**
+    * Countdown updater logic.
+    **/
    useEffect(() => {
       timerRef.current = setInterval(timerCallback, 1000)
       return () => {
          clearInterval(timerRef.current)
       }
-   }, [canBeResendAt])
+   }, [canBeResendAt]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   /**
+    * Hides reset button and sets loading to false.
+    **/
    useEffect(() => {
       setHideResendButton(true)
       return () => {
@@ -117,7 +128,7 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
                   hideResendButton ? <Text transparent>-</Text>
                      : duration.minutes() === 0 && duration.seconds() === 0
                         ? <Text grey>Resend code</Text>
-                        : <Text grey>{`${duration.minutes()}:${duration.seconds()}`}</Text>
+                        : <Text grey>{`${duration.minutes()}:${duration.seconds() < 10 ? "0" + duration.seconds() : duration.seconds()}`}</Text>
                }
             </form>
          </div>

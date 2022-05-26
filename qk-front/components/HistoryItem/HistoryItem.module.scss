@@ -11,11 +11,21 @@
   padding: 0.5rem 1rem 0.5rem 1.5rem;
   transition: background-color 0.2s ease-in-out;
 
+  @include breakpoint-max($bp-screen-sm) {
+    grid-template-columns: 1fr 0.2fr;
+  }
+
   &:hover {
     background-color: $color-additional-light;
   }
 
   svg:last-child {
     justify-self: end;
+  }
+
+  > p:first-child {
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
   }
 }

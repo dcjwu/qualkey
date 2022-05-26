@@ -26,6 +26,9 @@ export default function ForgotPassword() {
    const [showTwoFactor, setShowTwoFactor] = useState(false)
    const [buttonError, setButtonError] = useState("")
 
+   /**
+    * Input value handling.
+    */
    const handleEmailFormChange = e => {
       setFormData({
          ...formData,
@@ -33,6 +36,9 @@ export default function ForgotPassword() {
       })
    }
 
+   /**
+    * Form submit handling.
+    */
    const handleFormSubmit = e => {
       e.preventDefault()
       const validation = validateLoginForm(formData)
@@ -61,9 +67,12 @@ export default function ForgotPassword() {
       }
    }
 
+   /**
+    * Resets form.
+    */
    useEffect(() => {
       resetFormData()
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <div className="auth">

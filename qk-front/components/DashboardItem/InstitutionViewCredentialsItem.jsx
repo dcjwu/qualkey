@@ -27,7 +27,7 @@ const InstitutionViewCredentialsItem = ({ data }) => {
                   <Text bold>{data.qualificationName}</Text>
                </div>
             </div>
-            <div className={`${styles.status} ${validateStatusStyles(data.status)}`}>
+            <div className={`${styles.status} ${validateStatusStyles(data.status)} ${styles.viewStatus}`}>
                <IconInfo/>
                <Text bold>{validateStatus(data.status)}</Text>
             </div>

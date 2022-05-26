@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 import axios from "axios"
 import { useRecoilState, useResetRecoilState } from "recoil"
@@ -34,15 +34,11 @@ const FileUploadModal = () => {
    const [loading, setLoading] = useState(false)
 
    //TODO: Make active field in dropdown according to figma ui — BLUE?
-   
+
    //TODO: Make scroll to chosen option dropdown row so it is more user friendly.
 
    /**
-    * File upload processing.
-    * @desc Validates file type and sends to api/ endpoint request to parse file.
-    * @param event Click event.
-    * @returns Parsed data from uploaded file.
-    * @throws Shows error response in UI.
+    * File upload to front-end processing.
     **/
    const uploadFileToClient = async event => {
       const fileType = event.target.files[0]?.type
@@ -65,6 +61,9 @@ const FileUploadModal = () => {
       }
    }
 
+   /**
+    * Close modal handler.
+    */
    const closeModal = () => {
       setOpenModal(false)
       resetCredentialsFields()
@@ -72,11 +71,15 @@ const FileUploadModal = () => {
    }
 
    /**
+    * Allows to close modal by clicking outside.
+    */
+   const closeModalOutside = event => {
+      closeModal()
+      event.stopPropagation()
+   }
+
+   /**
     * Creates array with chosen values.
-    * @desc Sets chosen values to array in the order of mapped data.
-    * @param event Choose option event.
-    * @param index Index of chosen option.
-    * @returns Array of mapped data.
     **/
    const handleOption = (event, index) => {
       let dropdownTitle = event.target.innerText
@@ -92,25 +95,21 @@ const FileUploadModal = () => {
 
    /**
     * Resets dropdown.
-    * @desc Resets dropdown values by adding chosen value back to dropdown array.
-    * @param index Index of chosen option.
-    * @returns New array of sorted data for dropdown.
     **/
    const resetDropdown = (index) => {
-      setCredentialsFields([...credentialsFields, mappingToValues[index]]
-         .sort((a, b) => a.title
-            .localeCompare(b.title)))
-      mappingToValues[index] = undefined
-      setMappingToValues([...mappingToValues])
+      if (mappingToValues[index].value !== "graduatedName") {
+         setCredentialsFields([...credentialsFields, mappingToValues[index]]
+            .sort((a, b) => a.title
+               .localeCompare(b.title)))
+         mappingToValues[index] = undefined
+         setMappingToValues([...mappingToValues])
+      }
    }
 
    /**
-    * Sends upload request to processing.
-    * @desc Validates chosen values, sends upload request to processing and delete file request to /api/ endpoint.
-    * @returns Success state to be shown in UI.
-    * @throws Logs request or shows in UI validation errors.
+    * Sends upload request to processing and delete file from front-end folder.
     **/
-   const handleSubmitMapping = () => {
+   const handleSubmitMapping = async () => {
       const arrayOfValues = mappingToValues.map(mapping => mapping?.value)
       const validation = validateMappingFields(arrayOfValues)
 
@@ -123,17 +122,18 @@ const FileUploadModal = () => {
          formData.append("mapping", mapping)
 
          setLoading(true)
-         axios.post(`${processingUrl}/upload`, formData, { withCredentials: true })
+         await axios.post(`${processingUrl}/upload`, formData, { withCredentials: true })
             .then(response => {
                if (response.status === 201) {
-                  resetCurrentFile()
-
                   const data = JSON.stringify(`${filePrefix}-${fileName}`)
                   axios.post(`${frontUrl}/api/file-delete`, data, { headers: { "Content-type": "application/json" } })
                      .then(response => {
                         if (response.data === "OK") {
                            setLoading(false)
                            setUploadSuccess(true)
+                           resetCurrentFile()
+                           resetFilePrefix()
+                           resetFileName()
                         }
                      })
                      .catch(error => {
@@ -154,8 +154,6 @@ const FileUploadModal = () => {
 
    /**
     * Creates new array when data is parsed.
-    * @desc Create array of the same length as parsed keys.
-    * @returns Fixed length new empty array.
     **/
    useEffect(() => {
       setMappingToValues(new Array(parsedValuesFromUpload.length))
@@ -163,59 +161,37 @@ const FileUploadModal = () => {
 
    /**
     * Removes chosen items from dropdown.
-    * @desc Filters dropdown array on a certain condition.
-    * @desc Listens to another array which receives inside every change in dropdown selections.
-    * @returns New filtered array.
     **/
    useEffect(() => {
-      const filteredDropdown = credentialsFields
-         .filter(credentials => {
-            return !mappingToValues
-               .find(mapping => {
-                  return mapping?.value !== undefined
-                     && credentials.value === mapping.value
-                     && credentials.value !== "graduatedName"
-               })
-         })
-      setCredentialsFields(filteredDropdown)
-      if (fileUploadModalErrorButton) {
-         setFileUploadModalErrorButton("")
+      if (dropdownSelectionListener.length !== 0) {
+         const filteredDropdown = credentialsFields
+            .filter(credentials => {
+               return !mappingToValues
+                  .find(mapping => {
+                     return mapping?.value !== undefined
+                        && credentials.value === mapping.value
+                        && credentials.value !== "graduatedName"
+                  })
+            })
+         setCredentialsFields(filteredDropdown)
+         if (fileUploadModalErrorButton) {
+            setFileUploadModalErrorButton("")
+         }
       }
-   }, [dropdownSelectionListener.length])
+   }, [dropdownSelectionListener.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
    /**
     * Remove error inside modal.
-    * @desc Sets error to empty string when modal open/close or when uploaded file is mapped.
     **/
    useEffect(() => {
       setFileUploadModalError("")
       setFileUploadModalErrorButton("")
-   }, [openModal, parsedValuesFromUpload])
-
-   /**
-    * Allows to close modal by clicking outside it.
-    **/
-   const outsideClickRef = useRef()
-   useEffect(() => {
-      const checkIfClickedOutside = event => {
-         if (openModal && outsideClickRef.current && !outsideClickRef.current.contains(event.target)) {
-            setOpenModal(false)
-         }
-      }
-      document.addEventListener("click", checkIfClickedOutside)
-      return () => {
-         document.removeEventListener("click", checkIfClickedOutside)
-
-         resetCurrentFile()
-         resetFilePrefix()
-         resetFileName()
-      }
-   }, [openModal])
+   }, [openModal, parsedValuesFromUpload]) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       uploadSuccess
-         ? <div className={styles.modal}>
-            <div ref={outsideClickRef} className={styles.wrapper}>
+         ? <div className={styles.modal} onClick={closeModalOutside}>
+            <div className={styles.wrapper}>
                <IconClose onClick={closeModal}/>
                <div className={styles.wrapperInner}
                     style={{ height: parsedValuesFromUpload.length ? "100%" : "", paddingBottom: "6rem" }}>
@@ -226,9 +202,9 @@ const FileUploadModal = () => {
                </div>
             </div>
          </div>
-         : <div className={styles.modal}>
-            <div ref={outsideClickRef} className={styles.wrapper}
-                 style={{ height: parsedValuesFromUpload.length ? "90%" : "" }}>
+         : <div className={styles.modal} onClick={closeModalOutside}>
+            <div className={styles.wrapper}
+                 style={{ height: parsedValuesFromUpload.length ? "90%" : "" }} onClick={event => event.stopPropagation()}>
                <IconClose onClick={closeModal}/>
                <div className={styles.wrapperInner} style={{ height: parsedValuesFromUpload.length ? "100%" : "" }}>
                   <div className={styles.top}>

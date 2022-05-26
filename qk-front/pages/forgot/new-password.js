@@ -21,6 +21,9 @@ export default function NewPassword() {
    const [loading, setLoading] = useState(false)
    const [buttonError, setButtonError] = useState("")
 
+   /**
+    * Input value handling.
+    */
    const handleFormChange = ({ target }) => {
       const { name, value } = target
       setRepeatPasswordFormData({
@@ -29,6 +32,9 @@ export default function NewPassword() {
       })
    }
 
+   /**
+    * Form submit handling.
+    */
    const handleFormSubmit = e => {
       e.preventDefault()
       if (repeatPasswordFormData.password !== repeatPasswordFormData.passwordRepeat) {
@@ -52,9 +58,12 @@ export default function NewPassword() {
       }
    }
 
+   /**
+    * Resets password fields.
+    */
    useEffect(() => {
       resetRepeatPasswordFormData()
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
    return (

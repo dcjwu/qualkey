@@ -30,6 +30,9 @@ const Topbar = ({ institution }) => {
    const [lgMarginLeft, setLgMarginLeft] = useState("")
    const [mdMarginLeft, setMdMarginLeft] = useState("")
 
+   /**
+    * Logout handler.
+    */
    const handleLogout = () => {
       axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true } )
          .then(response => {
@@ -38,11 +41,17 @@ const Topbar = ({ institution }) => {
          .catch(error => console.log(error))
    }
 
+   /**
+    * Dynamic adaptive layout handler.
+    */
    useEffect(() => {
       setMdMarginLeft("2.5rem")
       setLgMarginLeft("")
    }, [isScreenMd])
 
+   /**
+    * Dynamic adaptive layout handler.
+    */
    useEffect(() => {
       setLgMarginLeft("3.5rem")
       setMdMarginLeft("")
@@ -51,14 +60,23 @@ const Topbar = ({ institution }) => {
    const [showMenu, setShowMenu] = useState(false)
    const [showNotifications, setShowNotifications] = useState(false)
 
+   /**
+    * Menu display handler.
+    */
    const handleShowMenu = () => {
       setShowMenu(prevState => !prevState)
    }
-   
+
+   /**
+    * Notification display handler.
+    */
    const handleShowNotifications = () => {
       setShowNotifications(prevState => !prevState)
    }
 
+   /**
+    * Allows to close sidebar on click outside.
+    */
    const outsideClickRef = useRef()
    useEffect(() => {
       const checkIfClickedOutside = event => {

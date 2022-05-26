@@ -7,14 +7,9 @@ import XLSX from "xlsx"
 export const config = { api: { bodyParser: false } }
 
 /**
- * File upload to server processing.
- * @desc Validates files type, saves it to folder and sends parsed array to front.
- * @param req Request.
- * @param res Response.
- * @returns New array of parsed data from file.
- * @throws If file type does not match csv, xls, xlsx.
+ * File upload to front-end server processing.
  **/
-export default async (req, res) => {
+export default async (req, res) => { // eslint-disable-line import/no-anonymous-default-export
    if (req.method === "POST") {
       const data = await new Promise((resolve, reject) => {
          const form = new IncomingForm()

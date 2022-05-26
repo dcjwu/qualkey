@@ -23,7 +23,32 @@
     padding: 7rem 2.5rem 0;
   }
 
+  @include breakpoint-max-vertical($bp-vertical-875) {
+    height: calc(100vh - #{$topbar-height-lg} - 2rem);
+    padding-top: 2rem;
+  }
+
+  > h1 {
+    @include breakpoint-max-vertical($bp-vertical-680) {
+      font-size: 3.5rem;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-400) {
+      font-size: 3rem;
+    }
+  }
+
   > p {
     margin-bottom: 3.5rem;
+
+    @include breakpoint-max-vertical($bp-vertical-680) {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-400) {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
   }
 }

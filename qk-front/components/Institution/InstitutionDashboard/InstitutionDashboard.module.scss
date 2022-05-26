@@ -6,6 +6,30 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 3rem;
+
+  @include breakpoint-max-vertical($bp-vertical-400) {
+    margin-bottom: 2rem;
+  }
+
+  > p {
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-400) {
+      font-size: 1.35rem;
+    }
+  }
+
+  > input {
+    @include breakpoint-max($bp-screen-sm) {
+      width: 100%;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-400) {
+      font-size: 1.45rem;
+    }
+  }
 }
 
 .headerWrapper {
@@ -18,9 +42,21 @@
   overflow: hidden;
   overflow-y: scroll;
 
+  @include breakpoint-max-vertical($bp-vertical-875) {
+    height: 50%;
+  }
+
+  @include breakpoint-max-vertical($bp-vertical-570) {
+    height: 40%;
+  }
+
   p {
     @include breakpoint-max($bp-screen-xl) {
       font-size: 1.45rem;
+    }
+
+    @include breakpoint-max($bp-screen-sm) {
+      font-size: 1.35rem;
     }
   }
 }

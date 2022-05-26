@@ -24,7 +24,10 @@ const Sidebar = ({ institution }) => {
    
    const [lgMarginLeft, setLgMarginLeft] = useState("")
    const [mdMarginLeft, setMdMarginLeft] = useState("")
-   
+
+   /**
+    * Logout handler.
+    */
    const handleLogout = () => {
       axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true } )
          .then(response => {
@@ -32,12 +35,18 @@ const Sidebar = ({ institution }) => {
          })
          .catch(error => console.log(error))
    }
-   
+
+   /**
+    * Dynamic adaptive layout handler.
+    */
    useEffect(() => {
       setMdMarginLeft("-13rem")
       setLgMarginLeft("")
    }, [isScreenMd])
 
+   /**
+    * Dynamic adaptive layout handler.
+    */
    useEffect(() => {
       setLgMarginLeft("-11rem")
       setMdMarginLeft("")
@@ -46,6 +55,9 @@ const Sidebar = ({ institution }) => {
    const [openModal, setOpenModal] = useRecoilState(uploadModalState)
    const [burgerMenuActive, setBurgerMenuActive] = useRecoilState(burgerMenuActiveState)
 
+   /**
+    * Allows to close sidebar on click outside.
+    */
    const outsideClickRef = useRef()
    useEffect(() => {
       const checkIfClickedOutside = event => {
@@ -57,7 +69,7 @@ const Sidebar = ({ institution }) => {
       return () => {
          document.removeEventListener("click", checkIfClickedOutside)
       }
-   }, [burgerMenuActive])
+   }, [burgerMenuActive]) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <div className={burgerMenuActive ? styles.darken : ""}>

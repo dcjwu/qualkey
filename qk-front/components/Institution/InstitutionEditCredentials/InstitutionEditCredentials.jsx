@@ -35,6 +35,9 @@ const InstitutionEditCredentials = ({ data }) => {
    const [isInputValid, setIsInputValid] = useState([])
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
 
+   /**
+    * Inout value handling.
+    **/
    const handleFormChange = ({ target }, index) => {
       setActiveIndex(index)
       const { name, value } = target
@@ -49,6 +52,9 @@ const InstitutionEditCredentials = ({ data }) => {
       }
    }
 
+   /**
+    * Saves edited value.
+    **/
    const saveValue = inputName => {
       setSavedData({
          ...savedData,
@@ -59,6 +65,9 @@ const InstitutionEditCredentials = ({ data }) => {
       setFormData(formDataCopy)
    }
 
+   /**
+    * Resets changed value to initial state.
+    **/
    const resetValue = inputName => {
       const savedDataCopy = { ...savedData }
       delete savedDataCopy[inputName]
@@ -70,6 +79,9 @@ const InstitutionEditCredentials = ({ data }) => {
       setFormData(formDataCopy)
    }
 
+   /**
+    * Shows details in credential history.
+    **/
    const handleFormSubmit = () => {
       const notValidFieldsLength = validateInputs()
       if (notValidFieldsLength === 0) {
@@ -82,6 +94,9 @@ const InstitutionEditCredentials = ({ data }) => {
       }
    }
 
+   /**
+    * Form submit handling.
+    **/
    const validateInputs = () => {
       const notValidatedFields = []
       Object.keys(formData).forEach(key => {

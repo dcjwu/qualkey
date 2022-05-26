@@ -6,7 +6,10 @@ import Text from "../../UI/Text/Text"
 import styles from "./NotificationsItem.module.scss"
 
 const NotificationsItem = ({ data }) => {
-   
+
+   /**
+    * Check notification type
+    */
    const checkNotificationType = () => {
       const { type } = data
       if (type === "system") return <IconCircleBlue/>

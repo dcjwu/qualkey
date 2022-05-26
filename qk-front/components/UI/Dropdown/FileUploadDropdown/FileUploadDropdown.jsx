@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 
 import PropTypes from "prop-types"
 import { useRecoilState, useRecoilValue } from "recoil"
 
 import { credentialsState, dropdownSelectionListenerState } from "../../../../atoms"
-import { requiredMappingFields } from "../../../../utils"
 import { IconShowDropdown, IconX } from "../../_Icon"
 import styles from "./FileUploadDropdown.module.scss"
+import FileUploadDropdownItem from "./FileUploadDropdownItem"
 
 const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
 
@@ -15,15 +15,16 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
    const [optionDropdown, setOptionDropdown] = useState("")
    const [dropdownSelectionListener, setDropdownSelectionListener] = useRecoilState(dropdownSelectionListenerState)
 
-   const handleShowDropdown = () => {
+   /**
+    * Dropdown activation handler
+    */
+   const handleShowDropdown = event => {
+      event.stopPropagation()
       setShowDropdown(prev => !prev)
    }
 
    /**
     * Allows to choose item from dropdown.
-    * @desc Sets innerText of dropdown item to its default and adds value to listener array.
-    * @param event Choose option event.
-    * @returns Array of chosen values.
     **/
    const handleChooseOptionDropdown = event => {
       setShowDropdown(false)
@@ -34,22 +35,6 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
       handleOption(event, valueIndex)
    }
 
-   /**
-    * Allows to close dropdown by clicking outside it.
-    **/
-   const outsideClickRef = useRef()
-   useEffect(() => {
-      const checkIfClickedOutside = event => {
-         if (showDropdown && outsideClickRef.current && !outsideClickRef.current.contains(event.target)) {
-            setShowDropdown(false)
-         }
-      }
-      document.addEventListener("click", checkIfClickedOutside)
-      return () => {
-         document.removeEventListener("click", checkIfClickedOutside)
-      }
-   }, [showDropdown])
-
    return (
       <div className={styles.wrapper}>
          <div className={styles.dropdown}>
@@ -59,16 +44,11 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
                </span>
                <IconShowDropdown/>
             </button>
-            <div ref={outsideClickRef} className={styles.content} style={{ display: showDropdown ? "block" : "none" }}>
+            <div className={styles.content} style={{ display: showDropdown ? "block" : "none" }}>
                <ul>
-                  {credentialsData.map(credential => {
-                     if (requiredMappingFields.includes(credential.value)) {
-                        return <li key={credential.value} value={credential.value}
-                                   onClick={handleChooseOptionDropdown}>{credential.title}<span>*</span></li>
-                     }
-                     return <li key={credential.value} value={credential.value}
-                                onClick={handleChooseOptionDropdown}>{credential.title}</li>
-                  })}
+                  {credentialsData.map(data => (
+                     <FileUploadDropdownItem key={data.value} data={data} handleChooseOptionDropdown={handleChooseOptionDropdown}/>
+                  ))}
                </ul>
             </div>
          </div>

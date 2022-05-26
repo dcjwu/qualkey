@@ -18,6 +18,10 @@
     justify-content: space-between;
     padding-left: 0;
   }
+
+  @include breakpoint-max-vertical($bp-vertical-875) {
+    height: $topbar-height-lg;
+  }
 }
 
 .routes {

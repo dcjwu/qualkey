@@ -33,6 +33,9 @@ const mockNotificationData = [
 
 const NotificationWrapper = ({ show, setShow }) => {
 
+   /**
+    * Allows to close window by clicking outside
+    */
    const outsideClickRef = useRef()
    useEffect(() => {
       const checkIfClickedOutside = event => {
@@ -44,7 +47,7 @@ const NotificationWrapper = ({ show, setShow }) => {
       return () => {
          document.removeEventListener("click", checkIfClickedOutside)
       }
-   }, [show])
+   }, [show]) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <div ref={outsideClickRef} className={styles.wrapper} style={{ display: show ? "block" : "none" }}>

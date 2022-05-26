@@ -118,6 +118,9 @@
 .wrapper {
   background-color: $color-secondary;
   margin-bottom: 1.2rem;
+  @include breakpoint-max($bp-screen-xs) {
+    overflow-x: scroll;
+  }
 }
 
 .left,
@@ -134,12 +137,29 @@
 
   > svg {
     cursor: pointer;
+    @include breakpoint-max($bp-screen-sm) {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
   }
 
   > p {
     text-transform: capitalize;
     @include breakpoint-max($bp-screen-md) {
       display: none;
+    }
+  }
+
+  + p {
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
+  }
+  &.viewStatus {
+    + p {
+      @include breakpoint-max($bp-screen-sm) {
+        display: block;
+      }
     }
   }
 }
@@ -159,18 +179,28 @@
   background-color: $color-secondary;
   border: 1px solid $color-additional-medium;
   display: grid;
-  grid-template-columns: 1.1fr 1.5fr 0.7fr 1.05fr 0.5fr;
+  grid-template-columns: 1.1fr 1.5fr 0.7fr 0.5fr 0.5fr;
   height: 9rem;
   justify-items: stretch;
   padding: 0 2rem;
   width: calc(100% - 2rem - 2rem);
 
   @include breakpoint-max($bp-screen-lg) {
-    grid-template-columns: 0.9fr 1.5fr 0.7fr 1.05fr 0.5fr;
+    grid-template-columns: 0.9fr 1.5fr 0.7fr 0.5fr 0.5fr;
   }
 
   @include breakpoint-max($bp-screen-md) {
     grid-template-columns: 0.9fr 1.5fr 0.4fr 1.05fr 0.5fr;
+  }
+  @include breakpoint-max($bp-screen-sm) {
+    grid-template-columns: 0.9fr 1.5fr 0.4fr 0.5fr;
+    padding: 0 1.2rem;
+    width: calc(100% - 1.2rem - 1.2rem);
+  }
+
+  @include breakpoint-max($bp-screen-xs) {
+    width: 45rem;
+    overflow-x: scroll;
   }
 
   > *:not(:last-child) {
@@ -185,13 +215,17 @@
 
   > p:nth-child(4) {
     justify-self: center;
+    text-align: center;
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.35rem;
+    }
   }
 
   &.student {
     grid-template-columns: 0.2fr 0.6fr 1.3fr 0.8fr 0.7fr;
 
     @include breakpoint-max($bp-screen-md) {
-      grid-template-columns: 0.2fr 0.6fr 1.3fr 0.3fr 0.7fr;
+      grid-template-columns: 0.2fr 1.3fr 0.3fr 0.7fr;
     }
 
     > *:not(:last-child) {
@@ -200,6 +234,12 @@
 
     > div:nth-child(2) {
       padding-left: 3rem !important;
+    }
+
+    @include breakpoint-max($bp-screen-md) {
+      >span:nth-child(2) {
+        display: none !important;
+      }
     }
   }
 }
@@ -243,17 +283,27 @@
   justify-content: center;
   padding-left: 1.5rem;
 
-  > svg {
-    cursor: pointer;
+  @include breakpoint-max($bp-screen-sm) {
+    border-left: none;
+    gap: 1.5rem;
+    padding-left: 1rem;
+  }
 
-    @include breakpoint-max($bp-screen-md) {
-      &:first-child {
+  > a {
+    > svg {
+      @include breakpoint-max($bp-screen-xl) {
         height: 3.5rem;
         width: 3.5rem;
       }
+    }
+  }
 
+  > svg {
+    cursor: pointer;
+
+    @include breakpoint-max($bp-screen-xl) {
       &:last-child {
-        width: 2.6rem;
+        width: 2.4rem;
       }
     }
   }
@@ -304,6 +354,16 @@
   @include breakpoint-max($bp-screen-md) {
     padding: 0 1rem;
     width: calc(100% - 1rem - 1rem);
+  }
+
+  @include breakpoint-max($bp-screen-sm) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.historyWrapper {
+  @include breakpoint-max($bp-screen-xs) {
+    width: 47.4rem;
   }
 }
 
@@ -360,7 +420,13 @@
     }
 
     @include breakpoint-max($bp-screen-md) {
-      grid-template-columns: 0.6fr 1.3fr 0.3fr 1.3fr;
+      grid-template-columns: 1.3fr 0.3fr 1.3fr;
+    }
+
+    >span:nth-child(1) {
+      @include breakpoint-max($bp-screen-md) {
+        display: none !important;
+      }
     }
 
     > div:nth-child(3) {

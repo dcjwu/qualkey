@@ -14,7 +14,7 @@ import Error from "./../_error"
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
-export default function Dashboard({ data, serverErrorMessage }) {
+export default function Dashboard({ data, allCredentialsData, serverErrorMessage }) {
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
@@ -28,7 +28,7 @@ export default function Dashboard({ data, serverErrorMessage }) {
          <InstitutionView institution>
             <Heading blue h1 xxl>University Dashboard</Heading>
             <Text large>browse all credential records</Text>
-            <InstitutionDashboard data={credentialData}/>
+            <InstitutionDashboard allCredentialsData={allCredentialsData} data={credentialData}/>
          </InstitutionView>
       </>
    )
@@ -50,6 +50,7 @@ export default function Dashboard({ data, serverErrorMessage }) {
 export const getServerSideProps = async (ctx) => {
    const { req, query } = ctx
    let response
+   let responseAllCredentials
 
    if (query.filter) {
       try {
@@ -57,8 +58,13 @@ export const getServerSideProps = async (ctx) => {
             withCredentials: true,
             headers: { Cookie: req.headers.cookie || "" }
          })
+         responseAllCredentials = await axios.get(`${apiUrl}/credential`, {
+            withCredentials: true,
+            headers: { Cookie: req.headers.cookie || "" }
+         })
          const { data } = response
-         return { props: { data } }
+         const { data: allCredentialsData } = responseAllCredentials
+         return { props: { data, allCredentialsData } }
       } catch (error) {
          return { props: { serverErrorMessage: error.response.statusText } }
       }

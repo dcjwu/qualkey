@@ -6,7 +6,10 @@ import styles from "./BurgerButton.module.scss"
 const BurgerButton = ({ ...otherProps }) => {
    
    const [burgerMenuActive, setBurgerMenuActive] = useRecoilState(burgerMenuActiveState)
-   
+
+   /**
+    * Sidebar activation handler
+    */
    const handleBurgerMenuActive = ()  => {
       setBurgerMenuActive(prevState => !prevState)
    }

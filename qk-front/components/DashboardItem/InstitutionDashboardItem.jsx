@@ -86,6 +86,9 @@ const InstitutionDashboardItem = ({ data }) => {
    const details = useRecoilValue(credentialsDetailsState)
    const [showCredentialsHistory, setShowCredentialsHistory] = useState(false)
 
+   /**
+    * Credential history dropdown handling.
+    **/
    const handleShowDropdown = () => {
       if (showCredentialsHistory) {
          setShowCredentialsHistory(false)
@@ -110,7 +113,7 @@ const InstitutionDashboardItem = ({ data }) => {
             </div>
             <div className={styles.itemWrapper}>
                <IconAcademicCap/>
-               <Text>{`${data.qualificationName.slice(0, 27).trim()}...`}</Text>
+               <Text>{`${data.qualificationName.slice(0, 35).trim()}...`}</Text>
             </div>
             <div className={`${styles.status} ${validateStatusStyles(data.status)}`}>
                <IconInfo/>
@@ -130,7 +133,10 @@ const InstitutionDashboardItem = ({ data }) => {
                }
             </div>
          </div>
-         <div style={{ display: showCredentialsHistory ? "block" : "none", borderRadius: "0 0 15px 15px" }}>
+         <div className={styles.historyWrapper} style={{
+            display: showCredentialsHistory
+               ? "block" : "none", borderRadius: "0 0 15px 15px"
+         }}>
             <div className={styles.history}>
                <div className={styles.left}>
                   <Text bold large>Credentials History</Text>

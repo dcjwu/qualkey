@@ -11,6 +11,9 @@ const StudentHistoryItem = ({ data }) => {
    const [, setShowDetails] = useRecoilState(credentialsShowDetailsState)
    const [, setDetails] = useRecoilState(credentialsDetailsState)
 
+   /**
+    * Shows details in credential history.
+    **/
    const handleShowDetails = () => {
       setShowDetails(true)
       setDetails(details)

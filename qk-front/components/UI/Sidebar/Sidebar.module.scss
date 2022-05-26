@@ -42,6 +42,10 @@
   flex-direction: column;
   height: calc(100% - 4rem - 4rem);
   justify-content: space-between;
+
+  @include breakpoint-max-vertical($bp-vertical-400) {
+    overflow-y: scroll;
+  }
 }
 
 .top {

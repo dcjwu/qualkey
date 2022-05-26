@@ -8,6 +8,16 @@
   justify-content: flex-end;
   margin-bottom: 3rem;
 
+  @include breakpoint-max($bp-screen-sm) {
+    flex-direction: column;
+  }
+
+  >* {
+    @include breakpoint-max($bp-screen-sm) {
+      width: 80% !important;
+    }
+  }
+
   > button {
     padding: 1rem 2rem;
     width: fit-content;
