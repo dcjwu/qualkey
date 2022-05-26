@@ -80,7 +80,7 @@ const CredentialsInfo = ({ data }) => {
                   <div className={styles.infoBlock}>
                      <div className={styles.infoItem}>
                         <Text grey>Credentials expiry date:</Text>
-                        <Text semiBold>{data.expiresAt}</Text>
+                        <Text semiBold>{moment.utc(data.expiresAt).format("DD/MM/YYYY")}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Other information:</Text>

@@ -71,7 +71,7 @@ export const getServerSideProps = async (ctx) => {
          const { data } = response
          return { props: { data } }
       } catch (error) {
-         return { props: { serverErrorMessage: error.response.statusText } }
+         return { props: { serverErrorMessage: error.response ? error.response.statusText : "Something went wrong" } }
       }
    }
 }
