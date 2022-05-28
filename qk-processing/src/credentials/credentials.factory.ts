@@ -13,7 +13,7 @@ export class CredentialsFactory {
   ) {
   }
 
-  public async create(dto: CredentialHashableDataDto, student: User): Promise<Credential> {
+  public async create(dto: CredentialHashableDataDto, student: User, uploadUuid: string): Promise<Credential> {
     const did = await this.hedera.generateDid();
     Logger.debug(`DID for credentials received - ${did}`);
 
@@ -22,6 +22,7 @@ export class CredentialsFactory {
         did: did,
         studentUuid: student.uuid,
         institutionUuid: dto.institutionUuid,
+        uploadUuid: uploadUuid,
 
         certificateId: dto.certificateId,
         graduatedName: dto.graduatedName,

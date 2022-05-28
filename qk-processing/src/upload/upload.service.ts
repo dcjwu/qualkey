@@ -22,7 +22,7 @@ export class UploadService {
    * It creates and saves the Upload VO as entry in the database if successful
    * Or throws exception in case something went wrong
    */
-  async processUpload(filename: string, mapping: string, uploadedBy: User): Promise<void> {
+  async processUpload(filename: string, originalFilename: string, mapping: string, uploadedBy: User): Promise<void> {
     try {
       const institution = await this.prisma.institution.findUnique({
         where: { uuid: uploadedBy.institutionUuid },
@@ -36,6 +36,7 @@ export class UploadService {
         data: {
           uuid: filename.split(".")[0],
           filename: filename,
+          originalFilename: originalFilename,
           mapping: mapping,
           uploadedBy: uploadedBy.uuid,
           confirmationsRequestedFrom: representatives.map(r => r.uuid).join(";"),

@@ -2,7 +2,6 @@ import { GoneException, NotFoundException, UnprocessableEntityException } from "
 import { Test, TestingModule } from "@nestjs/testing";
 import { OneTimePassword, User } from "@prisma/client";
 
-import { OtpResponseDto } from "../../../src/auth/dto";
 import { OtpService } from "../../../src/auth/otp.service";
 import { AwsSesService } from "../../../src/aws/aws.ses.service";
 import { UserNotFoundException } from "../../../src/common/exception";

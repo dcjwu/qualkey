@@ -74,6 +74,7 @@ export class UploadEventListener {
     }
 
     // parse file into hashable data DTOs
+    // TODO: save amount of entries to Upload
     const credentialDataArray: CredentialHashableDataDto[] = await this.fileParser
       .parseUpload(
         this.awsS3Service.get(event.upload.filename),
@@ -87,7 +88,7 @@ export class UploadEventListener {
     credentialDataArray.forEach(credentialData => {
       credentialData.institutionUuid = event.approvedBy.institutionUuid;
       Logger.debug(`Dispatching credentialsCreateMessage ${credentialData.graduatedName}`);
-      this.credentialsCreateQueue.add("create", { credentialHashableDataDto: credentialData });
+      this.credentialsCreateQueue.add("create", { credentialHashableDataDto: credentialData, uploadUuid: event.upload.uuid });
     });
 
     // TODO: enable remove file

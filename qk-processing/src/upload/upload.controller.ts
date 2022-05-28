@@ -53,7 +53,7 @@ export class UploadController {
   async massUpload(@GetUser() user: User, @UploadedFile() file: Express.Multer.File, @Body() dto: UploadDto): Promise<void> {
     if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
     const filename = await this.awsS3Service.upload(file);
-    await this.uploadService.processUpload(filename, dto.mapping, user);
+    await this.uploadService.processUpload(filename, file.originalname, dto.mapping, user);
   }
 
   /**

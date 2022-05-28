@@ -15,6 +15,7 @@ describe("UploadService Unit Test", () => {
 
   const mockUploadData = {
     filename: "file.xlsx",
+    originalFilename: "filename-original.xlsx",
     mapping: "value,value1,,,value2,value3,,,value4",
   };
 
@@ -95,6 +96,7 @@ describe("UploadService Unit Test", () => {
   const mockUpload: Upload = {
     uuid: "b96d5e2f-47e1-4b93-944a-ade81a78886c",
     filename: "b96d5e2f-47e1-4b93-944a-ade81a78886c.csv",
+    originalFilename: "filename-original.csv",
     mapping: "email,expiresAt,gpaFinalGrade,graduatedName,graduatedAt,qualificationLevel,studyEndedAt,qualificationName,studyStartedAt,,,,,,,",
     status: UploadStatus.PENDING,
     uploadedBy: mockInstitutionRepresentatives[0].uuid,
@@ -107,6 +109,7 @@ describe("UploadService Unit Test", () => {
   const mockUploadApproved: Upload = {
     uuid: "b96d5e2f-47e1-4b93-944a-ade81a78886c",
     filename: "b96d5e2f-47e1-4b93-944a-ade81a78886c.csv",
+    originalFilename: "filename-original.csv",
     mapping: "email,expiresAt,gpaFinalGrade,graduatedName,graduatedAt,qualificationLevel,studyEndedAt,qualificationName,studyStartedAt,,,,,,,",
     status: UploadStatus.APPROVED,
     uploadedBy: mockInstitutionRepresentatives[0].uuid,
@@ -119,6 +122,7 @@ describe("UploadService Unit Test", () => {
   const mockUploadApprovedByUser: Upload = {
     uuid: "b96d5e2f-47e1-4b93-944a-ade81a78886d",
     filename: "b96d5e2f-47e1-4b93-944a-ade81a78886c.csv",
+    originalFilename: "filename-original.csv",
     mapping: "email,expiresAt,gpaFinalGrade,graduatedName,graduatedAt,qualificationLevel,studyEndedAt,qualificationName,studyStartedAt,,,,,,,",
     status: UploadStatus.PENDING,
     uploadedBy: mockInstitutionRepresentatives[0].uuid,
@@ -194,7 +198,7 @@ describe("UploadService Unit Test", () => {
       jest
         .spyOn(eventEmitter, "emit");
 
-      await service.processUpload(mockUploadData.filename, mockUploadData.mapping, mockUploadedBy);
+      await service.processUpload(mockUploadData.filename, mockUploadData.originalFilename, mockUploadData.mapping, mockUploadedBy);
       expect(await prismaService.upload.create).toBeCalledTimes(1);
       expect(await eventEmitter.emit).toBeCalledWith("upload.succeeded", mockSuccessUploadEvent);
     });
@@ -208,7 +212,7 @@ describe("UploadService Unit Test", () => {
       jest
         .spyOn(eventEmitter, "emit");
 
-      await service.processUpload(mockUploadData.filename, mockUploadData.mapping, mockUploadedBy);
+      await service.processUpload(mockUploadData.filename, mockUploadData.originalFilename, mockUploadData.mapping, mockUploadedBy);
       expect(await prismaService.upload.create).toBeCalledTimes(1);
       expect(await eventEmitter.emit).toBeCalledTimes(2);
     });
@@ -222,11 +226,11 @@ describe("UploadService Unit Test", () => {
       jest
         .spyOn(eventEmitter, "emit");
 
-      await expect(async () => service.processUpload(mockUploadData.filename, mockUploadData.mapping, mockUploadedBy)).rejects.toThrowError(
+      await expect(async () => service.processUpload(mockUploadData.filename, mockUploadData.originalFilename, mockUploadData.mapping, mockUploadedBy)).rejects.toThrowError(
         new NotFoundException(`Upload failed for file ${mockUploadData.filename}: institution not found`),
       );
       expect(await eventEmitter.emit).toBeCalledWith("upload.failed", mockFailedUploadEvent);
-      await expect(async () => service.processUpload(mockUploadData.filename, mockUploadData.mapping, mockUploadedBy)).rejects.toThrowError(
+      await expect(async () => service.processUpload(mockUploadData.filename, mockUploadData.originalFilename, mockUploadData.mapping, mockUploadedBy)).rejects.toThrowError(
         new UploadFailedException(mockUploadData.filename, "institution not found"),
       );
     });

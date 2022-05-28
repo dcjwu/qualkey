@@ -2,7 +2,9 @@
 
 pragma solidity >= 0.5.0 <0.9.0;
 
-contract Qualkey {
+import "./Ownable.sol";
+
+contract Qualkey is Ownable {
 
     struct Credential {
         string did;
@@ -13,7 +15,7 @@ contract Qualkey {
 
     mapping (uint32 => Credential) private credentials;
 
-    function setCredential(uint32 _id, string memory _did, bytes32 _hash, string memory _link, uint32 _timestamp) public {
+    function setCredential(uint32 _id, string memory _did, bytes32 _hash, string memory _link, uint32 _timestamp) public onlyOwner {
         Credential storage credential = credentials[_id];
         credential.did = _did;
         credential.hash = _hash;

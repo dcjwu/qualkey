@@ -25,8 +25,8 @@ import { UploadService } from "./upload.service";
     BullModule.registerQueue({
       name: "credentials-create",
       limiter: {
-        max: 1,
-        duration: 1000,
+        max: 100,
+        duration: 50,
         bounceBack: true,
       },
     }),

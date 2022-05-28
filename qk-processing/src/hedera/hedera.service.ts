@@ -1,13 +1,29 @@
-import { HcsIdentityNetworkBuilder } from "@hashgraph/did-sdk-js";
-import { Client, ContractCreateTransaction, FileCreateTransaction, PublicKey } from "@hashgraph/sdk";
+import * as fs from "fs";
+
+import { AddressBook, HcsIdentityNetwork, HcsIdentityNetworkBuilder } from "@hashgraph/did-sdk-js";
+import {
+  Client, ContractCallQuery,
+  ContractCreateTransaction,
+  ContractExecuteTransaction, ContractFunctionParameters, FileAppendTransaction, FileContentsQuery,
+  FileCreateTransaction,
+  FileId, Hbar,
+  PublicKey,
+} from "@hashgraph/sdk";
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { SmartContractStatus } from "@prisma/client";
+import { SmartContractStatus, CredentialChange } from "@prisma/client";
 
-import { LogicException } from "../common/exception";
+import {
+  CredentialsAlreadyAddedException,
+  CredentialsNotFoundException,
+  LogicException,
+  SmartContractNotFoundException,
+} from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
-import * as contract from "./contract/Qualkey.json";
 
+/**
+ * Master class for working with Hedera API
+ */
 @Injectable()
 export class HederaService {
   constructor(
@@ -17,68 +33,203 @@ export class HederaService {
   ) {
   }
 
-  getCredentialsFromSmartContact(): void {
-    console.log("return credentials");
-  }
+  /**
+   * Here we save credentialChange data to smart contract
+   */
+  public async writeCredentialChangeToSmartContract(credentialChange: CredentialChange): Promise<void> {
+    const client = await this.getHederaClient();
+    const contractId = await this.getWritableSmartContractId();
 
-  saveCredentialsToSmartContract(): void {
-    console.log("save credentials");
-  }
+    if (await this.isSmartContractContainsCredentials(credentialChange.id, contractId)) {
+      Logger.warn(`Smart Contract ${contractId} already contains credentials ${credentialChange.id}`);
+      throw new CredentialsAlreadyAddedException(credentialChange.id, contractId);
+    }
 
-  public async getSmartContractId(): Promise<string> {
-    const smartContract = await this.prismaService.smartContract.findFirst({ where: { status: SmartContractStatus.ACTIVE } });
-    if (!smartContract) {
-      Logger.debug("Creating new smart contract...");
-      const client = await this.createHederaClient();
+    try {
+      const responseExecuteTransaction = await new ContractExecuteTransaction()
+        .setContractId(contractId)
+        .setGas(1000000)
+        .setFunction("setCredential", new ContractFunctionParameters()
+          .addUint32(credentialChange.id)
+          .addString(credentialChange.credentialDid)
+          .addBytes32(Buffer.from(credentialChange.hash, "hex"))
+          .addString(this.config.get<string>("QUALKEY_DID_SERVER")+"/"+credentialChange.credentialDid)
+          .addUint32(Math.round(credentialChange.changedAt.getTime() / 1000)))
+        .execute(client);
+      const transactionReceipt = await responseExecuteTransaction.getReceipt(client);
 
-      const bytecode = contract.data.bytecode.object;
-      const fileCreateTx = new FileCreateTransaction()
-        .setContents(bytecode);
-      const submitTx = await fileCreateTx.execute(client);
-      const fileReceipt = await submitTx.getReceipt(client);
-      const bytecodeFileId = fileReceipt.fileId;
+      await this.prismaService.credentialChange.update({ data: { smartContractId: contractId }, where: { id: credentialChange.id } });
 
-      const contractTx = await new ContractCreateTransaction()
-        .setBytecodeFileId(bytecodeFileId)
-        .setGas(100000);
-
-      const contractResponse = await contractTx.execute(client);
-      const contractReceipt = await contractResponse.getReceipt(client);
-
-      const newSmartContract = await this.prismaService.smartContract.create({ data: { id: contractReceipt.contractId.toString() } });
-      Logger.debug(`New smart contract created ${newSmartContract.id}`);
-      return newSmartContract.id;
-    } else {
-      Logger.debug(`Smart contract already in use ${smartContract.id}`);
-      return smartContract.id;
+      Logger.debug(`Credential ID: ${credentialChange.id} Transaction ${responseExecuteTransaction.transactionId.toString()} — ${transactionReceipt.status.toString()}`);
+    } catch (e) {
+      // TODO: change SC status to STORAGE_EXCEEDED when full
+      Logger.error(`Transaction ${e.transactionId.toString()} — ${e.status.toString()}`);
+      throw e;
     }
   }
 
-  public async generateDid(): Promise<string> {
-    const client = await this.createHederaClient();
+  /**
+   * Check if Smart Contract already contains Credentials
+   */
+  private async isSmartContractContainsCredentials(credentialChangeId: number, smartContractId: string): Promise<boolean> {
+    const client = await this.getHederaClient();
 
-    const publicKey = this.config.get<string>("HEDERA_PUBLIC_KEY");
+    try {
+      await new ContractCallQuery()
+        .setContractId(smartContractId)
+        .setGas(1000000)
+        .setFunction("getCredential", new ContractFunctionParameters()
+          .addUint32(credentialChangeId))
+        .setQueryPayment(new Hbar(0.01))
+        .execute(client);
+    } catch (e) {
+      if (e.status.toString() === "CONTRACT_REVERT_EXECUTED") return false;
 
-    while (true) {
-      try {
+      throw new LogicException(`Unexpected error ${e.status}`);
+    }
+    return true;
+  }
 
-        const identityNetwork = await new HcsIdentityNetworkBuilder()
-          .setNetwork("testnet")
-          .setPublicKey(PublicKey.fromString(publicKey))
-          .execute(client);
+  /**
+   * Here we get credentialChange data from smart contract. For testing purposes
+   */
+  public async getCredentialChangeDataFromSmartContract(credentialChangeId: number, smartContractId: string): Promise<void> {
+    const client = await this.getHederaClient();
 
-        const did = identityNetwork.generateDid(true).toDid();
-        Logger.debug(`did CREATED ${did}`);
-        return did;
+    try {
+      const getCredentialResult = await new ContractCallQuery()
+        .setContractId(smartContractId)
+        .setGas(1000000)
+        .setFunction("getCredential", new ContractFunctionParameters()
+          .addUint32(credentialChangeId))
+        .setQueryPayment(new Hbar(0.01))
+        .execute(client);
 
-      } catch (err) {
-        Logger.error(err, err.stack);
-        if (err.name === "TypeError") throw new LogicException("Something went wrong");
+      console.log(`DID — ${getCredentialResult.getString(0)}`);
+      console.log(`Hash — ${Buffer.from(getCredentialResult.getBytes32(1)).toString("hex")}`);
+      console.log(`Link — ${getCredentialResult.getString(2)}`);
+      console.log(`Timestamp — ${getCredentialResult.getUint32(3)}`);
+    } catch (e) {
+      Logger.error(`Transaction ${e.transactionId.toString()} — ${e.status.toString()}`);
+
+      if (e.status.toString() === "CONTRACT_REVERT_EXECUTED") {
+        throw new CredentialsNotFoundException(credentialChangeId);
       }
     }
   }
 
-  private async createHederaClient(): Promise<Client> {
+  /**
+   * Get smart contract which is not full yet
+   */
+  public async getWritableSmartContractId(): Promise<string> {
+    const smartContract = await this.prismaService.smartContract.findFirst({ where: { status: SmartContractStatus.ACTIVE } });
+    if (!smartContract) {
+      throw new SmartContractNotFoundException();
+    }
+
+    return smartContract.id;
+  }
+
+  /**
+   * Create smart contract
+   */
+  public async createSmartContract(): Promise<string> {
+    const bytecode = fs.readFileSync("./src/hedera/contract/Qualkey_sol_Qualkey.bin");
+    const client = await this.getHederaClient();
+
+    // Save binary file
+    const resp = await new FileCreateTransaction()
+      .setKeys([client.operatorPublicKey])
+      .setContents("")
+      .setMaxTransactionFee(new Hbar(5))
+      .execute(client);
+
+    const receipt = await resp.getReceipt(client);
+    const fileId = receipt.fileId;
+
+    console.log(`file ID = ${fileId.toString()}`);
+
+    await (
+      await new FileAppendTransaction()
+        .setNodeAccountIds([resp.nodeId])
+        .setFileId(fileId)
+        .setContents(bytecode)
+        .setMaxTransactionFee(new Hbar(5))
+        .execute(client)
+    ).getReceipt(client);
+
+    const contents = await new FileContentsQuery()
+      .setFileId(fileId)
+      .execute(client);
+
+    console.log(
+      `File content length according to \`FileInfoQuery\`: ${contents.length}`,
+    );
+
+    Logger.debug("Creating new smart contract...");
+
+    const contractTx = await new ContractCreateTransaction()
+      .setBytecodeFileId(fileId)
+      .setGas(100000);
+
+    const contractResponse = await contractTx.execute(client);
+    const contractReceipt = await contractResponse.getReceipt(client);
+
+    const newSmartContract = await this.prismaService.smartContract.create({ data: { id: contractReceipt.contractId.toString() } });
+    Logger.debug(`New smart contract created ${newSmartContract.id}`);
+    return newSmartContract.id;
+  }
+
+  /**
+   * Here we generate DID for credentials
+   */
+  public async generateDid(): Promise<string> {
+    try {
+      const identityNetwork = this.getHcsIdentityNetwork();
+
+      const did = identityNetwork.generateDid(true).toDid();
+      Logger.debug(`did CREATED ${did}`);
+      return did;
+
+    } catch (err) {
+      Logger.error(err, err.stack);
+      if (err.name === "TypeError") throw new LogicException("Something went wrong");
+    }
+  }
+
+  /**
+   * Here we get existing Hedera Consensus Service Identity Network in order to generate DID using it
+   */
+  private getHcsIdentityNetwork(): HcsIdentityNetwork {
+    const addressBook = new AddressBook();
+    addressBook.setAppnetName(this.config.get<string>("HEDERA_HCS_APPNET_NAME"));
+    addressBook.setAppnetDidServers([this.config.get<string>("QUALKEY_DID_SERVER")]);
+    addressBook.setDidTopicId(this.config.get<string>("HEDERA_HCS_DID_TOPIC_ID"));
+    addressBook.setVcTopicId(this.config.get<string>("HEDERA_HCS_VC_TOPIC_ID"));
+    addressBook.setFileId(FileId.fromString(this.config.get<string>("HEDERA_HCS_FILE_ID")));
+
+    return HcsIdentityNetwork.fromAddressBook(this.config.get<string>("HEDERA_NETWORK"), addressBook);
+  }
+
+  /**
+   * Create Hedera Consensus Service Identity Network in order to generate DID using it later. Only one-time function
+   */
+  public async createHcsIdentityNetwork(): Promise<HcsIdentityNetwork> {
+    const client = await this.getHederaClient();
+
+    return await new HcsIdentityNetworkBuilder()
+      .setNetwork(this.config.get<string>("HEDERA_NETWORK"))
+      .setNetwork(this.config.get<string>("QUALKEY_DID_SERVER"))
+      .setAppnetName("Qualkey")
+      .addAppnetDidServer(this.config.get<string>("QUALKEY_DID_SERVER"))
+      .setPublicKey(PublicKey.fromString(this.config.get<string>("HEDERA_PUBLIC_KEY")))
+      .execute(client);
+  }
+
+  /**
+   * Get http client to be able to call Hedera API
+   */
+  private async getHederaClient(): Promise<Client> {
     const accountId = this.config.get<string>("HEDERA_ACCOUNT_ID");
     const privateKey = this.config.get<string>("HEDERA_PRIVATE_KEY");
 
