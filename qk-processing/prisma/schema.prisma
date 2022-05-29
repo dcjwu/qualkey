@@ -78,8 +78,8 @@ model Credential {
 
     credentialChanges   CredentialChange[]
 
-        createdAt       DateTime @default(now())
-        updatedAt       DateTime @updatedAt
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @updatedAt
 
     @@map("credentials")
 }
@@ -127,9 +127,9 @@ model Upload {
 
 model CredentialShare {
     uuid                        String @id @default(uuid())
-    recipientEmail              String
-    viewsCount                  Int @default(0)
+    recipientEmails             String // array with recepient emails
     credentialUuid              String
+    sharedFields                String // array with field names allowed for sharing  full_name;majors;qualification_level
     temporaryPassword           String
     expiresAt                   DateTime
     createdAt                   DateTime @default(now())
@@ -206,8 +206,10 @@ enum UserActionType {
 model UserActions {
     id              Int     @id @default(autoincrement())
     userUuid        String
+    initiatorName   String
     type            UserActionType
     subjectUuid     String
+    createdAt       DateTime @default(now())
 
     @@map("userActions")
 }

@@ -47,4 +47,17 @@ export class CredentialsNotifyConsumer {
       }
       await job.moveToCompleted();
     }
+
+    @Process("credentials-share")
+    async handleCredentialsShare(job: Job): Promise<void> {
+      Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
+      Logger.debug(`Sending notification to ${job.data.recipientEmail} with temporaryPassword: ${job.data.temporaryPassword}`);
+      try {
+        await this.ses.sendShareCredentials(job.data.recipientEmail, job.data.temporaryPassword);
+      } catch (err) {
+        Logger.error(err, err.stack);
+        return;
+      }
+      await job.moveToCompleted();
+    }
 }

@@ -39,6 +39,11 @@ export class AwsSesService {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "upload-approved");
     }
 
+    public async sendShareCredentials(recipientEmail: string, temporaryPassword: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-share", `{ \"temporaryPassword\":\"${temporaryPassword}\"}`);
+    }
+
     public async sendUploadRejected(recipientEmail: string): Promise<void> {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "upload-rejected");
     }

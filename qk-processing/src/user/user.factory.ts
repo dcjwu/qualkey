@@ -6,13 +6,13 @@ import * as bcrypt from "bcryptjs";
 
 import { AwsSesService } from "../aws/aws.ses.service";
 import { PrismaService } from "../prisma/prisma.service";
-import { UserPasswordGenerator } from "./helper/user.password-generator";
+import { PasswordGenerator } from "./helper/password-generator.service";
 
 @Injectable()
 export class UserFactory {
   constructor(
         private prisma: PrismaService,
-        private passwordGenerator: UserPasswordGenerator,
+        private passwordGenerator: PasswordGenerator,
         private ses: AwsSesService,
   ) {
   }
@@ -21,7 +21,7 @@ export class UserFactory {
     assert(email !== "", "email must not be empty");
     assert(fullname !== "", "Full name must not be empty");
 
-    const password = UserPasswordGenerator.generate(8, true, false);
+    const password = PasswordGenerator.generate(8, true, false);
     await this.ses.sendWelcomeUserEmail(
       email,
       fullname,

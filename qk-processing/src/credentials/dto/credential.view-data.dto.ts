@@ -1,13 +1,11 @@
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { Credential, CredentialChange } from "@prisma/client";
 
 /**
  * Data Transfer Object with all hashable parameters for CredentialsChange
  */
-export class CredentialHashableDataDto {
-  @IsNotEmpty()
-  @IsEmail()
-    email: string;
-  institutionUuid?: string;
+export class CredentialViewDataDto {
+  credentials: Credential;
+  credentialsChange: CredentialChange;
 
   certificateId?: string;
   graduatedName?: string;

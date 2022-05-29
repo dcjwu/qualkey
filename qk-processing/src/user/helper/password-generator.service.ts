@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class UserPasswordGenerator {
+export class PasswordGenerator {
   public static generate(length: number, hasNumbers: boolean, hasSymbols: boolean): string {
     const alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const integers = "0123456789";

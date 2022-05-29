@@ -63,6 +63,7 @@ export class CredentialsService {
         await this.prisma.userActions.create({
           data: {
             userUuid: representative.uuid,
+            initiatorName: (initiatedBy.firstName + " " + initiatedBy.lastName).trim(),
             type: UserActionType.REVIEW_WITHDRAWAL,
             subjectUuid: credentialsWithdrawalRequest.uuid,
           },

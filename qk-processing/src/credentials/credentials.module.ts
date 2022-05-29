@@ -9,15 +9,19 @@ import { UserModule } from "../user/user.module";
 import { CredentialsNotifyConsumer } from "./consumer/credentials-notify.consumer";
 import { CredentialsCreateConsumer } from "./consumer/credentials.create.consumer";
 import { CredentialsChangeService } from "./credentials-change.service";
+import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsController } from "./credentials.controller";
 import { CredentialsService } from "./credentials.service";
 import { CredentialsChangeFactory } from "./factory/credentials-change.factory";
+import { CredentialsShareFactory } from "./factory/credentials-share.factory";
 import { CredentialsWithdrawalRequestFactory } from "./factory/credentials-withdrawal-request.factory";
 import { CredentialsFactory } from "./factory/credentials.factory";
 import { CredentialsEventListener } from "./listener/credentials.event.listener";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
+import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
 import { CredentialsWithdrawalRequestRepository } from "./repository/credentials.withdrawal-request.repository";
+import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
 
 @Module({
   imports: [
@@ -28,7 +32,7 @@ import { CredentialsWithdrawalRequestRepository } from "./repository/credentials
     BullModule.registerQueue({
       name: "credentials-notify",
       limiter: {
-        max: 1,
+        max: 100,
         duration: 100,
         bounceBack: true,
       },
@@ -49,6 +53,10 @@ import { CredentialsWithdrawalRequestRepository } from "./repository/credentials
     CredentialsNotifyConsumer,
     CredentialsWithdrawalRequestRepository,
     CredentialsWithdrawalRequestFactory,
+    CredentialsShareRepository,
+    IsEmailArrayConstraint,
+    CredentialsShareService,
+    CredentialsShareFactory,
   ],
 })
 export class CredentialsModule {}

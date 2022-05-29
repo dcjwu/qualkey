@@ -64,6 +64,7 @@ export class UploadService {
         await this.prisma.userActions.create({
           data: {
             userUuid: representative.uuid,
+            initiatorName: (uploadedBy.firstName + " " + uploadedBy.lastName).trim(),
             type: UserActionType.REVIEW_UPLOAD,
             subjectUuid: upload.uuid,
           },
