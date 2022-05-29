@@ -66,7 +66,7 @@ export class UploadController {
   ): Promise<StreamableFile> {
     if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
     const upload: Upload = await this.uploadService.getCheckedUpload(dto.uuid, user);
-    const type = upload.originalFilename.split('.').pop();
+    const type = upload.originalFilename.split(".").pop();
 
     return new StreamableFile(this.awsS3Service.get(upload.filename), {
       type: `application/${type}`,

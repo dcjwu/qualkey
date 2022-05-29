@@ -1,11 +1,23 @@
-import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Post, Query, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
 import { Credential, CredentialShare, CredentialsWithdrawalRequest, Role, User } from "@prisma/client";
 
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
+import { CredentialsShareExpiredException } from "../common/exception";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsService } from "./credentials.service";
-import {CredentialsWithdrawalRequestDto, CredentialsShareRequestDto, CredentialViewDataDto} from "./dto";
+import { CredentialsWithdrawalRequestDto, CredentialsShareRequestDto, CredentialViewDataDto } from "./dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
@@ -113,19 +125,25 @@ export class CredentialsController {
   @Get(":did/view")
   async getCredentialsViewData(
       @GetUser() user: User,
-      @Query("did") did: string,
+      @Param("did") did: string,
+      @Query("shareUuid") shareUuid: string,
       @Query("password") password: string,
   ): Promise<CredentialViewDataDto> {
-    if (! password || password)
-    if (did && did !== "") {
-      const credentials = await this.credentialsRepository.getByDid(did);
+    const credentials = await this.credentialsRepository.getByDid(did);
+    const credentialsChange = await this.credentialsChangeRepository.getLastByCredentialsUuid(credentials.uuid);
 
-      if (user.uuid !== credentials.studentUuid) {
-        throw new ForbiddenException();
-      }
-    }
+    if (user.uuid === credentials.studentUuid) return new CredentialViewDataDto(credentials, credentialsChange);
 
-    return new CredentialViewDataDto();
+    if (! password || ! shareUuid) throw new ForbiddenException();
+
+    const credentialsShare = await this.credentialsShareRepository.getByUuid(shareUuid);
+    // if expired throw exception
+    if (credentialsShare.expiresAt < new Date()) throw new CredentialsShareExpiredException();
+    // if password is incorrect throw exception
+    if (password !== credentialsShare.temporaryPassword) throw new ForbiddenException();
+
+    // TODO: return only allowed to show fields
+    return new CredentialViewDataDto(credentials, credentialsChange);
   }
 
   /**

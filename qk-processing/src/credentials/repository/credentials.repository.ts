@@ -3,8 +3,8 @@ import * as assert from "assert";
 import { Injectable } from "@nestjs/common";
 import { Credential, User } from "@prisma/client";
 
+import { CredentialsNotFoundException } from "../../common/exception";
 import { PrismaService } from "../../prisma/prisma.service";
-import {CredentialsNotFoundException} from "../../common/exception";
 /**
  * Class responsible for getting credentials from the data sources
  */
