@@ -5,8 +5,7 @@ import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsService } from "./credentials.service";
-import { CredentialsWithdrawalRequestDto } from "./dto";
-import { CredentialsShareRequestDto } from "./dto/credentials-share-request.dto";
+import {CredentialsWithdrawalRequestDto, CredentialsShareRequestDto, CredentialViewDataDto} from "./dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
@@ -108,23 +107,25 @@ export class CredentialsController {
   }
 
   /**
-   * Get credentials shares request
+   * Get credentials view data for access when shared
    */
   @HttpCode(HttpStatus.OK)
-  @Get("view/:did")
+  @Get(":did/view")
   async getCredentialsViewData(
       @GetUser() user: User,
-      @Query("credentialsUuid") credentialsUuid: string,
-  ): Promise<CredentialShare[]> {
-    if (credentialsUuid && credentialsUuid !== "") {
-      const credentials = await this.credentialsRepository.getByUuid(credentialsUuid);
+      @Query("did") did: string,
+      @Query("password") password: string,
+  ): Promise<CredentialViewDataDto> {
+    if (! password || password)
+    if (did && did !== "") {
+      const credentials = await this.credentialsRepository.getByDid(did);
 
       if (user.uuid !== credentials.studentUuid) {
         throw new ForbiddenException();
       }
-
-      return await this.credentialsShareRepository.findByCredentialsUuid(credentialsUuid);
     }
+
+    return new CredentialViewDataDto();
   }
 
   /**

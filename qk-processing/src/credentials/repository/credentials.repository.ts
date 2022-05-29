@@ -4,6 +4,7 @@ import { Injectable } from "@nestjs/common";
 import { Credential, User } from "@prisma/client";
 
 import { PrismaService } from "../../prisma/prisma.service";
+import {CredentialsNotFoundException} from "../../common/exception";
 /**
  * Class responsible for getting credentials from the data sources
  */
@@ -17,6 +18,13 @@ export class CredentialsRepository {
   public async getByUuid(uuid: string): Promise<Credential> {
     const credentials = await this.prismaService.credential.findUnique({ where:{ uuid:uuid } });
     assert(null !== credentials, "credentials should not be null");
+
+    return credentials;
+  }
+
+  public async getByDid(did: string): Promise<Credential> {
+    const credentials = await this.prismaService.credential.findUnique({ where:{ did:did } });
+    if (null === credentials) throw new CredentialsNotFoundException(did);
 
     return credentials;
   }

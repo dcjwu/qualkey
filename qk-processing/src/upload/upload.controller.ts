@@ -10,7 +10,7 @@ import {
 } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { Role, User } from "@prisma/client";
+import { Role, Upload, User } from "@prisma/client";
 import { Express } from "express";
 
 import { GetUser } from "../auth/decorator";
@@ -65,8 +65,12 @@ export class UploadController {
       @Query() dto: UploadGetFileDto,
   ): Promise<StreamableFile> {
     if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
-    const upload = await this.uploadService.getCheckedUpload(dto.uuid, user);
+    const upload: Upload = await this.uploadService.getCheckedUpload(dto.uuid, user);
+    const type = upload.originalFilename.split('.').pop();
 
-    return new StreamableFile(this.awsS3Service.get(upload.filename));
+    return new StreamableFile(this.awsS3Service.get(upload.filename), {
+      type: `application/${type}`,
+      disposition: `attachment; filename="${upload.uuid}.${type}"`,
+    });
   }
 }

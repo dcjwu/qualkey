@@ -15,7 +15,7 @@ import { SmartContractStatus, CredentialChange } from "@prisma/client";
 
 import {
   CredentialsAlreadyAddedException,
-  CredentialsNotFoundException,
+  CredentialsChangeNotFoundException,
   LogicException,
   SmartContractNotFoundException,
 } from "../common/exception";
@@ -119,7 +119,7 @@ export class HederaService {
       Logger.error(`Transaction ${e.transactionId.toString()} — ${e.status.toString()}`);
 
       if (e.status.toString() === "CONTRACT_REVERT_EXECUTED") {
-        throw new CredentialsNotFoundException(credentialChangeId);
+        throw new CredentialsChangeNotFoundException(credentialChangeId);
       }
     }
   }

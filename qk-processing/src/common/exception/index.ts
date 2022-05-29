@@ -5,3 +5,4 @@ export * from "./smart-contract-not-found-exception";
 export * from "./credentials-not-found-exception";
 export * from "./credentials-already-added-exception";
 export * from "./action-not-found-exception";
+export * from "./credentials-change-not-found-exception";
