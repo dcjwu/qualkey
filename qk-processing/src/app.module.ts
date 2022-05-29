@@ -13,6 +13,7 @@ import AdminJS, { buildFeature, CurrentAdmin } from "adminjs";
 import * as bcrypt from "bcryptjs";
 import { CommandModule } from "nestjs-command";
 
+import { ActionModule } from "./action/action.module";
 import { AuthModule } from "./auth/auth.module";
 import { AwsModule } from "./aws/aws.module";
 import { AwsSesService } from "./aws/aws.ses.service";
@@ -166,6 +167,7 @@ AdminJS.registerAdapter({ Database, Resource });
     AwsModule,
     HederaModule,
     CommandModule,
+    ActionModule,
   ],
 })
 export class AppModule {

@@ -62,8 +62,14 @@ export class HederaService {
 
       Logger.debug(`Credential ID: ${credentialChange.id} Transaction ${responseExecuteTransaction.transactionId.toString()} — ${transactionReceipt.status.toString()}`);
     } catch (e) {
-      // TODO: change SC status to STORAGE_EXCEEDED when full
       Logger.error(`Transaction ${e.transactionId.toString()} — ${e.status.toString()}`);
+      if (e.status.toString() === "MAX_CONTRACT_STORAGE_EXCEEDED") {
+        await this.prismaService.smartContract.update({
+          data: { status: SmartContractStatus.STORAGE_EXCEEDED },
+          where: { id: contractId },
+        });
+      }
+
       throw e;
     }
   }

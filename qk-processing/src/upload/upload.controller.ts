@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  ForbiddenException, Get, HttpCode, HttpStatus,
+  ForbiddenException, Get,
   Inject,
   Post, Query, StreamableFile,
   UploadedFile,
@@ -17,7 +17,7 @@ import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
 import { AwsS3Service } from "../aws/aws.s3.service";
 import { PrismaService } from "../prisma/prisma.service";
-import { UploadDecisionDto, UploadDto, UploadGetFileDto } from "./dto";
+import { UploadDto, UploadGetFileDto } from "./dto";
 import { UploadApprovedEvent } from "./event";
 import { UploadService } from "./upload.service";
 
@@ -54,34 +54,6 @@ export class UploadController {
     if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
     const filename = await this.awsS3Service.upload(file);
     await this.uploadService.processUpload(filename, file.originalname, dto.mapping, user);
-  }
-
-  /**
-   * Approve mass-upload endpoint
-   */
-  @HttpCode(HttpStatus.OK)
-  @Post("approve")
-  async approveUpload(
-      @GetUser() user: User,
-      @Body() dto: UploadDecisionDto,
-  ): Promise<void> {
-    if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
-
-    await this.uploadService.approveUpload(dto.uuid, user, Number(dto.actionId));
-  }
-
-  /**
-   * Reject mass-upload endpoint
-   */
-  @HttpCode(HttpStatus.OK)
-  @Post("reject")
-  async rejectUpload(
-      @GetUser() user: User,
-      @Body() dto: UploadDecisionDto,
-  ): Promise<void> {
-    if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
-
-    await this.uploadService.rejectUpload(dto.uuid, user);
   }
 
   /**

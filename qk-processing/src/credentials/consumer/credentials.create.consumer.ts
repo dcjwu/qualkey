@@ -6,12 +6,12 @@ import { Job } from "bull";
 import { HederaService } from "../../hedera/hedera.service";
 import { UserFactory } from "../../user/user.factory";
 import { UserRepository } from "../../user/user.repository";
-import { CredentialsChangeFactory } from "../credentials-change.factory";
-import { CredentialsChangeRepository } from "../credentials-change.repository";
-import { CredentialsFactory } from "../credentials.factory";
 import { CredentialsService } from "../credentials.service";
 import { CredentialHashableDataDto } from "../dto/credential.hashable-data.dto";
+import { CredentialsChangeFactory } from "../factory/credentials-change.factory";
+import { CredentialsFactory } from "../factory/credentials.factory";
 import { Hasher } from "../helper/hasher";
+import { CredentialsChangeRepository } from "../repository/credentials-change.repository";
 
 @Processor("credentials-create")
 export class CredentialsCreateConsumer {

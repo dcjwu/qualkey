@@ -1,20 +1,20 @@
-import { OnQueueActive, Process, Processor } from "@nestjs/bull";
+import { Process, Processor } from "@nestjs/bull";
 import { Logger } from "@nestjs/common";
 import { Job } from "bull";
 
 import { AwsSesService } from "../../aws/aws.ses.service";
 
-@Processor("upload-notify")
-export class UploadNotifyConsumer {
+@Processor("credentials-notify")
+export class CredentialsNotifyConsumer {
   constructor(private ses: AwsSesService) {
   }
 
-    @Process("pending")
-  async handlePending(job: Job): Promise<void> {
+    @Process("withdrawal-approved")
+  async handleWithdrawalApproved(job: Job): Promise<void> {
     Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
     Logger.debug(`Sending notification to ${job.data.representativeEmail}`);
     try {
-      await this.ses.sendReviewUploadEmail(job.data.representativeEmail);
+      await this.ses.sendWithdrawalApprovedEmail(job.data.representativeEmail);
     } catch (err) {
       Logger.error(err, err.stack);
       return;
@@ -22,12 +22,12 @@ export class UploadNotifyConsumer {
     await job.moveToCompleted();
   }
 
-    @Process("approved")
-    async handleApproved(job: Job): Promise<void> {
+    @Process("withdrawal-rejected")
+    async handleWithdrawalRejected(job: Job): Promise<void> {
       Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
       Logger.debug(`Sending notification to ${job.data.representativeEmail}`);
       try {
-        await this.ses.sendUploadApproved(job.data.representativeEmail);
+        await this.ses.sendWithdrawalRejectedEmail(job.data.representativeEmail);
       } catch (err) {
         Logger.error(err, err.stack);
         return;
@@ -35,21 +35,16 @@ export class UploadNotifyConsumer {
       await job.moveToCompleted();
     }
 
-    @Process("rejected")
-    async handleRejected(job: Job): Promise<void> {
+    @Process("withdrawal-request-created")
+    async handleWithdrawalRequestCreated(job: Job): Promise<void> {
       Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
       Logger.debug(`Sending notification to ${job.data.representativeEmail}`);
       try {
-        await this.ses.sendUploadRejected(job.data.representativeEmail);
+        await this.ses.sendReviewWithdrawalEmail(job.data.representativeEmail);
       } catch (err) {
         Logger.error(err, err.stack);
         return;
       }
       await job.moveToCompleted();
-    }
-
-    @OnQueueActive()
-    onActive(job: Job): void {
-      Logger.debug(`Processing job ${job.id} of type ${job.name} with data ${job.data}...`);
     }
 }

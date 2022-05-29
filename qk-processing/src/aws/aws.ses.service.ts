@@ -19,6 +19,18 @@ export class AwsSesService {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "review-upload");
     }
 
+    public async sendReviewWithdrawalEmail(recipientEmail: string): Promise<void> {
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "review-withdrawal");
+    }
+
+    public async sendWithdrawalApprovedEmail(recipientEmail: string): Promise<void> {
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "withdrawal-approved");
+    }
+
+    public async sendWithdrawalRejectedEmail(recipientEmail: string): Promise<void> {
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "withdrawal-rejected");
+    }
+
     public async sendOtpEmail(recipientEmail: string, otp: string): Promise<void> {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "send-otp", `{ \"otp\":\"${otp}\"}`);
     }
@@ -32,26 +44,29 @@ export class AwsSesService {
     }
 
     private async sendEmailTemplate(recipientEmails: string[], senderEmail: string, template: string, templateData?: string): Promise<void> {
-      const ses = this.getSES();
+      // const ses = this.getSES();
+      //
+      // const params = {
+      //   Source: senderEmail,
+      //   Template: template,
+      //   Destination: { ToAddresses: recipientEmails },
+      //   TemplateData: templateData ?? "{\"data\":\"data\"}",
+      // };
 
-      const params = {
-        Source: senderEmail,
-        Template: template,
-        Destination: { ToAddresses: recipientEmails },
-        TemplateData: templateData ?? "{\"data\":\"data\"}",
-      };
+      Logger.warn(`SENT email to ${recipientEmails[0]} with template: ${template} and data: ${templateData}`);
 
-      await new Promise((resolve, reject) => {
-        ses.sendTemplatedEmail(params, (err, data) => {
-          if (err) {
-            Logger.error(err, err.stack);
-            reject(err.message);
-          } else {
-            Logger.debug(`email SENT ${data.MessageId}`);
-            resolve(data);
-          }
-        });
-      });
+      // TODO: enable emails
+      // await new Promise((resolve, reject) => {
+      //   ses.sendTemplatedEmail(params, (err, data) => {
+      //     if (err) {
+      //       Logger.error(err, err.stack);
+      //       reject(err.message);
+      //     } else {
+      //       Logger.debug(`email SENT ${data.MessageId}`);
+      //       resolve(data);
+      //     }
+      //   });
+      // });
     }
 
     private getSES(): SES {
@@ -66,9 +81,9 @@ export class AwsSesService {
     public async createTemplate(): Promise<void> {
       const params = {
         Template: {
-          TemplateName: "upload-rejected",
-          HtmlPart: "<h1>Hello,</h1><p>The Mass upload has been rejected by one of the institution representatives.</p>",
-          SubjectPart: "Mass upload has been rejected!",
+          TemplateName: "withdrawal-rejected",
+          HtmlPart: "<h1>Hello,</h1><p>The withdrawal of the credentials has been rejected.</p>",
+          SubjectPart: "Credentials withdrawal rejected",
         },
       };
       this.getSES().createTemplate(params);

@@ -1,7 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Upload, UploadStatus, User, UserActionType } from "@prisma/client";
 
+import { Decision } from "../action/enum/decision.enum";
 import { LogicException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
 import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "./event";
@@ -69,7 +70,7 @@ export class UploadService {
         });
       }
     } catch (e) {
-      console.log(e);
+      Logger.error(e);
 
       const uploadFailedEvent = new UploadFailedEvent();
       uploadFailedEvent.filename = filename;
@@ -81,34 +82,44 @@ export class UploadService {
   }
 
   /**
+   * Process user decision regarding the mass-upload
+   */
+  public async processDecisionForUpload(uuid: string, decisionMadeBy: User, actionId: number, decision: Decision): Promise<void> {
+    const isApproved = decision === Decision.APPROVE;
+
+    if (isApproved) {
+      await this.approveUpload(uuid, decisionMadeBy, actionId);
+    } else {
+      await this.rejectUpload(uuid, decisionMadeBy);
+    }
+  }
+
+  /**
    * Process approval of the mass-upload from the institution representative
    */
-  async approveUpload(uuid: string, approvedBy: User, actionId: number): Promise<void> {
+  private async approveUpload(uuid: string, approvedBy: User, actionId: number): Promise<void> {
     const upload = await this.getCheckedUpload(uuid, approvedBy);
     const requestedFrom = upload.confirmationsRequestedFrom.split(";");
 
-    // Check if user already approved
+    let confirmedBy = [];
+    // Add approve
     if (! upload.confirmedBy) {
       await this.prisma.upload.update({
         data: { confirmedBy: approvedBy.uuid },
         where: { uuid: uuid },
       });
+      confirmedBy.push(approvedBy.uuid);
+    } else {
+      confirmedBy = upload.confirmedBy.split(";");
+      if (confirmedBy.includes(approvedBy.uuid)) throw new LogicException("Already approved.");
 
-      await this.prisma.userActions.delete({ where: { id: actionId } });
+      confirmedBy.push(approvedBy.uuid);
 
-      return;
+      await this.prisma.upload.update({
+        data: { confirmedBy: confirmedBy.map(uuid => uuid).join(";") },
+        where: { uuid: uuid },
+      });
     }
-
-    // add approve
-    const confirmedBy = upload.confirmedBy.split(";");
-    if (confirmedBy.includes(approvedBy.uuid)) throw new LogicException("Already approved.");
-
-    confirmedBy.push(approvedBy.uuid);
-
-    await this.prisma.upload.update({
-      data: { confirmedBy: confirmedBy.map(uuid => uuid).join(";") },
-      where: { uuid: uuid },
-    });
 
     await this.prisma.userActions.delete({ where: { id: actionId } });
 
@@ -131,20 +142,16 @@ export class UploadService {
   /**
    * Process rejection of the mass-upload from the institution representative
    */
-  async rejectUpload(uuid: string, rejectedBy: User): Promise<void> {
+  private async rejectUpload(uuid: string, rejectedBy: User): Promise<void> {
     const upload = await this.getCheckedUpload(uuid, rejectedBy);
 
-    // Get all userActions for this upload and delete them
-    const userActions = await this.prisma.userActions.findMany({
+    // Delete all userActions for this upload and delete them
+    await this.prisma.userActions.deleteMany({
       where: {
         type: UserActionType.REVIEW_UPLOAD,
         subjectUuid: uuid,
       },
     });
-
-    for (const action of userActions) {
-      await this.prisma.userActions.delete({ where: { id: action.id } });
-    }
 
     const institution = await this.prisma.institution.findUnique({
       where: { uuid: rejectedBy.institutionUuid },

@@ -200,6 +200,7 @@ model Transaction {
 enum UserActionType {
     REVIEW_UPLOAD
     REVIEW_WITHDRAWAL
+    REVIEW_CHANGE_REQUEST
 }
 
 model UserActions {
@@ -209,6 +210,18 @@ model UserActions {
     subjectUuid     String
 
     @@map("userActions")
+}
+
+model CredentialsWithdrawalRequest {
+    uuid                        String @id @default(uuid())
+    credentialsUuid             String @unique
+    initiatedBy                 String // User uuid
+    confirmationsRequestedFrom  String // array with user_uuids
+    confirmedBy                 String? // array with user_uuids
+    createdAt                   DateTime @default(now())
+    updatedAt                   DateTime @updatedAt
+
+    @@map("credentialsWithdrawalRequests")
 }
 
 model OneTimePassword {

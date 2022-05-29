@@ -26,12 +26,13 @@ import { UploadService } from "./upload.service";
       name: "credentials-create",
       limiter: {
         max: 100,
-        duration: 50,
+        duration: 1000,
         bounceBack: true,
       },
     }),
   ],
   controllers: [UploadController],
+  exports: [UploadService],
   providers: [
     UploadService,
     UploadEventListener,

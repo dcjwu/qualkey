@@ -1,11 +1,12 @@
-import { Controller, ForbiddenException, Get, HttpCode, HttpStatus, Query, UseGuards } from "@nestjs/common";
-import { Role, User } from "@prisma/client";
+import { Body, Controller, ForbiddenException, Get, HttpCode, HttpStatus, Post, Query, UseGuards } from "@nestjs/common";
+import { Credential, CredentialsWithdrawalRequest, Role, User } from "@prisma/client";
 
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
-import { CredentialsChangeRepository } from "./credentials-change.repository";
-import { CredentialsRepository } from "./credentials.repository";
 import { CredentialsService } from "./credentials.service";
+import { CredentialsWithdrawalRequestDto } from "./dto";
+import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
+import { CredentialsRepository } from "./repository/credentials.repository";
 
 /**
  * This is the API gateway for credentials, all requests regarding credentials come here
@@ -22,15 +23,23 @@ export class CredentialsController {
   /**
    * Get credentials endpoint
    */
-    @HttpCode(HttpStatus.OK)
     @Get()
   async getCredentials(
       @GetUser() user: User,
       @Query("uuid") uuid: string,
       @Query("filter") filter: string,
-  ): Promise<any> {
+  ): Promise<Credential[]> {
     if (uuid && uuid !== "") {
-      return [await this.credentialsRepository.getByUuid(uuid, user)];
+      const credentials = await this.credentialsRepository.getByUuid(uuid);
+
+      if (user.role === Role.STUDENT && user.uuid !== credentials.studentUuid) {
+        throw new ForbiddenException();
+      }
+      if (user.role === Role.INSTITUTION_REPRESENTATIVE && user.institutionUuid !== credentials.institutionUuid) {
+        throw new ForbiddenException();
+      }
+
+      return [credentials];
     }
     if (user.role === Role.STUDENT) {
       return this.credentialsRepository.getAllForStudent(user, filter);
@@ -43,12 +52,25 @@ export class CredentialsController {
   }
 
   /**
+   * Post credentials withdrawal request
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post("withdraw")
+    async postCredentialsWithdrawalRequest(
+      @GetUser() user: User,
+      @Body() dto: CredentialsWithdrawalRequestDto,
+    ): Promise<CredentialsWithdrawalRequest> {
+      if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
+      return await this.credentialsService.createCredentialsWithdrawalRequest(dto.uuid, user);
+    }
+
+  /**
    * Get credentialChange endpoint
    */
   @HttpCode(HttpStatus.OK)
   @Get("change")
-    async getCredentialChange(@GetUser() user: User, @Query("uuid") uuid: string): Promise<boolean> {
+  async getCredentialChange(@GetUser() user: User, @Query("uuid") uuid: string): Promise<boolean> {
     // TODO: implement
-      return await this.credentialsChangeRepository.hasHash(uuid);
-    }
+    return await this.credentialsChangeRepository.hasHash(uuid);
+  }
 }
