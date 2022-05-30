@@ -33,7 +33,7 @@ export class CredentialsPublicController {
    * Get credentials view data for access when shared
    */
   @HttpCode(HttpStatus.OK)
-  @Get(":did/view")
+  @Get(":did")
   async getCredentialsViewData(
       @Param("did") did: string,
       @Query("shareUuid") shareUuid: string,

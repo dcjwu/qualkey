@@ -210,6 +210,7 @@ model UserActions {
     initiatorName   String
     type            UserActionType
     subjectUuid     String
+    credentialsUuid String?
     createdAt       DateTime @default(now())
 
     @@map("userActions")

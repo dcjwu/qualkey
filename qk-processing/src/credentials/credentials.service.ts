@@ -66,6 +66,7 @@ export class CredentialsService {
             initiatorName: (initiatedBy.firstName + " " + initiatedBy.lastName).trim(),
             type: UserActionType.REVIEW_WITHDRAWAL,
             subjectUuid: credentialsWithdrawalRequest.uuid,
+            credentialsUuid: credentials.uuid,
           },
         });
       }

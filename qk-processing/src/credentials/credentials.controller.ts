@@ -122,7 +122,7 @@ export class CredentialsController {
    * Get credentials view data for access when shared
    */
   @HttpCode(HttpStatus.OK)
-  @Get(":did")
+  @Get(":did/view")
   async getCredentialsViewData(
       @GetUser() user: User,
       @Param("did") did: string,
