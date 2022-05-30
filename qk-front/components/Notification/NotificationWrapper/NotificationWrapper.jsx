@@ -7,31 +7,7 @@ import Text from "../../UI/Text/Text"
 import NotificationsItem from "../NotificationsItem/NotificationsItem"
 import styles from "./NotificationWrapper.module.scss"
 
-const mockNotificationData = [
-   {
-      id: 1,
-      type: "withdrawal",
-      title: "Credential Withdrawn",
-      text: "MA Art History, Curatorship and Renaissance Culture",
-      date: 1652112363
-   },
-   {
-      id: 2,
-      type: "expiration",
-      title: "Credential Expired",
-      text: "MA Art History, Curatorship and Renaissance Culture",
-      date: 1652112363
-   },
-   {
-      id: 3,
-      type: "system",
-      title: "Please Approve Uploaded Credentials",
-      text: "Your colleague has uploaded new credentials that require approval",
-      date: 1652112363
-   },
-]
-
-const NotificationWrapper = ({ show, setShow }) => {
+const NotificationWrapper = ({ show, setShow, notificationsData }) => {
 
    /**
     * Allows to close window by clicking outside
@@ -56,7 +32,7 @@ const NotificationWrapper = ({ show, setShow }) => {
             <IconTrash/>
          </div>
          <div>
-            {mockNotificationData.map(item => (
+            {notificationsData.map(item => (
                <NotificationsItem key={item.id} data={item}/>
             ))}
          </div>

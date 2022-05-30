@@ -43,6 +43,7 @@ enum CredentialStatus {
     UPLOADED_TO_BLOCKCHAIN
     ACTIVATED
     WITHDRAWN
+    EXPIRED
 }
 
 model Credential {

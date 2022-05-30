@@ -12,7 +12,7 @@ export class AwsSesService {
     private NO_REPLY_EMAIL = "abramov.igor.n@gmail.com";
 
     public async sendWelcomeUserEmail(recipientEmail: string, name: string, password: string): Promise<void> {
-      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "welcome-user", `{ \"email\":\"${recipientEmail}\", \"name\":\"${name}\", \"password\":\"${password}\" }`);
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "WelcomeEmailWithTempPassTest1", `{ \"email\":\"${recipientEmail}\", \"name\":\"${name}\", \"password\":\"${password}\" }`);
     }
 
     public async sendReviewUploadEmail(recipientEmail: string): Promise<void> {
@@ -32,7 +32,7 @@ export class AwsSesService {
     }
 
     public async sendOtpEmail(recipientEmail: string, otp: string): Promise<void> {
-      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "send-otp", `{ \"otp\":\"${otp}\"}`);
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "SendOtpEmailTempTest2", `{ \"otp\":\"${otp}\"}`);
     }
 
     public async sendUploadApproved(recipientEmail: string): Promise<void> {
@@ -86,9 +86,9 @@ export class AwsSesService {
     public async createTemplate(): Promise<void> {
       const params = {
         Template: {
-          TemplateName: "withdrawal-rejected",
-          HtmlPart: "<h1>Hello,</h1><p>The withdrawal of the credentials has been rejected.</p>",
-          SubjectPart: "Credentials withdrawal rejected",
+          TemplateName: "",
+          HtmlPart: "",
+          SubjectPart: "",
         },
       };
       this.getSES().createTemplate(params);

@@ -36,7 +36,7 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
    return (
       <>
          <div className={styles.searchWrapper}>
-            <Text blackSpan semiBold>Showing <span>{data.length}</span> from <span>{allCredentialsData?.data.length ? allCredentialsData.data.length : data.length}</span> results</Text>
+            <Text blackSpan semiBold>Showing <span>{data.length}</span> from <span>{allCredentialsData ? allCredentialsData.length : data.length}</span> results</Text>
             <Input type={"search"} onChange={handleInputChange} onKeyDown={handleSubmitSearch}/>
          </div>
          <div className={styles.contentWrapper}>

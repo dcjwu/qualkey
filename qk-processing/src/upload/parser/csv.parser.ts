@@ -3,7 +3,7 @@ import stream from "stream";
 import { Injectable, Logger } from "@nestjs/common";
 import * as csv from "csv-parser";
 
-import { CredentialHashableDataDto } from "../../credentials/dto/credential.hashable-data.dto";
+import { CredentialHashableDataDto } from "../../credentials/dto";
 
 @Injectable()
 export class CsvParser {

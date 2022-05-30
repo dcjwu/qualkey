@@ -5,11 +5,7 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 3rem;
-
-  @include breakpoint-max-vertical($bp-vertical-400) {
-    margin-bottom: 2rem;
-  }
+  margin-bottom: 1rem;
 
   > p {
     @include breakpoint-max($bp-screen-sm) {
@@ -41,6 +37,7 @@
   height: 62%;
   overflow: hidden;
   overflow-y: scroll;
+  padding-top: 6rem;
 
   @include breakpoint-max-vertical($bp-vertical-875) {
     height: 50%;
@@ -48,6 +45,10 @@
 
   @include breakpoint-max-vertical($bp-vertical-570) {
     height: 40%;
+  }
+
+  @include breakpoint-max-vertical($bp-vertical-400) {
+    padding-top: 2rem;
   }
 
   p {

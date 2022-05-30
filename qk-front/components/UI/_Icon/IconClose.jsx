@@ -1,4 +1,4 @@
-import styles from "../Modal/FileUploadModal/FileUploadModal.module.scss"
+import styles from "../Modal/Modal.module.scss"
 
 export const IconClose = ({ ...otherProps }) => {
    return (

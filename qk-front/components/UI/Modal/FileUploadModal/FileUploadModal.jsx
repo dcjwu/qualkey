@@ -11,7 +11,7 @@ import FileUploadDropdown from "../../Dropdown/FileUploadDropdown/FileUploadDrop
 import Heading from "../../Heading/Heading"
 import Input from "../../Input/Input"
 import Text from "../../Text/Text"
-import styles from "./FileUploadModal.module.scss"
+import styles from "../Modal.module.scss"
 
 const FileUploadModal = () => {
 

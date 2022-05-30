@@ -3,7 +3,7 @@ import { Credential, User } from "@prisma/client";
 
 import { HederaService } from "../../hedera/hedera.service";
 import { PrismaService } from "../../prisma/prisma.service";
-import { CredentialHashableDataDto } from "../dto/credential.hashable-data.dto";
+import { CredentialHashableDataDto } from "../dto";
 
 @Injectable()
 export class CredentialsFactory {

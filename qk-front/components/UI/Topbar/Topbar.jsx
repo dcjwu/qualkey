@@ -16,9 +16,13 @@ import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
 import styles from "./Topbar.module.scss"
 
-const Topbar = ({ institution }) => {
+const Topbar = ({ institution, userData, notificationsData }) => {
+
+   const { firstName, lastName } = userData
    
    const { pathname, push } = useRouter()
+
+   console.log(notificationsData, "notificationsData")
 
    const checkIfPathIncludesView = () => {
       if (pathname.includes("[uuid]")) return true
@@ -95,7 +99,7 @@ const Topbar = ({ institution }) => {
          {checkIfPathIncludesView() && <div className={styles.routes}>
             <Link href="/dashboard">
                <a>
-                  <Text grey>University Dashboard</Text>
+                  <Text grey>Dashboard</Text>
                </a>
             </Link>
             <IconArrowLeft/>
@@ -106,8 +110,8 @@ const Topbar = ({ institution }) => {
             <div className={styles.imageWrapperNotification} onClick={handleShowNotifications}>
                <Image alt="bell" layout="fill" quality={100}
                       src={bell}/>
-               <span className={styles.notification}>3</span>
-               <NotificationWrapper setShow={setShowNotifications} show={showNotifications}/>
+               {notificationsData.length ? <span className={styles.notification}>{notificationsData.length}</span> : null}
+               <NotificationWrapper notificationsData={notificationsData} setShow={setShowNotifications} show={showNotifications}/>
             </div>
             {institution && <div className={styles.imageWrapperLogo}>
                <Image alt="uni" className={styles.logo} layout="fill"
@@ -119,13 +123,17 @@ const Topbar = ({ institution }) => {
                   <Image alt="user" className={styles.user} layout="fill"
                          quality={100} src={avatar}/>
                </div>
-               <Text semiBold>John Reed</Text>
+               <Text semiBold>{firstName} {lastName}</Text>
                <IconHideDropdownBig/>
                <div ref={outsideClickRef} className={styles.menu} style={{ display: showMenu ? "block" : "none" }}>
                   <ul>
                      <li>
                         <IconAcademicCap/>
-                        <Text>Dashboard</Text>
+                        <Link href="/dashboard">
+                           <a>
+                              <Text>Dashboard</Text>
+                           </a>
+                        </Link>
                      </li>
                      <li>
                         <IconSettings/>

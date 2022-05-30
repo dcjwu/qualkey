@@ -39,6 +39,11 @@
   height: 62%;
   overflow: hidden;
   overflow-y: scroll;
+  padding-top: 6rem;
+
+  @include breakpoint-max-vertical($bp-vertical-400) {
+    padding-top: 2rem;
+  }
 
   p {
     @include breakpoint-max($bp-screen-xl) {
