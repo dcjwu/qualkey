@@ -22,6 +22,7 @@ import { CredentialsShareRepository } from "./repository/credentials-share.repos
 import { CredentialsRepository } from "./repository/credentials.repository";
 import { CredentialsWithdrawalRequestRepository } from "./repository/credentials.withdrawal-request.repository";
 import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
+import {CredentialsPublicController} from "./credentials.public.controller";
 
 @Module({
   imports: [
@@ -38,7 +39,7 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
       },
     }),
   ],
-  controllers: [CredentialsController],
+  controllers: [CredentialsController, CredentialsPublicController],
   exports: [CredentialsService, CredentialsChangeService],
   providers: [
     CredentialsService,
