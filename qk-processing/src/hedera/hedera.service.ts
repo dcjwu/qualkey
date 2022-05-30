@@ -20,6 +20,7 @@ import {
   SmartContractNotFoundException,
 } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
+import { HederaCredentialInfoDto } from "./dto/hedera.credential-info.dto";
 
 /**
  * Master class for working with Hedera API
@@ -99,7 +100,7 @@ export class HederaService {
   /**
    * Here we get credentialChange data from smart contract. For testing purposes
    */
-  public async getCredentialChangeDataFromSmartContract(credentialChangeId: number, smartContractId: string): Promise<void> {
+  public async getCredentialChangeDataFromSmartContract(credentialChangeId: number, smartContractId: string): Promise<HederaCredentialInfoDto> {
     const client = await this.getHederaClient();
 
     try {
@@ -115,6 +116,13 @@ export class HederaService {
       console.log(`Hash — ${Buffer.from(getCredentialResult.getBytes32(1)).toString("hex")}`);
       console.log(`Link — ${getCredentialResult.getString(2)}`);
       console.log(`Timestamp — ${getCredentialResult.getUint32(3)}`);
+
+      return new HederaCredentialInfoDto(
+        getCredentialResult.getString(0),
+        Buffer.from(getCredentialResult.getBytes32(1)).toString("hex"),
+        getCredentialResult.getString(2),
+        new Date(getCredentialResult.getUint32(3) * 1000),
+      );
     } catch (e) {
       Logger.error(`Transaction ${e.transactionId.toString()} — ${e.status.toString()}`);
 

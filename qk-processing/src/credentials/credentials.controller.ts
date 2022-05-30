@@ -14,10 +14,9 @@ import { Credential, CredentialShare, CredentialsWithdrawalRequest, Role, User }
 
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
-import { CredentialsShareExpiredException } from "../common/exception";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsService } from "./credentials.service";
-import { CredentialsWithdrawalRequestDto, CredentialsShareRequestDto, CredentialViewDataDto } from "./dto";
+import { CredentialsWithdrawalRequestDto, CredentialsShareRequestDto } from "./dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
@@ -46,7 +45,7 @@ export class CredentialsController {
       @Query("filter") filter: string,
   ): Promise<Credential[]> {
     if (uuid && uuid !== "") {
-      const credentials = await this.credentialsRepository.getByUuid(uuid);
+      const credentials = await this.credentialsRepository.getByUuidWithChanges(uuid);
 
       if (user.role === Role.STUDENT && user.uuid !== credentials.studentUuid) {
         throw new ForbiddenException();
@@ -126,12 +125,11 @@ export class CredentialsController {
   async getCredentialsViewData(
       @GetUser() user: User,
       @Param("did") did: string,
-  ): Promise<CredentialViewDataDto> {
-    const credentials = await this.credentialsRepository.getByDid(did);
-    const credentialsChange = await this.credentialsChangeRepository.getLastByCredentialsUuid(credentials.uuid);
+  ): Promise<Credential> {
+    const credentials = await this.credentialsRepository.getByDidWithLastChange(did);
 
     if (user.uuid !== credentials.studentUuid) throw new ForbiddenException();
-    return new CredentialViewDataDto(credentials, credentialsChange);
+    return credentials;
   }
 
   /**

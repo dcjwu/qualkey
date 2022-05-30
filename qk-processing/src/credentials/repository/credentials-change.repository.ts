@@ -16,14 +16,14 @@ export class CredentialsChangeRepository {
     return (null !== credentialsChange);
   }
 
-  public async getLastByCredentialsUuid(credentialUuid: string): Promise<CredentialChange> {
+  public async getLastByCredentialsDid(credentialDid: string): Promise<CredentialChange> {
     const credentialsChange = await this.prisma.credentialChange.findFirst({
-      where: { credentialUuid: credentialUuid },
+      where: { credentialDid: credentialDid },
       orderBy: { changedAt: "desc" },
     });
 
     if (null === credentialsChange) {
-      throw new NotFoundException(`There is no CredentialsChange found for credentials: ${credentialUuid}`);
+      throw new NotFoundException(`There is no CredentialsChange found for credentials: ${credentialDid}`);
     }
 
     return credentialsChange;

@@ -1,13 +1,13 @@
-import {ForbiddenException, NotFoundException} from "@nestjs/common";
-import {EventEmitter2} from "@nestjs/event-emitter";
-import {Test, TestingModule} from "@nestjs/testing";
-import {Upload, UploadStatus, User, UserActions} from "@prisma/client";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Test, TestingModule } from "@nestjs/testing";
+import { Upload, UploadStatus, User, UserActions } from "@prisma/client";
 
-import {LogicException} from "../../../src/common/exception";
-import {PrismaService} from "../../../src/prisma/prisma.service";
-import {UploadFailedException} from "../../../src/upload/exception";
-import {UploadService} from "../../../src/upload/upload.service";
-import {Decision} from "../../../src/action/enum/decision.enum";
+import { Decision } from "../../../src/action/enum/decision.enum";
+import { LogicException } from "../../../src/common/exception";
+import { PrismaService } from "../../../src/prisma/prisma.service";
+import { UploadFailedException } from "../../../src/upload/exception";
+import { UploadService } from "../../../src/upload/upload.service";
 
 describe("UploadService Unit Test", () => {
   let service: UploadService;
@@ -171,9 +171,7 @@ describe("UploadService Unit Test", () => {
       providers: [EventEmitter2, UploadService, {
         provide: PrismaService,
         useValue: {
-          institution: {
-            findUnique: jest.fn().mockReturnValue(Promise.resolve(mockInstitution)),
-          },
+          institution: { findUnique: jest.fn().mockReturnValue(Promise.resolve(mockInstitution)) },
           upload: {
             findUnique: jest.fn().mockReturnValue(Promise.resolve(mockUpload)),
             create: jest.fn().mockReturnValue(Promise.resolve(mockUpload)),

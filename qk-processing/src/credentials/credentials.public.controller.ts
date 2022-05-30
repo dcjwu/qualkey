@@ -7,11 +7,11 @@ import {
   Param,
   Query,
 } from "@nestjs/common";
+import { Credential } from "@prisma/client";
 
 import { CredentialsShareExpiredException } from "../common/exception";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsService } from "./credentials.service";
-import { CredentialViewDataDto } from "./dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
@@ -38,9 +38,8 @@ export class CredentialsPublicController {
       @Param("did") did: string,
       @Query("shareUuid") shareUuid: string,
       @Query("password") password: string,
-  ): Promise<CredentialViewDataDto> {
-    const credentials = await this.credentialsRepository.getByDid(did);
-    const credentialsChange = await this.credentialsChangeRepository.getLastByCredentialsUuid(credentials.uuid);
+  ): Promise<Credential> {
+    const credentials = await this.credentialsRepository.getByDidWithLastChange(did);
 
     if (! password || ! shareUuid) throw new ForbiddenException();
 
@@ -51,6 +50,6 @@ export class CredentialsPublicController {
     if (password !== credentialsShare.temporaryPassword) throw new ForbiddenException();
 
     // TODO: return only allowed to show fields
-    return new CredentialViewDataDto(credentials, credentialsChange);
+    return credentials;
   }
 }

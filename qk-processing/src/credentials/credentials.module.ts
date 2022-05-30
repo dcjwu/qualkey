@@ -11,6 +11,7 @@ import { CredentialsCreateConsumer } from "./consumer/credentials.create.consume
 import { CredentialsChangeService } from "./credentials-change.service";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsController } from "./credentials.controller";
+import { CredentialsPublicController } from "./credentials.public.controller";
 import { CredentialsService } from "./credentials.service";
 import { CredentialsChangeFactory } from "./factory/credentials-change.factory";
 import { CredentialsShareFactory } from "./factory/credentials-share.factory";
@@ -22,7 +23,6 @@ import { CredentialsShareRepository } from "./repository/credentials-share.repos
 import { CredentialsRepository } from "./repository/credentials.repository";
 import { CredentialsWithdrawalRequestRepository } from "./repository/credentials.withdrawal-request.repository";
 import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
-import {CredentialsPublicController} from "./credentials.public.controller";
 
 @Module({
   imports: [
@@ -40,7 +40,7 @@ import {CredentialsPublicController} from "./credentials.public.controller";
     }),
   ],
   controllers: [CredentialsController, CredentialsPublicController],
-  exports: [CredentialsService, CredentialsChangeService],
+  exports: [CredentialsService, CredentialsChangeService, CredentialsChangeRepository],
   providers: [
     CredentialsService,
     CredentialsRepository,
