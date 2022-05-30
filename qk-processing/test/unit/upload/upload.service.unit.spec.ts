@@ -1,12 +1,13 @@
-import { ForbiddenException, NotFoundException } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
-import { Test, TestingModule } from "@nestjs/testing";
-import { Upload, UploadStatus, User, UserActions } from "@prisma/client";
+import {ForbiddenException, NotFoundException} from "@nestjs/common";
+import {EventEmitter2} from "@nestjs/event-emitter";
+import {Test, TestingModule} from "@nestjs/testing";
+import {Upload, UploadStatus, User, UserActions} from "@prisma/client";
 
-import { LogicException } from "../../../src/common/exception";
-import { PrismaService } from "../../../src/prisma/prisma.service";
-import { UploadFailedException } from "../../../src/upload/exception";
-import { UploadService } from "../../../src/upload/upload.service";
+import {LogicException} from "../../../src/common/exception";
+import {PrismaService} from "../../../src/prisma/prisma.service";
+import {UploadFailedException} from "../../../src/upload/exception";
+import {UploadService} from "../../../src/upload/upload.service";
+import {Decision} from "../../../src/action/enum/decision.enum";
 
 describe("UploadService Unit Test", () => {
   let service: UploadService;
@@ -136,8 +137,10 @@ describe("UploadService Unit Test", () => {
     {
       id: 1,
       userUuid: mockInstitutionRepresentatives[1].uuid,
+      initiatorName: "Alex Abrams",
       type: "REVIEW_UPLOAD",
       subjectUuid: mockUpload.uuid,
+      createdAt: new Date(1652991260 * 1000),
     },
   ];
 
@@ -168,7 +171,9 @@ describe("UploadService Unit Test", () => {
       providers: [EventEmitter2, UploadService, {
         provide: PrismaService,
         useValue: {
-          institution: { findUnique: jest.fn().mockReturnValue(Promise.resolve(mockInstitution)) },
+          institution: {
+            findUnique: jest.fn().mockReturnValue(Promise.resolve(mockInstitution)),
+          },
           upload: {
             findUnique: jest.fn().mockReturnValue(Promise.resolve(mockUpload)),
             create: jest.fn().mockReturnValue(Promise.resolve(mockUpload)),
@@ -176,6 +181,7 @@ describe("UploadService Unit Test", () => {
           },
           userActions: {
             findMany: jest.fn().mockReturnValue(mockUserActions),
+            deleteMany: jest.fn(),
             create: jest.fn(),
             delete: jest.fn(),
           },
@@ -239,7 +245,7 @@ describe("UploadService Unit Test", () => {
   describe("approveUpload() - unit", () => {
       
     it("Should check if user did not approve yet", async () => {
-      await service.approveUpload(mockUpload.uuid, mockInstitutionRepresentatives[1], 1);
+      await service.processDecisionForUpload(mockUpload.uuid, mockInstitutionRepresentatives[1], 1, Decision.APPROVE);
       expect(await prismaService.upload.update).toBeCalledTimes(1);
       expect(await prismaService.userActions.delete).toBeCalledTimes(1);
     });
@@ -250,7 +256,7 @@ describe("UploadService Unit Test", () => {
         .spyOn(prismaService.upload, "findUnique")
         .mockImplementation(mockPrismaFindUnique);
 
-      await expect(async () => await service.approveUpload(mockUploadApprovedByUser.uuid, mockInstitutionRepresentatives[1], 1)).rejects.toThrowError(
+      await expect(async () => await service.processDecisionForUpload(mockUploadApprovedByUser.uuid, mockInstitutionRepresentatives[1], 1, Decision.APPROVE)).rejects.toThrowError(
         new LogicException("Already approved."),
       );
     });
@@ -263,7 +269,7 @@ describe("UploadService Unit Test", () => {
       jest
         .spyOn(eventEmitter, "emit");
 
-      await service.approveUpload(mockUpload.uuid, mockInstitutionRepresentatives[2], 1);
+      await service.processDecisionForUpload(mockUpload.uuid, mockInstitutionRepresentatives[2], 1, Decision.APPROVE);
       expect(await eventEmitter.emit).toBeCalledWith("upload.approved", mockUploadApproveEvent);
     });
   });
@@ -274,7 +280,7 @@ describe("UploadService Unit Test", () => {
       jest
         .spyOn(eventEmitter, "emit");
         
-      await service.rejectUpload(mockUpload.uuid, mockInstitutionRepresentatives[1]);
+      await service.processDecisionForUpload(mockUpload.uuid, mockInstitutionRepresentatives[1], 1, Decision.REJECT);
       expect(await eventEmitter.emit).toBeCalledWith("upload.rejected", mockUploadRejectEvent);
     });
     
@@ -284,7 +290,7 @@ describe("UploadService Unit Test", () => {
         .spyOn(prismaService.institution, "findUnique")
         .mockImplementation(mockPrismaFindUnique);
 
-      expect(async () => await service.rejectUpload(mockUpload.uuid, mockInstitutionRepresentatives[1])).rejects.toThrowError(
+      expect(async () => await service.processDecisionForUpload(mockUpload.uuid, mockInstitutionRepresentatives[1], 1, Decision.REJECT)).rejects.toThrowError(
         new NotFoundException("institution not found"),
       );
     });
@@ -320,7 +326,7 @@ describe("UploadService Unit Test", () => {
     });
 
     it("Should throw ForbiddenException if user without permissions is trying to approve", () => {
-      expect(async () => await service.getCheckedUpload(mockUploadApproved.uuid, "random-uuid")).rejects.toThrowError(
+      expect(async () => await service.getCheckedUpload(mockUploadApproved.uuid, mockInstitutionRepresentatives[0])).rejects.toThrowError(
         new ForbiddenException(),
       );
     });
