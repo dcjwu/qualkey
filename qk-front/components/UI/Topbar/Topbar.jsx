@@ -22,8 +22,6 @@ const Topbar = ({ institution, userData, notificationsData }) => {
    
    const { pathname, push } = useRouter()
 
-   console.log(notificationsData, "notificationsData")
-
    const checkIfPathIncludesView = () => {
       if (pathname.includes("[uuid]")) return true
    }

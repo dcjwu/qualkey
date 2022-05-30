@@ -35,8 +35,11 @@ export class ActionController {
   async getUserActions(
         @GetUser() user: User,
   ): Promise<UserActions[]> {
-    if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
-    return await this.actionRepository.getUserActions(user);
+    if (user.role === Role.INSTITUTION_REPRESENTATIVE) {
+      return await this.actionRepository.getUserActions(user);
+    } else if (user.role === Role.STUDENT) {
+      return [];
+    } else throw new ForbiddenException();
   }
 
     /**
