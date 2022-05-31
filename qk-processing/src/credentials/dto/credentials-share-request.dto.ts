@@ -6,6 +6,7 @@ import { IsEmailArray } from "../validator/is-email-array.constraint";
  * Data Transfer Object with CredentialsShare data
  */
 export class CredentialsShareRequestDto {
+    // TODO: Make it available to send several credentials.
     @IsString()
     @IsNotEmpty()
       uuid: string;
