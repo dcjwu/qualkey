@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 
 import styles from "./Button.module.scss"
 
-const Button = ({ thin, wide, bold, semiBold, blue, white, outline, loading, errorModal, error, confirmEdit, undoEdit, children, ...otherProps }) => {
+const Button = ({ thin, wide, bold, semiBold, blue, white, loading, errorModal, error, confirmEdit, undoEdit, children, ...otherProps }) => {
    return (
       <button {...otherProps} className={`${styles.btn}
          ${thin ? styles.thin : ""}

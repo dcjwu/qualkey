@@ -1,2 +1,3 @@
 assets/styles/helpers/_reset.scss
 components/DashboardItem/DashboardItem.module.scss
+components/UI/Modal/Modal.module.scss

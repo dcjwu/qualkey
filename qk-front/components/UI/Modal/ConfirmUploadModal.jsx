@@ -5,14 +5,14 @@ import moment from "moment"
 import { useRouter } from "next/router"
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 
-import { confirmUploadModalState, userActionUploadDecisionState } from "../../../../atoms"
-import { processingUrl } from "../../../../utils"
-import { IconClose, IconDownload, IconLoading, IconUpload } from "../../_Icon"
-import Button from "../../Button/Button"
-import Heading from "../../Heading/Heading"
-import Text from "../../Text/Text"
-import styles from "../Modal.module.scss"
-import ModalSteps from "../ModalSteps/ModalSteps"
+import { confirmUploadModalState, userActionUploadDecisionState } from "../../../atoms"
+import { processingUrl } from "../../../utils"
+import { IconClose, IconDownload, IconLoading, IconUpload } from "../_Icon"
+import Button from "../Button/Button"
+import Heading from "../Heading/Heading"
+import Text from "../Text/Text"
+import ModalSteps from "./_ModalSteps/ModalSteps"
+import styles from "./Modal.module.scss"
 
 const ConfirmUploadModal = () => {
    
@@ -47,8 +47,6 @@ const ConfirmUploadModal = () => {
       event.stopPropagation()
    }
 
-   console.log(uploadDecision, "dec")
-
    /**
     * Download file
     */
@@ -79,12 +77,18 @@ const ConfirmUploadModal = () => {
       event.stopPropagation()
    }
 
+   /**
+    * Confirm button handler.
+    */
    const handleConfirm = () => {
       setStep(prevState => prevState + 1)
       setConfirmed(true)
       setRejected(false)
    }
 
+   /**
+    * Confirm user action handler.
+    */
    const handleConfirmRequest = async () => {
       await axios.post(`${processingUrl}/action`, {
          actionId: uploadDecision.id.toString(),
@@ -103,6 +107,9 @@ const ConfirmUploadModal = () => {
          })
    }
 
+   /**
+    * Reject user action handler.
+    */
    const handleReject = async () => {
       await axios.post(`${processingUrl}/action`, {
          actionId: uploadDecision.id.toString(),
@@ -122,6 +129,9 @@ const ConfirmUploadModal = () => {
          })
    }
 
+   /**
+    * Go Back button handler.
+    */
    const handleGoBack = () => {
       setStep(prevState => prevState - 1)
       setConfirmed(false)
@@ -132,7 +142,7 @@ const ConfirmUploadModal = () => {
       <div className={styles.modal} onClick={closeModalOutside}>
          <div className={styles.wrapper} onClick={event => event.stopPropagation()}>
             <IconClose onClick={closeModal}/>
-            <ModalSteps step={step}/>
+            <ModalSteps step={step} totalSteps={4}/>
             <div className={`${styles.top} ${styles.confirmUpload} ${step === 2 ? styles.stepTwo : ""}`}>
                <div className={`${styles.wrapperInner} ${styles.confirmUpload}`}>
                   {

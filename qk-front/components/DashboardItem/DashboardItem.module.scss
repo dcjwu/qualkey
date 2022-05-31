@@ -84,6 +84,15 @@
   }
 }
 
+.new {
+  p {
+    color: $color-highlight;
+  }
+  path {
+    stroke: $color-highlight;
+  }
+}
+
 .activateCredentials {
   cursor: pointer;
 
