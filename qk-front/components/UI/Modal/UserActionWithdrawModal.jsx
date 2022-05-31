@@ -152,7 +152,7 @@ const UserActionWithdrawModal = () => {
                            <Button errorModal thin onClick={handleApproveRequest}>
                               <Text semiBold>Withdraw</Text>
                            </Button>
-                           <Button blue outline thin
+                           <Button blue thin
                                    onClick={handleReject}>
                               <Text semiBold>Decline Request</Text>
                            </Button>

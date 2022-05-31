@@ -94,7 +94,7 @@ const ConfirmWithdrawModal = () => {
                      </Button>
                      : error
                         ? <div className={`${styles.stepWrapper} ${styles.approved}`}>
-                           <Button blue outline thin
+                           <Button blue thin
                                    onClick={closeModal}>
                               <Text semiBold>Go Back</Text>
                            </Button>
@@ -108,7 +108,7 @@ const ConfirmWithdrawModal = () => {
                                  <Text semiBold>Withdraw</Text>
                               </Button>
                            }
-                           <Button blue outline thin
+                           <Button blue thin
                                    onClick={closeModal}>
                               <Text semiBold>Go Back</Text>
                            </Button>

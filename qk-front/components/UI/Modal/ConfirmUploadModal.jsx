@@ -209,7 +209,7 @@ const ConfirmUploadModal = () => {
                                     <Text semiBold>Approve</Text>
                                  </div>
                               </Button>
-                              <Button blue outline thin
+                              <Button blue thin
                                       onClick={handleGoBack}>
                                  <div className={`${styles.row} ${styles.confirmUpload}`}>
                                     <IconDownload/>
