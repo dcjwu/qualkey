@@ -5,7 +5,7 @@ import { UploadStatus, User } from "@prisma/client";
 import { Queue } from "bull";
 
 import { AwsS3Service } from "../../aws/aws.s3.service";
-import { CredentialHashableDataDto } from "../../credentials/dto/credential.hashable-data.dto";
+import { CredentialsHashableDataDto } from "../../credentials/dto/credentials-hashable-data.dto";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "../event";
 import { FileParser } from "../parser/file-parser";
@@ -75,7 +75,7 @@ export class UploadEventListener {
 
     // parse file into hashable data DTOs
     // TODO: save amount of entries to Upload
-    const credentialDataArray: CredentialHashableDataDto[] = await this.fileParser
+    const credentialDataArray: CredentialsHashableDataDto[] = await this.fileParser
       .parseUpload(
         this.awsS3Service.get(event.upload.filename),
         event.upload.mapping.split(","),

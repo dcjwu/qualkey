@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty } from "class-validator";
 /**
  * Data Transfer Object with all hashable parameters for CredentialsChange
  */
-export class CredentialHashableDataDto {
+export class CredentialsHashableDataDto {
   @IsNotEmpty()
   @IsEmail()
     email: string;

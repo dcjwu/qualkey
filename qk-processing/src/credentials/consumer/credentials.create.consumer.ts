@@ -7,7 +7,7 @@ import { HederaService } from "../../hedera/hedera.service";
 import { UserFactory } from "../../user/user.factory";
 import { UserRepository } from "../../user/user.repository";
 import { CredentialsService } from "../credentials.service";
-import { CredentialHashableDataDto } from "../dto/credential.hashable-data.dto";
+import { CredentialsHashableDataDto } from "../dto/credentials-hashable-data.dto";
 import { CredentialsChangeFactory } from "../factory/credentials-change.factory";
 import { CredentialsFactory } from "../factory/credentials.factory";
 import { Hasher } from "../helper/hasher";
@@ -29,7 +29,7 @@ export class CredentialsCreateConsumer {
     @Process({ name: "create", concurrency: 1 })
   async handleCreate(job: Job): Promise<void> {
     Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
-    const dto: CredentialHashableDataDto = job.data.credentialHashableDataDto;
+    const dto: CredentialsHashableDataDto = job.data.credentialHashableDataDto;
 
     try {
       const dataHash = Hasher.hash(JSON.stringify(dto));

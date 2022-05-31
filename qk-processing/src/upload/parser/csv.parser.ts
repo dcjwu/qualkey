@@ -3,13 +3,13 @@ import stream from "stream";
 import { Injectable, Logger } from "@nestjs/common";
 import * as csv from "csv-parser";
 
-import { CredentialHashableDataDto } from "../../credentials/dto";
+import { CredentialsHashableDataDto } from "../../credentials/dto";
 
 @Injectable()
 export class CsvParser {
 
-  public async parseCsv(stream: stream.Readable, mapping: string[]): Promise<CredentialHashableDataDto[]> {
-    const credentialDtoArray: CredentialHashableDataDto[] = [];
+  public async parseCsv(stream: stream.Readable, mapping: string[]): Promise<CredentialsHashableDataDto[]> {
+    const credentialDtoArray: CredentialsHashableDataDto[] = [];
 
     return new Promise((resolve, reject) => {
       stream.pipe(csv({
@@ -18,7 +18,7 @@ export class CsvParser {
       }))
         .on("data", function (data) {
           try {
-            const dto = new CredentialHashableDataDto();
+            const dto = new CredentialsHashableDataDto();
             dto.email = data.email;
             dto.certificateId = data.certificateId;
             dto.graduatedName = data.graduatedName;

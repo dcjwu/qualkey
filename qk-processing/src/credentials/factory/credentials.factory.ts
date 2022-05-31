@@ -3,7 +3,7 @@ import { Credential, User } from "@prisma/client";
 
 import { HederaService } from "../../hedera/hedera.service";
 import { PrismaService } from "../../prisma/prisma.service";
-import { CredentialHashableDataDto } from "../dto";
+import { CredentialsHashableDataDto } from "../dto";
 
 @Injectable()
 export class CredentialsFactory {
@@ -13,7 +13,7 @@ export class CredentialsFactory {
   ) {
   }
 
-  public async create(dto: CredentialHashableDataDto, student: User, uploadUuid: string): Promise<Credential> {
+  public async create(dto: CredentialsHashableDataDto, student: User, uploadUuid: string): Promise<Credential> {
     const did = await this.hedera.generateDid();
     Logger.debug(`DID for credentials received - ${did}`);
 

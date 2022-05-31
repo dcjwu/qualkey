@@ -3,7 +3,7 @@ import stream from "stream";
 import { Injectable } from "@nestjs/common";
 
 import { NotSupportedException } from "../../common/exception";
-import { CredentialHashableDataDto } from "../../credentials/dto/credential.hashable-data.dto";
+import { CredentialsHashableDataDto } from "../../credentials/dto/credentials-hashable-data.dto";
 import { CsvParser } from "./csv.parser";
 import { XlsxParser } from "./xlsx.parser";
 
@@ -18,7 +18,7 @@ export class FileParser {
   /**
      * Function to parse upload data from the file into array of CredentialsData
      */
-  public async parseUpload(stream: stream.Readable, mapping: string[], filename: string): Promise<CredentialHashableDataDto[]> {
+  public async parseUpload(stream: stream.Readable, mapping: string[], filename: string): Promise<CredentialsHashableDataDto[]> {
     const extension = filename.split(".").pop();
     if ("csv" === extension) {
       return await this.csvParser.parseCsv(stream, mapping);
