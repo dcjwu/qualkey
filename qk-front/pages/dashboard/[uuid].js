@@ -46,7 +46,7 @@ export default function CredentialsView({ data, userData, notificationsData, ser
                ? <CredentialsInfo data={data[0]}/>
                : <InstitutionEditCredentials data={data[0]}/>}
             <div className="withdraw__button" onClick={handleWithdrawalRequest}>
-               <Text grey>- Withdraw Credentials -</Text>
+               {data[0].status !== "WITHDRAWN" && <Text grey>- Withdraw Credentials -</Text>}
             </div>
             {withdrawModal && <ConfirmWithdrawModal/>}
          </InstitutionView>
