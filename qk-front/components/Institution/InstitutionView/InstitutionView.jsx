@@ -3,10 +3,11 @@ import { useEffect } from "react"
 import axios from "axios"
 import { useRecoilValue, useResetRecoilState } from "recoil"
 
-import { confirmUploadModalState, currentFileState, filenameState, filePrefixState, uploadModalState } from "../../../atoms"
+import { confirmUploadModalState, currentFileState, filenameState, filePrefixState, uploadModalState, userActionWithdrawModalState } from "../../../atoms"
 import { frontUrl } from "../../../utils"
-import ConfirmUploadModal from "../../UI/Modal/ConfirmUploadModal/ConfirmUploadModal"
-import FileUploadModal from "../../UI/Modal/FileUploadModal/FileUploadModal"
+import ConfirmUploadModal from "../../UI/Modal/ConfirmUploadModal"
+import FileUploadModal from "../../UI/Modal/FileUploadModal"
+import UserActionWithdrawModal from "../../UI/Modal/UserActionWithdrawModal"
 import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
 
@@ -22,6 +23,7 @@ const InstitutionView = ({ children, institution, userData, notificationsData })
    const fileName = useRecoilValue(filenameState)
    
    const confirmUploadModal = useRecoilValue(confirmUploadModalState)
+   const withdrawModal = useRecoilValue(userActionWithdrawModalState)
 
    /**
     * File deletion processing.
@@ -53,6 +55,7 @@ const InstitutionView = ({ children, institution, userData, notificationsData })
          </div>
          {openModal && <FileUploadModal/>}
          {confirmUploadModal && <ConfirmUploadModal/>}
+         {withdrawModal && <UserActionWithdrawModal/>}
       </div>
    )
 }

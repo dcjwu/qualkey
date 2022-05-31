@@ -2,32 +2,35 @@
 @import "../../../../assets/styles/helpers/mixins";
 
 .wrapper {
-  position: absolute;
-  top: 1.6rem;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   gap: 2.5rem;
+  left: 50%;
+  position: absolute;
+  top: 1.6rem;
+  transform: translateX(-50%);
 }
 
 .item {
-  width: 2.2rem;
-  height: 2.2rem;
-  border-radius: 50%;
   border: 1px solid $color-highlight;
+  border-radius: 50%;
+  height: 2.2rem;
   position: relative;
-  &:after {
-    content: '';
-    width: 2.6rem;
+  width: 2.2rem;
+
+  &::after {
     border-bottom: solid 1px $color-highlight;
-    position: absolute;
+    content: "";
     left: 2.2rem;
+    position: absolute;
     top: 50%;
+    width: 2.6rem;
     z-index: 1;
   }
-  &:last-child:after {
+
+  &:last-child::after {
     display: none;
   }
+
   &.active {
     background-color: $color-highlight;
   }

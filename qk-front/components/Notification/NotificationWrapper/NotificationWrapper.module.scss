@@ -6,7 +6,6 @@
   border-radius: 15px;
   box-shadow: 0 4px 34px rgb(0 0 0 / 15%);
   cursor: default;
-  height: 55rem;
   left: 50%;
   position: absolute;
   top: calc(6.1rem + 1.5rem);
@@ -23,6 +22,11 @@
     position: absolute;
     top: -1.5rem;
     transform: translateX(-50%);
+  }
+
+  > p {
+    padding: 1.5rem 0;
+    text-align: center;
   }
 }
 

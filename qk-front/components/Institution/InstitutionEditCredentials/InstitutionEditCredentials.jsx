@@ -36,7 +36,7 @@ const InstitutionEditCredentials = ({ data }) => {
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
 
    /**
-    * Inout value handling.
+    * Input value handling.
     **/
    const handleFormChange = ({ target }, index) => {
       setActiveIndex(index)
