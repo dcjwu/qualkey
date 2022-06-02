@@ -1,3 +1,5 @@
 assets/styles/helpers/_reset.scss
 components/DashboardItem/DashboardItem.module.scss
 components/UI/Modal/Modal.module.scss
+components/AuthForms/AuthForm.module.scss
+components/CredentialsInfo/CredentialsInfo.module.scss

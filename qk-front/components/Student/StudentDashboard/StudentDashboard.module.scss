@@ -1,12 +1,48 @@
 @import "assets/styles/helpers/variables";
 @import "assets/styles/helpers/mixins";
 
+.buttonRow {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.contentWrapper {
+  height: 58%;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-top: 5rem;
+
+  @include breakpoint-max($bp-screen-xxs) {
+    padding-top: 6rem;
+  }
+
+  @include breakpoint-max-vertical($bp-vertical-680) {
+    height: 45%;
+  }
+
+  @include breakpoint-max-vertical($bp-vertical-570) {
+    height: 35%;
+  }
+
+  p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+
+    @include breakpoint-max($bp-screen-xxs) {
+      font-size: 1.2rem;
+    }
+  }
+}
+
 .searchShareWrapper {
   align-items: center;
   display: flex;
   gap: 2rem;
   justify-content: flex-end;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 
   @include breakpoint-max($bp-screen-sm) {
     flex-direction: column;
@@ -18,36 +54,28 @@
     }
   }
 
+  >input {
+    @include breakpoint-max($bp-screen-md) {
+      font-size: 1.45rem;
+    }
+  }
+
   > button {
     padding: 1rem 2rem;
     width: fit-content;
 
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
+
+    p {
+      @include breakpoint-max($bp-screen-md) {
+        font-size: 1.45rem;
+      }
+    }
+
     &:disabled {
       color: $color-secondary;
-    }
-  }
-}
-
-.buttonRow {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.contentWrapper {
-  height: 62%;
-  overflow: hidden;
-  overflow-y: scroll;
-  padding-top: 6rem;
-
-  @include breakpoint-max-vertical($bp-vertical-400) {
-    padding-top: 2rem;
-  }
-
-  p {
-    @include breakpoint-max($bp-screen-xl) {
-      font-size: 1.45rem;
     }
   }
 }

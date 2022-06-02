@@ -7,11 +7,20 @@
   box-shadow: 0 4px 34px rgb(0 0 0 / 15%);
   cursor: default;
   left: 50%;
+  overflow: hidden;
+  overflow-y: scroll;
   position: absolute;
   top: calc(6.1rem + 1.5rem);
   transform: translateX(-50%);
   width: 45rem;
   z-index: 99;
+
+  @include breakpoint-max($bp-screen-sm) {
+    left: initial;
+    right: -13rem;
+    transform: initial;
+    width: 100vw;
+  }
 
   &::before {
     border-color: transparent transparent $color-secondary transparent;

@@ -71,6 +71,12 @@ const Sidebar = ({ institution }) => {
       }
    }, [burgerMenuActive]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   useEffect(() => {
+      return () => {
+         setBurgerMenuActive(false)
+      }
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
    return (
       <div className={burgerMenuActive ? styles.darken : ""}>
          <div ref={outsideClickRef} className={`${styles.sidebar} ${burgerMenuActive ? styles.active : ""}`}>

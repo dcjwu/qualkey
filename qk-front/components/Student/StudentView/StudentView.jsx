@@ -1,3 +1,5 @@
+import PropTypes from "prop-types"
+
 import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
 
@@ -14,3 +16,8 @@ const StudentView = ({ children, userData, notificationsData }) => {
 }
 
 export default StudentView
+
+StudentView.propTypes = {
+   userData: PropTypes.object.isRequired,
+   notificationsData: PropTypes.array
+}

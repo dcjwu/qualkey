@@ -17,7 +17,7 @@ const HoverInfo = ({ status }) => {
                      ? <Text>Your certification has expired.
                         Please contact your awarding institution. </Text>
                      : status === "UPLOADING_TO_BLOCKCHAIN"
-                        ? <Text>Your credentials were just uploaded. Please, wait.</Text>
+                        ? <Text>Your certification was just uploaded. Please wait upload to blockchain.</Text>
                         : null}
       </div>
    )

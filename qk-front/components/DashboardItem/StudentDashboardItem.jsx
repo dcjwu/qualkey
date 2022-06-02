@@ -3,6 +3,7 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 import { useRecoilValue } from "recoil"
 
 import schoolLogo from "../../assets/images/mockUniLogo.webp"
@@ -71,7 +72,7 @@ const StudentDashboardItem = ({ data }) => {
    }
 
    return (
-      <div className={styles.wrapper} style={{ borderRadius: "15px 15px 15px 15px" }}>
+      <div className={`${styles.wrapper} ${styles.student}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
          <div className={`${styles.credentialWrapper} ${styles.student}`} style={{
             borderRadius: !showCredentialsHistory
                ? "15px 15px 15px 15px"
@@ -115,11 +116,11 @@ const StudentDashboardItem = ({ data }) => {
                }
             </div>
          </div>
-         <div className={styles.historyWrapper} style={{
+         <div className={`${styles.historyWrapper} ${styles.student}`} style={{
             display: showCredentialsHistory
                ? "block" : "none", borderRadius: "0 0 15px 15px"
          }}>
-            <div className={styles.history}>
+            <div className={`${styles.history} ${styles.student}`}>
                <div className={styles.left}>
                   <Text bold large>Credentials History</Text>
                   <div className={styles.historyItemWrapper}>
@@ -141,3 +142,5 @@ const StudentDashboardItem = ({ data }) => {
 }
 
 export default StudentDashboardItem
+
+StudentDashboardItem.propTypes = { data: PropTypes.object.isRequired }

@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 import { useRecoilValue } from "recoil"
 
 import { repeatPasswordState } from "../../../atoms"
@@ -28,14 +29,14 @@ const NewPasswordForm = ({ formChangeHandler, formSubmitHandler, buttonError, lo
                       onChange={formChangeHandler}/>
                {/*<Text error small>Wrong email</Text>*/}
                {buttonError ? <Button bold error thin>{buttonError}</Button> : <Button blue bold thin>{loading ? <IconLoading/> : "Set New Password"}</Button>}
-               <Button semiBold thin white
-                       onClick={() => push("/")}>
-                  <div className={styles.buttonRow}>
-                     <IconBack/>
-                     <p>Back to Login</p>
-                  </div>
-               </Button> {/*TODO: REMOVE FROM HERE!*/}
             </form>
+            <Button semiBold thin white
+                    onClick={() => push("/")}>
+               <div className={styles.buttonRow}>
+                  <IconBack/>
+                  <p>Back</p>
+               </div>
+            </Button>
          </div>
          <div className={styles.copyright}>
             <Text grey small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
@@ -47,3 +48,10 @@ const NewPasswordForm = ({ formChangeHandler, formSubmitHandler, buttonError, lo
 }
 
 export default NewPasswordForm
+
+NewPasswordForm.propTypes = {
+   formChangeHandler: PropTypes.func,
+   formSubmitHandler: PropTypes.func,
+   buttonError: PropTypes.string,
+   loading: PropTypes.bool,
+}

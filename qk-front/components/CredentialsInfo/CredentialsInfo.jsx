@@ -93,11 +93,11 @@ const CredentialsInfo = ({ data }) => {
                <div className={styles.bottomItemLeft}>
                   <div className={styles.bottomItem}>
                      <Text lightBlue semiBold>Certificate ID:</Text>
-                     <Text>{data.did}</Text>
+                     <Text>{data?.hash}</Text>
                   </div>
                   <div className={styles.bottomItem}>
                      <Text lightBlue semiBold>Hedera Blockchain ID:</Text>
-                     <Text>{data?.hash}</Text>
+                     <Text>{data.did}</Text>
                   </div>
                </div>
                <Button blue thin>

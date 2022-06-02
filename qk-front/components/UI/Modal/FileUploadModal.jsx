@@ -11,6 +11,7 @@ import FileUploadDropdown from "../Dropdown/FileUploadDropdown/FileUploadDropdow
 import Heading from "../Heading/Heading"
 import Input from "../Input/Input"
 import Text from "../Text/Text"
+import ModalSteps from "./_ModalSteps/ModalSteps"
 import styles from "./Modal.module.scss"
 
 const FileUploadModal = () => {
@@ -32,6 +33,7 @@ const FileUploadModal = () => {
    const [mappingToValues, setMappingToValues] = useState([])
    const [uploadSuccess, setUploadSuccess] = useState(false)
    const [loading, setLoading] = useState(false)
+   const [step, setStep] = useState(1)
 
    //TODO: Make active field in dropdown according to figma ui — BLUE?
 
@@ -53,11 +55,12 @@ const FileUploadModal = () => {
             const response = await axios.post(`${frontUrl}/api/file-upload`, formData, { headers: { "Content-type": "multipart/form-data" } })
             setParsedValuesFromUpload(response.data.file)
             setFilePrefix(response.data.prefix)
+            setStep(prevState => prevState + 1)
          } catch (error) {
             setFileUploadModalError(error?.response?.statusText)
          }
       } else {
-         setFileUploadModalError("Unsupported file type")
+         setFileUploadModalError("Invalid file format. Make sure you have selected a valid file and try again.")
       }
    }
 
@@ -193,11 +196,20 @@ const FileUploadModal = () => {
          ? <div className={styles.modal} onClick={closeModalOutside}>
             <div className={styles.wrapper}>
                <IconClose onClick={closeModal}/>
+               <ModalSteps step={3} totalSteps={3}/>
                <div className={styles.wrapperInner}
                     style={{ height: parsedValuesFromUpload.length ? "100%" : "", paddingBottom: "6rem" }}>
                   <div className={styles.top}>
-                     <Heading h2 modal success
-                              style={{ marginBottom: "0" }}>Success!</Heading>
+                     <Heading blue h2 medium
+                              modal
+                              style={{ marginBottom: "1rem" }}>Credentials Upload Complete
+                     </Heading>
+                     <Text style={{ marginBottom: "1.5rem" }}>You will be notified as soon as you organisation’s Assigned
+                        Approver confirms these
+                        credentials. You many now return to the dashboard</Text>
+                     <Button blue thin onClick={closeModal}>
+                        Return to Dashboard
+                     </Button>
                   </div>
                </div>
             </div>
@@ -206,6 +218,7 @@ const FileUploadModal = () => {
             <div className={styles.wrapper}
                  style={{ height: parsedValuesFromUpload.length ? "90%" : "" }} onClick={event => event.stopPropagation()}>
                <IconClose onClick={closeModal}/>
+               <ModalSteps step={step} totalSteps={3}/>
                <div className={styles.wrapperInner} style={{ height: parsedValuesFromUpload.length ? "100%" : "" }}>
                   <div className={styles.top}>
                      <Heading blue h2 modal>Multi-Upload</Heading>
@@ -219,7 +232,7 @@ const FileUploadModal = () => {
                      && <>
                         <div className={styles.middle}>
                            {parsedValuesFromUpload.map((value, index) => (
-                              <div key={value} className={styles.row}>
+                              <div key={value} className={`${styles.row} ${styles.massUpload}`}>
                                  <Input readOnly inputName={value} type={"text"}
                                         value={value}/>
                                  <FileUploadDropdown key={value} handleOption={handleOption}

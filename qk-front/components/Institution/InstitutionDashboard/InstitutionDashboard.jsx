@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 
 import InstitutionDashboardItem from "../../DashboardItem/InstitutionDashboardItem"
 import Input from "../../UI/Input/Input"
@@ -49,3 +50,8 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
 }
 
 export default InstitutionDashboard
+
+InstitutionDashboard.propTypes = {
+   data: PropTypes.array.isRequired,
+   allCredentialsData: PropTypes.array
+}
