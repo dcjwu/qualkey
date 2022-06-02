@@ -59,4 +59,8 @@
   font-family: $font-primary;
   font-size: 4.5rem;
   font-weight: $font-weight-lg;
+
+  &.medium {
+    font-size: 3.2rem;
+  }
 }

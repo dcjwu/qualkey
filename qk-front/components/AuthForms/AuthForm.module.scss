@@ -98,12 +98,23 @@
       }
     }
   }
+
+  &.forgot {
+    > h1 {
+      margin-bottom: 1.5rem;
+
+      + p {
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
 }
 
 .forgot {
   form {
-    button:last-child {
+    + button {
       margin-top: 10rem;
+      width: 100%;
     }
   }
 }

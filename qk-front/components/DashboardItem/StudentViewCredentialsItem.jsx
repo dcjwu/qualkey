@@ -1,4 +1,5 @@
 import Image from "next/image"
+import PropTypes from "prop-types"
 
 import schoolLogo from "../../assets/images/mockUniLogo.webp"
 import { validateStatus, validateStatusStyles } from "../../utils"
@@ -10,7 +11,7 @@ import styles from "./DashboardItem.module.scss"
 const StudentViewCredentialsItem = ({ data }) => {
    
    return (
-      <div className={`${styles.wrapper} ${styles.viewWrapper}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
+      <div className={`${styles.wrapper} ${styles.viewWrapper} ${styles.student}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
          <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.student}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
                    objectFit="contain" src={schoolLogo} width={196}/>
@@ -38,3 +39,5 @@ const StudentViewCredentialsItem = ({ data }) => {
 }
 
 export default StudentViewCredentialsItem
+
+StudentViewCredentialsItem.propTypes = { data: PropTypes.object.isRequired }

@@ -130,6 +130,11 @@
   @include breakpoint-max($bp-screen-xs) {
     overflow-x: scroll;
   }
+  &.student {
+    @include breakpoint-max($bp-screen-xs) {
+      overflow-x: initial;
+    }
+  }
 }
 
 .left,
@@ -186,7 +191,7 @@
 }
 
 .viewWrapper {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 
   p {
     @include breakpoint-max($bp-screen-xl) {
@@ -214,9 +219,10 @@
     grid-template-columns: 0.9fr 1.5fr 0.4fr 1.05fr 0.5fr;
   }
   @include breakpoint-max($bp-screen-sm) {
+    height: 7rem;
     grid-template-columns: 0.9fr 1.5fr 0.4fr 0.5fr;
-    padding: 0 1.2rem;
-    width: calc(100% - 1.2rem - 1.2rem);
+    padding: 0 1rem;
+    width: calc(100% - 1rem - 1rem);
   }
 
   @include breakpoint-max($bp-screen-xs) {
@@ -246,18 +252,37 @@
     grid-template-columns: 0.2fr 0.6fr 1.3fr 0.8fr 0.7fr;
 
     @include breakpoint-max($bp-screen-md) {
-      grid-template-columns: 0.2fr 1.3fr 0.3fr 0.7fr;
+      grid-template-columns: 0.2fr 0.6fr 1.3fr 0.3fr 0.7fr;
+    }
+
+    @include breakpoint-max($bp-screen-sm) {
+      grid-template-columns: 1.3fr 0.3fr 0.7fr;
+    }
+
+    @include breakpoint-max($bp-screen-xs) {
+      width: initial;
+      overflow-x: initial;
+    }
+
+    > div:first-child {
+      padding-left: 0 !important;
+      @include breakpoint-max($bp-screen-sm) {
+        display: none;
+      }
     }
 
     > *:not(:last-child) {
       padding: 0 1rem !important;
+      @include breakpoint-max($bp-screen-xxs) {
+        padding: 0.5rem !important;
+      }
     }
 
     > div:nth-child(2) {
       padding-left: 3rem !important;
     }
 
-    @include breakpoint-max($bp-screen-md) {
+    @include breakpoint-max($bp-screen-sm) {
       >span:nth-child(2) {
         display: none !important;
       }
@@ -302,12 +327,18 @@
   gap: 2rem;
   height: 100%;
   justify-content: center;
-  padding-left: 1.5rem;
+  padding-left: 2rem;
 
   @include breakpoint-max($bp-screen-sm) {
     border-left: none;
     gap: 1.5rem;
     padding-left: 1rem;
+  }
+
+  > svg:first-child {
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
   }
 
   > a {
@@ -356,6 +387,12 @@
     width: fit-content;
     padding: 1rem 2rem;
   }
+
+  p {
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
+  }
 }
 
 .history {
@@ -366,6 +403,7 @@
   height: 30rem;
   padding: 0 3rem;
   width: calc(100% - 3rem - 3rem);
+  border-right: none;
 
   @include breakpoint-max($bp-screen-lg) {
     padding: 0 2rem;
@@ -380,11 +418,25 @@
   @include breakpoint-max($bp-screen-sm) {
     grid-template-columns: 1fr 1fr;
   }
+
+  &.student {
+    @include breakpoint-max($bp-screen-sm) {
+      width: 125%;
+    }
+  }
 }
 
 .historyWrapper {
   @include breakpoint-max($bp-screen-xs) {
     width: 47.4rem;
+  }
+
+  &.student {
+    @include breakpoint-max($bp-screen-sm) {
+      overflow: hidden;
+      width: initial;
+      overflow-x: scroll;
+    }
   }
 }
 
@@ -428,6 +480,11 @@
 
 .viewActions {
   border-left: none;
+  > svg:first-child {
+    @include breakpoint-max($bp-screen-sm) {
+      display: block;
+    }
+  }
 }
 
 .viewCredentialWrapper {
@@ -441,11 +498,19 @@
     }
 
     @include breakpoint-max($bp-screen-md) {
-      grid-template-columns: 1.3fr 0.3fr 1.3fr;
+      grid-template-columns: 0.7fr 1.3fr 0.3fr 1.3fr;
+    }
+
+    @include breakpoint-max($bp-screen-sm) {
+      grid-template-columns: 0.7fr 1.3fr 0.3fr 0.3fr;
+    }
+
+    @include breakpoint-max($bp-screen-xxs) {
+      grid-template-columns: 1.3fr 0.3fr 0.3fr;
     }
 
     >span:nth-child(1) {
-      @include breakpoint-max($bp-screen-md) {
+      @include breakpoint-max($bp-screen-xxs) {
         display: none !important;
       }
     }

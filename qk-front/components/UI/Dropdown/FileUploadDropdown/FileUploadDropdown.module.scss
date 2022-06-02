@@ -18,6 +18,10 @@
 .dropdown {
   position: relative;
   width: 25rem;
+
+  @include breakpoint-max($bp-screen-md) {
+    width: 20rem;
+  }
 }
 
 .button {

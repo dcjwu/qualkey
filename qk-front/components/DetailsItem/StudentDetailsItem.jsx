@@ -1,11 +1,10 @@
 import moment from "moment"
+import PropTypes from "prop-types"
 
 import Text from "../UI/Text/Text"
 import styles from "./DetailsItem.module.scss"
 
 const StudentDetailsItem = ({ data }) => {
-
-   //TODO: Add reshare functionality from design
 
    return (
       <div className={styles.detailsItem}>
@@ -19,3 +18,5 @@ const StudentDetailsItem = ({ data }) => {
 }
 
 export default StudentDetailsItem
+
+StudentDetailsItem.propTypes = { data: PropTypes.object.isRequired }

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import axios from "axios"
 import moment from "moment"
 import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 import { useRecoilValue, useResetRecoilState } from "recoil"
 
 import { forgotFormState, loginFormState } from "../../../atoms"
@@ -33,8 +34,8 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
    /**
     * Countdown setter logic.
     **/
-   const timerRef = useRef(0)
-   const timerCallback = useCallback(() => {
+   let timerRef = useRef(0)
+   let timerCallback = useCallback(() => {
       setDuration(calculateDuration(canBeResendAt))
       setHideResendButton(false)
    }, [canBeResendAt])
@@ -91,6 +92,17 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
    }
 
    /**
+    * Resend code handler
+    */
+   const handleResendCode = async () => {
+      await axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
+         .then(response => {
+            console.log(response)
+         })
+         .catch(error => console.log(error))
+   }
+
+   /**
     * Countdown updater logic.
     **/
    useEffect(() => {
@@ -127,7 +139,7 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
                {
                   hideResendButton ? <Text transparent>-</Text>
                      : duration.minutes() === 0 && duration.seconds() === 0
-                        ? <Text grey>Resend code</Text>
+                        ? <Text grey onClick={handleResendCode}>Resend code</Text>
                         : <Text grey>{`${duration.minutes()}:${duration.seconds() < 10 ? "0" + duration.seconds() : duration.seconds()}`}</Text>
                }
             </form>
@@ -142,3 +154,8 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
 }
 
 export default TwoFactorForm
+
+TwoFactorForm.propTypes = {
+   canBeResendAt: PropTypes.number,
+   forgotPassword: PropTypes.bool
+}

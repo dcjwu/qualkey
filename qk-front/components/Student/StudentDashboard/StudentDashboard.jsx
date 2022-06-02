@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 
 import StudentDashboardItem from "../../DashboardItem/StudentDashboardItem"
 import { IconShare } from "../../UI/_Icon"
@@ -57,3 +58,5 @@ const StudentDashboard = ({ data }) => {
 }
 
 export default StudentDashboard
+
+StudentDashboard.propTypes = { data: PropTypes.array }

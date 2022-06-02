@@ -11,7 +11,7 @@ import bell from "../../../assets/images/bell.svg"
 import uniLogo from "../../../assets/images/mockUniLogo.webp"
 import { processingUrl } from "../../../utils"
 import NotificationWrapper from "../../Notification/NotificationWrapper/NotificationWrapper"
-import { IconAcademicCap, IconArrowLeft, IconHideDropdownBig, IconLogout, IconMessage, IconSettings } from "../_Icon"
+import { IconAcademicCap, IconArrowLeft, IconBackLeft, IconHideDropdownBig, IconLogout, IconMessage, IconSettings } from "../_Icon"
 import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
 import styles from "./Topbar.module.scss"
@@ -103,7 +103,12 @@ const Topbar = ({ institution, userData, notificationsData }) => {
             <IconArrowLeft/>
             <Text>View Credentials</Text>
          </div>}
-         <BurgerButton style={{ marginLeft: lgMarginLeft || mdMarginLeft }}/>
+         {checkIfPathIncludesView()
+            ? <div className={styles.backRow} style={{ marginLeft: lgMarginLeft || mdMarginLeft }} onClick={() => push("/dashboard")}>
+               <IconBackLeft/>
+               <Text>Back</Text>
+            </div>
+            : <BurgerButton style={{ marginLeft: lgMarginLeft || mdMarginLeft }}/>}
          <div className={styles.right}>
             <div className={styles.imageWrapperNotification} onClick={handleShowNotifications}>
                <Image alt="bell" layout="fill" quality={100}
@@ -121,7 +126,7 @@ const Topbar = ({ institution, userData, notificationsData }) => {
                   <Image alt="user" className={styles.user} layout="fill"
                          quality={100} src={avatar}/>
                </div>
-               <Text semiBold>{firstName} {lastName}</Text>
+               <Text semiBold>{firstName[0]}. {lastName}</Text>
                <IconHideDropdownBig/>
                <div ref={outsideClickRef} className={styles.menu} style={{ display: showMenu ? "block" : "none" }}>
                   <ul>

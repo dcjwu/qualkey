@@ -13,7 +13,10 @@ const InstitutionViewCredentialsItem = ({ data }) => {
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
    
    return (
-      <div className={`${styles.wrapper} ${styles.viewWrapper}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
+      <div className={`${styles.wrapper} ${styles.viewWrapper}`} style={{
+         borderRadius: "15px 15px 15px" +
+            " 15px" 
+      }}>
          <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
             <div className={`${styles.itemWrapper} ${styles.viewName}`}>
                <IconAcademicCapPerson/>

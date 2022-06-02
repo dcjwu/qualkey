@@ -10,6 +10,8 @@ import StudentViewCredentialsItem from "../../components/DashboardItem/StudentVi
 import InstitutionEditCredentials from "../../components/Institution/InstitutionEditCredentials/InstitutionEditCredentials"
 import InstitutionView from "../../components/Institution/InstitutionView/InstitutionView"
 import StudentView from "../../components/Student/StudentView/StudentView"
+import { IconShare } from "../../components/UI/_Icon"
+import Button from "../../components/UI/Button/Button"
 import Heading from "../../components/UI/Heading/Heading"
 import ConfirmWithdrawModal from "../../components/UI/Modal/ConfirmWithdrawModal"
 import Text from "../../components/UI/Text/Text"
@@ -62,6 +64,12 @@ export default function CredentialsView({ data, userData, notificationsData, ser
             <Heading blue h1>View Credentials</Heading>
             <Text large>view, share and manage your credentials</Text>
             <StudentViewCredentialsItem data={data[0]}/>
+            <Button blue thin>
+               <div className="buttonRow">
+                  <IconShare/>
+                  <Text semiBold>Share Credential</Text>
+               </div>
+            </Button>
             <CredentialsInfo data={data[0]}/>
             <div className="withdraw__button">
                <Text grey>- Delete Credentials -</Text>

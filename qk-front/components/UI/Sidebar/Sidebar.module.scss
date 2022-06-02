@@ -35,6 +35,12 @@
     transition: transform 0.15s linear;
     width: $sidebar-width-initial;
   }
+
+  p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+  }
 }
 
 .wrapper {

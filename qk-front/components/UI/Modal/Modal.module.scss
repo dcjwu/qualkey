@@ -39,6 +39,10 @@
     &.confirmUpload {
       padding-bottom: 6rem;
 
+      @include breakpoint-max($bp-screen-xxs) {
+        padding-bottom: 1rem;
+      }
+
       button {
         align-items: center;
         display: flex;
@@ -61,12 +65,22 @@
     }
 
     button:last-child {
+      width: fit-content;
       align-items: center;
       display: flex;
       gap: 1rem;
       justify-content: center;
       margin: 4rem auto 0;
-      padding: 1.2rem 0;
+      padding: 1.4rem 2rem;
+      @include breakpoint-max($bp-screen-sm) {
+        font-size: 1.45rem;
+        margin-top: 1.5rem;
+      }
+      > span{
+        @include breakpoint-max($bp-screen-sm) {
+          font-size: 1.45rem;
+        }
+      }
     }
   }
 }
@@ -84,7 +98,7 @@
     text-align: center;
 
     @include breakpoint-max($bp-screen-md) {
-      font-size: 4rem;
+      font-size: 3.5rem;
     }
 
     + p {
@@ -100,10 +114,10 @@
       + p {
         margin-bottom: 1.5rem;
 
-        + button {
-          margin-top: 2rem;
-          padding: 1rem 1.2rem;
-        }
+        //+ button {
+        //  margin-top: 2rem;
+        //  padding: 1rem 1.2rem;
+        //}
       }
     }
 
@@ -130,6 +144,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 50%;
+    padding: 1.2rem 0;
 
     @include breakpoint-max($bp-screen-md) {
       width: 80%;
@@ -146,6 +161,11 @@
       transform: translateX(-50%);
       z-index: 999;
     }
+    > p {
+      @include breakpoint-max($bp-screen-sm) {
+        font-size: 1.45rem;
+      }
+    }
   }
 }
 
@@ -156,6 +176,19 @@
   overflow: hidden;
   overflow-y: scroll;
   padding: 2rem 4rem;
+  @include breakpoint-max($bp-screen-md) {
+    padding: 1rem 1.5rem;
+  }
+  @include breakpoint-max($bp-screen-sm) {
+    flex-direction: column;
+    width: fit-content;
+    margin: 0 auto;
+  }
+  span, input, p {
+    @include breakpoint-max($bp-screen-md) {
+      font-size: 1.45rem;
+    }
+  }
 }
 
 .row {
@@ -163,10 +196,24 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+  svg {
+    display: block !important;
+  }
+  input {
+    @include breakpoint-max($bp-screen-md) {
+      padding: 1rem 0;
+    }
+  }
 
   &.confirmUpload {
     gap: 1rem;
     margin-bottom: 0;
+  }
+
+  &.massUpload {
+    @include breakpoint-max($bp-screen-sm) {
+      flex-direction: column;
+    }
   }
 }
 
@@ -175,12 +222,21 @@
   display: flex;
   gap: 1.5rem;
   justify-content: center;
+  @include breakpoint-max($bp-screen-sm) {
+    flex-direction: column;
+  }
 
   button {
     border: 1px solid transparent;
     margin-left: 0 !important;
     margin-right: 0 !important;
     width: 20rem !important;
+
+    p, span {
+      @include breakpoint-max($bp-screen-md) {
+        font-size: 1.45rem;
+      }
+    }
 
     &:last-child {
       background-color: transparent;
@@ -196,6 +252,9 @@
   }
 
   &.approved {
+    button {
+      flex: 1 1 0px;
+    }
     button:last-child {
       background-color: transparent;
       border: 1px solid $color-highlight;
@@ -205,6 +264,15 @@
       svg path {
         stroke: $color-highlight;
         transition: stoke 0.2s ease-in-out;
+      }
+    }
+  }
+
+  &.request {
+    button {
+      width: fit-content !important;
+      @include breakpoint-max($bp-screen-sm) {
+        width: 90% !important;
       }
     }
   }

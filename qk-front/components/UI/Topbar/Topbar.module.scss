@@ -116,6 +116,12 @@
     padding-right: 2.5rem;
   }
 
+  > p {
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
+  }
+
   svg {
     height: 0.8rem;
     width: 1.68rem;
@@ -138,6 +144,10 @@
 
   @include breakpoint-max($bp-screen-lg) {
     top: 6rem;
+  }
+
+  @include breakpoint-max($bp-screen-sm) {
+    width: 100vw;
   }
 
   li {
@@ -176,4 +186,11 @@
 
 .burger {
   margin-left: 3.5rem;
+}
+
+.backRow {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
 }

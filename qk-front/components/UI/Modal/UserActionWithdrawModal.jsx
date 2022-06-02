@@ -6,7 +6,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 
 import { userActionUploadDecisionState, userActionWithdrawModalState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
-import { IconAcademicCap, IconAcademicCapPerson, IconClose } from "../_Icon"
+import { IconAcademicCap, IconAcademicCapPerson, IconClose, IconDownload } from "../_Icon"
 import Button from "../Button/Button"
 import Heading from "../Heading/Heading"
 import Text from "../Text/Text"
@@ -29,7 +29,7 @@ const UserActionWithdrawModal = () => {
     * Close modal.
     */
    const closeModal = () => {
-      if (step === 2) {
+      if (step === 3) {
          router.reload(window.location.pathname)
       }
       setWithdrawModal(false)
@@ -59,6 +59,20 @@ const UserActionWithdrawModal = () => {
    const closeModalOutside = event => {
       closeModal()
       event.stopPropagation()
+   }
+
+   /**
+    * Credential withdraw approve
+    */
+   const handleApproveWithdraw = () => {
+      setStep(prevState => prevState + 1)
+   }
+
+   /**
+    * Handle go back
+    */
+   const handleGoBack = () => {
+      setStep(prevState => prevState - 1)
    }
 
    /**
@@ -94,7 +108,7 @@ const UserActionWithdrawModal = () => {
          .then(response => {
             if (response.status === 200) {
                setRejected(true)
-               setStep(prevState => prevState + 1)
+               setStep(3)
             }
          })
          .catch(error => {
@@ -106,27 +120,33 @@ const UserActionWithdrawModal = () => {
       <div className={styles.modal} onClick={closeModalOutside}>
          <div className={styles.wrapper} onClick={event => event.stopPropagation()}>
             <IconClose onClick={closeModal}/>
-            <ModalSteps step={step} totalSteps={2}/>
+            <ModalSteps step={step} totalSteps={3}/>
             <div className={`${styles.top} ${styles.confirmUpload}`}>
                <div className={`${styles.wrapperInner} ${styles.confirmUpload} ${styles.confirmWithdraw}`}>
                   {
-                     rejected && step === 2
+                     rejected && step === 3
                         ? <Heading blue h2 modal>
                            Withdrawal request declined
                         </Heading>
-                        : step === 2
+                        : step === 3
                            ? <Heading blue h2 modal>
                               Credentials withdrawn successfully
                            </Heading>
-                           : <Heading blue h2 modal>
+                           : step === 2
+                              ? <Heading blue h2 modal>
+                                 Confirm credential withdrawal
+                              </Heading>
+                              : <Heading blue h2 modal>
                               Credential withdrawal request. Your action is required.
-                           </Heading>
+                              </Heading>
                   }
                   {
-                     step === 2
+                     step === 3
                         ? <Text semiBold>You may now return to dashboard</Text>
-                        : <Text semiBold>{uploadDecision.initiatorName} has put forward a credential withdrawal
-                           request.</Text>
+                        : step === 2
+                           ? <Text bold error large>This action may NOT be reversed</Text>
+                           : <Text semiBold>{uploadDecision.initiatorName} has put forward a credential withdrawal
+                              request.</Text>
                   }
                   {error && <Text error semiBold>Error: {error}</Text>}
                   {
@@ -144,18 +164,28 @@ const UserActionWithdrawModal = () => {
                         : null
                   }
                   {
-                     step === 2
+                     step === 3
                         ? <Button blue thin onClick={closeModal}>
                            Return to Dashboard
                         </Button>
                         : <div className={`${styles.stepWrapper} ${styles.approved}`}>
-                           <Button errorModal thin onClick={handleApproveRequest}>
-                              <Text semiBold>Withdraw</Text>
+                           <Button errorModal thin onClick={step === 1 ? handleApproveWithdraw : step === 2 ? handleApproveRequest : null}>
+                              <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                 <IconDownload/>
+                                 <Text semiBold>Withdraw</Text>
+                              </div>
                            </Button>
-                           <Button blue thin
-                                   onClick={handleReject}>
-                              <Text semiBold>Decline Request</Text>
-                           </Button>
+                           {
+                              step === 1
+                                 ? <Button blue thin
+                                        onClick={handleReject}>
+                                    <Text semiBold>Decline Request</Text>
+                                 </Button>
+                                 : <Button blue thin
+                                           onClick={handleGoBack}>
+                                    <Text semiBold>Go back</Text>
+                                 </Button>
+                           }
                         </div>
                   }
                </div>

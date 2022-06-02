@@ -106,7 +106,7 @@ export default function Home({ serverErrorMessage }) {
                {
                   !showTwoFactor
                      ? <LoginForm changeFormHandler={handleLoginFormChange} submitFormHandler={handleLoginFormSubmit}/>
-                     : <TwoFactorForm canBeResendAt={canBeResendAt} formData={formData} setFormData={setFormData}/>
+                     : <TwoFactorForm canBeResendAt={canBeResendAt}/>
                }
                <div className="logo">
                   <div className="logo__image-wrapper">

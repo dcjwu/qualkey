@@ -1,4 +1,5 @@
 import moment from "moment"
+import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
 import { credentialsDetailsState, credentialsShowDetailsState } from "../../atoms"
@@ -43,3 +44,5 @@ const StudentHistoryItem = ({ data }) => {
 }
 
 export default StudentHistoryItem
+
+StudentHistoryItem.propTypes = { data: PropTypes.object.isRequired }

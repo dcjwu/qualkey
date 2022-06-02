@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil"
 
 import { confirmWithdrawModalState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
-import { IconClose, IconLoading } from "../_Icon"
+import { IconClose, IconDownload, IconLoading } from "../_Icon"
 import Button from "../Button/Button"
 import Heading from "../Heading/Heading"
 import Text from "../Text/Text"
@@ -26,7 +26,7 @@ const ConfirmWithdrawModal = () => {
     * Close modal.
     */
    const closeModal = () => {
-      if (step === 2) {
+      if (step === 3) {
          router.reload(window.location.pathname)
       }
       setWithdrawModal(false)
@@ -40,6 +40,13 @@ const ConfirmWithdrawModal = () => {
    const closeModalOutside = event => {
       closeModal()
       event.stopPropagation()
+   }
+
+   /**
+    * Credential withdraw approve
+    */
+   const handleApproveWithdraw = () => {
+      setStep(prevState => prevState + 1)
    }
 
    /**
@@ -70,25 +77,29 @@ const ConfirmWithdrawModal = () => {
       <div className={styles.modal} onClick={closeModalOutside}>
          <div className={styles.wrapper} onClick={event => event.stopPropagation()}>
             <IconClose onClick={closeModal}/>
-            <ModalSteps step={step} totalSteps={2}/>
+            <ModalSteps step={step} totalSteps={3}/>
             <div className={`${styles.top} ${styles.confirmUpload}`}>
                <div className={`${styles.wrapperInner} ${styles.confirmUpload} ${styles.confirmWithdraw}`}>
-                  {step === 2
+                  {step === 3
                      ? <Heading blue h2 modal>
                         Withdraw request sent for approval
                      </Heading>
-                     : <Heading blue h2 modal>
-                        Do you wish to withdraw these credentials?
-                     </Heading>}
-                  {step === 2
+                     : step === 2
+                        ? <Heading blue h2 modal>
+                           Confirm credentials withdrawal request
+                        </Heading>
+                        : <Heading blue h2 modal>
+                           Do you wish to withdraw these credentials?
+                        </Heading>}
+                  {step === 3
                      ?
-                     <Text semiBold>You will be notified as soon as the Head of Registrars approves this action. You may
+                     <Text semiBold>You will be notified as soon as the Assigned Approver confirms this action. You may
                         now return to Dashboard</Text>
                      : error
                         ? <Text error semiBold>Error: {error}.</Text>
-                        : <Text semiBold>This action will be first approved by the Head of Registrars before it takes
+                        : <Text semiBold>This action will be first approved by the Assigned Approver before it takes
                            effect.</Text>}
-                  {step === 2
+                  {step === 3
                      ? <Button blue thin onClick={closeModal}>
                         Return to Dashboard
                      </Button>
@@ -99,17 +110,27 @@ const ConfirmWithdrawModal = () => {
                               <Text semiBold>Go Back</Text>
                            </Button>
                         </div>
-                        : <div className={`${styles.stepWrapper} ${styles.approved}`}>
+                        : <div className={`${styles.stepWrapper} ${styles.approved} ${styles.request}`}>
                            {loading
                               ? <Button disabled>
                                  <IconLoading/>
                               </Button>
-                              : <Button errorModal thin onClick={handleWithdrawRequest}>
-                                 <Text semiBold>Withdraw</Text>
-                              </Button>
+                              : step === 2
+                                 ? <Button errorModal thin onClick={handleWithdrawRequest}>
+                                    <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                       <IconDownload/>
+                                       <Text semiBold>Confirm Request</Text>
+                                    </div>
+                                 </Button>
+                                 : <Button errorModal thin onClick={handleApproveWithdraw}>
+                                    <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                       <IconDownload/>
+                                       <Text semiBold>Withdraw</Text>
+                                    </div>
+                                 </Button>
                            }
                            <Button blue thin
-                                   onClick={closeModal}>
+                                   onClick={step === 2 || step === 3 ? () => setStep(prevState => prevState - 1) : closeModal}>
                               <Text semiBold>Go Back</Text>
                            </Button>
                         </div>}
