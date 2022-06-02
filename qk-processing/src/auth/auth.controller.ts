@@ -14,6 +14,7 @@ import { Throttle } from "@nestjs/throttler";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 
+import { SettingsService } from "../settings/settings.service";
 import { AuthService } from "./auth.service";
 import { GetUser } from "./decorator";
 import {
@@ -35,6 +36,7 @@ export class AuthController {
   constructor(
       private authService: AuthService,
       private otpService: OtpService,
+      private systemSettings: SettingsService,
   ) {}
 
   /**
@@ -61,7 +63,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post("login-otp")
   async authWithOtp(@Body() dto: AuthOtpRequestDto, @Res({ passthrough: true }) response: Response): Promise<string> {
-    await this.otpService.checkOtp(dto.otp, dto.otpUuid);
+    if ("true" === await this.systemSettings.get("otp.enabled")) await this.otpService.checkOtp(dto.otp, dto.otpUuid);
     return this.authService.loginOtp(dto, response);
   }
 
@@ -71,8 +73,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post("login")
   async login(@Body() dto: AuthRequestDto, @Res({ passthrough: true }) response: Response ): Promise<string> {
-    // TODO: enable it back
-    // await this.otpService.checkOtp(dto.otp, dto.otpUuid);
+    // TODO: remove check after development is over
+    if ("true" === await this.systemSettings.get("otp.enabled")) await this.otpService.checkOtp(dto.otp, dto.otpUuid);
     return this.authService.login(dto, response);
   }
 

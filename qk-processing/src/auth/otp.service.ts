@@ -3,6 +3,7 @@ import { GoneException, Injectable, NotFoundException, UnprocessableEntityExcept
 import { AwsSesService } from "../aws/aws.ses.service";
 import { UserNotFoundException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
+import { SettingsService } from "../settings/settings.service";
 import { OtpResponseDto } from "./dto";
 
 /**
@@ -13,6 +14,7 @@ export class OtpService {
   constructor(
         private prisma: PrismaService,
         private ses: AwsSesService,
+        private systemSettings: SettingsService,
   ) {}
 
   /**
@@ -37,8 +39,8 @@ export class OtpService {
       },
     });
 
-    // TODO: enable it back
-    // await this.ses.sendOtpEmail(email, otp.code);
+    // TODO: remove the check after development is over
+    if ("true" === await this.systemSettings.get("otp.enabled")) await this.ses.sendOtpEmail(email, otp.code);
 
     return new OtpResponseDto(otp.uuid, otp.validUntil, otp.canBeResentAt);
   }

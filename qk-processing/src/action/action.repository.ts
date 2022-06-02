@@ -20,6 +20,6 @@ export class ActionRepository {
   }
 
   public async getUserActions(user: User): Promise<UserActions[]> {
-    return await this.prisma.userActions.findMany({ where: { userUuid: user.uuid }, orderBy: {id: 'desc'} });
+    return await this.prisma.userActions.findMany({ where: { userUuid: user.uuid }, orderBy: { id: "desc" } });
   }
 }

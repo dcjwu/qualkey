@@ -11,10 +11,10 @@ import {
 import { CredentialsShareExpiredException } from "../common/exception";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsService } from "./credentials.service";
+import { CredentialsPublicViewDto } from "./dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
-import { CredentialsPublicViewDto } from "./dto";
 
 /**
  * This is the API gateway for public endpoints regarding credentials

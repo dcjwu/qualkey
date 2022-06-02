@@ -21,6 +21,7 @@ import { CredentialsModule } from "./credentials/credentials.module";
 import { HederaModule } from "./hedera/hedera.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
+import { SettingsModule } from "./settings/settings.module";
 import { UploadModule } from "./upload/upload.module";
 import { UserModule } from "./user/user.module";
 
@@ -115,6 +116,28 @@ AdminJS.registerAdapter({ Database, Resource });
                   },
                 },
               },
+              {
+                resource: { model: dmmf.modelMap.SystemSettings, client: prisma },
+                options: {
+                  actions: {
+                    new: {
+                      isAccessible: ({ currentAdmin }): boolean => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                      },
+                    },
+                    edit: {
+                      isAccessible: ({ currentAdmin }): boolean => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                      },
+                    },
+                    delete: {
+                      isAccessible: ({ currentAdmin }): boolean => {
+                        return currentAdmin && ( currentAdmin.role === Role.SUPER_ADMIN );
+                      },
+                    },
+                  },
+                },
+              },
             ],
           },
           auth: {
@@ -168,6 +191,7 @@ AdminJS.registerAdapter({ Database, Resource });
     HederaModule,
     CommandModule,
     ActionModule,
+    SettingsModule,
   ],
 })
 export class AppModule {

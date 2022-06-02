@@ -2,12 +2,16 @@ import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { SES } from "aws-sdk";
 
+import { SettingsService } from "../settings/settings.service";
+
 // Create template by executing the command: aws ses create-template --cli-input-json file://emailTemplate.json
 
 @Injectable()
 export class AwsSesService {
     @Inject(ConfigService)
   private config: ConfigService;
+    @Inject(SettingsService)
+    private settings: SettingsService;
 
     private NO_REPLY_EMAIL = "abramov.igor.n@gmail.com";
 
@@ -49,29 +53,30 @@ export class AwsSesService {
     }
 
     private async sendEmailTemplate(recipientEmails: string[], senderEmail: string, template: string, templateData?: string): Promise<void> {
-      // const ses = this.getSES();
-      //
-      // const params = {
-      //   Source: senderEmail,
-      //   Template: template,
-      //   Destination: { ToAddresses: recipientEmails },
-      //   TemplateData: templateData ?? "{\"data\":\"data\"}",
-      // };
+      if ("false" === await this.settings.get("emails.enabled")) {
+        Logger.warn(`SENT email to ${recipientEmails[0]} with template: ${template} and data: ${templateData}`);
+      } else {
+        const ses = this.getSES();
 
-      Logger.warn(`SENT email to ${recipientEmails[0]} with template: ${template} and data: ${templateData}`);
+        const params = {
+          Source: senderEmail,
+          Template: template,
+          Destination: { ToAddresses: recipientEmails },
+          TemplateData: templateData ?? "{\"data\":\"data\"}",
+        };
 
-      // TODO: enable emails
-      // await new Promise((resolve, reject) => {
-      //   ses.sendTemplatedEmail(params, (err, data) => {
-      //     if (err) {
-      //       Logger.error(err, err.stack);
-      //       reject(err.message);
-      //     } else {
-      //       Logger.debug(`email SENT ${data.MessageId}`);
-      //       resolve(data);
-      //     }
-      //   });
-      // });
+        await new Promise((resolve, reject) => {
+          ses.sendTemplatedEmail(params, (err, data) => {
+            if (err) {
+              Logger.error(err, err.stack);
+              reject(err.message);
+            } else {
+              Logger.debug(`email SENT ${data.MessageId}`);
+              resolve(data);
+            }
+          });
+        });
+      }
     }
 
     private getSES(): SES {
