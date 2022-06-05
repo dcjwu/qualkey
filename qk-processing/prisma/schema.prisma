@@ -20,18 +20,21 @@ enum Role {
 }
 
 model User {
-    uuid            String @id @default(uuid())
-    email           String @unique
-    password        String @default(cuid())
-    role            Role
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
-    lastLoginAt     DateTime?
-    firstName       String?
-    lastName        String?
-    credentials     Credential[]
-    institution     Institution? @relation(fields: [institutionUuid], references: [uuid])
-    institutionUuid String?
+    uuid                String @id @default(uuid())
+    email               String @unique
+    password            String @default(cuid())
+    role                Role
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @updatedAt
+    lastLoginAt         DateTime?
+    firstName           String?
+    lastName            String?
+    currency            String @default("GBP")
+    stripeCustomerId    String? @unique
+    credentials         Credential[]
+    payments            Payment[]
+    institution         Institution? @relation(fields: [institutionUuid], references: [uuid])
+    institutionUuid     String?
 
     @@map("users")
 }
@@ -259,4 +262,26 @@ model SystemSettings {
     updatedAt       DateTime @updatedAt
 
     @@map("systemSettings")
+}
+
+enum PaymentStatus {
+    NEW
+    PENDING
+    COMPLETED
+    FAILED
+}
+
+model Payment {
+    id                      String @id @default(uuid())
+    externalId              String @unique
+    student                 User @relation(fields: [studentUuid], references: [uuid])
+    studentUuid             String
+    status                  PaymentStatus @default(NEW)
+    amount                  Decimal  @db.Decimal(10, 2)    @default(0.00)
+    currency                String
+    method                  String
+    createdAt               DateTime @default(now())
+    credentialUuids         String[]
+
+    @@map("payments")
 }

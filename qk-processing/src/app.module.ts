@@ -12,6 +12,7 @@ import { DMMFClass } from "@prisma/client/runtime";
 import AdminJS, { buildFeature, CurrentAdmin } from "adminjs";
 import * as bcrypt from "bcryptjs";
 import { CommandModule } from "nestjs-command";
+import { StripeModule } from "nestjs-stripe";
 
 import { ActionModule } from "./action/action.module";
 import { AuthModule } from "./auth/auth.module";
@@ -19,6 +20,7 @@ import { AwsModule } from "./aws/aws.module";
 import { AwsSesService } from "./aws/aws.ses.service";
 import { CredentialsModule } from "./credentials/credentials.module";
 import { HederaModule } from "./hedera/hedera.module";
+import { PaymentModule } from "./payment/payment.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
 import { SettingsModule } from "./settings/settings.module";
@@ -186,12 +188,20 @@ AdminJS.registerAdapter({ Database, Resource });
         limit: config.get("THROTTLE_LIMIT"),
       }),
     }),
+    StripeModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        apiKey: config.get("STRIPE_SECRET_KEY"),
+        apiVersion: "2020-08-27",
+      }),
+    }),
     UploadModule,
     AwsModule,
     HederaModule,
     CommandModule,
     ActionModule,
     SettingsModule,
+    PaymentModule,
   ],
 })
 export class AppModule {
