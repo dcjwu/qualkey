@@ -17,7 +17,7 @@ import { UploadService } from "./upload.service";
     BullModule.registerQueue({
       name: "upload-notify",
       limiter: {
-        max: 1,
+        max: 100,
         duration: 100,
         bounceBack: true,
       },

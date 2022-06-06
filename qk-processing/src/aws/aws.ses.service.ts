@@ -48,6 +48,21 @@ export class AwsSesService {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-share", `{ \"temporaryPassword\":\"${temporaryPassword}\"}`);
     }
 
+    public async sendCredentialsActivated(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-activated");
+    }
+
+    public async sendPaymentFailed(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "payment-failed");
+    }
+
+    public async sendPaymentCompleted(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "payment-completed");
+    }
+
     public async sendUploadRejected(recipientEmail: string): Promise<void> {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "upload-rejected");
     }

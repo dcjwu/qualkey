@@ -265,18 +265,17 @@ model SystemSettings {
 }
 
 enum PaymentStatus {
-    NEW
     PENDING
     COMPLETED
     FAILED
 }
 
 model Payment {
-    id                      String @id @default(uuid())
+    uuid                    String @id @default(uuid())
     externalId              String @unique
     student                 User @relation(fields: [studentUuid], references: [uuid])
     studentUuid             String
-    status                  PaymentStatus @default(NEW)
+    status                  PaymentStatus @default(PENDING)
     amount                  Decimal  @db.Decimal(10, 2)    @default(0.00)
     currency                String
     method                  String

@@ -60,4 +60,17 @@ export class CredentialsNotifyConsumer {
       }
       await job.moveToCompleted();
     }
+
+    @Process("credentials-activated")
+    async handleCredentialsActivated(job: Job): Promise<void> {
+      Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
+      Logger.debug(`Sending notification to ${job.data.studentEmail}`);
+      try {
+        await this.ses.sendCredentialsActivated(job.data.studentEmail);
+      } catch (err) {
+        Logger.error(err, err.stack);
+        return;
+      }
+      await job.moveToCompleted();
+    }
 }

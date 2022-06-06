@@ -6,7 +6,11 @@ import { Queue } from "bull";
 
 import { PrismaService } from "../../prisma/prisma.service";
 import { CredentialsService } from "../credentials.service";
-import { CredentialsWithdrawalApprovedEvent, CredentialsWithdrawalRejectedEvent } from "../event";
+import {
+  CredentialsActivatedEvent,
+  CredentialsWithdrawalApprovedEvent,
+  CredentialsWithdrawalRejectedEvent,
+} from "../event";
 
 /**
  * Handles all events regarding Credentials functionality
@@ -61,5 +65,12 @@ export class CredentialsEventListener {
       // Remove Withdrawal Request
       await this.prisma.credentialsWithdrawalRequest.delete({ where: { credentialsUuid: event.credentials.uuid } });
       Logger.debug(`WithdrawalRequest for credentials ${event.credentials.uuid} was removed`);
+    }
+
+    @OnEvent("credentials.activated")
+    async handleCredentialsActivatedEvent(event: CredentialsActivatedEvent): Promise<void> {
+      Logger.debug(`credentials ACTIVATED ${event.credentials.uuid}`);
+      // Notify student about credentials activation
+      await this.credentialsNotifyQueue.add("credentials-activated", { studentEmail: event.student.email });
     }
 }

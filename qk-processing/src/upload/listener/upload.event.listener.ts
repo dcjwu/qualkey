@@ -5,7 +5,7 @@ import { UploadStatus, User } from "@prisma/client";
 import { Queue } from "bull";
 
 import { AwsS3Service } from "../../aws/aws.s3.service";
-import { CredentialsHashableDataDto } from "../../credentials/dto/credentials-hashable-data.dto";
+import { CredentialsHashableDataDto } from "../../credentials/dto";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "../event";
 import { FileParser } from "../parser/file-parser";

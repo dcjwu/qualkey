@@ -7,3 +7,4 @@ export * from "./credentials-already-added-exception";
 export * from "./action-not-found-exception";
 export * from "./credentials-change-not-found-exception";
 export * from "./credentials-share-expired-exception";
+export * from "./payment-not-found-exception";

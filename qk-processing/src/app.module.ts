@@ -140,6 +140,16 @@ AdminJS.registerAdapter({ Database, Resource });
                   },
                 },
               },
+              {
+                resource: { model: dmmf.modelMap.Payment, client: prisma },
+                options: {
+                  actions: {
+                    new: { isAccessible: false },
+                    edit: { isAccessible: false },
+                    delete: { isAccessible: false },
+                  },
+                },
+              },
             ],
           },
           auth: {

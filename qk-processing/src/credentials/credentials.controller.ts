@@ -6,11 +6,11 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Post,
+  Post, PreconditionFailedException,
   Query,
   UseGuards,
 } from "@nestjs/common";
-import { Credential, CredentialShare, CredentialsWithdrawalRequest, Role, User } from "@prisma/client";
+import { Credential, CredentialShare, CredentialStatus, CredentialsWithdrawalRequest, Role, User } from "@prisma/client";
 
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
@@ -91,7 +91,11 @@ export class CredentialsController {
     const credentials = await this.credentialsRepository.getByUuid(dto.uuid);
 
     if (user.uuid !== credentials.studentUuid) {
-      throw new ForbiddenException();
+      throw new ForbiddenException("You can share only your own credentials");
+    }
+
+    if (credentials.status !== CredentialStatus.ACTIVATED) {
+      throw new PreconditionFailedException("Please activate credentials in order to share it");
     }
 
     return await this.credentialsShareService.processCredentialsShare(dto);
@@ -110,7 +114,7 @@ export class CredentialsController {
       const credentials = await this.credentialsRepository.getByUuid(credentialsUuid);
 
       if (user.uuid !== credentials.studentUuid) {
-        throw new ForbiddenException();
+        throw new ForbiddenException("You can see only your own credentials");
       }
 
       return await this.credentialsShareRepository.findByCredentialsUuid(credentialsUuid);

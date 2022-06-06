@@ -13,6 +13,7 @@ import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsController } from "./credentials.controller";
 import { CredentialsPublicController } from "./credentials.public.controller";
 import { CredentialsService } from "./credentials.service";
+import { CredentialsStatusUpdateService } from "./credentials.status-update.service";
 import { CredentialsChangeFactory } from "./factory/credentials-change.factory";
 import { CredentialsShareFactory } from "./factory/credentials-share.factory";
 import { CredentialsWithdrawalRequestFactory } from "./factory/credentials-withdrawal-request.factory";
@@ -40,7 +41,12 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
     }),
   ],
   controllers: [CredentialsController, CredentialsPublicController],
-  exports: [CredentialsService, CredentialsChangeService, CredentialsChangeRepository],
+  exports: [
+    CredentialsService,
+    CredentialsChangeService,
+    CredentialsChangeRepository,
+    CredentialsStatusUpdateService,
+  ],
   providers: [
     CredentialsService,
     CredentialsRepository,
@@ -58,6 +64,7 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
     IsEmailArrayConstraint,
     CredentialsShareService,
     CredentialsShareFactory,
+    CredentialsStatusUpdateService,
   ],
 })
 export class CredentialsModule {}
