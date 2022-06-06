@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { CredentialShare } from "@prisma/client";
+import { Credential, CredentialShare } from "@prisma/client";
 
 import { PrismaService } from "../../prisma/prisma.service";
 import { PasswordGenerator } from "../../user/helper/password-generator.service";
-import { CredentialsShareRequestDto } from "../dto/credentials-share-request.dto";
+import { CredentialsShareRequestDto } from "../dto";
 
 /**
  * Factory for creation of CredentialShare objects
@@ -15,11 +15,11 @@ export class CredentialsShareFactory {
   ) {
   }
 
-  public async create(dto: CredentialsShareRequestDto): Promise<CredentialShare> {
+  public async create(dto: CredentialsShareRequestDto, credentialUuid: string): Promise<CredentialShare> {
     return this.prisma.credentialShare.create({
       data: {
-        recipientEmails: dto.recipientEmails.join(";"),
-        credentialUuid: dto.uuid,
+        recipientEmails: dto.recipientEmails,
+        credentialUuid: credentialUuid,
         sharedFields: dto.sharedFields,
         temporaryPassword: PasswordGenerator.generate(4, true,false),
         expiresAt: new Date(dto.expiresAt),

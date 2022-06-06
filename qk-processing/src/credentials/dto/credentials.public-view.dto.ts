@@ -28,31 +28,29 @@ export class CredentialsPublicViewDto {
   ) {
   }
 
-  static fromCredentials(credentials: Credential, credentialChange: CredentialChange, allowed: string): CredentialsPublicViewDto
+  static fromCredentials(credentials: Credential, credentialChange: CredentialChange, allowed: string[]): CredentialsPublicViewDto
   {
-    const allowedArray = allowed.split(";");
-
     return new CredentialsPublicViewDto(
       credentials.did,
       credentialChange.smartContractId,
-      allowedArray.includes("certificateId") ? credentials.certificateId : undefined,
-      allowedArray.includes("graduatedName") ? credentials.graduatedName : undefined,
-      allowedArray.includes("authenticatedBy") ? credentials.authenticatedBy : undefined,
-      allowedArray.includes("qualificationName") ? credentials.qualificationName : undefined,
-      allowedArray.includes("majors") ? credentials.majors : undefined,
-      allowedArray.includes("minors") ? credentials.minors : undefined,
-      allowedArray.includes("authenticatedTitle") ? credentials.authenticatedTitle : undefined,
-      allowedArray.includes("awardingInstitution") ? credentials.awardingInstitution : undefined,
-      allowedArray.includes("qualificationLevel") ? credentials.qualificationLevel : undefined,
-      allowedArray.includes("awardLevel") ? credentials.awardLevel : undefined,
-      allowedArray.includes("studyLanguage") ? credentials.studyLanguage : undefined,
-      allowedArray.includes("info") ? credentials.info : undefined,
-      allowedArray.includes("gpaFinalGrade") ? credentials.gpaFinalGrade : undefined,
-      allowedArray.includes("authenticatedAt") ? credentials.authenticatedAt : undefined,
-      allowedArray.includes("studyStartedAt") ? credentials.studyStartedAt : undefined,
-      allowedArray.includes("studyEndedAt") ? credentials.studyEndedAt : undefined,
-      allowedArray.includes("graduatedAt") ? credentials.graduatedAt : undefined,
-      allowedArray.includes("expiresAt") ? credentials.expiresAt : undefined,
+      allowed.includes("certificateId") ? credentials.certificateId : undefined,
+      allowed.includes("graduatedName") ? credentials.graduatedName : undefined,
+      allowed.includes("authenticatedBy") ? credentials.authenticatedBy : undefined,
+      allowed.includes("qualificationName") ? credentials.qualificationName : undefined,
+      allowed.includes("majors") ? credentials.majors : undefined,
+      allowed.includes("minors") ? credentials.minors : undefined,
+      allowed.includes("authenticatedTitle") ? credentials.authenticatedTitle : undefined,
+      allowed.includes("awardingInstitution") ? credentials.awardingInstitution : undefined,
+      allowed.includes("qualificationLevel") ? credentials.qualificationLevel : undefined,
+      allowed.includes("awardLevel") ? credentials.awardLevel : undefined,
+      allowed.includes("studyLanguage") ? credentials.studyLanguage : undefined,
+      allowed.includes("info") ? credentials.info : undefined,
+      allowed.includes("gpaFinalGrade") ? credentials.gpaFinalGrade : undefined,
+      allowed.includes("authenticatedAt") ? credentials.authenticatedAt : undefined,
+      allowed.includes("studyStartedAt") ? credentials.studyStartedAt : undefined,
+      allowed.includes("studyEndedAt") ? credentials.studyEndedAt : undefined,
+      allowed.includes("graduatedAt") ? credentials.graduatedAt : undefined,
+      allowed.includes("expiresAt") ? credentials.expiresAt : undefined,
     );
   }
 }

@@ -131,9 +131,9 @@ model Upload {
 
 model CredentialShare {
     uuid                        String @id @default(uuid())
-    recipientEmails             String // array with recepient emails
+    recipientEmails             String[] // array with recepient emails
     credentialUuid              String
-    sharedFields                String // array with field names allowed for sharing  full_name;majors;qualification_level
+    sharedFields                String[] // array with field names allowed for sharing  full_name;majors;qualification_level
     temporaryPassword           String
     expiresAt                   DateTime
     createdAt                   DateTime @default(now())

@@ -87,18 +87,23 @@ export class CredentialsController {
   async postCredentialsShare(
       @GetUser() user: User,
       @Body() dto: CredentialsShareRequestDto,
-  ): Promise<CredentialShare> {
-    const credentials = await this.credentialsRepository.getByUuid(dto.uuid);
+  ): Promise<CredentialShare[]> {
+    let shares: CredentialShare[] = [];
+    for (const uuid of dto.uuids) {
+      const credentials = await this.credentialsRepository.getByUuid(uuid);
 
-    if (user.uuid !== credentials.studentUuid) {
-      throw new ForbiddenException("You can share only your own credentials");
+      if (user.uuid !== credentials.studentUuid) {
+        throw new ForbiddenException("You can share only your own credentials");
+      }
+
+      if (credentials.status !== CredentialStatus.ACTIVATED) {
+        throw new PreconditionFailedException("Please activate credentials in order to share it");
+      }
+
+      shares.push(await this.credentialsShareService.processCredentialsShare(dto, uuid));
     }
 
-    if (credentials.status !== CredentialStatus.ACTIVATED) {
-      throw new PreconditionFailedException("Please activate credentials in order to share it");
-    }
-
-    return await this.credentialsShareService.processCredentialsShare(dto);
+    return shares;
   }
 
   /**
