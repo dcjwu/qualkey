@@ -126,7 +126,7 @@ const Topbar = ({ institution, userData, notificationsData }) => {
                   <Image alt="user" className={styles.user} layout="fill"
                          quality={100} src={avatar}/>
                </div>
-               <Text semiBold>{firstName[0]}. {lastName}</Text>
+               {firstName && lastName ? <Text semiBold>{firstName[0]}. {lastName}</Text> : null}
                <IconHideDropdownBig/>
                <div ref={outsideClickRef} className={styles.menu} style={{ display: showMenu ? "block" : "none" }}>
                   <ul>
