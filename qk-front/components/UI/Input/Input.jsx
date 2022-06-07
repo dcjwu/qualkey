@@ -99,6 +99,13 @@ const Input = ({
              placeholder="Search"
              type="text"/>
    )
+
+   if (type === "number") return (
+      <input {...otherProps} className={`${styles.input}`}
+             name={inputName}
+             placeholder={placeholder}
+             type="number"/>
+   )
 }
 
 export default Input

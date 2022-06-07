@@ -142,3 +142,15 @@
     color: $color-primary;
   }
 }
+
+.blueSpan {
+  color: $color-primary-light;
+
+  span {
+    color: $color-highlight;
+  }
+}
+
+.big {
+  font-size: 2.3rem;
+}

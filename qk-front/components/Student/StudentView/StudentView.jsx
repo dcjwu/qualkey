@@ -4,6 +4,7 @@ import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
 
 const StudentView = ({ children, userData, notificationsData }) => {
+   
    return (
       <div className="main__wrapper">
          <Sidebar/>

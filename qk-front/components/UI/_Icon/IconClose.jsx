@@ -1,3 +1,5 @@
+import PropTypes from "prop-types"
+
 import styles from "../Modal/Modal.module.scss"
 
 export const IconClose = ({ ...otherProps }) => {
@@ -17,3 +19,5 @@ export const IconClose = ({ ...otherProps }) => {
       </svg>
    )
 }
+
+IconClose.propTypes = { viewCertificate: PropTypes.bool }

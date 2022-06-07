@@ -64,7 +64,7 @@
       }
     }
 
-    button:last-child {
+    > button:last-child {
       width: fit-content;
       align-items: center;
       display: flex;
@@ -81,6 +81,25 @@
           font-size: 1.45rem;
         }
       }
+    }
+
+    &.payment {
+      padding: 4rem 6rem;
+      > h2 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      > p {
+        margin-bottom: 5rem;
+      }
+    }
+  }
+
+  &.viewCertificate {
+    height: 100vh;
+    overflow-y: scroll;
+    @include breakpoint-max($bp-screen-lg) {
+      width: 95%;
     }
   }
 }
@@ -307,4 +326,127 @@
   align-items: center;
   display: flex;
   gap: 1rem;
+}
+
+.viewCertificate {
+  > h2 {
+    margin-bottom: 4rem;
+  }
+}
+
+.certificateWrapper {
+  margin-bottom: 2rem;
+  padding: 2rem 3.5rem 3rem 3.5rem;
+  border: 6px solid $color-highlight;
+  position: relative;
+  svg {
+    position: absolute;
+    z-index: 9999;
+    &:nth-child(1) {
+      top: -6px;
+      left: -6px;
+    }
+    &:nth-child(2) {
+      top: -6px;
+      right: -6px;
+    }
+    &:nth-child(3) {
+      bottom: -6px;
+      left: -6px;
+    }
+    &:nth-child(4) {
+      bottom: -6px;
+      right: -6px;
+    }
+  }
+  .imageWrapper {
+    margin: 0 auto;
+    width: 45%;
+  }
+  .bottom {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: center;
+    > p {
+      width: 55%;
+      line-height: 1.6;
+    }
+  }
+}
+
+.certificateInner {
+  margin: 4rem 0 10rem 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .right {
+    margin-right: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+.rowButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.amount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  > p:last-child {
+    font-size: 3rem;
+  };
+  + form {
+    > button:last-child {
+      display: flex;
+      margin: 4rem auto 0;
+      justify-content: center;
+    }
+  }
+}
+
+.paymentInput {
+  > p {
+    margin-bottom: .5rem;
+  }
+  > input {
+    padding: 1.5rem 3rem;
+    width: calc(100% - 3rem - 3rem - 2px);
+    margin: 0 auto 2rem;
+    border: 1px solid $color-primary-light;
+    &:focus {
+      border: 1px solid $color-highlight;
+    }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type=number] {
+      -moz-appearance:textfield;
+    }
+  }
+}
+
+.paymentInputRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5rem;
+  > div {
+    flex: 1 1 50%;
+  }
 }

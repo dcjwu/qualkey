@@ -103,7 +103,7 @@ const Topbar = ({ institution, userData, notificationsData }) => {
             <IconArrowLeft/>
             <Text>View Credentials</Text>
          </div>}
-         {checkIfPathIncludesView()
+         {checkIfPathIncludesView() && isScreenLg
             ? <div className={styles.backRow} style={{ marginLeft: lgMarginLeft || mdMarginLeft }} onClick={() => push("/dashboard")}>
                <IconBackLeft/>
                <Text>Back</Text>

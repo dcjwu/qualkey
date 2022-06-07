@@ -45,8 +45,8 @@ export class PaymentService {
       }],
       payment_method_types: ["card"],
       mode: "payment",
-      success_url: this.config.get("FRONT_HOST") + "/payment/success.html",
-      cancel_url: this.config.get("FRONT_HOST") + "/payment/cancel.html",
+      success_url: this.config.get("FRONT_HOST") + "/payment/success",
+      cancel_url: this.config.get("FRONT_HOST") + "/payment/cancel",
     });
     Logger.log(`Checkout session created: ${session.id}`);
     // Create Payment and save it to DB

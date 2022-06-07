@@ -1,18 +1,51 @@
+import { useState } from "react"
+
+import axios from "axios"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import PropTypes from "prop-types"
+import { useRecoilState } from "recoil"
 
 import schoolLogo from "../../assets/images/mockUniLogo.webp"
-import { validateStatus, validateStatusStyles } from "../../utils"
-import { IconAcademicCap, IconCertificate, IconInfo } from "../UI/_Icon"
+import { viewCertificateModalState } from "../../atoms"
+import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
+import { IconAcademicCap, IconCertificate, IconInfo, IconLoading, IconWarning } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
+import HoverInfo from "../UI/HoverInfo/HoverInfo"
 import Text from "../UI/Text/Text"
 import styles from "./DashboardItem.module.scss"
 
 const StudentViewCredentialsItem = ({ data }) => {
-   
+
+   const { push } = useRouter()
+
+   const [, setViewCertificateModal] = useRecoilState(viewCertificateModalState)
+   const [loading, setLoading] = useState(false)
+
+   const handleViewCertificate = () => {
+      setViewCertificateModal(true)
+   }
+
+   const handlePaymentRequest = async id => {
+      setLoading(true)
+      await axios.post(`${processingUrl}/payment`,
+         { credentialUuids: [id] },
+         { withCredentials: true })
+         .then(response => {
+            setLoading(false)
+            push(response.data)
+         })
+         .catch(error => {
+            setLoading(false)
+            console.log(error)
+         })
+   }
+
    return (
-      <div className={`${styles.wrapper} ${styles.viewWrapper} ${styles.student}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
-         <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.student}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
+      <div className={`${styles.wrapper} ${styles.viewWrapper} ${styles.student}`}
+           style={{ borderRadius: "15px 15px 15px 15px" }}>
+         <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.student}`}
+              style={{ borderRadius: "15px 15px 15px 15px" }}>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
                    objectFit="contain" src={schoolLogo} width={196}/>
             <div className={styles.itemWrapper}>
@@ -21,12 +54,30 @@ const StudentViewCredentialsItem = ({ data }) => {
                   <Text bold>{data.qualificationName}</Text>
                </div>
             </div>
-            <div className={`${styles.status} ${validateStatusStyles(data.status, true)}`}>
-               <IconInfo/>
-               <Text bold>{validateStatus(data.status, true)}</Text>
+
+            <div className={`${styles.status} ${loading ? styles.loading : ""} ${validateStatusStyles(data.status, true)}`}
+               onClick={data.status === "UPLOADED_TO_BLOCKCHAIN" ? handlePaymentRequest : null}>
+               {data.status === "UPLOADED_TO_BLOCKCHAIN"
+                  ? loading
+                     ? <IconLoading/>
+                     : <>
+                        <div className={styles.iconWrapper}>
+                           <IconWarning/>
+                           <HoverInfo status={data.status}/>
+                        </div>
+                        <Text bold>{validateStatus(data.status, true)}</Text>
+                     </>
+                  : <>
+                     <div className={styles.iconWrapper}>
+                        <IconInfo/>
+                        <HoverInfo status={data.status}/>
+                     </div>
+                     <Text bold>{validateStatus(data.status, true)}</Text>
+                  </>}
             </div>
             <div className={styles.actions}>
-               <Button blue thin>
+               <Button blue thin disabled={data.status !== "ACTIVATED"}
+                       onClick={handleViewCertificate}>
                   <div className={styles.buttonRow}>
                      <IconCertificate/>
                      <Text semiBold>Certificate</Text>

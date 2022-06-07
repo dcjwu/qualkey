@@ -207,7 +207,8 @@ const FileUploadModal = () => {
                      <Text style={{ marginBottom: "1.5rem" }}>You will be notified as soon as you organisation’s Assigned
                         Approver confirms these
                         credentials. You many now return to the dashboard</Text>
-                     <Button blue thin onClick={closeModal}>
+                     <Button blue thin style={{ display: "flex", justifyContent: "center", margin: "0 auto" }}
+                             onClick={closeModal}>
                         Return to Dashboard
                      </Button>
                   </div>

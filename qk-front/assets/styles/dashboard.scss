@@ -4,7 +4,7 @@
 .dashboard {
   background-color: $color-additional-medium;
   height: calc(100vh - #{$topbar-height-initial} - 7rem);
-  padding: 7rem 11rem 0 calc(11rem + #{$sidebar-width-initial});
+  padding: 7rem 15rem 0 calc(15rem + #{$sidebar-width-initial});
 
   @include breakpoint-max($bp-screen-xxl) {
     padding: 7rem 7rem 0 calc(7rem + #{$sidebar-width-xxl});
@@ -67,4 +67,5 @@
   align-items: center;
   display: flex;
   justify-content: center;
+  gap: 1rem;
 }
