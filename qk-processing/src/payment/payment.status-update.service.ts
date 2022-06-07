@@ -1,6 +1,6 @@
 import { Injectable, Logger, PreconditionFailedException } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { Payment, PaymentStatus } from "@prisma/client";
+import { PaymentStatus } from "@prisma/client";
 
 import { PaymentNotFoundException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";

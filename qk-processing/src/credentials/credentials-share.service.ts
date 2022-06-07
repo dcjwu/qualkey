@@ -1,9 +1,9 @@
 import { InjectQueue } from "@nestjs/bull";
 import { Injectable, Logger } from "@nestjs/common";
-import {Credential, CredentialShare} from "@prisma/client";
+import { CredentialShare } from "@prisma/client";
 import { Queue } from "bull";
 
-import { CredentialsShareRequestDto } from "./dto/credentials-share-request.dto";
+import { CredentialsShareRequestDto } from "./dto";
 import { CredentialsShareFactory } from "./factory/credentials-share.factory";
 
 @Injectable()

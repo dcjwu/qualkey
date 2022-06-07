@@ -6,6 +6,7 @@ import { OtpService } from "../../../src/auth/otp.service";
 import { AwsSesService } from "../../../src/aws/aws.ses.service";
 import { UserNotFoundException } from "../../../src/common/exception";
 import { PrismaService } from "../../../src/prisma/prisma.service";
+import { SettingsService } from "../../../src/settings/settings.service";
 
 describe("OtpService Unit Test", () => {
   let service: OtpService;
@@ -37,6 +38,8 @@ describe("OtpService Unit Test", () => {
     firstName: "A",
     lastName: "K",
     institutionUuid: "413989c5-151b-4b18-980c-a5ecf78028dc",
+    currency: "GBP",
+    stripeCustomerId: null,
   };
 
   beforeEach(async () => {
@@ -55,6 +58,10 @@ describe("OtpService Unit Test", () => {
       {
         provide: AwsSesService,
         useValue: { sendOtpEmail: jest.fn() }, 
+      },
+      {
+        provide: SettingsService,
+        useValue: { get: jest.fn().mockReturnValue(Promise.resolve("false")) },
       },
       ],
     }).compile();

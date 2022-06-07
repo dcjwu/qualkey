@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Credential, CredentialShare } from "@prisma/client";
+import { CredentialShare } from "@prisma/client";
 
 import { PrismaService } from "../../prisma/prisma.service";
 import { PasswordGenerator } from "../../user/helper/password-generator.service";

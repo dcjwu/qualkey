@@ -88,7 +88,7 @@ export class CredentialsController {
       @GetUser() user: User,
       @Body() dto: CredentialsShareRequestDto,
   ): Promise<CredentialShare[]> {
-    let shares: CredentialShare[] = [];
+    const shares: CredentialShare[] = [];
     for (const uuid of dto.uuids) {
       const credentials = await this.credentialsRepository.getByUuid(uuid);
 
