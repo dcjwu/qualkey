@@ -23,6 +23,8 @@ describe("Route Provider Unit Tests", () => {
       lastName: "",
       institutionUuid: "uuid-inst",
       lastLoginAt: null,
+      currency: "",
+      stripeCustomerId: "",
     };
     expect(routeProvider.onLogin(user)).toEqual(link);
   });
@@ -39,6 +41,8 @@ describe("Route Provider Unit Tests", () => {
       lastName: "",
       institutionUuid: "uuid-inst",
       lastLoginAt: null,
+      currency: "",
+      stripeCustomerId: "",
     };
     expect(() => routeProvider.onLogin(user)).toThrowError(new RoleNotFoundException(user.role));
     expect(() => routeProvider.onLogin(user)).toThrowError(`Role not found ${user.role}`);

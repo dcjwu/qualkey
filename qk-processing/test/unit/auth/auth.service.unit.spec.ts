@@ -64,6 +64,8 @@ describe("AuthService Unit Test", () => {
     firstName: "A",
     lastName: "K",
     institutionUuid: "413989c5-151b-4b18-980c-a5ecf78028dc",
+    currency: "",
+    stripeCustomerId: "",
   };
   
   beforeEach(async () => {

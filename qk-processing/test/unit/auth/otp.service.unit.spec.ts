@@ -1,7 +1,8 @@
 import { GoneException, NotFoundException, UnprocessableEntityException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import { OneTimePassword, User } from "@prisma/client";
+import { OneTimePassword, User, SystemSettings } from "@prisma/client";
 
+import { OtpResponseDto } from "../../../src/auth/dto";
 import { OtpService } from "../../../src/auth/otp.service";
 import { AwsSesService } from "../../../src/aws/aws.ses.service";
 import { UserNotFoundException } from "../../../src/common/exception";
@@ -12,6 +13,7 @@ describe("OtpService Unit Test", () => {
   let service: OtpService;
   let prismaService: PrismaService;
   let ses: AwsSesService;
+  let systemSettings: SettingsService;
   
   const otpMock: OneTimePassword = {
     uuid: "baa3261d-b36a-4d5d-9f26-5fce27321df8",
@@ -41,10 +43,18 @@ describe("OtpService Unit Test", () => {
     currency: "GBP",
     stripeCustomerId: null,
   };
+  
+  const systemSettingsMock: SystemSettings = {
+    id: 0,
+    name: "otp.enabled",
+    value: "true",
+    createdAt: new Date(1652991260 * 1000),
+    updatedAt: new Date(1652991260 * 1000),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [OtpService, {
+      providers: [OtpService, SettingsService, {
         provide: PrismaService,
         useValue: {
           oneTimePassword: {
@@ -53,15 +63,12 @@ describe("OtpService Unit Test", () => {
             delete: jest.fn(),
           }, 
           user: { findUnique: jest.fn().mockReturnValue(Promise.resolve(userMockFindUnique)) },
+          systemSettings: { findUnique: jest.fn().mockReturnValue(Promise.resolve(systemSettingsMock)) },
         },
       },
       {
         provide: AwsSesService,
         useValue: { sendOtpEmail: jest.fn() }, 
-      },
-      {
-        provide: SettingsService,
-        useValue: { get: jest.fn().mockReturnValue(Promise.resolve("false")) },
       },
       ],
     }).compile();
@@ -69,6 +76,7 @@ describe("OtpService Unit Test", () => {
     service = module.get<OtpService>(OtpService);
     prismaService = module.get<PrismaService>(PrismaService);
     ses = module.get<AwsSesService>(AwsSesService);
+    systemSettings = module.get<SettingsService>(SettingsService);
   });
 
   it("Should be defined", () => {
@@ -77,16 +85,17 @@ describe("OtpService Unit Test", () => {
 
   describe("sendOtp() - unit", () => {
 
-    //TODO: Make it work again
-
-    // it("Should send email and return OtpResponseDto", async () => {
-    //   await service.sendOtp(userMockFindUnique.email, 1);
-    //   expect(ses.sendOtpEmail).toBeCalledTimes(1);
-    //   expect(ses.sendOtpEmail).toBeCalledWith(userMockFindUnique.email, otpMock.code);
-    //   expect(await service.sendOtp(userMockFindUnique.email, 1)).toEqual(
-    //     new OtpResponseDto(otpMock.uuid, otpMock.validUntil, otpMock.canBeResentAt),
-    //   );
-    // });
+    it("Should send email and return OtpResponseDto", async () => {
+      jest
+        .spyOn(systemSettings, "get");
+      
+      await service.sendOtp(userMockFindUnique.email, 1);
+      expect(ses.sendOtpEmail).toBeCalledTimes(1);
+      expect(ses.sendOtpEmail).toBeCalledWith(userMockFindUnique.email, otpMock.code);
+      expect(await service.sendOtp(userMockFindUnique.email, 1)).toEqual(
+        new OtpResponseDto(otpMock.uuid, otpMock.validUntil, otpMock.canBeResentAt),
+      );
+    });
 
     it("Should throw UserNotFoundException if user not found", () => {
       const mockPrismaFindUnique = jest.fn().mockReturnValue(Promise.resolve(null));
