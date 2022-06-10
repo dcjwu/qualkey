@@ -49,7 +49,7 @@ AdminJS.registerAdapter({ Database, Resource });
               {
                 resource: { model: dmmf.modelMap.User, client: prisma },
                 options: {
-                  editProperties: ["email", "role", "firstName", "lastName", "institution"],
+                  editProperties: ["email", "role", "firstName", "lastName", "institution", "title", "signatureUrl"],
                   actions: {
                     new: {
                       isAccessible: ({ currentAdmin }): boolean => {

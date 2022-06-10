@@ -7,6 +7,7 @@ import { Queue } from "bull";
 import { AwsS3Service } from "../../aws/aws.s3.service";
 import { CredentialsHashableDataDto } from "../../credentials/dto";
 import { PrismaService } from "../../prisma/prisma.service";
+import { UserRepository } from "../../user/user.repository";
 import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "../event";
 import { FileParser } from "../parser/file-parser";
 
@@ -22,6 +23,7 @@ export class UploadEventListener {
       private awsS3Service: AwsS3Service,
       private prisma: PrismaService,
       private fileParser: FileParser,
+      private userRepository: UserRepository,
   ) {
   }
 
@@ -73,11 +75,14 @@ export class UploadEventListener {
       });
     }
 
+    const authenticatedBy: User = await this.userRepository.getByUuid(event.upload.uploadedBy);
+
     // parse file into hashable data DTOs
     // TODO: save amount of entries to Upload
     const credentialDataArray: CredentialsHashableDataDto[] = await this.fileParser
       .parseUpload(
         this.awsS3Service.get(event.upload.filename),
+        authenticatedBy,
         event.upload.mapping.split(","),
         event.upload.filename,
       )

@@ -15,7 +15,7 @@ export class CredentialsWithdrawalRequestFactory {
       data: {
         credentialsUuid: credentialsUuid,
         initiatedBy: initiatedBy.uuid,
-        confirmationsRequestedFrom: representatives.map(r => r.uuid).join(";"),
+        confirmationsRequestedFrom: representatives.map(r => r.uuid),
       },
     });
   }

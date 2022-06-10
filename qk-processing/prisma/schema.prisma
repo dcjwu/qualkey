@@ -19,11 +19,18 @@ enum Role {
     STUDENT
 }
 
+enum UserStatus {
+    ACTIVE
+    CLOSED
+    BANNED
+}
+
 model User {
     uuid                String @id @default(uuid())
     email               String @unique
     password            String @default(cuid())
     role                Role
+    status              UserStatus @default(ACTIVE)
     createdAt           DateTime @default(now())
     updatedAt           DateTime @updatedAt
     lastLoginAt         DateTime?
@@ -31,6 +38,8 @@ model User {
     lastName            String?
     currency            String @default("GBP")
     stripeCustomerId    String? @unique
+    signatureUrl        String?
+    title               String?
     credentials         Credential[]
     payments            Payment[]
     institution         Institution? @relation(fields: [institutionUuid], references: [uuid])
@@ -62,11 +71,9 @@ model Credential {
 
     certificateId       String?
     graduatedName       String?
-    authenticatedBy     String? //User uuid
     qualificationName   String?
     majors              String?
     minors              String?
-    authenticatedTitle  String?
     awardingInstitution String?
     qualificationLevel  String?
     awardLevel          String?
@@ -74,11 +81,14 @@ model Credential {
     info                String?
     gpaFinalGrade       String?
 
-    authenticatedAt     DateTime?
     studyStartedAt      DateTime?
     studyEndedAt        DateTime?
     graduatedAt         DateTime?
     expiresAt           DateTime?
+
+    authenticatedAt     DateTime?
+    authenticatedBy     String? //User name
+    authenticatedTitle  String?
 
     credentialChanges   CredentialChange[]
 
@@ -120,8 +130,8 @@ model Upload {
     mapping                     String // array with mapping of the fields
     status                      UploadStatus @default(PENDING)
     uploadedBy                  String // User uuid
-    confirmationsRequestedFrom  String // array with user_uuids
-    confirmedBy                 String? // array with user_uuids
+    confirmationsRequestedFrom  String[] // array with user_uuids
+    confirmedBy                 String[] // array with user_uuids
     createdAt                   DateTime @default(now())
     updatedAt                   DateTime @updatedAt
     credentials                 Credential[]
@@ -147,9 +157,9 @@ model CredentialChange {
     credentialUuid              String
     credentialDid               String
     changedByUuid               String? // User uuid
-    changedFrom                 String? // array with changes from   1;Peter;Dinklage
-    changedTo                   String? // array with changes to     2;fyodor;Pupkin
-    fieldName                   String? // array with field names    id;first_name;last_name
+    changedFrom                 String[] // array with changes from   1;Peter;Dinklage
+    changedTo                   String[] // array with changes to     2;fyodor;Pupkin
+    fieldName                   String[] // array with field names    id;first_name;last_name
     changedAt                   DateTime @default(now())
     hash                        String @unique
     smartContractId             String?
@@ -168,9 +178,9 @@ model CredentialChangeRequest {
     status                      CredentialChangeRequestStatus @default(PENDING)
     requestedBy                 String // User uuid
     confirmedBy                 String // User uuid
-    changedFrom                 String // array with changes from   1;Peter;Dinklage
-    changedTo                   String // array with changes to     2;fyodor;Pupkin
-    fieldName                   String // array with field names    id;first_name;last_name
+    changedFrom                 String[] // array with changes from   1;Peter;Dinklage
+    changedTo                   String[] // array with changes to     2;fyodor;Pupkin
+    fieldName                   String[] // array with field names    id;first_name;last_name
     createdAt                   DateTime @default(now())
     updatedAt                   DateTime @updatedAt
 
@@ -223,8 +233,8 @@ model CredentialsWithdrawalRequest {
     uuid                        String @id @default(uuid())
     credentialsUuid             String @unique
     initiatedBy                 String // User uuid
-    confirmationsRequestedFrom  String // array with user_uuids
-    confirmedBy                 String? // array with user_uuids
+    confirmationsRequestedFrom  String[] // array with user_uuids
+    confirmedBy                 String[] // array with user_uuids
     createdAt                   DateTime @default(now())
     updatedAt                   DateTime @updatedAt
 

@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { Upload, UploadStatus, User, UserActionType } from "@prisma/client";
+import { Upload, UploadStatus, User, UserStatus, UserActionType } from "@prisma/client";
 
 import { Decision } from "../action/enum/decision.enum";
 import { LogicException } from "../common/exception";
@@ -31,7 +31,7 @@ export class UploadService {
       });
       if (! institution) throw new NotFoundException("institution not found");
 
-      const representatives = institution.representatives.filter(r => r.uuid !== uploadedBy.uuid);
+      const representatives = institution.representatives.filter(r => (r.uuid !== uploadedBy.uuid && r.status === UserStatus.ACTIVE));
 
       const upload = await this.prisma.upload.create({
         data: {
@@ -40,7 +40,7 @@ export class UploadService {
           originalFilename: originalFilename,
           mapping: mapping,
           uploadedBy: uploadedBy.uuid,
-          confirmationsRequestedFrom: representatives.map(r => r.uuid).join(";"),
+          confirmationsRequestedFrom: representatives.map(r => r.uuid),
         },
       });
 
@@ -100,24 +100,24 @@ export class UploadService {
    */
   private async approveUpload(uuid: string, approvedBy: User, actionId: number): Promise<void> {
     const upload = await this.getCheckedUpload(uuid, approvedBy);
-    const requestedFrom = upload.confirmationsRequestedFrom.split(";");
+    const requestedFrom = upload.confirmationsRequestedFrom;
 
     let confirmedBy = [];
     // Add approve
-    if (! upload.confirmedBy) {
+    if (0 === upload.confirmedBy.length) {
       await this.prisma.upload.update({
         data: { confirmedBy: approvedBy.uuid },
         where: { uuid: uuid },
       });
       confirmedBy.push(approvedBy.uuid);
     } else {
-      confirmedBy = upload.confirmedBy.split(";");
+      confirmedBy = upload.confirmedBy;
       if (confirmedBy.includes(approvedBy.uuid)) throw new LogicException("Already approved.");
 
       confirmedBy.push(approvedBy.uuid);
 
       await this.prisma.upload.update({
-        data: { confirmedBy: confirmedBy.map(uuid => uuid).join(";") },
+        data: { confirmedBy: confirmedBy.map(uuid => uuid) },
         where: { uuid: uuid },
       });
     }
@@ -178,7 +178,7 @@ export class UploadService {
     // check status
     if (upload.status !== UploadStatus.PENDING) throw new LogicException("Wrong upload status.");
 
-    const requestedFrom = upload.confirmationsRequestedFrom.split(";");
+    const requestedFrom = upload.confirmationsRequestedFrom;
     if (! requestedFrom.includes(actionMadeBy.uuid)) throw new ForbiddenException();
 
     return upload;

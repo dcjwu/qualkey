@@ -11,11 +11,9 @@ export class CredentialsHashableDataDto {
 
   certificateId?: string;
   graduatedName?: string;
-  authenticatedBy?: string;
   qualificationName?: string;
   majors?: string;
   minors?: string;
-  authenticatedTitle?: string;
   awardingInstitution?: string;
   qualificationLevel?: string;
   awardLevel?: string;
@@ -24,6 +22,9 @@ export class CredentialsHashableDataDto {
   gpaFinalGrade?: string;
 
   authenticatedAt?: Date;
+  authenticatedTitle?: string;
+  authenticatedBy?: string;
+
   studyStartedAt?: Date;
   studyEndedAt?: Date;
   graduatedAt?: Date;

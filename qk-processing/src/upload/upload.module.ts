@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 
 import { AwsModule } from "../aws/aws.module";
 import { PrismaService } from "../prisma/prisma.service";
+import { UserRepository } from "../user/user.repository";
 import { UploadNotifyConsumer } from "./consumer/upload-notify.consumer";
 import { UploadEventListener } from "./listener/upload.event.listener";
 import { CsvParser } from "./parser/csv.parser";
@@ -41,6 +42,7 @@ import { UploadService } from "./upload.service";
     XlsxParser,
     CsvParser,
     PrismaService,
+    UserRepository,
   ],
 })
 export class UploadModule {}

@@ -112,11 +112,11 @@ export class CredentialsService {
    */
   private async approveWithdrawal(uuid: string, approvedBy: User, actionId: number): Promise<void> {
     const credentialsWithdrawalRequest = await this.getCheckedCredentialsWithdrawalRequest(uuid, approvedBy);
-    const requestedFrom = credentialsWithdrawalRequest.confirmationsRequestedFrom.split(";");
+    const requestedFrom = credentialsWithdrawalRequest.confirmationsRequestedFrom;
 
     let confirmedBy = [];
     // add approve
-    if (null === credentialsWithdrawalRequest.confirmedBy) {
+    if (0 === credentialsWithdrawalRequest.confirmedBy.length) {
       await this.prisma.credentialsWithdrawalRequest.update({
         data: { confirmedBy: approvedBy.uuid },
         where: { uuid: uuid },
@@ -124,13 +124,13 @@ export class CredentialsService {
 
       confirmedBy.push(approvedBy.uuid);
     } else {
-      confirmedBy = credentialsWithdrawalRequest.confirmedBy.split(";");
+      confirmedBy = credentialsWithdrawalRequest.confirmedBy;
       if (confirmedBy.includes(approvedBy.uuid)) throw new LogicException("Already approved.");
 
       confirmedBy.push(approvedBy.uuid);
 
       await this.prisma.credentialsWithdrawalRequest.update({
-        data: { confirmedBy: confirmedBy.map(uuid => uuid).join(";") },
+        data: { confirmedBy: confirmedBy.map(uuid => uuid) },
         where: { uuid: uuid },
       });
     }
@@ -233,7 +233,7 @@ export class CredentialsService {
     const credentialsWithdrawalRequest = await this.prisma.credentialsWithdrawalRequest.findUnique({ where: { uuid: uuid } });
     if (! credentialsWithdrawalRequest) throw new NotFoundException("credentialsWithdrawalRequest not found");
 
-    const requestedFrom = credentialsWithdrawalRequest.confirmationsRequestedFrom.split(";");
+    const requestedFrom = credentialsWithdrawalRequest.confirmationsRequestedFrom;
     if (! requestedFrom.includes(actionMadeBy.uuid)) throw new ForbiddenException();
 
     return credentialsWithdrawalRequest;

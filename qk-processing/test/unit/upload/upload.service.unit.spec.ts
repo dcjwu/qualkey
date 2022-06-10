@@ -1,7 +1,7 @@
 import { ForbiddenException, Logger, NotFoundException } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Test, TestingModule } from "@nestjs/testing";
-import { Upload, UploadStatus, User, UserActions } from "@prisma/client";
+import { Upload, UploadStatus, User, UserActions, UserStatus } from "@prisma/client";
 
 import { Decision } from "../../../src/action/enum/decision.enum";
 import { LogicException } from "../../../src/common/exception";
@@ -26,6 +26,7 @@ describe("UploadService Unit Test", () => {
       email: "email@email.com",
       password: "123",
       role: "INSTITUTION_REPRESENTATIVE",
+      status: UserStatus.ACTIVE,
       createdAt: new Date(1652991260 * 1000),
       updatedAt: new Date(1652991260 * 1000),
       lastLoginAt: new Date(1652991260 * 1000),
@@ -40,6 +41,7 @@ describe("UploadService Unit Test", () => {
       email: "email1@email.com",
       password: "123",
       role: "INSTITUTION_REPRESENTATIVE",
+      status: UserStatus.ACTIVE,
       createdAt: new Date(1652991260 * 1000),
       updatedAt: new Date(1652991260 * 1000),
       lastLoginAt: new Date(1652991260 * 1000),
@@ -54,6 +56,7 @@ describe("UploadService Unit Test", () => {
       email: "email2@email.com",
       password: "123",
       role: "INSTITUTION_REPRESENTATIVE",
+      status: UserStatus.ACTIVE,
       createdAt: new Date(1652991260 * 1000),
       updatedAt: new Date(1652991260 * 1000),
       lastLoginAt: new Date(1652991260 * 1000),
@@ -92,6 +95,7 @@ describe("UploadService Unit Test", () => {
     email: "email@email.com",
     password: "123",
     role: "INSTITUTION_REPRESENTATIVE",
+    status: UserStatus.ACTIVE,
     createdAt: new Date(1652991260 * 1000),
     updatedAt: new Date(1652991260 * 1000),
     lastLoginAt: new Date(1652991260 * 1000),
@@ -109,8 +113,8 @@ describe("UploadService Unit Test", () => {
     mapping: "email,expiresAt,gpaFinalGrade,graduatedName,graduatedAt,qualificationLevel,studyEndedAt,qualificationName,studyStartedAt,,,,,,,",
     status: UploadStatus.PENDING,
     uploadedBy: mockInstitutionRepresentatives[0].uuid,
-    confirmationsRequestedFrom: `${mockInstitutionRepresentatives[1].uuid};${mockInstitutionRepresentatives[2].uuid}`,
-    confirmedBy: null,
+    confirmationsRequestedFrom: [mockInstitutionRepresentatives[1].uuid, mockInstitutionRepresentatives[2].uuid],
+    confirmedBy: [],
     createdAt: new Date(1652991260 * 1000),
     updatedAt: new Date(1652991260 * 1000),
   };
@@ -122,8 +126,8 @@ describe("UploadService Unit Test", () => {
     mapping: "email,expiresAt,gpaFinalGrade,graduatedName,graduatedAt,qualificationLevel,studyEndedAt,qualificationName,studyStartedAt,,,,,,,",
     status: UploadStatus.APPROVED,
     uploadedBy: mockInstitutionRepresentatives[0].uuid,
-    confirmationsRequestedFrom: `${mockInstitutionRepresentatives[1].uuid};${mockInstitutionRepresentatives[2].uuid}`,
-    confirmedBy: null,
+    confirmationsRequestedFrom: [mockInstitutionRepresentatives[1].uuid, mockInstitutionRepresentatives[2].uuid],
+    confirmedBy: [],
     createdAt: new Date(1652991260 * 1000),
     updatedAt: new Date(1652991260 * 1000),
   };
@@ -135,8 +139,8 @@ describe("UploadService Unit Test", () => {
     mapping: "email,expiresAt,gpaFinalGrade,graduatedName,graduatedAt,qualificationLevel,studyEndedAt,qualificationName,studyStartedAt,,,,,,,",
     status: UploadStatus.PENDING,
     uploadedBy: mockInstitutionRepresentatives[0].uuid,
-    confirmationsRequestedFrom: `${mockInstitutionRepresentatives[1].uuid};${mockInstitutionRepresentatives[2].uuid}`,
-    confirmedBy: mockInstitutionRepresentatives[1].uuid,
+    confirmationsRequestedFrom: [mockInstitutionRepresentatives[1].uuid, mockInstitutionRepresentatives[2].uuid],
+    confirmedBy: [mockInstitutionRepresentatives[1].uuid],
     createdAt: new Date(1652991260 * 1000),
     updatedAt: new Date(1652991260 * 1000),
   };

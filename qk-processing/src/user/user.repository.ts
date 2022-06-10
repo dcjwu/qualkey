@@ -19,8 +19,20 @@ export class UserRepository {
   }
 
   public async get(email: string): Promise<User> {
-    const user = await this.prisma.user.findUnique({ where: { email: email } });
+    const user = await this.prisma.user.findUnique({
+      where: { email: email },
+      include: { institution: true },
+    });
     assert(user !== null, "User should not be null");
+
+    return user;
+  }
+
+  public async getByUuid(uuid: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { uuid: uuid },
+      include: { institution: true },
+    });    assert(user !== null, "User should not be null");
 
     return user;
   }

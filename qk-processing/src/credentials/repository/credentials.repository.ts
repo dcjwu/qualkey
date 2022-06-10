@@ -25,7 +25,10 @@ export class CredentialsRepository {
   public async getByUuidWithChanges(uuid: string): Promise<Credential> {
     const credentials = await this.prismaService.credential.findUnique({
       where:{ uuid:uuid },
-      include: { credentialChanges: { orderBy: { changedAt: "desc" } } },
+      include: {
+        credentialChanges: { orderBy: { changedAt: "desc" } },
+        institution: true,
+      },
     });
     assert(null !== credentials, "credentials should not be null");
 
@@ -42,7 +45,10 @@ export class CredentialsRepository {
   public async getByDidWithLastChange(did: string): Promise<Credential> {
     const credentials = await this.prismaService.credential.findUnique({
       where:{ did:did },
-      include: { credentialChanges: { orderBy: { changedAt: "desc" } } },
+      include: {
+        credentialChanges: { orderBy: { changedAt: "desc" } },
+        institution: true,
+      },
     });
     if (null === credentials) throw new CredentialsNotFoundException(did);
 
