@@ -10,13 +10,25 @@ import {
   Query,
   UseGuards,
 } from "@nestjs/common";
-import { Credential, CredentialShare, CredentialStatus, CredentialsWithdrawalRequest, Role, User } from "@prisma/client";
+import {
+  Credential,
+  CredentialChangeRequest,
+  CredentialChange,
+  CredentialShare,
+  CredentialStatus,
+  CredentialsWithdrawalRequest,
+  Role,
+  User,
+} from "@prisma/client";
 
 import { GetUser } from "../auth/decorator";
 import { JwtGuard } from "../auth/guard";
+import { CredentialsChangeService } from "./credentials-change.service";
 import { CredentialsShareService } from "./credentials-share.service";
+import { CredentialsChangeRequestService } from "./credentials.change-request.service";
 import { CredentialsService } from "./credentials.service";
 import { CredentialsWithdrawalRequestDto, CredentialsShareRequestDto } from "./dto";
+import { CredentialsRequestChangeDto } from "./dto/credentials.request-change.dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
@@ -32,7 +44,9 @@ export class CredentialsController {
       private credentialsRepository: CredentialsRepository,
       private credentialsShareService: CredentialsShareService,
       private credentialsShareRepository: CredentialsShareRepository,
+      private credentialsChangeService: CredentialsChangeService,
       private credentialsChangeRepository: CredentialsChangeRepository,
+      private credentialsChangeRequestService: CredentialsChangeRequestService,
   ) {}
 
   /**
@@ -149,5 +163,45 @@ export class CredentialsController {
   async getCredentialChange(@GetUser() user: User, @Query("uuid") uuid: string): Promise<boolean> {
     // TODO: implement
     return await this.credentialsChangeRepository.hasHash(uuid);
+  }
+
+  /**
+   * Post credentialChange endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post("change")
+  async postCredentialChange(
+      @GetUser() user: User,
+      @Body() dto: CredentialsRequestChangeDto,
+  ): Promise<CredentialChange> {
+    if (user.role !== Role.INSTITUTION_REPRESENTATIVE) throw new ForbiddenException();
+
+    const credentials = await this.credentialsRepository.getByUuid(dto.uuid);
+
+    if (user.institutionUuid !== credentials.institutionUuid) {
+      throw new ForbiddenException(`You can change only credentials issued by your institution.`);
+    }
+
+    return await this.credentialsChangeService.processCredentialChange(user, credentials, dto.changedTo, dto.fieldName);
+  }
+
+  /**
+   * Post credentialChangeRequest endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Post("request-change")
+  async postCredentialChangeRequest(
+      @GetUser() user: User,
+      @Body() dto: CredentialsRequestChangeDto,
+  ): Promise<CredentialChangeRequest> {
+    if (user.role !== Role.STUDENT) throw new ForbiddenException();
+
+    const credentials = await this.credentialsRepository.getByUuid(dto.uuid);
+
+    if (user.uuid !== credentials.studentUuid) {
+      throw new ForbiddenException("You can request to change only your own credentials");
+    }
+
+    return await this.credentialsChangeRequestService.createChangeRequest(credentials, dto);
   }
 }

@@ -16,6 +16,16 @@ export class CredentialsChangeRepository {
     return (null !== credentialsChange);
   }
 
+  public async getByHash(hash: string): Promise<CredentialChange> {
+    const credentialsChange = await this.prisma.credentialChange.findUnique({ where: { hash: hash } });
+
+    if (null === credentialsChange) {
+      throw new NotFoundException(`There is no CredentialsChange found for hash: ${hash}`);
+    }
+
+    return credentialsChange;
+  }
+
   public async getLastByCredentialsDid(credentialDid: string): Promise<CredentialChange> {
     const credentialsChange = await this.prisma.credentialChange.findFirst({
       where: { credentialDid: credentialDid },

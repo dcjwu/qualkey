@@ -1,6 +1,6 @@
 import * as assert from "assert";
 
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CredentialsWithdrawalRequest } from "@prisma/client";
 
 import { PrismaService } from "../../prisma/prisma.service";
@@ -20,7 +20,7 @@ export class CredentialsWithdrawalRequestRepository {
 
   public async getByUuid(uuid: string): Promise<CredentialsWithdrawalRequest> {
     const credentialsWithdrawalRequest = await this.prismaService.credentialsWithdrawalRequest.findUnique({ where:{ uuid:uuid } });
-    assert(null !== credentialsWithdrawalRequest, "credentialsWithdrawalRequest should not be null");
+    if (null === credentialsWithdrawalRequest) throw new NotFoundException("credentialsWithdrawalRequest not found");
 
     return credentialsWithdrawalRequest;
   }

@@ -1,16 +1,18 @@
 import { InjectQueue } from "@nestjs/bull";
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
-import { User } from "@prisma/client";
+import { User, UserStatus } from "@prisma/client";
 import { Queue } from "bull";
 
 import { PrismaService } from "../../prisma/prisma.service";
+import { UserRepository } from "../../user/user.repository";
 import { CredentialsService } from "../credentials.service";
 import {
-  CredentialsActivatedEvent,
+  CredentialsActivatedEvent, CredentialsChangedEvent,
   CredentialsWithdrawalApprovedEvent,
   CredentialsWithdrawalRejectedEvent,
 } from "../event";
+import { CredentialsRepository } from "../repository/credentials.repository";
 
 /**
  * Handles all events regarding Credentials functionality
@@ -20,6 +22,8 @@ export class CredentialsEventListener {
   constructor(
         @InjectQueue("credentials-notify") private credentialsNotifyQueue: Queue,
         private credentialsService: CredentialsService,
+        private userRepository: UserRepository,
+        private credentialsRepository: CredentialsRepository,
         private prisma: PrismaService,
   ) {
   }
@@ -72,5 +76,28 @@ export class CredentialsEventListener {
       Logger.debug(`credentials ACTIVATED ${event.credentials.uuid}`);
       // Notify student about credentials activation
       await this.credentialsNotifyQueue.add("credentials-activated", { studentEmail: event.student.email });
+    }
+
+    @OnEvent("credentials.changed")
+    async handleCredentialsChangedEvent(event: CredentialsChangedEvent): Promise<void> {
+      Logger.debug(`credentials CHANGED ${event.credentials.uuid}`);
+
+      const student = await this.userRepository.getByUuid(event.credentials.studentUuid);
+
+      // Notify student about credentials change
+      await this.credentialsNotifyQueue.add("credentials-changed-student", { recipientEmail: student.email });
+
+      const institution = await this.prisma.institution.findUnique({
+        where: { uuid: event.credentials.institutionUuid },
+        include: { representatives: true },
+      });
+      if (! institution) throw new NotFoundException("institution not found");
+
+      const representatives = institution.representatives.filter(r => (r.status === UserStatus.ACTIVE));
+
+      // Notify all representatives
+      for (const representative of representatives) {
+        await this.credentialsNotifyQueue.add("credentials-changed-representative", { recipientEmail: representative.email });
+      }
     }
 }

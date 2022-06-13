@@ -8,3 +8,5 @@ export * from "./action-not-found-exception";
 export * from "./credentials-change-not-found-exception";
 export * from "./credentials-share-expired-exception";
 export * from "./payment-not-found-exception";
+export * from "./credentials.change-request.already-created.exception";
+export * from "./credentials-data-manipulated-exception";

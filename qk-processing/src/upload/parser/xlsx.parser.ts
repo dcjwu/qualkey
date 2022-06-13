@@ -4,14 +4,14 @@ import { Injectable, Logger } from "@nestjs/common";
 import { User } from "@prisma/client";
 import * as XLSX from "xlsx";
 
-import { CredentialsHashableDataDto } from "../../credentials/dto";
+import { CredentialsDataDto } from "../../credentials/dto";
 
 @Injectable()
 export class XlsxParser {
 
-  public async parseXlsx(stream: stream.Readable, authenticatedBy: User, mapping: string[]): Promise<CredentialsHashableDataDto[]> {
+  public async parseXlsx(stream: stream.Readable, authenticatedBy: User, mapping: string[]): Promise<CredentialsDataDto[]> {
     const buffers = [];
-    const credentialDtoArray: CredentialsHashableDataDto[] = [];
+    const credentialDtoArray: CredentialsDataDto[] = [];
 
     return new Promise((resolve, reject) => {
       stream.on("data", (data) => buffers.push(data));
@@ -25,7 +25,8 @@ export class XlsxParser {
           const json = XLSX.utils.sheet_to_json(sheet, { header: mapping });
           json.forEach(data => {
 
-            const dto = new CredentialsHashableDataDto();
+            const dto = new CredentialsDataDto();
+            dto.institutionUuid = authenticatedBy.institutionUuid;
             dto.email = data["email"];
             dto.certificateId = data["certificateId"];
             dto.graduatedName = data["graduatedName"];

@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, NotImplementedException } from "@nestjs
 import { User, UserActionType } from "@prisma/client";
 
 import { LogicException } from "../common/exception";
-import { CredentialsChangeService } from "../credentials/credentials-change.service";
+import { CredentialsChangeRequestService } from "../credentials/credentials.change-request.service";
 import { CredentialsService } from "../credentials/credentials.service";
 import { UploadService } from "../upload/upload.service";
 import { ActionRepository } from "./action.repository";
@@ -14,7 +14,7 @@ export class ActionService {
         private actionRepository: ActionRepository,
         private uploadService: UploadService,
         private credentialsService: CredentialsService,
-        private credentialsChangeService: CredentialsChangeService,
+        private credentialsChangeRequestService: CredentialsChangeRequestService,
   ) {
   }
 
@@ -36,7 +36,7 @@ export class ActionService {
       await this.credentialsService.processCredentialsWithdrawalDecision(action.subjectUuid, user, action.id, dto.decision);
       break;
     case UserActionType.REVIEW_CHANGE_REQUEST:
-      await this.credentialsChangeService.processCredentialsChangeRequestDecision(action.subjectUuid, user, action.id, dto.decision);
+      await this.credentialsChangeRequestService.processCredentialsChangeRequestDecision(action.subjectUuid, user, dto.decision);
       break;
     default:
       throw new NotImplementedException(action.type);

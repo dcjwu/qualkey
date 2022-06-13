@@ -10,6 +10,7 @@ import { CredentialsNotifyConsumer } from "./consumer/credentials-notify.consume
 import { CredentialsCreateConsumer } from "./consumer/credentials.create.consumer";
 import { CredentialsChangeService } from "./credentials-change.service";
 import { CredentialsShareService } from "./credentials-share.service";
+import { CredentialsChangeRequestService } from "./credentials.change-request.service";
 import { CredentialsController } from "./credentials.controller";
 import { CredentialsPublicController } from "./credentials.public.controller";
 import { CredentialsService } from "./credentials.service";
@@ -21,6 +22,7 @@ import { CredentialsFactory } from "./factory/credentials.factory";
 import { CredentialsEventListener } from "./listener/credentials.event.listener";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
+import { CredentialsChangeRequestRepository } from "./repository/credentials.change-request.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
 import { CredentialsWithdrawalRequestRepository } from "./repository/credentials.withdrawal-request.repository";
 import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
@@ -44,6 +46,7 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
   exports: [
     CredentialsService,
     CredentialsChangeService,
+    CredentialsChangeRequestService,
     CredentialsChangeRepository,
     CredentialsStatusUpdateService,
   ],
@@ -65,6 +68,8 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
     CredentialsShareService,
     CredentialsShareFactory,
     CredentialsStatusUpdateService,
+    CredentialsChangeRequestRepository,
+    CredentialsChangeRequestService,
   ],
 })
 export class CredentialsModule {}

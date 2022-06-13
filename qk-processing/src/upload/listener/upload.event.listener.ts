@@ -5,7 +5,7 @@ import { UploadStatus, User } from "@prisma/client";
 import { Queue } from "bull";
 
 import { AwsS3Service } from "../../aws/aws.s3.service";
-import { CredentialsHashableDataDto } from "../../credentials/dto";
+import { CredentialsDataDto } from "../../credentials/dto";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UserRepository } from "../../user/user.repository";
 import { UploadSucceededEvent, UploadFailedEvent, UploadApprovedEvent, UploadRejectedEvent } from "../event";
@@ -79,7 +79,7 @@ export class UploadEventListener {
 
     // parse file into hashable data DTOs
     // TODO: save amount of entries to Upload
-    const credentialDataArray: CredentialsHashableDataDto[] = await this.fileParser
+    const credentialDataArray: CredentialsDataDto[] = await this.fileParser
       .parseUpload(
         this.awsS3Service.get(event.upload.filename),
         authenticatedBy,
@@ -91,9 +91,8 @@ export class UploadEventListener {
 
     // foreach entry create credentialsCreateMessage with data from entry
     credentialDataArray.forEach(credentialData => {
-      credentialData.institutionUuid = event.approvedBy.institutionUuid;
       Logger.debug(`Dispatching credentialsCreateMessage ${credentialData.graduatedName}`);
-      this.credentialsCreateQueue.add("create", { credentialHashableDataDto: credentialData, uploadUuid: event.upload.uuid });
+      this.credentialsCreateQueue.add("create", { credentialDataDto: credentialData, uploadUuid: event.upload.uuid });
     });
 
     // TODO: enable remove file

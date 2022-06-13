@@ -175,11 +175,13 @@ enum CredentialChangeRequestStatus {
 
 model CredentialChangeRequest {
     uuid                        String @id @default(uuid())
+    credentialUuid              String @unique // TODO: remove unique constraint
     status                      CredentialChangeRequestStatus @default(PENDING)
     requestedBy                 String // User uuid
-    confirmedBy                 String // User uuid
-    changedFrom                 String[] // array with changes from   1;Peter;Dinklage
-    changedTo                   String[] // array with changes to     2;fyodor;Pupkin
+    confirmationRequestedFrom   String[] // array with user_uuids
+    confirmedBy                 String? // User uuid
+    changeFrom                  String[] // array with changes from   1;Peter;Dinklage
+    changeTo                    String[] // array with changes to     2;fyodor;Pupkin
     fieldName                   String[] // array with field names    id;first_name;last_name
     createdAt                   DateTime @default(now())
     updatedAt                   DateTime @updatedAt
@@ -217,8 +219,15 @@ enum UserActionType {
     REVIEW_CHANGE_REQUEST
 }
 
+// TODO: stop removing actions
+enum UserActionStatus {
+    ACTIVE
+    DECISION_MADE
+}
+
 model UserActions {
     id              Int     @id @default(autoincrement())
+    status          UserActionStatus @default(ACTIVE)
     userUuid        String
     initiatorName   String
     type            UserActionType
@@ -229,9 +238,16 @@ model UserActions {
     @@map("userActions")
 }
 
+enum CredentialsWithdrawalRequestStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
+
 model CredentialsWithdrawalRequest {
     uuid                        String @id @default(uuid())
-    credentialsUuid             String @unique
+    credentialsUuid             String @unique // TODO: remove unique constraint
+    status                      CredentialsWithdrawalRequestStatus @default(PENDING)
     initiatedBy                 String // User uuid
     confirmationsRequestedFrom  String[] // array with user_uuids
     confirmedBy                 String[] // array with user_uuids

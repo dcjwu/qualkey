@@ -48,6 +48,26 @@ export class AwsSesService {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-share", `{ \"temporaryPassword\":\"${temporaryPassword}\"}`);
     }
 
+    public async sendCredentialsChangeRequested(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-change-request");
+    }
+
+    public async sendCredentialsChangedStudent(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-changed-student");
+    }
+
+    public async sendCredentialsChangedRepresentative(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-changed-representative");
+    }
+
+    public async sendCredentialsChangeRejected(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-change-rejected");
+    }
+
     public async sendCredentialsActivated(recipientEmail: string): Promise<void> {
       // TODO: add template
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-activated");

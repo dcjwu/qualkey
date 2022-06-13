@@ -158,6 +158,7 @@ export class CredentialsService {
   private async rejectWithdrawal(uuid: string, rejectedBy: User): Promise<void> {
     const credentialsWithdrawalRequest = await this.getCheckedCredentialsWithdrawalRequest(uuid, rejectedBy);
 
+    // TODO: Stop deleting actions
     // Delete all userActions for this withdrawal request and delete them
     await this.prisma.userActions.deleteMany({
       where: {
@@ -230,11 +231,9 @@ export class CredentialsService {
    * Verifies CredentialsWithdrawalRequest exists and action can be made by user
    */
   public async getCheckedCredentialsWithdrawalRequest(uuid: string, actionMadeBy: User): Promise<CredentialsWithdrawalRequest> {
-    const credentialsWithdrawalRequest = await this.prisma.credentialsWithdrawalRequest.findUnique({ where: { uuid: uuid } });
-    if (! credentialsWithdrawalRequest) throw new NotFoundException("credentialsWithdrawalRequest not found");
+    const credentialsWithdrawalRequest = await this.credentialsWithdrawalRequestRepository.getByUuid(uuid);
 
-    const requestedFrom = credentialsWithdrawalRequest.confirmationsRequestedFrom;
-    if (! requestedFrom.includes(actionMadeBy.uuid)) throw new ForbiddenException();
+    if (! credentialsWithdrawalRequest.confirmationsRequestedFrom.includes(actionMadeBy.uuid)) throw new ForbiddenException();
 
     return credentialsWithdrawalRequest;
   }
