@@ -104,11 +104,13 @@ export class CredentialsController {
   ): Promise<CredentialShare> {
     const userShares = await this.credentialsShareRepository.findAllByUser(user);
 
-    // add 1 minute to the last share creation date
-    const canBeSharedAt = new Date(userShares[0].createdAt.getTime() + 60000);
+    if (userShares.length > 0) {
+      // add 1 minute to the last share creation date
+      const canBeSharedAt = new Date(userShares[0].createdAt.getTime() + 60000);
 
-    if (userShares.length > 0 && canBeSharedAt > new Date()) {
-      throw new PreconditionFailedException('It is possible to share once per minute');
+      if (canBeSharedAt > new Date()) {
+        throw new PreconditionFailedException('It is possible to share once per minute');
+      }
     }
 
     const credentialsList: Credential[] = [];
