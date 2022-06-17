@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   ForbiddenException,
   Get,
   HttpCode,
@@ -101,8 +101,18 @@ export class CredentialsController {
   async postCredentialsShare(
       @GetUser() user: User,
       @Body() dto: CredentialsShareRequestDto,
-  ): Promise<CredentialShare[]> {
-    const shares: CredentialShare[] = [];
+  ): Promise<CredentialShare> {
+    const userShares = await this.credentialsShareRepository.findAllByUser(user);
+
+    // add 1 minute to the last share creation date
+    const canBeSharedAt = new Date(userShares[0].createdAt.getTime() + 60000);
+
+    if (userShares.length > 0 && canBeSharedAt > new Date()) {
+      throw new PreconditionFailedException('It is possible to share once per minute');
+    }
+
+    const credentialsList: Credential[] = [];
+
     for (const uuid of dto.uuids) {
       const credentials = await this.credentialsRepository.getByUuid(uuid);
 
@@ -114,10 +124,10 @@ export class CredentialsController {
         throw new PreconditionFailedException("Please activate credentials in order to share it");
       }
 
-      shares.push(await this.credentialsShareService.processCredentialsShare(dto, uuid));
+      credentialsList.push(credentials);
     }
 
-    return shares;
+    return await this.credentialsShareService.processCredentialsShare(dto, credentialsList);
   }
 
   /**
@@ -127,17 +137,8 @@ export class CredentialsController {
   @Get("share")
   async getCredentialsShares(
       @GetUser() user: User,
-      @Query("credentialsUuid") credentialsUuid: string,
   ): Promise<CredentialShare[]> {
-    if (credentialsUuid && credentialsUuid !== "") {
-      const credentials = await this.credentialsRepository.getByUuid(credentialsUuid);
-
-      if (user.uuid !== credentials.studentUuid) {
-        throw new ForbiddenException("You can see only your own credentials");
-      }
-
-      return await this.credentialsShareRepository.findByCredentialsUuid(credentialsUuid);
-    }
+    return await this.credentialsShareRepository.findAllByUser(user);
   }
 
   /**
@@ -203,5 +204,25 @@ export class CredentialsController {
     }
 
     return await this.credentialsChangeRequestService.createChangeRequest(credentials, dto);
+  }
+
+  /**
+   * Delete credentials endpoint
+   */
+  @HttpCode(HttpStatus.OK)
+  @Delete(":uuid")
+  async deleteCredentials(
+      @GetUser() user: User,
+      @Param("uuid") uuid: string,
+  ): Promise<void> {
+    if (user.role !== Role.STUDENT) throw new ForbiddenException();
+
+    const credentials = await this.credentialsRepository.getByUuid(uuid);
+
+    if (user.uuid !== credentials.studentUuid) {
+      throw new ForbiddenException("You can delete only your own credentials");
+    }
+
+    await this.credentialsService.deleteCredentials(credentials);
   }
 }

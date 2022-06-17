@@ -56,6 +56,7 @@ enum CredentialStatus {
     ACTIVATED
     WITHDRAWN
     EXPIRED
+    DELETED
 }
 
 model Credential {
@@ -141,8 +142,9 @@ model Upload {
 
 model CredentialShare {
     uuid                        String @id @default(uuid())
+    sharedBy                    String // uuid of the user which shared
     recipientEmails             String[] // array with recepient emails
-    credentialUuid              String
+    credentialUuids             String[] // array with credential uuids
     sharedFields                String[] // array with field names allowed for sharing  full_name;majors;qualification_level
     temporaryPassword           String
     expiresAt                   DateTime

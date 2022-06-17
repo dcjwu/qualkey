@@ -1,7 +1,7 @@
 import * as assert from "assert";
 
 import { Injectable } from "@nestjs/common";
-import { CredentialShare } from "@prisma/client";
+import { CredentialShare, User } from "@prisma/client";
 
 import { PrismaService } from "../../prisma/prisma.service";
 
@@ -19,9 +19,9 @@ export class CredentialsShareRepository {
     return credentialShare;
   }
 
-  public async findByCredentialsUuid(credentialUuid: string): Promise<CredentialShare[]> {
+  public async findAllByUser(user: User): Promise<CredentialShare[]> {
     return await this.prisma.credentialShare.findMany({
-      where: { credentialUuid: credentialUuid },
+      where: { sharedBy: user.uuid },
       orderBy: { createdAt: "desc" },
     });
   }

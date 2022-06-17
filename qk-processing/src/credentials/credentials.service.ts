@@ -237,4 +237,36 @@ export class CredentialsService {
 
     return credentialsWithdrawalRequest;
   }
+
+  /**
+   * Delete credentials data function
+   */
+  public async deleteCredentials(credentials: Credential): Promise<void> {
+    Logger.debug(`Processing deletion of the credentials ${credentials.did}`);
+    await this.prisma.credential.update({
+      data: {
+        status: CredentialStatus.DELETED,
+        certificateId: null,
+        graduatedName: null,
+        qualificationName: null,
+        majors: null,
+        minors: null,
+        awardingInstitution: null,
+        qualificationLevel: null,
+        awardLevel: null,
+        studyLanguage: null,
+        info: null,
+        gpaFinalGrade: null,
+        studyStartedAt: null,
+        studyEndedAt: null,
+        graduatedAt: null,
+        expiresAt: null,
+        authenticatedAt: null,
+        authenticatedBy: null,
+        authenticatedTitle: null,
+      },
+      where: { did: credentials.did },
+    });
+    Logger.debug(`Credentials data deleted successfully ${credentials.did}`);
+  }
 }

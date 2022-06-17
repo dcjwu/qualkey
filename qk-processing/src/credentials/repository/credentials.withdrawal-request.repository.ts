@@ -1,5 +1,3 @@
-import * as assert from "assert";
-
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { CredentialsWithdrawalRequest } from "@prisma/client";
 

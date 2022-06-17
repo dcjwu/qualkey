@@ -1,6 +1,6 @@
 import { InjectQueue } from "@nestjs/bull";
 import { Injectable, Logger } from "@nestjs/common";
-import { CredentialShare } from "@prisma/client";
+import { CredentialShare, Credential } from "@prisma/client";
 import { Queue } from "bull";
 
 import { CredentialsShareRequestDto } from "./dto";
@@ -17,8 +17,8 @@ export class CredentialsShareService {
   /**
    * Process credentials share
    */
-  public async processCredentialsShare(dto: CredentialsShareRequestDto, credentialUuid: string): Promise<CredentialShare> {
-    const credentialsShare = await this.credentialsShareFactory.create(dto, credentialUuid);
+  public async processCredentialsShare(dto: CredentialsShareRequestDto, credentialsList: Credential[]): Promise<CredentialShare> {
+    const credentialsShare = await this.credentialsShareFactory.create(dto, credentialsList);
 
     if (0 !== dto.recipientEmails.length) {
       // Send email with credentials share to recipients

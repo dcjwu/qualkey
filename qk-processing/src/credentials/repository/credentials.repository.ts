@@ -1,7 +1,5 @@
-import * as assert from "assert";
-
 import { Injectable } from "@nestjs/common";
-import { Credential, User } from "@prisma/client";
+import { Credential, CredentialStatus, User } from "@prisma/client";
 
 import { CredentialsNotFoundException } from "../../common/exception";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -16,35 +14,59 @@ export class CredentialsRepository {
   }
 
   public async getByUuid(uuid: string): Promise<Credential> {
-    const credentials = await this.prismaService.credential.findUnique({ where:{ uuid:uuid } });
-    assert(null !== credentials, "credentials should not be null");
+    const credentials = await this.prismaService.credential.findFirst({
+      where:{
+        OR: [
+          { uuid: uuid },
+        ],
+        NOT: { status: { equals: CredentialStatus.DELETED } },
+      },
+    });
+    if (null === credentials) throw new CredentialsNotFoundException(uuid);
 
     return credentials;
   }
 
   public async getByUuidWithChanges(uuid: string): Promise<Credential> {
-    const credentials = await this.prismaService.credential.findUnique({
-      where:{ uuid:uuid },
+    const credentials = await this.prismaService.credential.findFirst({
+      where:{
+        OR: [
+          { uuid: uuid },
+        ],
+        NOT: { status: { equals: CredentialStatus.DELETED } },
+      },
       include: {
         credentialChanges: { orderBy: { changedAt: "desc" } },
         institution: true,
       },
     });
-    assert(null !== credentials, "credentials should not be null");
+    if (null === credentials) throw new CredentialsNotFoundException(uuid);
 
     return credentials;
   }
 
   public async getByDid(did: string): Promise<Credential> {
-    const credentials = await this.prismaService.credential.findUnique({ where:{ did:did } });
+    const credentials = await this.prismaService.credential.findFirst({
+      where:{
+        OR: [
+          { did:did },
+        ],
+        NOT: { status: { equals: CredentialStatus.DELETED } },
+      },
+    });
     if (null === credentials) throw new CredentialsNotFoundException(did);
 
     return credentials;
   }
 
   public async getByDidWithLastChange(did: string): Promise<Credential> {
-    const credentials = await this.prismaService.credential.findUnique({
-      where:{ did:did },
+    const credentials = await this.prismaService.credential.findFirst({
+      where:{
+        OR: [
+          { did:did },
+        ],
+        NOT: { status: { equals: CredentialStatus.DELETED } },
+      },
       include: {
         credentialChanges: { orderBy: { changedAt: "desc" } },
         institution: true,
@@ -67,10 +89,18 @@ export class CredentialsRepository {
           AND: [
             { studentUuid: user.uuid },
           ],
+          NOT: { status: { equals: CredentialStatus.DELETED } },
         },
       });
     } else {
-      return await this.prismaService.credential.findMany({ where:{ studentUuid: user.uuid } });
+      return await this.prismaService.credential.findMany({
+        where:{
+          OR: [
+            { studentUuid: user.uuid },
+          ],
+          NOT: { status: { equals: CredentialStatus.DELETED } },
+        },
+      });
     }
   }
 
@@ -86,10 +116,18 @@ export class CredentialsRepository {
           AND: [
             { institutionUuid: user.institutionUuid },
           ],
+          NOT: { status: { equals: CredentialStatus.DELETED } },
         },
       });
     } else {
-      return await this.prismaService.credential.findMany({ where:{ institutionUuid: user.institutionUuid } });
+      return await this.prismaService.credential.findMany({
+        where:{
+          OR: [
+            { institutionUuid: user.institutionUuid },
+          ],
+          NOT: { status: { equals: CredentialStatus.DELETED } },
+        },
+      });
     }
   }
 }

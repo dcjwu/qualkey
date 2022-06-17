@@ -52,4 +52,34 @@ export class CredentialsPublicController {
 
     return CredentialsPublicViewDto.fromCredentials(credentials, credentialChange, credentialsShare.sharedFields);
   }
+
+  /**
+   * Get credentials shared list request
+   */
+  @HttpCode(HttpStatus.OK)
+  @Get("share/:uuid")
+  async getCredentialsSharedList(
+      @Param("uuid") uuid: string,
+      @Query("password") password: string,
+  ): Promise<CredentialsPublicViewDto[]> {
+    if (! password) throw new ForbiddenException();
+
+    const credentialsShare = await this.credentialsShareRepository.getByUuid(uuid);
+
+    // if expired throw exception
+    if (credentialsShare.expiresAt < new Date()) throw new CredentialsShareExpiredException();
+    // if password is incorrect throw exception
+    if (password !== credentialsShare.temporaryPassword) throw new ForbiddenException();
+
+    const credentialsPublicViewDtoList: CredentialsPublicViewDto[] = [];
+
+    for (const credentialUuid of credentialsShare.credentialUuids) {
+      const credentials = await this.credentialsRepository.getByUuid(credentialUuid);
+      const credentialChange = await this.credentialsChangeRepository.getLastByCredentialsDid(credentials.did);
+
+      credentialsPublicViewDtoList.push(CredentialsPublicViewDto.fromCredentials(credentials, credentialChange, credentialsShare.sharedFields));
+    }
+
+    return credentialsPublicViewDtoList;
+  }
 }
