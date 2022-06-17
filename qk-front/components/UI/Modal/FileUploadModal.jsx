@@ -35,10 +35,6 @@ const FileUploadModal = () => {
    const [loading, setLoading] = useState(false)
    const [step, setStep] = useState(1)
 
-   //TODO: Make active field in dropdown according to figma ui — BLUE?
-
-   //TODO: Make scroll to chosen option dropdown row so it is more user friendly.
-
    /**
     * File upload to front-end processing.
     **/

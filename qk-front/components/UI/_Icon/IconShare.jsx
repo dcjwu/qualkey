@@ -1,6 +1,7 @@
-export const IconShare = () => {
+export const IconShare = ({ ...otherProps }) => {
    return (
       <svg fill="none" height="24" viewBox="0 0 24 24"
+           {...otherProps}
            width="24" xmlns="http://www.w3.org/2000/svg">
          <path d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z"
             stroke="white" strokeLinecap="round"

@@ -64,3 +64,13 @@
     font-size: 3.2rem;
   }
 }
+
+.share {
+  font-family: $font-primary;
+  font-size: 4.5rem;
+  font-weight: $font-weight-sm;
+
+  span {
+    font-weight: $font-weight-lg;
+  }
+}

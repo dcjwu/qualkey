@@ -12,11 +12,6 @@
 }
 
 .uploaded {
-  border: 1px solid $color-pending;
-  border-radius: 15px;
-  @include breakpoint-max($bp-screen-md) {
-    border: none;
-  }
   p {
     color: $color-pending;
     cursor: pointer;
@@ -27,6 +22,11 @@
   }
 
   &.student {
+    border: 1px solid $color-pending;
+    border-radius: 15px;
+    @include breakpoint-max($bp-screen-md) {
+      border: none;
+    }
     + div {
       > svg {
         &:first-child {
@@ -271,6 +271,14 @@
     overflow-x: scroll;
   }
 
+  >span:first-child,
+  >span:nth-child(2){
+    padding: 0 .6rem !important;
+    @include breakpoint-max($bp-screen-xxl) {
+      padding: 1rem .6rem;
+    }
+  }
+
   > *:not(:last-child) {
     padding: 1rem 0.6rem !important;
     @include breakpoint-max($bp-screen-sm) {
@@ -335,6 +343,10 @@
         display: none !important;
       }
     }
+  }
+
+  &.shared {
+    grid-template-columns: 1fr 1.2fr .8fr;
   }
 }
 
@@ -451,6 +463,23 @@
   p {
     @include breakpoint-max($bp-screen-sm) {
       display: none;
+    }
+  }
+
+  &.shared {
+    svg {
+      width: 3.5rem;
+      height: 3.5rem;
+      @include breakpoint-max($bp-screen-md) {
+        height: 3rem;
+        width: 3rem;
+      }
+      path {
+        stroke: $color-primary;
+      }
+    }
+    > button {
+      height: 5.5rem;
     }
   }
 }
@@ -598,6 +627,17 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  &.shared {
+    svg {
+      width: initial;
+      height: initial;
+      path {
+        stroke: $color-secondary;
+        fill: $color-secondary;
+      }
+    }
+  }
 }
 
 .loading {

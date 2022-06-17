@@ -97,8 +97,6 @@ const InstitutionDashboardItem = ({ data }) => {
       }
    }
 
-   //TODO: If possible make scroll to center when dropdown open.
-
    return (
       <div className={styles.wrapper} style={{ borderRadius: "15px 15px 15px 15px" }}>
          <div className={styles.credentialWrapper} style={{

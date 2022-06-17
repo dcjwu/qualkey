@@ -4,24 +4,38 @@ import axios from "axios"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import PropTypes from "prop-types"
 import { useMediaQuery } from "react-responsive"
 import { useRecoilState } from "recoil"
 
 import logo from "../../../assets/images/qk-logo-text.svg"
-import { burgerMenuActiveState, uploadModalState } from "../../../atoms"
+import { burgerMenuActiveState, queryShareState, uploadModalState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
 import { IconAcademicCapPerson, IconKey, IconLogout, IconMessage, IconPlus, IconPolicy, IconQuestion } from "../_Icon"
 import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
 import styles from "./Sidebar.module.scss"
 
-const Sidebar = ({ institution }) => {
-   
-   const { push } = useRouter()
+const Sidebar = ({ institution, employer }) => {
+
+   const { push, pathname, query } = useRouter()
+
+   const [shareState, setShareState] = useRecoilState(queryShareState)
+
+   useEffect(() => {
+      if (pathname === "/share/[uuid]") {
+         setShareState(query.uuid)
+         setShareState({
+            ...shareState,
+            uuid: query.uuid,
+            password: query.password
+         })
+      }
+   }, [])
 
    const isScreenLg = useMediaQuery({ query: "(max-width: 991px)" })
    const isScreenMd = useMediaQuery({ query: "(max-width: 767px" })
-   
+
    const [lgMarginLeft, setLgMarginLeft] = useState("")
    const [mdMarginLeft, setMdMarginLeft] = useState("")
 
@@ -29,7 +43,7 @@ const Sidebar = ({ institution }) => {
     * Logout handler.
     */
    const handleLogout = () => {
-      axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true } )
+      axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true })
          .then(response => {
             push(response.data)
          })
@@ -90,14 +104,24 @@ const Sidebar = ({ institution }) => {
                      { marginLeft: lgMarginLeft || mdMarginLeft, marginBottom: "1.7rem" }}/>
                   <hr className={styles.hr}/>
                   <div className={styles.menu}>
-                     <Link href="/dashboard">
-                        <a>
-                           <Text bold sidebar active={!openModal}>
-                              <IconAcademicCapPerson/>
-                              {institution ? <span>University Dashboard</span> : <span>Credentials Dashboard</span>}
-                           </Text>
-                        </a>
-                     </Link>
+                     {!employer
+                        ? <Link href="/dashboard">
+                           <a>
+                              <Text bold sidebar
+                                    active={pathname === "/dashboard" ? !openModal : pathname === "dashboard"}>
+                                 <IconAcademicCapPerson/>
+                                 {institution ? <span>University Dashboard</span> : <span>Credentials Dashboard</span>}
+                              </Text>
+                           </a>
+                        </Link> :
+                        <Link href={`/share/${shareState.uuid}?password=${shareState.password}`}>
+                           <a>
+                              <Text bold sidebar active={pathname === "/share/[uuid]"}>
+                                 <IconAcademicCapPerson/>
+                                 <span>Shared Credentials</span>
+                              </Text>
+                           </a>
+                        </Link>}
                      {institution && <Text bold sidebar active={openModal}
                                            onClick={() => setOpenModal(true)}>
                         <IconPlus/>
@@ -108,26 +132,46 @@ const Sidebar = ({ institution }) => {
                <div className={styles.bottom}>
                   <hr className={styles.hr}/>
                   <div className={styles.helpers}>
-                     <Text sidebar sidebarMin>
-                        <IconQuestion/>
-                        <span>Help & FAQ</span>
-                     </Text>
-                     <Text sidebar sidebarMin>
-                        <IconMessage/>
-                        <span>Contact Us</span>
-                     </Text>
-                     <Text sidebar sidebarMin>
-                        <IconKey/>
-                        <span>About Us</span>
-                     </Text>
-                     <Text sidebar sidebarMin>
-                        <IconPolicy/>
-                        <span>Privacy Policy</span>
-                     </Text>
-                     <Text sidebar sidebarMin onClick={handleLogout}>
+                     <Link href={!employer ? "/help" : "/share/help"}>
+                        <a>
+                           <Text sidebar sidebarMin active={pathname.includes("/help")}>
+                              <IconQuestion/>
+                              <span>Help & FAQ</span>
+                           </Text>
+                        </a>
+                     </Link>
+                     <Link href={!employer ? "/contact" : "/share/contact"}>
+                        <a>
+                           <Text sidebar sidebarMin
+                                 active={pathname.includes("/contact") || pathname.includes("/feedback")}>
+                              <IconMessage/>
+                              <span>Contact Us</span>
+                           </Text>
+                        </a>
+                     </Link>
+                     <Link href={!employer ? "/about" : "/share/about"}>
+                        <a>
+                           <Text sidebar sidebarMin active={pathname.includes("/about")}>
+                              <IconKey/>
+                              <span>About Us</span>
+                           </Text>
+                        </a>
+                     </Link>
+                     <Link href={!employer ? "/policy" : "/share/policy"}>
+                        <a>
+                           <Text sidebar sidebarMin active={pathname.includes("/policy")}>
+                              <IconPolicy/>
+                              <span>Privacy Policy</span>
+                           </Text>
+                        </a>
+                     </Link>
+                     {!employer ? <Text sidebar sidebarMin onClick={handleLogout}>
                         <IconLogout/>
                         <span>Log Out</span>
-                     </Text>
+                     </Text> : <Link href="/"><a><Text sidebar sidebarMin onClick={handleLogout}>
+                        <IconLogout/>
+                        <span>Log In</span>
+                     </Text></a></Link>}
                   </div>
                </div>
             </div>
@@ -137,3 +181,5 @@ const Sidebar = ({ institution }) => {
 }
 
 export default Sidebar
+
+Sidebar.propTypes = { institution: PropTypes.bool }

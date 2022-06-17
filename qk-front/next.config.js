@@ -8,7 +8,8 @@ const nextConfig = {
    publicRuntimeConfig: {
       // Will be available on both server and client
       apiUrl: process.env.NEXT_PUBLIC_PROCESSING_URL
-   }
+   },
+   images: { domains: ["portal.rgsl.edu.lv"] }
 }
 
 module.exports = nextConfig

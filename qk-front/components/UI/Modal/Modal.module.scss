@@ -76,7 +76,8 @@
         font-size: 1.45rem;
         margin-top: 1.5rem;
       }
-      > span{
+
+      > span {
         @include breakpoint-max($bp-screen-sm) {
           font-size: 1.45rem;
         }
@@ -85,13 +86,31 @@
 
     &.payment {
       padding: 4rem 6rem;
+
       > h2 {
         font-size: 3rem;
         margin-bottom: 1rem;
       }
+
       > p {
         margin-bottom: 5rem;
       }
+    }
+
+    &.share {
+      > p {
+        margin-top: -1rem;
+        text-align: center !important;
+
+        > span {
+          color: $color-primary;
+        }
+      }
+    }
+
+    &.password {
+      padding-top: 2rem;
+      margin-bottom: 2rem;
     }
   }
 
@@ -180,11 +199,15 @@
       transform: translateX(-50%);
       z-index: 999;
     }
+
     > p {
       @include breakpoint-max($bp-screen-sm) {
         font-size: 1.45rem;
       }
     }
+  }
+  &.shareReturn {
+    padding-bottom: 4rem;
   }
 }
 
@@ -203,6 +226,7 @@
     width: fit-content;
     margin: 0 auto;
   }
+
   span, input, p {
     @include breakpoint-max($bp-screen-md) {
       font-size: 1.45rem;
@@ -215,9 +239,11 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+
   svg {
     display: block !important;
   }
+
   input {
     @include breakpoint-max($bp-screen-md) {
       padding: 1rem 0;
@@ -274,6 +300,7 @@
     button {
       flex: 1 1 0px;
     }
+
     button:last-child {
       background-color: transparent;
       border: 1px solid $color-highlight;
@@ -339,35 +366,43 @@
   padding: 2rem 3.5rem 3rem 3.5rem;
   border: 6px solid $color-highlight;
   position: relative;
+
   svg {
     position: absolute;
     z-index: 9999;
+
     &:nth-child(1) {
       top: -6px;
       left: -6px;
     }
+
     &:nth-child(2) {
       top: -6px;
       right: -6px;
     }
+
     &:nth-child(3) {
       bottom: -6px;
       left: -6px;
     }
+
     &:nth-child(4) {
       bottom: -6px;
       right: -6px;
     }
   }
+
   .imageWrapper {
     margin: 0 auto;
     width: 45%;
   }
+
   .bottom {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     justify-content: center;
+
     > p {
       width: 55%;
       line-height: 1.6;
@@ -380,11 +415,13 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+
   .left {
     display: flex;
     flex-direction: column;
     gap: 2rem;
   }
+
   .right {
     margin-right: 5rem;
     display: flex;
@@ -405,9 +442,12 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4rem;
+
   > p:last-child {
     font-size: 3rem;
-  };
+  }
+;
+
   + form {
     > button:last-child {
       display: flex;
@@ -421,14 +461,17 @@
   > p {
     margin-bottom: .5rem;
   }
+
   > input {
     padding: 1.5rem 3rem;
     width: calc(100% - 3rem - 3rem - 2px);
     margin: 0 auto 2rem;
     border: 1px solid $color-primary-light;
+
     &:focus {
       border: 1px solid $color-highlight;
     }
+
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -436,7 +479,7 @@
     }
 
     &[type=number] {
-      -moz-appearance:textfield;
+      -moz-appearance: textfield;
     }
   }
 }
@@ -446,7 +489,278 @@
   align-items: center;
   justify-content: space-between;
   gap: 5rem;
+
   > div {
     flex: 1 1 50%;
+  }
+}
+
+.emailForm {
+  width: 80%;
+  margin: 0 auto 2rem auto;
+}
+
+.shareEmail {
+  padding: 1.5rem 2rem;
+  background-color: $color-additional-light;
+  border-radius: 15px;
+  border: 1px solid $color-additional-medium-dark;
+  margin-bottom: 2rem;
+
+  > input {
+    margin: 0;
+    font-size: 1.4rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $color-additional-medium-dark;
+    width: 100%;
+    font-family: $font-primary;
+  }
+}
+
+.message {
+  margin-top: 2rem;
+
+  input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $color-additional-medium-dark;
+    font-family: $font-primary;
+    padding: 0;
+    width: 20%;
+    margin: 0 0 2rem 1rem !important;
+  }
+
+  > p:nth-child(2) > span {
+    font-weight: $font-weight-md;
+    color: $color-primary;
+  }
+
+  > p:nth-child(3) {
+    margin: 2rem 0;
+  }
+
+  > p:last-child {
+    font-weight: $font-weight-md;
+    color: $color-highlight;
+    margin-top: 2rem;
+  }
+}
+
+.mockButton {
+  margin: 2rem 0;
+  background-color: $color-highlight;
+  width: fit-content;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+
+  > p {
+    color: $color-secondary;
+    font-weight: $font-weight-md;
+  }
+}
+
+.adjust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3.5rem;
+
+  > button {
+    width: fit-content;
+    background-color: $color-secondary;
+    border: 1px solid $color-highlight;
+    padding: 1rem 2rem;
+
+    > div p {
+      color: $color-highlight;
+      font-weight: $font-weight-md;
+    }
+
+    &:hover {
+      background-color: $color-secondary !important;
+    }
+  }
+
+  + button {
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+    padding: 1rem 2rem;
+    &:disabled {
+      > div p {
+        color: $color-secondary;
+      }
+    }
+
+    > div p {
+      font-weight: $font-weight-md;
+    }
+  }
+}
+
+.expires {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.expiresWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  > button {
+    background-color: $color-secondary;
+    border-radius: 12px;
+    border: 1px solid $color-highlight;
+    padding: 1rem;
+    font-family: $font-primary;
+  }
+}
+
+.showExpires {
+  display: none;
+  background-color: $color-secondary;
+  width: calc(100% - 2px);
+  border: 1px solid $color-highlight;
+  border-radius: 0 0 12px 12px;
+  border-top: none;
+  padding-top: 1rem;
+  position: absolute;
+  top: 3rem;
+  left: 0;
+
+  li {
+    padding: .5rem 1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-additional-light;
+    }
+
+    &:last-child {
+      border-radius: 0 0 12px 12px;
+    }
+  }
+}
+
+.wrapperAdjust {
+  margin-top: 4rem;
+  padding: 0 15rem 4rem 15rem;
+  > button:last-child {
+    margin: 3rem auto 0 auto;
+    width: fit-content;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    display: block;
+  }
+}
+
+.radio {
+  input[type="radio"] {
+    margin: 0;
+    overflow: initial;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+  }
+
+  p {
+    position: static !important;
+    transform: initial !important;
+  }
+}
+
+.radioItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.adjustData {
+  margin-top: 3rem;
+
+  &Item {
+    padding: 1.1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $color-additional-medium;
+
+    input[type="checkbox"] {
+      margin: 0;
+      overflow: initial;
+      padding: 0;
+      position: relative;
+      appearance: none;
+      outline: none;
+      width: 5rem;
+      height: 3rem;
+      background-color: $color-secondary;
+      border: 1px solid $color-additional-medium-dark;
+      border-radius: 50px;
+      transition-duration: 200ms;
+
+      &:after {
+        content: "";
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        width: 26px;
+        height: 26px;
+        background-color: transparent;
+        border-radius: 50%;
+        box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      &:checked {
+        border-color: $color-highlight;
+        box-shadow: inset 20px 0 0 0 $color-highlight;
+
+        &:after {
+          left: 2rem;
+          box-shadow: -2px 4px 3px rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+
+    p {
+      color: $color-highlight;
+      font-weight: $font-weight-md;
+    }
+  }
+}
+
+.shareReturn {
+  + button {
+    width: fit-content;
+    padding: 1rem 2rem;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+.sureToClose {
+  padding: 0 5rem;
+}
+
+.passwordForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  width: 100%;
+  margin: 0 auto;
+  input {
+    width: 100%;
+    padding: 1.2rem 1rem;
+    margin-bottom: 0;
+  }
+  button {
+    width: fit-content;
+    padding: 1rem 2rem;
   }
 }

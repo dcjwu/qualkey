@@ -1,10 +1,13 @@
 import { useState } from "react"
 
+import axios from "axios"
+import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
 import { showEditCredentialsState } from "../../../atoms"
-import { IconBackLeft, IconShare } from "../../UI/_Icon"
+import { processingUrl } from "../../../utils"
+import { IconBackLeft, IconLoading, IconShare } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
 import Text from "../../UI/Text/Text"
 import InstitutionEditCredentialsItem from "../InstitutionEditCredentialsItem/InstitutionEditCredentialsItem"
@@ -29,14 +32,18 @@ const mockDataMapping = new Map([
 
 const InstitutionEditCredentials = ({ data }) => {
 
+   const router = useRouter()
+
    const [savedData, setSavedData] = useState({})
    const [formData, setFormData] = useState({})
    const [, setActiveIndex] = useState(null)
    const [isInputValid, setIsInputValid] = useState([])
+   const [loading, setLoading] = useState(false)
+   const [error, setError] = useState("")
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
 
    /**
-    * Input value handling.
+    * Input value handling
     **/
    const handleFormChange = ({ target }, index) => {
       setActiveIndex(index)
@@ -82,13 +89,26 @@ const InstitutionEditCredentials = ({ data }) => {
    /**
     * Shows details in credential history.
     **/
-   const handleFormSubmit = () => {
+   const handleFormSubmit = async () => {
       const notValidFieldsLength = validateInputs()
       if (notValidFieldsLength === 0) {
-         console.log(JSON.stringify(savedData))
-         //TODO: Axios post request.
-         //TODO: setSuccess and setLoading to handle button correctly.
-         //TODO: Go back button imitation and reset all state to default value!
+         setLoading(true)
+         await axios.post(`${processingUrl}/credential/change`, {
+            uuid: data.uuid,
+            changedTo: Object.values(savedData),
+            fieldName: Object.keys(savedData)
+         }, { withCredentials: true })
+            .then(response => {
+               setLoading(false)
+               if (response.status === 200) {
+                  router.reload(window.location.pathname)
+               }
+            })
+            .catch(error => {
+               setLoading(false)
+               console.log(error)
+               setError(error.response.data.message)
+            })
       } else {
          console.log("WTF, please!")
       }
@@ -134,13 +154,30 @@ const InstitutionEditCredentials = ({ data }) => {
                })
             }
          </div>
-         <Button blue thin disabled={!Object.keys(savedData).length}
-                 onClick={handleFormSubmit}>
-            <div className={styles.buttonRow}>
-               <IconShare/>
-               <Text semiBold>Confirm Changes</Text>
-            </div>
-         </Button>
+         {
+            error
+               ? <Button error thin>
+                  <div className={styles.buttonRow}>
+                     <IconShare/>
+                     <Text semiBold>
+                        {error}
+                     </Text>
+                  </div>
+               </Button>
+               : <Button blue thin disabled={!Object.keys(savedData).length}
+                         onClick={handleFormSubmit}>
+                  <div className={styles.buttonRow}>
+                     {loading
+                        ? <IconLoading/>
+                        : <>
+                           <IconShare/>
+                           <Text semiBold>
+                              Confirm Changes
+                           </Text>
+                        </>}
+                  </div>
+               </Button>
+         }
       </div>
    )
 }

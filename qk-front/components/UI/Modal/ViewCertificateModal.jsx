@@ -3,8 +3,6 @@ import Image from "next/image"
 import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
-import uniLogo from "../../../assets/images/mockUniLogo.webp"
-// import uniLogo2 from "../../../assets/images/mockUniLogo2.png"
 import qkLogo from "../../../assets/images/qk-logo-text-blue.svg"
 import { viewCertificateModalState } from "../../../atoms"
 import { IconClose, IconEllipseBl, IconEllipseBr, IconEllipseTl, IconEllipseTr, IconShare } from "../_Icon"
@@ -15,12 +13,20 @@ import styles from "./Modal.module.scss"
 
 const ViewCertificateModal = ({ data }) => {
 
+   console.log(data, "certificate")
+
    const [, setViewCertificateModal] = useRecoilState(viewCertificateModalState)
 
+   /**
+    * Close modal
+    */
    const closeModal = () => {
       setViewCertificateModal(false)
    }
 
+   /**
+    * Close modal by clicking outside
+    */
    const closeModalOutside = event => {
       closeModal()
       event.stopPropagation()
@@ -39,8 +45,9 @@ const ViewCertificateModal = ({ data }) => {
                      <IconEllipseBl/>
                      <IconEllipseBr/>
                      <div className={styles.imageWrapper}>
-                        <Image alt="uni logo" objectFit="contain"
-                               src={uniLogo}/>
+                        <Image alt="uni logo" height={102} objectFit="contain"
+                               src={!data?.institution?.logoUrl ? data.institutionLogoUrl : data?.institution?.logoUrl}
+                               width={308}/>
                      </div>
                      <div className={styles.certificateInner}>
                         <div className={styles.left}>
@@ -63,7 +70,7 @@ const ViewCertificateModal = ({ data }) => {
                               <Text semiBold small>{data.authenticatedBy ? data.authenticatedBy : "-"}</Text>
                            </div>
                            <div>
-                              <Text grey small>Authenticated by:</Text>
+                              <Text grey small>Authenticated Title:</Text>
                               <Text semiBold small>{data.authenticatedTitle ? data.authenticatedTitle : "-"}</Text>
                            </div>
                            <div>
@@ -81,8 +88,10 @@ const ViewCertificateModal = ({ data }) => {
                            certificate issued by the Academic institution. </Text>
                      </div>
                   </div>
-                  <Text grey medium>Your QualKey certificate may look different to the paper or digital certificate issued by your
-                     Academic institution. QualKey adds a unique QR code so that third parties can securely and instantly
+                  <Text grey medium>Your QualKey certificate may look different to the paper or digital certificate
+                     issued by your
+                     Academic institution. QualKey adds a unique QR code so that third parties can securely and
+                     instantly
                      authenticate your qualification.</Text>
                   <Button blue thin>
                      <div className={styles.rowButton}>

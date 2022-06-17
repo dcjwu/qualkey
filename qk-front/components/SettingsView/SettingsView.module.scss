@@ -1,0 +1,214 @@
+@import "../../assets/styles/helpers/variables";
+@import "../../assets/styles/helpers/mixins";
+
+.wrapper {
+  background-color: $color-secondary;
+  border-radius: 12px;
+  box-shadow: 0 4px 34px rgb(0 0 0 / 15%);
+  display: grid;
+  grid-template-columns: 0.6fr 1fr;
+  height: 80%;
+  margin-top: 3.5rem;
+  width: 75%;
+
+  @include breakpoint-max($bp-screen-xl) {
+    width: 85%;
+  }
+
+  @include breakpoint-max($bp-screen-md) {
+    width: 100%;
+  }
+
+  @include breakpoint-max($bp-screen-sm) {
+    display: block;
+    position: relative;
+  }
+
+  @include breakpoint-max-vertical($bp-vertical-875) {
+    height: 44rem;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding-bottom: 4rem;
+  }
+}
+
+.left {
+  background-color: $color-additional-light;
+  border-radius: 12px;
+  padding: 4rem 0 3rem;
+
+  @include breakpoint-max($bp-screen-sm) {
+    background-color: $color-secondary;
+    padding: 2rem 0 0;
+  }
+}
+
+.topLeft {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+}
+
+.right {
+  padding: 4rem 3rem;
+  position: relative;
+
+  @include breakpoint-max($bp-screen-sm) {
+    padding: 2rem 1rem;
+    position: static;
+  }
+}
+
+.imageWrapperUser {
+  height: 7.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  width: 7.5rem;
+}
+
+.user {
+  border: 1px solid $color-additional-medium-dark;
+  border-radius: 50%;
+}
+
+.handlers {
+  ul {
+    @include breakpoint-max($bp-screen-sm) {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  li {
+    cursor: pointer;
+    padding: 1rem 0 1rem 3rem;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+    @include breakpoint-max($bp-screen-sm) {
+      align-items: center;
+      display: flex;
+      height: 4rem;
+      justify-content: center;
+      padding: 1rem 2rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    &:hover,
+    &.active {
+      background-color: $color-highlight;
+      color: $color-secondary;
+    }
+
+    > p {
+      @include breakpoint-max($bp-screen-sm) {
+        font-size: 1.45rem;
+      }
+
+      @include breakpoint-max($bp-screen-xs) {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}
+
+.security {
+  margin-top: 3rem;
+
+  > div {
+    margin-bottom: 1.5rem;
+  }
+
+  > button {
+    bottom: 4rem;
+    left: 50%;
+    padding: 1rem 2rem;
+    position: absolute;
+    transform: translateX(-50%);
+    width: fit-content;
+
+    @include breakpoint-max($bp-screen-sm) {
+      bottom: 2rem;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-875) {
+      bottom: 0;
+    }
+
+    &:disabled {
+      > div > p {
+        color: $color-secondary;
+      }
+    }
+  }
+}
+
+.form {
+  margin-top: 3rem;
+
+  input {
+    border-width: 1px;
+    margin-bottom: 1.5rem;
+    width: calc(100% - 3rem - 3rem);
+
+    @include breakpoint-max($bp-screen-sm) {
+      font-size: 1.45rem;
+      padding: 1rem 2rem;
+      width: calc(100% - 2rem - 2rem);
+    }
+
+    &::placeholder {
+      color: $color-primary;
+
+      @include breakpoint-max($bp-screen-sm) {
+        font-size: 1.45rem;
+      }
+    }
+
+    > &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:focus {
+      border-width: 1px;
+    }
+
+    &:disabled {
+      border: 1px solid $color-additional-medium;
+
+      &::placeholder {
+        color: $color-primary-light;
+      }
+    }
+  }
+
+  > button {
+    bottom: 4rem;
+    left: 50%;
+    padding: 1rem 2rem;
+    position: absolute;
+    transform: translateX(-50%);
+    width: fit-content;
+
+    @include breakpoint-max($bp-screen-sm) {
+      bottom: 2rem;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-875) {
+      bottom: -10rem;
+    }
+
+    &:disabled {
+      > div > p {
+        color: $color-secondary;
+      }
+    }
+  }
+}
+
+.buttonRow {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}

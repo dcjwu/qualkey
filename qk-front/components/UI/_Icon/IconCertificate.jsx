@@ -1,6 +1,7 @@
-export const IconCertificate = () => {
+export const IconCertificate = ({ ...otherProps }) => {
    return (
       <svg fill="none" height="24" viewBox="0 0 25 24"
+           {...otherProps}
            width="25" xmlns="http://www.w3.org/2000/svg">
          <path d="M9.5 9H15.5" stroke="white" strokeLinecap="round"
                strokeLinejoin="round" strokeWidth="1.5"/>

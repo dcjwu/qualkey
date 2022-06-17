@@ -40,3 +40,32 @@
     }
   }
 }
+
+.content__wrapper {
+  height: 65%;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-top: 6rem;
+
+  @include breakpoint-max-vertical($bp-vertical-875) {
+    height: 50%;
+  }
+
+  @include breakpoint-max-vertical($bp-vertical-570) {
+    height: 40%;
+  }
+
+  @include breakpoint-max-vertical($bp-vertical-400) {
+    padding-top: 2rem;
+  }
+
+  p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+
+    @include breakpoint-max($bp-screen-sm) {
+      font-size: 1.35rem;
+    }
+  }
+}

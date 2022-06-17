@@ -5,10 +5,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 
-import schoolLogo from "../../assets/images/mockUniLogo.webp"
-import { credentialsDetailsState, credentialsShowDetailsState } from "../../atoms"
+import { credentialsDetailsState, credentialsShowDetailsState, formShareState, showShareModalState } from "../../atoms"
 import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import StudentDetailsItem from "../DetailsItem/StudentDetailsItem"
 import StudentHistoryItem from "../HistoryItem/StudentHistoryItem"
@@ -53,12 +52,14 @@ const mockDataHistory = [
    }
 ]
 
-const StudentDashboardItem = ({ data }) => {
+const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentialsToShare }) => {
 
    const { pathname, push } = useRouter()
 
    const showDetails = useRecoilValue(credentialsShowDetailsState)
    const details = useRecoilValue(credentialsDetailsState)
+   const [, setShowShareModal] = useRecoilState(showShareModalState)
+   const [formShare, setFormShare] = useRecoilState(formShareState)
    const [showCredentialsHistory, setShowCredentialsHistory] = useState(false)
    const [loading, setLoading] = useState(false)
 
@@ -69,6 +70,10 @@ const StudentDashboardItem = ({ data }) => {
       setShowCredentialsHistory(prevState => !prevState)
    }
 
+   /**
+    *
+    * Stripe payment handler
+    */
    const handlePaymentRequest = async id => {
       setLoading(true)
       await axios.post(`${processingUrl}/payment`,
@@ -84,6 +89,29 @@ const StudentDashboardItem = ({ data }) => {
          })
    }
 
+   /**
+    * Input share handler
+    */
+   const handleInputShareChange = ({ target }) => {
+      if (target.checked) {
+         handleCredentialsToShare(data.uuid)
+      } else {
+         deleteCredentialToShare(data.uuid)
+      }
+   }
+
+   /**
+    * Shows share modal
+    */
+   const handleShowShareModal = () => {
+      setShowShareModal(true)
+      setFormShare([
+         ...formShare, data.uuid
+      ])
+   }
+
+   console.log(data)
+
    return (
       <div className={`${styles.wrapper} ${styles.student}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
          <div className={`${styles.credentialWrapper} ${styles.student}`} style={{
@@ -91,15 +119,16 @@ const StudentDashboardItem = ({ data }) => {
                ? "15px 15px 15px 15px"
                : "15px 15px 0 0"
          }}>
-            <Input checkboxSolo disabled={data.status !== "ACTIVATED"} type="checkbox"/>
+            <Input checkboxSolo disabled={data.status !== "ACTIVATED"} type="checkbox"
+                   onChange={handleInputShareChange}/>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
-                   objectFit="contain" src={schoolLogo} width={196}/>
+                   objectFit="contain" src={data.institution.logoUrl} width={196}/>
             <div className={`${styles.itemWrapper} ${data.status === "EXPIRED" ? styles.expired : ""}`}>
                <IconAcademicCap/>
                <Text semiBold>{data.qualificationName}</Text>
             </div>
             <div className={`${styles.status} ${loading ? styles.loading : ""} ${validateStatusStyles(data.status, true)} ${styles.student}`}
-                 onClick={data.status === "UPLOADED_TO_BLOCKCHAIN" ? () => handlePaymentRequest(data.uuid) : null}>
+               onClick={data.status === "UPLOADED_TO_BLOCKCHAIN" ? () => handlePaymentRequest(data.uuid) : null}>
                {data.status === "UPLOADED_TO_BLOCKCHAIN"
                   ? loading
                      ? <IconLoading/>
@@ -119,7 +148,7 @@ const StudentDashboardItem = ({ data }) => {
                   </>}
             </div>
             <div className={`${styles.actions} ${styles.student}`}>
-               <IconShare/>
+               <IconShare onClick={handleShowShareModal}/>
                <Link passHref href={`${pathname}/${data.uuid}`}>
                   <a>
                      <IconOpenViewPage/>

@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 
 import axios from "axios"
+import PropTypes from "prop-types"
 import { useRecoilValue, useResetRecoilState } from "recoil"
 
 import { confirmUploadModalState, currentFileState, filenameState, filePrefixState, uploadModalState, userActionWithdrawModalState } from "../../../atoms"
@@ -61,3 +62,9 @@ const InstitutionView = ({ children, institution, userData, notificationsData })
 }
 
 export default InstitutionView
+
+InstitutionView.propTypes = {
+   institution: PropTypes.bool,
+   userData: PropTypes.object,
+   notificationsData: PropTypes.array
+}

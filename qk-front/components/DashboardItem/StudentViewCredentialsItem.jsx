@@ -22,10 +22,16 @@ const StudentViewCredentialsItem = ({ data }) => {
    const [, setViewCertificateModal] = useRecoilState(viewCertificateModalState)
    const [loading, setLoading] = useState(false)
 
+   /**
+    * View certificate handler
+    */
    const handleViewCertificate = () => {
       setViewCertificateModal(true)
    }
 
+   /**
+    * Stripe payment handler
+    */
    const handlePaymentRequest = async id => {
       setLoading(true)
       await axios.post(`${processingUrl}/payment`,
@@ -47,7 +53,7 @@ const StudentViewCredentialsItem = ({ data }) => {
          <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.student}`}
               style={{ borderRadius: "15px 15px 15px 15px" }}>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
-                   objectFit="contain" src={schoolLogo} width={196}/>
+                   objectFit="contain" src={data.institution.logoUrl} width={196}/>
             <div className={styles.itemWrapper}>
                <IconAcademicCap/>
                <div className={styles}>

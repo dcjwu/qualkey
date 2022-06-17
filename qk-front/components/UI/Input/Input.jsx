@@ -20,6 +20,7 @@ const Input = ({
    pinError,
    loading,
    checkboxSolo,
+   hideEye,
    ...otherProps
 }) => {
    
@@ -35,10 +36,10 @@ const Input = ({
       <div className={styles.container}>
          <input {...otherProps} className={`${styles.input}
       ${error ? styles.error : ""}`}
-                name={passwordRepeat ? "passwordRepeat" : "password"}
+                name={passwordRepeat ? "passwordRepeat" : inputName ? inputName : "password"}
                 placeholder={placeholder}
                 type="password"/>
-         <IconHideInput onClick={hidePassword}/>
+         {!hideEye && <IconHideInput onClick={hidePassword}/>}
       </div>
    )
 
@@ -124,5 +125,6 @@ Input.propTypes = {
    setPinValues: PropTypes.func,
    pinError: PropTypes.bool,
    loading: PropTypes.bool,
-   checkboxSolo: PropTypes.bool
+   checkboxSolo: PropTypes.bool,
+   hideEye: PropTypes.bool
 }
