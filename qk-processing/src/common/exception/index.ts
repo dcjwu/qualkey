@@ -10,3 +10,6 @@ export * from "./credentials-share-expired-exception";
 export * from "./payment-not-found-exception";
 export * from "./credentials.change-request.already-created.exception";
 export * from "./credentials-data-manipulated-exception";
+export * from "./institution-not-found-exception";
+export * from "./credential-share-not-found-exception";
+export * from "./upload-not-found-exception";

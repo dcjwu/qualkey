@@ -20,6 +20,7 @@ import { AwsModule } from "./aws/aws.module";
 import { AwsSesService } from "./aws/aws.ses.service";
 import { CredentialsModule } from "./credentials/credentials.module";
 import { HederaModule } from "./hedera/hedera.module";
+import { InstitutionModule } from "./institution/institution.module";
 import { PaymentModule } from "./payment/payment.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
@@ -212,6 +213,7 @@ AdminJS.registerAdapter({ Database, Resource });
     ActionModule,
     SettingsModule,
     PaymentModule,
+    InstitutionModule,
   ],
 })
 export class AppModule {

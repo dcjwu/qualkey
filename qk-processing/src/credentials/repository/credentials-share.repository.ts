@@ -1,8 +1,7 @@
-import * as assert from "assert";
-
 import { Injectable } from "@nestjs/common";
 import { CredentialShare, User } from "@prisma/client";
 
+import { CredentialShareNotFoundException } from "../../common/exception";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
@@ -14,7 +13,7 @@ export class CredentialsShareRepository {
 
   public async getByUuid(uuid: string): Promise<CredentialShare> {
     const credentialShare = await this.prisma.credentialShare.findUnique({ where: { uuid: uuid } });
-    assert(null !== credentialShare, "credentialShare should not be null");
+    if (null === credentialShare) throw new CredentialShareNotFoundException(uuid);
 
     return credentialShare;
   }

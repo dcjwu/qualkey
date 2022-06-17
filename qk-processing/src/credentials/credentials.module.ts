@@ -3,8 +3,10 @@ import { Module } from "@nestjs/common";
 
 import { AwsModule } from "../aws/aws.module";
 import { HederaModule } from "../hedera/hedera.module";
+import { InstitutionModule } from "../institution/institution.module";
 import { PrismaModule } from "../prisma/prisma.module";
 import { PrismaService } from "../prisma/prisma.service";
+import { UploadModule } from "../upload/upload.module";
 import { UserModule } from "../user/user.module";
 import { CredentialsNotifyConsumer } from "./consumer/credentials-notify.consumer";
 import { CredentialsCreateConsumer } from "./consumer/credentials.create.consumer";
@@ -19,6 +21,7 @@ import { CredentialsChangeFactory } from "./factory/credentials-change.factory";
 import { CredentialsShareFactory } from "./factory/credentials-share.factory";
 import { CredentialsWithdrawalRequestFactory } from "./factory/credentials-withdrawal-request.factory";
 import { CredentialsFactory } from "./factory/credentials.factory";
+import { CredentialsPublicViewDtoFactory } from "./factory/credentials.public-view-dto.factory";
 import { CredentialsEventListener } from "./listener/credentials.event.listener";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
@@ -31,6 +34,8 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
   imports: [
     HederaModule,
     PrismaModule,
+    UploadModule,
+    InstitutionModule,
     UserModule,
     AwsModule,
     BullModule.registerQueue({
@@ -70,6 +75,7 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
     CredentialsStatusUpdateService,
     CredentialsChangeRequestRepository,
     CredentialsChangeRequestService,
+    CredentialsPublicViewDtoFactory,
   ],
 })
 export class CredentialsModule {}

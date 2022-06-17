@@ -9,6 +9,7 @@ import { UploadEventListener } from "./listener/upload.event.listener";
 import { CsvParser } from "./parser/csv.parser";
 import { FileParser } from "./parser/file-parser";
 import { XlsxParser } from "./parser/xlsx.parser";
+import { UploadRepository } from "./repository/upload.repository";
 import { UploadController } from "./upload.controller";
 import { UploadService } from "./upload.service";
 
@@ -33,7 +34,7 @@ import { UploadService } from "./upload.service";
     }),
   ],
   controllers: [UploadController],
-  exports: [UploadService],
+  exports: [UploadService, UploadRepository],
   providers: [
     UploadService,
     UploadEventListener,
@@ -43,6 +44,7 @@ import { UploadService } from "./upload.service";
     CsvParser,
     PrismaService,
     UserRepository,
+    UploadRepository,
   ],
 })
 export class UploadModule {}

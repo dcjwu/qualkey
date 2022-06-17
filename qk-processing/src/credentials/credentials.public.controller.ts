@@ -12,6 +12,7 @@ import { CredentialsShareExpiredException } from "../common/exception";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsService } from "./credentials.service";
 import { CredentialsPublicViewDto } from "./dto";
+import { CredentialsPublicViewDtoFactory } from "./factory/credentials.public-view-dto.factory";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
 import { CredentialsRepository } from "./repository/credentials.repository";
@@ -27,6 +28,7 @@ export class CredentialsPublicController {
       private credentialsShareService: CredentialsShareService,
       private credentialsShareRepository: CredentialsShareRepository,
       private credentialsChangeRepository: CredentialsChangeRepository,
+      private credentialsPublicViewDtoFactory: CredentialsPublicViewDtoFactory,
   ) {}
 
   /**
@@ -42,12 +44,12 @@ export class CredentialsPublicController {
     const credentialChange = await this.credentialsChangeRepository.getLastByCredentialsDid(did);
     const credentialsShare = await this.credentialsShareRepository.getByUuid(shareUuid);
 
-    if (! credentialsShare.credentialUuids.includes(credentials.uuid)) throw new ForbiddenException('These credentials were not shared');
+    if (! credentialsShare.credentialUuids.includes(credentials.uuid)) throw new ForbiddenException("These credentials were not shared");
 
     // if expired throw exception
     if (credentialsShare.expiresAt < new Date()) throw new CredentialsShareExpiredException();
 
-    return CredentialsPublicViewDto.fromCredentials(credentials, credentialChange, credentialsShare.sharedFields);
+    return await this.credentialsPublicViewDtoFactory.createFromCredentials(credentials, credentialChange, credentialsShare.sharedFields);
   }
 
   /**
@@ -74,7 +76,9 @@ export class CredentialsPublicController {
       const credentials = await this.credentialsRepository.getByUuid(credentialUuid);
       const credentialChange = await this.credentialsChangeRepository.getLastByCredentialsDid(credentials.did);
 
-      credentialsPublicViewDtoList.push(CredentialsPublicViewDto.fromCredentials(credentials, credentialChange, credentialsShare.sharedFields));
+      credentialsPublicViewDtoList.push(
+        await this.credentialsPublicViewDtoFactory.createFromCredentials(credentials, credentialChange, credentialsShare.sharedFields),
+      );
     }
 
     return credentialsPublicViewDtoList;
