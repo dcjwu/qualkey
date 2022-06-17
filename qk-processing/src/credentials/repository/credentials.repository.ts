@@ -91,6 +91,10 @@ export class CredentialsRepository {
           ],
           NOT: { status: { equals: CredentialStatus.DELETED } },
         },
+        include: {
+          credentialChanges: { orderBy: { changedAt: "desc" } },
+          institution: true,
+        },
       });
     } else {
       return await this.prismaService.credential.findMany({
@@ -99,6 +103,10 @@ export class CredentialsRepository {
             { studentUuid: user.uuid },
           ],
           NOT: { status: { equals: CredentialStatus.DELETED } },
+        },
+        include: {
+          credentialChanges: { orderBy: { changedAt: "desc" } },
+          institution: true,
         },
       });
     }
