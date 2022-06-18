@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import {Credential, CredentialStatus, User, UserStatus} from "@prisma/client";
+import { Credential, CredentialStatus, User, UserStatus } from "@prisma/client";
 
 import { CredentialsNotFoundException } from "../../common/exception";
 import { PrismaService } from "../../prisma/prisma.service";
@@ -41,7 +41,8 @@ export class CredentialsRepository {
           include: {
             representatives: {
               // TODO: make type for returning only name, signatureUrl, title
-              where: { status: UserStatus.ACTIVE } },
+              where: { status: UserStatus.ACTIVE }, 
+            },
           },
         },
       },
