@@ -178,7 +178,7 @@ enum CredentialChangeRequestStatus {
 
 model CredentialChangeRequest {
     uuid                        String @id @default(uuid())
-    credentialUuid              String @unique // TODO: remove unique constraint
+    credentialUuid              String @unique
     status                      CredentialChangeRequestStatus @default(PENDING)
     requestedBy                 String // User uuid
     confirmationRequestedFrom   String[] // array with user_uuids
@@ -222,7 +222,6 @@ enum UserActionType {
     REVIEW_CHANGE_REQUEST
 }
 
-// TODO: stop removing actions
 enum UserActionStatus {
     ACTIVE
     DECISION_MADE
@@ -249,7 +248,7 @@ enum CredentialsWithdrawalRequestStatus {
 
 model CredentialsWithdrawalRequest {
     uuid                        String @id @default(uuid())
-    credentialsUuid             String @unique // TODO: remove unique constraint
+    credentialsUuid             String @unique
     status                      CredentialsWithdrawalRequestStatus @default(PENDING)
     initiatedBy                 String // User uuid
     confirmationsRequestedFrom  String[] // array with user_uuids

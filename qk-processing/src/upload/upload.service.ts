@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { Upload, UploadStatus, User, UserStatus, UserActionType } from "@prisma/client";
+import {Upload, UploadStatus, User, UserStatus, UserActionType, UserActionStatus} from "@prisma/client";
 
 import { Decision } from "../action/enum/decision.enum";
 import { LogicException } from "../common/exception";
@@ -122,7 +122,10 @@ export class UploadService {
       });
     }
 
-    await this.prisma.userActions.delete({ where: { id: actionId } });
+    await this.prisma.userActions.update({
+      data: { status: UserActionStatus.DECISION_MADE },
+      where: { id: actionId },
+    });
 
     // if all approved emit UploadApprovedEvent
     if (confirmedBy.length === requestedFrom.length) {
@@ -146,8 +149,9 @@ export class UploadService {
   private async rejectUpload(uuid: string, rejectedBy: User): Promise<void> {
     const upload = await this.getCheckedUpload(uuid, rejectedBy);
 
-    // Delete all userActions for this upload and delete them
-    await this.prisma.userActions.deleteMany({
+    // Update all userActions for this upload and change status to DECISION_MADE
+    await this.prisma.userActions.updateMany({
+      data: { status: UserActionStatus.DECISION_MADE },
       where: {
         type: UserActionType.REVIEW_UPLOAD,
         subjectUuid: uuid,

@@ -8,7 +8,14 @@ import {
   PreconditionFailedException,
 } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { Credential, CredentialStatus, CredentialsWithdrawalRequest, User, UserActionType } from "@prisma/client";
+import {
+  Credential,
+  CredentialStatus,
+  CredentialsWithdrawalRequest,
+  User,
+  UserActionStatus,
+  UserActionType
+} from "@prisma/client";
 import { Queue } from "bull";
 
 import { Decision } from "../action/enum/decision.enum";
@@ -134,8 +141,10 @@ export class CredentialsService {
         where: { uuid: uuid },
       });
     }
-
-    await this.prisma.userActions.delete({ where: { id: actionId } });
+    await this.prisma.userActions.update({
+      data: { status: UserActionStatus.DECISION_MADE },
+      where: { id: actionId },
+    });
 
     // if all approved emit CredentialsWithdrawalApprovedEvent
     if (confirmedBy.length === requestedFrom.length) {
@@ -158,12 +167,12 @@ export class CredentialsService {
   private async rejectWithdrawal(uuid: string, rejectedBy: User): Promise<void> {
     const credentialsWithdrawalRequest = await this.getCheckedCredentialsWithdrawalRequest(uuid, rejectedBy);
 
-    // TODO: Stop deleting actions
-    // Delete all userActions for this withdrawal request and delete them
-    await this.prisma.userActions.deleteMany({
+    // Update all userActions for this withdrawal request change status to DECISION_MADE
+    await this.prisma.userActions.updateMany({
+      data: { status: UserActionStatus.DECISION_MADE },
       where: {
-        type: UserActionType.REVIEW_WITHDRAWAL,
         subjectUuid: uuid,
+        type: UserActionType.REVIEW_WITHDRAWAL,
       },
     });
 
