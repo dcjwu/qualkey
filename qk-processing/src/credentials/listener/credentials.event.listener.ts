@@ -45,11 +45,12 @@ export class CredentialsEventListener {
         });
       });
     }
-    // TODO: Stop removing withdrawal requests
     // Remove Withdrawal Request
     await this.prisma.credentialsWithdrawalRequest.delete({ where: { credentialsUuid: event.credentials.uuid } });
     Logger.debug(`WithdrawalRequest for credentials ${event.credentials.uuid} was removed`);
-    // TODO: Notify student?
+    // Notify student
+    const student = await this.userRepository.getByUuid(event.credentials.studentUuid);
+    await this.credentialsNotifyQueue.add("credentials-withdrawn-student", { recipientEmail: student.email });
   }
 
     @OnEvent("credentials.withdrawal.rejected")

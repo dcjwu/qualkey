@@ -130,7 +130,7 @@ export class UploadEventListener {
     }
   }
 
-  async removeUploadFromDB(uuid: string): Promise<void> {
+  private async removeUploadFromDB(uuid: string): Promise<void> {
     this.prisma.upload.delete({ where: { uuid: uuid } });
     Logger.debug(`upload REMOVED ${uuid}`);
   }

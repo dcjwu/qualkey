@@ -125,4 +125,17 @@ export class CredentialsNotifyConsumer {
     }
     await job.moveToCompleted();
   }
+
+  @Process("credentials-withdrawn-student")
+  async handleCredentialsWithdrawnStudent(job: Job): Promise<void> {
+    Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
+    Logger.debug(`Sending notification to ${job.data.recipientEmail}`);
+    try {
+      await this.ses.sendCredentialsWithdrawnStudent(job.data.recipientEmail);
+    } catch (err) {
+      Logger.error(err, err.stack);
+      return;
+    }
+    await job.moveToCompleted();
+  }
 }
