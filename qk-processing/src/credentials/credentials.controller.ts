@@ -27,7 +27,12 @@ import { CredentialsChangeService } from "./credentials-change.service";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsChangeRequestService } from "./credentials.change-request.service";
 import { CredentialsService } from "./credentials.service";
-import { CredentialsWithdrawalRequestDto, CredentialsShareRequestDto, CredentialsGetRequestDto } from "./dto";
+import {
+  CredentialsWithdrawalRequestDto,
+  CredentialsShareRequestDto,
+  CredentialsGetRequestDto,
+  CredentialsChangeGetRequestDto,
+} from "./dto";
 import { CredentialsRequestChangeDto } from "./dto/credentials.request-change.dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
@@ -162,9 +167,8 @@ export class CredentialsController {
    */
   @HttpCode(HttpStatus.OK)
   @Get("change")
-  async getCredentialChange(@GetUser() user: User, @Query("uuid") uuid: string): Promise<boolean> {
-    // TODO: implement
-    return await this.credentialsChangeRepository.hasHash(uuid);
+  async getCredentialChange(@GetUser() user: User, @Query() dto: CredentialsChangeGetRequestDto): Promise<CredentialChange> {
+    return await this.credentialsChangeRepository.getById(dto.id);
   }
 
   /**
