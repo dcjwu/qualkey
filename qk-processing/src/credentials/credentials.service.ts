@@ -14,7 +14,7 @@ import {
   CredentialsWithdrawalRequest,
   User,
   UserActionStatus,
-  UserActionType
+  UserActionType,
 } from "@prisma/client";
 import { Queue } from "bull";
 

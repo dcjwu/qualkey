@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import {Upload, UploadStatus, User, UserStatus, UserActionType, UserActionStatus} from "@prisma/client";
+import { Upload, UploadStatus, User, UserStatus, UserActionType, UserActionStatus } from "@prisma/client";
 
 import { Decision } from "../action/enum/decision.enum";
 import { LogicException } from "../common/exception";

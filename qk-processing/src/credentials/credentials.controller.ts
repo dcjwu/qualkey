@@ -27,7 +27,7 @@ import { CredentialsChangeService } from "./credentials-change.service";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsChangeRequestService } from "./credentials.change-request.service";
 import { CredentialsService } from "./credentials.service";
-import { CredentialsWithdrawalRequestDto, CredentialsShareRequestDto } from "./dto";
+import { CredentialsWithdrawalRequestDto, CredentialsShareRequestDto, CredentialsGetRequestDto } from "./dto";
 import { CredentialsRequestChangeDto } from "./dto/credentials.request-change.dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
 import { CredentialsShareRepository } from "./repository/credentials-share.repository";
@@ -55,11 +55,10 @@ export class CredentialsController {
     @Get()
   async getCredentials(
       @GetUser() user: User,
-      @Query("uuid") uuid: string,
-      @Query("filter") filter: string,
+      @Query() dto: CredentialsGetRequestDto,
   ): Promise<Credential[]> {
-    if (uuid && uuid !== "") {
-      const credentials = await this.credentialsRepository.getByUuidWithChanges(uuid);
+    if (dto.uuid) {
+      const credentials = await this.credentialsRepository.getByUuidWithChanges(dto.uuid);
 
       if (user.role === Role.STUDENT && user.uuid !== credentials.studentUuid) {
         throw new ForbiddenException();
@@ -71,10 +70,10 @@ export class CredentialsController {
       return [credentials];
     }
     if (user.role === Role.STUDENT) {
-      return this.credentialsRepository.getAllForStudent(user, filter);
+      return this.credentialsRepository.getAllForStudent(user, dto.filter);
     }
     if (user.role === Role.INSTITUTION_REPRESENTATIVE) {
-      return this.credentialsRepository.getAllForInstitution(user, filter);
+      return this.credentialsRepository.getAllForInstitution(user, dto.offset, dto.limit, dto.filter);
     }
 
     throw new ForbiddenException();
