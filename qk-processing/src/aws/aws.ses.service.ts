@@ -63,6 +63,11 @@ export class AwsSesService {
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-withdrawn-student");
     }
 
+    public async sendCredentialsUploaded(recipientEmail: string): Promise<void> {
+      // TODO: add template
+      await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-uploaded");
+    }
+
     public async sendCredentialsChangedRepresentative(recipientEmail: string): Promise<void> {
       // TODO: add template
       await this.sendEmailTemplate([recipientEmail], this.NO_REPLY_EMAIL, "credentials-changed-representative");

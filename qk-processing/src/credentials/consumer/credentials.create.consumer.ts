@@ -1,7 +1,7 @@
-import { OnQueueActive, Process, Processor } from "@nestjs/bull";
+import { InjectQueue, OnQueueActive, Process, Processor } from "@nestjs/bull";
 import { Logger } from "@nestjs/common";
 import { User } from "@prisma/client";
-import { Job } from "bull";
+import { Job, Queue } from "bull";
 
 import { HederaService } from "../../hedera/hedera.service";
 import { UserFactory } from "../../user/user.factory";
@@ -16,6 +16,7 @@ import { CredentialsChangeRepository } from "../repository/credentials-change.re
 @Processor("credentials-create")
 export class CredentialsCreateConsumer {
   constructor(
+    @InjectQueue("credentials-notify") private credentialsNotifyQueue: Queue,
     private hederaService: HederaService,
     private credentialsService: CredentialsService,
     private userFactory: UserFactory,
@@ -69,7 +70,8 @@ export class CredentialsCreateConsumer {
 
       // change status to UPLOADED_TO_BLOCKCHAIN
       await this.credentialsService.toUploadedToBlockchain(credentials);
-
+      // Notify student
+      await this.credentialsNotifyQueue.add("credentials-uploaded", { recipientEmail: user.email });
     } catch (err) {
       Logger.error(err, err.stack);
     }
