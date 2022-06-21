@@ -33,7 +33,9 @@ AdminJS.registerAdapter({ Database, Resource });
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: [".env.local", ".env"] }),
-    EventEmitterModule.forRoot(),
+    EventEmitterModule.forRoot({
+      maxListeners: 100,
+    }),
     AuthModule,
     UserModule,
     PrismaModule,
