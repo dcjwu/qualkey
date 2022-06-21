@@ -74,12 +74,15 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (!user) throw new UnprocessableEntityException("Invalid credentials");
 
+    const isFirstLogin = null === user.lastLoginAt;
+
     const pwMatches = await bcrypt.compareSync(dto.password, user.password);
     if (!pwMatches) throw new UnprocessableEntityException("Invalid credentials");
 
     const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
     const jwtToken = await this.signToken(user.uuid, user.email, user.role, dto.rememberMe);
     response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
+    response.cookie("first_login", isFirstLogin, { httpOnly: false, domain: frontendDomain });
 
     await this.prisma.user.update({ data: { lastLoginAt: new Date() }, where: { email: user.email } });
 
@@ -93,9 +96,14 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (!user) throw new UserNotFoundException(dto.email);
 
+    const isFirstLogin = null === user.lastLoginAt;
+
     const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
     const jwtToken = await this.signToken(user.uuid, user.email, user.role);
     response.cookie("jwt", jwtToken, { httpOnly: true, domain: frontendDomain });
+    response.cookie("first_login", isFirstLogin, { httpOnly: false, domain: frontendDomain });
+
+    await this.prisma.user.update({ data: { lastLoginAt: new Date() }, where: { email: user.email } });
 
     return this.routeProvider.onLogin(user);
   }
