@@ -69,6 +69,8 @@ const ShareModal = () => {
    const [dataToShare, setDataToShare] = useState([])
    const [error, setError] = useState("")
 
+   console.log(formData)
+
    /**
     * Ask if modal should be closed
     */
@@ -181,7 +183,7 @@ const ShareModal = () => {
             if (error.response.data.message.includes("Values should be valid emails")) {
                setError("Invalid email format")
             } else {
-               setError(error.response.statusText)
+               setError(error.response.data.message)
             }
          })
    }

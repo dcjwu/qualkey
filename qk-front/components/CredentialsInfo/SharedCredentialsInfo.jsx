@@ -6,6 +6,9 @@ import Text from "../UI/Text/Text"
 import styles from "./CredentialsInfo.module.scss"
 
 const SharedCredentialsInfo = ({ data }) => {
+
+   console.log(data, "SharedCredentialsInfo")
+
    return (
       <>
          <div className={`${styles.wrapper} ${styles.shared}`}>
@@ -22,7 +25,7 @@ const SharedCredentialsInfo = ({ data }) => {
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Date authenticated:</Text>
-                        <Text semiBold>{moment.utc(data.authenticatedDate).format("DD/MM/YYYY")}</Text>
+                        <Text semiBold>{data.authenticatedAt ? moment.utc(data.authenticatedAt).format("DD/MM/YYYY") : null}</Text>
                      </div>
                   </div>
                   <div className={styles.infoBlock}>
@@ -58,15 +61,15 @@ const SharedCredentialsInfo = ({ data }) => {
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Study start date:</Text>
-                        <Text semiBold>{moment.utc(data.studyStartedAt).format("DD/MM/YYYY")}</Text>
+                        <Text semiBold>{data.studyStartedAt ? moment.utc(data.studyStartedAt).format("DD/MM/YYYY") : null}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Study end date:</Text>
-                        <Text semiBold>{moment.utc(data.studyEndedAt).format("DD/MM/YYYY")}</Text>
+                        <Text semiBold>{data.studyEndedAt ? moment.utc(data.studyEndedAt).format("DD/MM/YYYY") : null}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Graduation date:</Text>
-                        <Text semiBold>{moment.utc(data.graduatedAt).format("DD/MM/YYYY")}</Text>
+                        <Text semiBold>{data.graduatedAt ? moment.utc(data.graduatedAt).format("DD/MM/YYYY") : null}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Language of study:</Text>
@@ -76,7 +79,7 @@ const SharedCredentialsInfo = ({ data }) => {
                   <div className={styles.infoBlock}>
                      <div className={styles.infoItem}>
                         <Text grey>Credentials expiry date:</Text>
-                        <Text semiBold>{moment.utc(data.expiresAt).format("DD/MM/YYYY")}</Text>
+                        <Text semiBold>{data.expiresAt ? moment.utc(data.expiresAt).format("DD/MM/YYYY") : null}</Text>
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Other information:</Text>

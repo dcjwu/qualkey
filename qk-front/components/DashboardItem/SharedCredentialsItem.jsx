@@ -5,7 +5,6 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useRecoilState } from "recoil"
 
-import schoolLogo from "../../assets/images/mockUniLogo.webp"
 import { viewCertificateModalState } from "../../atoms"
 import { processingUrl } from "../../utils"
 import SharedCredentialsInfo from "../CredentialsInfo/SharedCredentialsInfo"
