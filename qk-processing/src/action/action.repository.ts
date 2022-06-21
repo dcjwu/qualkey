@@ -23,7 +23,7 @@ export class ActionRepository {
     return await this.prisma.userActions.findMany({
       where: {
         userUuid: user.uuid,
-        status: UserActionStatus.DECISION_MADE,
+        status: UserActionStatus.ACTIVE,
       },
       orderBy: { id: "desc" },
     });

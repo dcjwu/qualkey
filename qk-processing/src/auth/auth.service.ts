@@ -145,6 +145,7 @@ export class AuthService {
      * Reset user password
      */
   public async resetPassword(dto: ResetPasswordRequestDto, email: string, response: Response): Promise<void> {
+    const frontendDomain = this.config.get<string>("FRONTEND_DOMAIN");
     const user = await this.prisma.user.findUnique({ where: { email: email } });
     if (! user) throw new UserNotFoundException(email);
 

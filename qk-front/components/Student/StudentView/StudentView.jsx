@@ -1,7 +1,12 @@
+import { useEffect, useState } from "react"
+
+import { getCookie } from "cookies-next"
 import PropTypes from "prop-types"
 import { useRecoilValue } from "recoil"
 
+
 import { showShareModalState } from "../../../atoms"
+import ChangePasswordModal from "../../UI/Modal/ChangePasswordModal"
 import ShareModal from "../../UI/Modal/ShareModal"
 import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
@@ -9,6 +14,13 @@ import Topbar from "../../UI/Topbar/Topbar"
 const StudentView = ({ children, userData, notificationsData }) => {
 
    const showShareModal = useRecoilValue(showShareModalState)
+   const [changePasswordModal, setChangePasswordModal] = useState(false)
+
+   useEffect(() => {
+      if (getCookie("first_login") === true) {
+         setChangePasswordModal(true)
+      }
+   }, [])
 
    return (
       <>
@@ -20,6 +32,7 @@ const StudentView = ({ children, userData, notificationsData }) => {
             </div>
          </div>
          {showShareModal && <ShareModal/>}
+         {changePasswordModal && <ChangePasswordModal/>}
       </>
    )
 }

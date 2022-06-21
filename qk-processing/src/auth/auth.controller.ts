@@ -114,7 +114,7 @@ export class AuthController {
   async resetPassword(
       @GetUser() user: User,
       @Body() dto: ResetPasswordRequestDto,
-      @Res({ passthrough: true }) response: Response
+      @Res({ passthrough: true }) response: Response,
   ): Promise<void> {
     await this.authService.resetPassword(dto, user.email, response);
   }
