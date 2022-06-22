@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 
+import axios from "axios"
 import { useRouter } from "next/router"
-import PropTypes from "prop-types"
+import InfiniteScroll from "react-infinite-scroll-component"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
 import { formShareState, showShareModalState } from "../../../atoms"
+import { processingUrl } from "../../../utils"
 import StudentDashboardItem from "../../DashboardItem/StudentDashboardItem"
 import { IconShare } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
@@ -15,10 +17,21 @@ import styles from "./StudentDashboard.module.scss"
 const StudentDashboard = ({ data }) => {
 
    const router = useRouter()
+   const [credentials, setCredentials] = useState(data)
    const resetFormShare = useResetRecoilState(formShareState)
    const [searchValue, setSearchValue] = useState("")
    const [formShare, setFormShare] = useRecoilState(formShareState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
+
+   /**
+    * Get data from server
+    */
+   const getMoreCredentials = async () => {
+      axios.get(`${processingUrl}/credential?offset=${credentials.length}&limit=10`, { withCredentials: true })
+         .then(response => {
+            setCredentials(prevState => [...prevState, ...response.data])
+         })
+   }
 
    /**
     * Input value handling.
@@ -88,15 +101,16 @@ const StudentDashboard = ({ data }) => {
             </Button>
          </div>
          <div className={styles.contentWrapper}>
-            {data.map(data => (
-               <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
-                                     handleCredentialsToShare={handleCredentialsToShare}/>
-            ))}
+            <InfiniteScroll dataLength={credentials.length} hasMore={true} loader={"Loading"}
+                            next={getMoreCredentials}>
+               {credentials ? credentials.map(data => (
+                  <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
+                                        handleCredentialsToShare={handleCredentialsToShare}/>
+               )) : null}
+            </InfiniteScroll>
          </div>
       </>
    )
 }
 
 export default StudentDashboard
-
-StudentDashboard.propTypes = { data: PropTypes.array }

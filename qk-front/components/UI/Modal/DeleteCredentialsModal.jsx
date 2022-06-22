@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil"
 
 import { deleteCredentialsModalState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
-import { IconClose, IconDownload, IconLoading, IconTrash } from "../_Icon"
+import { IconClose, IconLoading, IconTrash } from "../_Icon"
 import Button from "../Button/Button"
 import Heading from "../Heading/Heading"
 import Text from "../Text/Text"
