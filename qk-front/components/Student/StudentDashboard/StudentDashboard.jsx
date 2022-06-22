@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import axios from "axios"
 import { useRouter } from "next/router"
@@ -16,8 +16,11 @@ import styles from "./StudentDashboard.module.scss"
 
 const StudentDashboard = ({ data }) => {
 
+   const ref = useRef()
+
    const router = useRouter()
    const [credentials, setCredentials] = useState(data)
+   const [hasMore, setHasMore] = useState(true)
    const resetFormShare = useResetRecoilState(formShareState)
    const [searchValue, setSearchValue] = useState("")
    const [formShare, setFormShare] = useRecoilState(formShareState)
@@ -29,6 +32,11 @@ const StudentDashboard = ({ data }) => {
    const getMoreCredentials = async () => {
       axios.get(`${processingUrl}/credential?offset=${credentials.length}&limit=10`, { withCredentials: true })
          .then(response => {
+            console.log(response.data.length)
+            console.log(response, "RESPONSE")
+            if (!response.data.length) {
+               setHasMore(false)
+            }
             setCredentials(prevState => [...prevState, ...response.data])
          })
    }
@@ -100,15 +108,24 @@ const StudentDashboard = ({ data }) => {
                </div>
             </Button>
          </div>
-         <div className={styles.contentWrapper}>
-            <InfiniteScroll dataLength={credentials.length} hasMore={true} loader={"Loading"}
-                            next={getMoreCredentials}>
-               {credentials ? credentials.map(data => (
+         {credentials.length > 6
+            ? <div ref={ref} className={styles.contentWrapper}>
+               <InfiniteScroll dataLength={credentials.length} endMessage={<Text grey small>No more credentials</Text>}
+                               hasMore={hasMore}
+                               loader={<Text grey small>No more credentials...</Text>}
+                               next={getMoreCredentials} scrollableTarget={ref}>
+                  {credentials ? credentials.map(data => (
+                     <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
+                                           handleCredentialsToShare={handleCredentialsToShare}/>
+                  )) : null}
+               </InfiniteScroll>
+            </div>
+            : <div className={styles.contentWrapper}>
+               {credentials.map(data => (
                   <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
                                         handleCredentialsToShare={handleCredentialsToShare}/>
-               )) : null}
-            </InfiniteScroll>
-         </div>
+               ))}
+            </div>}
       </>
    )
 }

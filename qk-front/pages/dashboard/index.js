@@ -1,5 +1,3 @@
-import { useState } from "react"
-
 import axios from "axios"
 import getConfig from "next/config"
 import Head from "next/head"
@@ -28,7 +26,7 @@ export default function Dashboard({ data, allCredentialsData, userData, notifica
             <title>University Dashboard | QualKey</title>
          </Head>
          <InstitutionView credentials institution notificationsData={notificationsData}
-userData={userData}>
+                          userData={userData}>
             <Heading blue h1 xxl>University Dashboard</Heading>
             <Text large>browse all credential records</Text>
             <InstitutionDashboard allCredentialsData={allCredentialsData} data={data}/>

@@ -64,15 +64,21 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
                   semiBold>Showing <span>{credentials && credentials.length}</span> from <span>{allCredentialsData ? allCredentialsData.length : credentials?.length}</span> results</Text>
             <Input type={"search"} onChange={handleInputChange} onKeyDown={handleSubmitSearch}/>
          </div>
-         <div ref={ref} className={styles.contentWrapper}>
-            <InfiniteScroll dataLength={credentials.length} endMessage={<Text grey small>No more credentials</Text>} hasMore={hasMore}
-                            loader={<Text grey small>No more credentials...</Text>}
-                            next={getMoreCredentials} scrollableTarget={ref}>
+         {credentials.length > 6
+            ? <div ref={ref} className={styles.contentWrapper}>
+               <InfiniteScroll dataLength={credentials.length} endMessage={<Text grey small>No more credentials</Text>} hasMore={hasMore}
+                               loader={<Text grey small>No more credentials...</Text>}
+                               next={getMoreCredentials} scrollableTarget={ref}>
+                  {credentials ? credentials.map(data => (
+                     <InstitutionDashboardItem key={data.uuid} data={data}/>
+                  )) : null}
+               </InfiniteScroll>
+            </div>
+            : <div className={styles.contentWrapper}>
                {credentials ? credentials.map(data => (
                   <InstitutionDashboardItem key={data.uuid} data={data}/>
                )) : null}
-            </InfiniteScroll>
-         </div>
+            </div>}
       </>
    )
 }
