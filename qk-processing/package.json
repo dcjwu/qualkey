@@ -27,6 +27,7 @@
     "@adminjs/express": "4.1.0",
     "@adminjs/nestjs": "4.0.1",
     "@adminjs/prisma": "^1.0.3",
+    "@adminjs/upload": "^2.0.2",
     "@hashgraph/did-sdk-js": "^0.1.1",
     "@hashgraph/sdk": "^2.14.2",
     "@liaoliaots/nestjs-redis": "^8.1.1",

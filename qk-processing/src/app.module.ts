@@ -1,5 +1,6 @@
 import { AdminModule, AdminModuleOptions } from "@adminjs/nestjs";
 import { Database, Resource } from "@adminjs/prisma";
+import uploadFeature from "@adminjs/upload";
 import { RedisModule } from "@liaoliaots/nestjs-redis";
 import { BullModule } from "@nestjs/bull";
 import { Logger, Module } from "@nestjs/common";
@@ -40,8 +41,8 @@ AdminJS.registerAdapter({ Database, Resource });
     CredentialsModule,
     AdminModule.createAdminAsync({
       imports: [PrismaModule, AwsModule],
-      inject: [PrismaService, AwsSesService],
-      useFactory: async (prisma: PrismaService, ses: AwsSesService): Promise<AdminModuleOptions> => {
+      inject: [PrismaService, AwsSesService, ConfigService],
+      useFactory: async (prisma: PrismaService, ses: AwsSesService, config: ConfigService): Promise<AdminModuleOptions> => {
         const dmmf = ((prisma as any)._dmmf as DMMFClass);
         return {
           adminJsOptions: {
@@ -50,7 +51,7 @@ AdminJS.registerAdapter({ Database, Resource });
               {
                 resource: { model: dmmf.modelMap.User, client: prisma },
                 options: {
-                  editProperties: ["email", "role", "firstName", "lastName", "institution", "title", "signatureUrl"],
+                  editProperties: ["email", "role", "firstName", "lastName", "institution", "title", "signature"],
                   actions: {
                     new: {
                       isAccessible: ({ currentAdmin }): boolean => {
@@ -70,6 +71,26 @@ AdminJS.registerAdapter({ Database, Resource });
                   },
                 },
                 features: [
+                  uploadFeature({
+                    provider: {
+                      aws: {
+                        region: config.get("AWS_REGION"),
+                        bucket: config.get("AWS_S3_BUCKET_PUBLIC"),
+                        accessKeyId: config.get("AWS_ACCESS_KEY_ID"),
+                        secretAccessKey: config.get("AWS_SECRET_ACCESS_KEY"),
+                        expires: 0,
+                      },
+                    },
+                    properties: {
+                      file: "signature",
+                      filename: "signatureFile",
+                      filePath: "signatureFilePath",
+                      filesToDelete: "signatureFileToDelete",
+                      key: "signatureUrl", // to this db field feature will safe S3 key
+                      mimeType: "signatureFileMime", // this property is important because allows to have previews
+                    },
+                    validation: { mimeTypes: ["image/jpeg", "image/jpg", "image/png", "image/svg"] },
+                  }),
                   buildFeature({
                     actions: {
                       new: {
@@ -99,7 +120,50 @@ AdminJS.registerAdapter({ Database, Resource });
               },
               {
                 resource: { model: dmmf.modelMap.Institution, client: prisma },
+                features: [
+                  uploadFeature({
+                    provider: {
+                      aws: {
+                        region: config.get("AWS_REGION"),
+                        bucket: config.get("AWS_S3_BUCKET_PUBLIC"),
+                        accessKeyId: config.get("AWS_ACCESS_KEY_ID"),
+                        secretAccessKey: config.get("AWS_SECRET_ACCESS_KEY"),
+                        expires: 0,
+                      },
+                    },
+                    properties: {
+                      file: "logo",
+                      filename: "logoFile",
+                      filePath: "logoFilePath",
+                      filesToDelete: "logoFileToDelete",
+                      key: "logoUrl", // to this db field feature will safe S3 key
+                      mimeType: "logoFileMime", // this property is important because allows to have previews
+                    },
+                    validation: { mimeTypes: ["image/jpeg", "image/jpg", "image/png", "image/svg"] },
+                  }),
+                  uploadFeature({
+                    provider: {
+                      aws: {
+                        region: config.get("AWS_REGION"),
+                        bucket: config.get("AWS_S3_BUCKET_PUBLIC"),
+                        accessKeyId: config.get("AWS_ACCESS_KEY_ID"),
+                        secretAccessKey: config.get("AWS_SECRET_ACCESS_KEY"),
+                        expires: 0,
+                      },
+                    },
+                    properties: {
+                      file: "stamp",
+                      filename: "stampFile",
+                      filePath: "stampFilePath",
+                      filesToDelete: "stampFileToDelete",
+                      key: "stampUrl", // to this db field feature will safe S3 key
+                      mimeType: "stampFileMime", // this property is important because allows to have previews
+                    },
+                    validation: { mimeTypes: ["image/jpeg", "image/jpg", "image/png", "image/svg"] },
+                  }),
+                ],
                 options: {
+                  editProperties: ["status", "emailDomain", "name", "logo", "stamp"],
                   actions: {
                     new: {
                       isAccessible: ({ currentAdmin }): boolean => {
