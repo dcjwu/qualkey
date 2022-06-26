@@ -28,7 +28,6 @@ import { HederaCredentialInfoDto } from "./dto/hedera.credential-info.dto";
 @Injectable()
 export class HederaService {
   constructor(
-        private readonly configService: ConfigService,
         private readonly prismaService: PrismaService,
         private readonly config: ConfigService,
   ) {
@@ -55,14 +54,26 @@ export class HederaService {
           .addString(credentialChange.credentialDid)
           .addBytes32(Buffer.from(credentialChange.hash, "hex"))
           .addString(this.config.get<string>("QUALKEY_DID_SERVER")+"/"+credentialChange.credentialDid)
-          .addUint32(Math.round(credentialChange.changedAt.getTime() / 1000)))
+          .addUint32(Math.round(new Date(credentialChange.changedAt).getTime() / 1000)))
         .execute(client);
       const transactionReceipt = await responseExecuteTransaction.getReceipt(client);
+      const transactionResponse = await responseExecuteTransaction.getRecord(client);
 
+      // Save transaction
+      await this.prismaService.transaction.create({
+        data: {
+          credentialUuid: credentialChange.credentialUuid,
+          fee: transactionResponse.transactionFee.toString(),
+          transactionId: responseExecuteTransaction.transactionId.toString(),
+          smartContractId: contractId,
+          type: "update-smart-contract",
+        },
+      });
       await this.prismaService.credentialChange.update({ data: { smartContractId: contractId }, where: { id: credentialChange.id } });
 
       Logger.debug(`Credential ID: ${credentialChange.id} Transaction ${responseExecuteTransaction.transactionId.toString()} — ${transactionReceipt.status.toString()}`);
     } catch (e) {
+      Logger.error(e);
       Logger.error(`Transaction ${e.transactionId.toString()} — ${e.status.toString()}`);
       if (e.status.toString() === "MAX_CONTRACT_STORAGE_EXCEEDED") {
         await this.prismaService.smartContract.update({
@@ -152,25 +163,45 @@ export class HederaService {
     const client = await this.getHederaClient();
 
     // Save binary file
-    const resp = await new FileCreateTransaction()
+    const responseCreateFile = await new FileCreateTransaction()
       .setKeys([client.operatorPublicKey])
       .setContents("")
       .setMaxTransactionFee(new Hbar(5))
       .execute(client);
 
-    const receipt = await resp.getReceipt(client);
+    const transactionResponse = await responseCreateFile.getRecord(client);
+
+    // Save transaction
+    await this.prismaService.transaction.create({
+      data: {
+        fee: transactionResponse.transactionFee.toBigNumber().toString(),
+        transactionId: responseCreateFile.transactionId.toString(),
+        type: "file-create",
+      },
+    });
+
+    const receipt = await responseCreateFile.getReceipt(client);
     const fileId = receipt.fileId;
 
     console.log(`file ID = ${fileId.toString()}`);
 
-    await (
-      await new FileAppendTransaction()
-        .setNodeAccountIds([resp.nodeId])
-        .setFileId(fileId)
-        .setContents(bytecode)
-        .setMaxTransactionFee(new Hbar(5))
-        .execute(client)
-    ).getReceipt(client);
+    const responseAppend = await new FileAppendTransaction()
+      .setNodeAccountIds([responseCreateFile.nodeId])
+      .setFileId(fileId)
+      .setContents(bytecode)
+      .setMaxTransactionFee(new Hbar(5))
+      .execute(client);
+
+    const transactionResponseAppend = await responseAppend.getRecord(client);
+
+    // Save transaction
+    await this.prismaService.transaction.create({
+      data: {
+        fee: transactionResponseAppend.transactionFee.toBigNumber().toString(),
+        transactionId: responseAppend.transactionId.toString(),
+        type: "file-append",
+      },
+    });
 
     const contents = await new FileContentsQuery()
       .setFileId(fileId)
@@ -188,6 +219,16 @@ export class HederaService {
 
     const contractResponse = await contractTx.execute(client);
     const contractReceipt = await contractResponse.getReceipt(client);
+    const contractRecord = await contractResponse.getRecord(client);
+
+    // Save transaction
+    await this.prismaService.transaction.create({
+      data: {
+        fee: contractRecord.transactionFee.toBigNumber().toString(),
+        transactionId: contractTx.transactionId.toString(),
+        type: "contract-create",
+      },
+    });
 
     const newSmartContract = await this.prismaService.smartContract.create({ data: { id: contractReceipt.contractId.toString() } });
     Logger.debug(`New smart contract created ${newSmartContract.id}`);

@@ -100,13 +100,6 @@ describe("ActionService Unit Test", () => {
     decision: Decision.REJECT,
   };
 
-  const mockActionDecisionNotImplemented = {
-    actionId: "1",
-    subjectUuid: mockGetActionByIdReviewUpload.subjectUuid,
-    type: "new-random-type",
-    decision: Decision.REJECT,
-  };
-
   const mockActionSubjectNoMatch: ActionDecisionDto = {
     actionId: "1",
     subjectUuid: "3ce2ce11-18c4-44db-9bba-a260940163b5",

@@ -59,7 +59,7 @@ export class PaymentStatusUpdateService {
     }
   }
 
-  private async checkPaymentStatus(uuid: string, status: PaymentStatus) {
+  private async checkPaymentStatus(uuid: string, status: PaymentStatus): Promise<any> {
     const payment = await this.prisma.payment.findUnique({
       where: { uuid: uuid },
       include: { student: true },

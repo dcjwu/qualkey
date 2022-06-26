@@ -19,18 +19,32 @@ import { UploadService } from "./upload.service";
     BullModule.registerQueue({
       name: "upload-notify",
       limiter: {
-        max: 100,
-        duration: 100,
-        bounceBack: true,
+        max: 1000,
+        duration: 1000,
       },
+      defaultJobOptions: {
+        attempts: 10,
+        backoff: {
+          type: "exponential",
+          delay: 100000,
+        },
+      },
+      settings: { retryProcessDelay: 300 },
     }),
     BullModule.registerQueue({
       name: "credentials-create",
       limiter: {
-        max: 100,
+        max: 1000,
         duration: 1000,
-        bounceBack: true,
       },
+      defaultJobOptions: {
+        attempts: 10,
+        backoff: {
+          type: "exponential",
+          delay: 100000,
+        },
+      },
+      settings: { retryProcessDelay: 300 },
     }),
   ],
   controllers: [UploadController],

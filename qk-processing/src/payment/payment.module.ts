@@ -18,10 +18,17 @@ import { PaymentWebhookController } from "./payment.webhook.controller";
     BullModule.registerQueue({
       name: "payment-notify",
       limiter: {
-        max: 100,
-        duration: 100,
-        bounceBack: true,
+        max: 1000,
+        duration: 1000,
       },
+      defaultJobOptions: {
+        attempts: 10,
+        backoff: {
+          type: "exponential",
+          delay: 100000,
+        },
+      },
+      settings: { retryProcessDelay: 300 },
     }),
   ],
   controllers: [PaymentController, PaymentWebhookController],

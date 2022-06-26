@@ -61,7 +61,6 @@ enum CredentialStatus {
 
 model Credential {
     uuid                String @id @default(uuid())
-    did                 String @unique
     status              CredentialStatus @default(NEW)
     student             User @relation(fields: [studentUuid], references: [uuid])
     studentUuid         String
@@ -69,6 +68,7 @@ model Credential {
     institutionUuid     String
     upload              Upload @relation(fields: [uploadUuid], references: [uuid])
     uploadUuid          String
+    did                 String? @unique
 
     certificateId       String?
     graduatedName       String?
@@ -192,26 +192,16 @@ model CredentialChangeRequest {
     @@map("credentialChangeRequests")
 }
 
-
-enum TransactionStatus {
-    NEW
-    PENDING
-    CONFIRMED
-    FAILED
-}
-
 model Transaction {
-    uuid                        String @id @default(uuid())
-    status                      TransactionStatus @default(NEW)
-    credentialUuid              String
+    id                          Int @id @default(autoincrement())
+    credentialUuid              String?
     fee                         String?
-    hash                        String?
-    hex                         String?
+    transactionId               String?
+    type                        String?
     smartContract               SmartContract? @relation(fields: [smartContractId], references: [id])
     smartContractId             String?
 
     createdAt                   DateTime @default(now())
-    confirmedAt                 DateTime?
 
     @@map("transactions")
 }

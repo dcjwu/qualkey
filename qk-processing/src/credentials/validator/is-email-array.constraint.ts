@@ -34,8 +34,8 @@ export class IsEmailArrayConstraint implements ValidatorConstraintInterface
   }
 }
 
-export function IsEmailArray(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
+export function IsEmailArray(validationOptions?: ValidationOptions): any {
+  return function (object: any, propertyName: string): any {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

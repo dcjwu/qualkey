@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Credential, CredentialStatus, User, UserStatus } from "@prisma/client";
 
 import { CredentialsNotFoundException } from "../../common/exception";
+import { CredentialsWithCredentialChange } from "../../common/types/credentials/credentials-with-credential-change.type";
 import { PrismaService } from "../../prisma/prisma.service";
 /**
  * Class responsible for getting credentials from the data sources
@@ -156,5 +157,14 @@ export class CredentialsRepository {
         },
       });
     }
+  }
+
+  public async getAllNewCredentials(): Promise<CredentialsWithCredentialChange> {
+    return await this.prismaService.credential.findMany({
+      take: 100,
+      where: { status: CredentialStatus.NEW },
+      orderBy: { createdAt: "asc" },
+      include: { credentialChanges: { take: 1, orderBy: { changedAt: "desc" } } },
+    });
   }
 }

@@ -33,9 +33,7 @@ AdminJS.registerAdapter({ Database, Resource });
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: [".env.local", ".env"] }),
-    EventEmitterModule.forRoot({
-      maxListeners: 100,
-    }),
+    EventEmitterModule.forRoot({ maxListeners: 15 }),
     AuthModule,
     UserModule,
     PrismaModule,
@@ -144,6 +142,16 @@ AdminJS.registerAdapter({ Database, Resource });
                 },
               },
               {
+                resource: { model: dmmf.modelMap.Transaction, client: prisma },
+                options: {
+                  actions: {
+                    new: { isAccessible: false },
+                    edit: { isAccessible: false },
+                    delete: { isAccessible: false },
+                  },
+                },
+              },
+              {
                 resource: { model: dmmf.modelMap.Payment, client: prisma },
                 options: {
                   actions: {
@@ -191,7 +199,6 @@ AdminJS.registerAdapter({ Database, Resource });
         port: 6379,
       },
     }),
-    BullModule.registerQueue({ name: "credentials-create" }),
     ScheduleModule.forRoot(),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],

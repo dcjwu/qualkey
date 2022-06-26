@@ -6,7 +6,7 @@ import { Queue } from "bull";
 
 import { PrismaService } from "../../prisma/prisma.service";
 import { UserRepository } from "../../user/user.repository";
-import { CredentialsService } from "../credentials.service";
+import { CredentialsStatusUpdateService } from "../credentials.status-update.service";
 import {
   CredentialsActivatedEvent, CredentialsChangedEvent,
   CredentialsWithdrawalApprovedEvent,
@@ -21,10 +21,10 @@ import { CredentialsRepository } from "../repository/credentials.repository";
 export class CredentialsEventListener {
   constructor(
         @InjectQueue("credentials-notify") private credentialsNotifyQueue: Queue,
-        private credentialsService: CredentialsService,
-        private userRepository: UserRepository,
-        private credentialsRepository: CredentialsRepository,
-        private prisma: PrismaService,
+        private readonly userRepository: UserRepository,
+        private readonly credentialsRepository: CredentialsRepository,
+        private readonly prisma: PrismaService,
+        private readonly credentialsStatusUpdateService: CredentialsStatusUpdateService,
   ) {
   }
 
@@ -32,7 +32,7 @@ export class CredentialsEventListener {
   async handleCredentialsWithdrawalApprovedEvent(event: CredentialsWithdrawalApprovedEvent): Promise<void> {
     Logger.debug(`credentials withdrawal APPROVED ${event.credentials.uuid}`);
 
-    await this.credentialsService.toWithdrawn(event.credentials);
+    await this.credentialsStatusUpdateService.toWithdrawn(event.credentials);
     Logger.debug(`credentials status changed to WITHDRAWN ${event.credentials.uuid}`);
 
     if (0 !== event.representatives.length) {

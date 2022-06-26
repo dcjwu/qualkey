@@ -17,13 +17,13 @@ import { CredentialsChangeRepository } from "../repository/credentials-change.re
 export class CredentialsCreateConsumer {
   constructor(
     @InjectQueue("credentials-notify") private credentialsNotifyQueue: Queue,
-    private hederaService: HederaService,
-    private credentialsService: CredentialsService,
-    private userFactory: UserFactory,
-    private userRepository: UserRepository,
-    private credentialsFactory: CredentialsFactory,
-    private credentialsChangeFactory: CredentialsChangeFactory,
-    private credentialsChangeRepository: CredentialsChangeRepository,
+    private readonly hederaService: HederaService,
+    private readonly credentialsService: CredentialsService,
+    private readonly userFactory: UserFactory,
+    private readonly userRepository: UserRepository,
+    private readonly credentialsFactory: CredentialsFactory,
+    private readonly credentialsChangeFactory: CredentialsChangeFactory,
+    private readonly credentialsChangeRepository: CredentialsChangeRepository,
   ) {
   }
 
@@ -55,23 +55,10 @@ export class CredentialsCreateConsumer {
       }
 
       // create credentials and credentialsChange
-      let credentials = await this.credentialsFactory.create(dto, user, job.data.uploadUuid);
+      const credentials = await this.credentialsFactory.create(dto, user, job.data.uploadUuid);
       Logger.debug(`Credentials created - ${credentials.uuid}`);
       const credentialsChange = await this.credentialsChangeFactory.create(credentials, dataHash);
       Logger.debug(`CredentialsChange created - ${credentialsChange.id}`);
-
-      // TODO: move to cron
-      // change status to UPLOADING_TO_BLOCKCHAIN
-      credentials = await this.credentialsService.toUploadingToBlockchain(credentials);
-
-      // save to SC
-      await this.hederaService.writeCredentialChangeToSmartContract(credentialsChange);
-      Logger.debug(`CredentialsChange saved to smart contract - ${credentialsChange.id}`);
-
-      // change status to UPLOADED_TO_BLOCKCHAIN
-      await this.credentialsService.toUploadedToBlockchain(credentials);
-      // Notify student
-      await this.credentialsNotifyQueue.add("credentials-uploaded", { recipientEmail: user.email });
     } catch (err) {
       Logger.error(err, err.stack);
     }

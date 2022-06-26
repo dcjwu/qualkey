@@ -10,6 +10,7 @@ import { UploadModule } from "../upload/upload.module";
 import { UserModule } from "../user/user.module";
 import { CredentialsNotifyConsumer } from "./consumer/credentials-notify.consumer";
 import { CredentialsCreateConsumer } from "./consumer/credentials.create.consumer";
+import { CredentialsUploadToHederaConsumer } from "./consumer/credentials.upload-to-hedera.consumer";
 import { CredentialsChangeService } from "./credentials-change.service";
 import { CredentialsShareService } from "./credentials-share.service";
 import { CredentialsChangeRequestService } from "./credentials.change-request.service";
@@ -17,6 +18,7 @@ import { CredentialsController } from "./credentials.controller";
 import { CredentialsPublicController } from "./credentials.public.controller";
 import { CredentialsService } from "./credentials.service";
 import { CredentialsStatusUpdateService } from "./credentials.status-update.service";
+import { CredentialsUploadToHederaWatcher } from "./credentials.upload-to-hedera.watcher";
 import { CredentialsChangeFactory } from "./factory/credentials-change.factory";
 import { CredentialsShareFactory } from "./factory/credentials-share.factory";
 import { CredentialsWithdrawalRequestFactory } from "./factory/credentials-withdrawal-request.factory";
@@ -41,10 +43,32 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
     BullModule.registerQueue({
       name: "credentials-notify",
       limiter: {
-        max: 100,
-        duration: 100,
-        bounceBack: true,
+        max: 1000,
+        duration: 1000,
       },
+      defaultJobOptions: {
+        attempts: 10,
+        backoff: {
+          type: "exponential",
+          delay: 100000,
+        },
+      },
+      settings: { retryProcessDelay: 300 },
+    }),
+    BullModule.registerQueue({
+      name: "credentials-upload",
+      limiter: {
+        max: 1000,
+        duration: 1000,
+      },
+      defaultJobOptions: {
+        attempts: 10,
+        backoff: {
+          type: "exponential",
+          delay: 100000,
+        },
+      },
+      settings: { retryProcessDelay: 300 },
     }),
   ],
   controllers: [CredentialsController, CredentialsPublicController],
@@ -76,6 +100,8 @@ import { IsEmailArrayConstraint } from "./validator/is-email-array.constraint";
     CredentialsChangeRequestRepository,
     CredentialsChangeRequestService,
     CredentialsPublicViewDtoFactory,
+    CredentialsUploadToHederaConsumer,
+    CredentialsUploadToHederaWatcher,
   ],
 })
 export class CredentialsModule {}
