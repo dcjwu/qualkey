@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Credential, CredentialStatus, User, UserStatus } from "@prisma/client";
 
 import { CredentialsNotFoundException } from "../../common/exception";
+import { CredentialWithEverythingType } from "../../common/types/credentials/credential-with-everything.type";
 import { CredentialsWithCredentialChange } from "../../common/types/credentials/credentials-with-credential-change.type";
 import { PrismaService } from "../../prisma/prisma.service";
 /**
@@ -28,7 +29,7 @@ export class CredentialsRepository {
     return credentials;
   }
 
-  public async getByUuidWithChanges(uuid: string): Promise<Credential> {
+  public async getByUuidWithChanges(uuid: string): Promise<CredentialWithEverythingType> {
     const credentials = await this.prismaService.credential.findFirst({
       where:{
         OR: [
@@ -41,8 +42,13 @@ export class CredentialsRepository {
         institution: {
           include: {
             representatives: {
-              // TODO: make type for returning only name, signatureUrl, title
-              where: { status: UserStatus.ACTIVE }, 
+              where: { status: UserStatus.ACTIVE },
+              select: {
+                firstName: true,
+                lastName: true,
+                signatureUrl: true,
+                title: true,
+              },
             },
           },
         },

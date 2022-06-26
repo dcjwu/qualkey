@@ -1,9 +1,7 @@
-import * as assert from "assert";
-
 import { Injectable } from "@nestjs/common";
 import { User, Role, UserStatus } from "@prisma/client";
 
-import { LogicException } from "../common/exception";
+import { LogicException, UserNotFoundException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
@@ -24,7 +22,8 @@ export class UserRepository {
       where: { email: email },
       include: { institution: true },
     });
-    assert(user !== null, "User should not be null");
+
+    if (null === user) throw new UserNotFoundException(email);
 
     return user;
   }
@@ -33,7 +32,8 @@ export class UserRepository {
     const user = await this.prisma.user.findUnique({
       where: { uuid: uuid },
       include: { institution: true },
-    });    assert(user !== null, "User should not be null");
+    });
+    if (null === user) throw new UserNotFoundException(uuid);
 
     return user;
   }

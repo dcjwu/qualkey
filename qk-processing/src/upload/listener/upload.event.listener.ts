@@ -94,13 +94,6 @@ export class UploadEventListener {
       Logger.debug(`Dispatching credentialsCreateMessage ${credentialData.graduatedName}`);
       this.credentialsCreateQueue.add("create", { credentialDataDto: credentialData, uploadUuid: event.upload.uuid });
     });
-
-    // TODO: enable remove file
-    // try {
-    //   await this.awsS3Service.remove(event.upload.filename);
-    // } catch(err) {
-    //   Logger.error(err);
-    // }
   }
 
   @OnEvent("upload.rejected")
