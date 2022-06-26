@@ -1,8 +1,9 @@
 import * as assert from "assert";
 
 import { Injectable } from "@nestjs/common";
-import { User } from "@prisma/client";
+import { User, Role, UserStatus } from "@prisma/client";
 
+import { LogicException } from "../common/exception";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
@@ -35,5 +36,23 @@ export class UserRepository {
     });    assert(user !== null, "User should not be null");
 
     return user;
+  }
+
+  public async getActiveAdmins(): Promise<User[]> {
+    const admins = await this.prisma.user.findMany({
+      where:{
+        OR: [
+          { role: Role.ADMIN },
+          { role: Role.SUPER_ADMIN },
+        ],
+        AND: { status: { equals: UserStatus.ACTIVE } },
+      },
+    });
+
+    if (0 === admins.length) {
+      throw new LogicException("There should be at least one admin");
+    }
+
+    return admins;
   }
 }

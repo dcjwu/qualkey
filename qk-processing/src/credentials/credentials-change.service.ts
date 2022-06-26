@@ -1,6 +1,8 @@
+import { InjectQueue } from "@nestjs/bull";
 import { Injectable, Logger } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Credential, CredentialChange, User } from "@prisma/client";
+import { Queue } from "bull";
 
 import { CredentialsDataManipulatedException } from "../common/exception";
 import { HederaCredentialInfoDto } from "../hedera/dto/hedera.credential-info.dto";
@@ -18,11 +20,12 @@ import { CredentialsChangeRepository } from "./repository/credentials-change.rep
 @Injectable()
 export class CredentialsChangeService {
   constructor(
-      private credentialsChangeRepository: CredentialsChangeRepository,
-      private credentialsChangeFactory: CredentialsChangeFactory,
-      private hederaService: HederaService,
-      private prisma: PrismaService,
-      private eventEmitter: EventEmitter2,
+      @InjectQueue("credentials-notify") private credentialsNotifyQueue: Queue,
+      private readonly credentialsChangeRepository: CredentialsChangeRepository,
+      private readonly credentialsChangeFactory: CredentialsChangeFactory,
+      private readonly hederaService: HederaService,
+      private readonly prisma: PrismaService,
+      private readonly eventEmitter: EventEmitter2,
   ) {}
 
   /**
@@ -40,7 +43,7 @@ export class CredentialsChangeService {
     Logger.debug(`Checking repository hash for credentials (${credentials.uuid}), hash: ${dataHash}`);
 
     if (! await this.credentialsChangeRepository.hasHash(dataHash)) {
-      // TODO: move to event and properly process
+      await this.credentialsNotifyQueue.add("credentials-manipulated", { credentialsUuid: credentials.uuid });
       throw new CredentialsDataManipulatedException(credentials.uuid);
     }
 
@@ -53,7 +56,7 @@ export class CredentialsChangeService {
 
     Logger.debug(`Checking hedera hash for credentials (${credentials.uuid}), hash: ${dataHash}`);
     if (dataHash !== credentialsHederaInfoDto.hash) {
-      // TODO: move to event and properly process
+      await this.credentialsNotifyQueue.add("credentials-manipulated", { credentialsUuid: credentials.uuid });
       throw new CredentialsDataManipulatedException(credentials.uuid);
     }
 

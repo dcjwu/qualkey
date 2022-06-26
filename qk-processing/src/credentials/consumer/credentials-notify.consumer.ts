@@ -3,10 +3,14 @@ import { Logger } from "@nestjs/common";
 import { Job } from "bull";
 
 import { AwsSesService } from "../../aws/aws.ses.service";
+import { UserRepository } from "../../user/user.repository";
 
 @Processor("credentials-notify")
 export class CredentialsNotifyConsumer {
-  constructor(private ses: AwsSesService) {
+  constructor(
+      private readonly ses: AwsSesService,
+      private readonly userRepository: UserRepository,
+  ) {
   }
 
   @Process("withdrawal-approved")
@@ -149,6 +153,25 @@ export class CredentialsNotifyConsumer {
       Logger.error(err, err.stack);
       return;
     }
+    await job.moveToCompleted();
+  }
+
+  @Process("credentials-manipulated")
+  async handleCredentialsManipulated(job: Job): Promise<void> {
+    Logger.debug(`Handling job ${job.id} of type ${job.name}...`);
+
+    const admins = await this.userRepository.getActiveAdmins();
+
+    for (const admin of admins) {
+      Logger.debug(`Sending notification to ${admin.email}`);
+      try {
+        await this.ses.sendCredentialsManipulated(admin.email);
+      } catch (err) {
+        Logger.error(err, err.stack);
+        return;
+      }
+    }
+
     await job.moveToCompleted();
   }
 }
