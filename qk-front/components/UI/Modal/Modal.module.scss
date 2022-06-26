@@ -255,6 +255,15 @@
     margin-bottom: 0;
   }
 
+  &.deleteCredentials {
+    > svg {
+      width: 2.5rem;
+      path {
+        stroke: $color-secondary;
+      }
+    }
+  }
+
   &.massUpload {
     @include breakpoint-max($bp-screen-sm) {
       flex-direction: column;
@@ -263,7 +272,6 @@
 }
 
 .stepWrapper {
-  align-items: center;
   display: flex;
   gap: 1.5rem;
   justify-content: center;

@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
+import axios from "axios"
 import { useRouter } from "next/router"
-import PropTypes from "prop-types"
+import InfiniteScroll from "react-infinite-scroll-component"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
 import { formShareState, showShareModalState } from "../../../atoms"
+import { processingUrl } from "../../../utils"
 import StudentDashboardItem from "../../DashboardItem/StudentDashboardItem"
 import { IconShare } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
@@ -14,11 +16,30 @@ import styles from "./StudentDashboard.module.scss"
 
 const StudentDashboard = ({ data }) => {
 
+   const ref = useRef()
+
    const router = useRouter()
+   const [credentials, setCredentials] = useState(data)
+   const [hasMore, setHasMore] = useState(true)
    const resetFormShare = useResetRecoilState(formShareState)
    const [searchValue, setSearchValue] = useState("")
    const [formShare, setFormShare] = useRecoilState(formShareState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
+
+   /**
+    * Get data from server
+    */
+   const getMoreCredentials = async () => {
+      axios.get(`${processingUrl}/credential?offset=${credentials.length}&limit=10`, { withCredentials: true })
+         .then(response => {
+            console.log(response.data.length)
+            console.log(response, "RESPONSE")
+            if (!response.data.length) {
+               setHasMore(false)
+            }
+            setCredentials(prevState => [...prevState, ...response.data])
+         })
+   }
 
    /**
     * Input value handling.
@@ -87,16 +108,26 @@ const StudentDashboard = ({ data }) => {
                </div>
             </Button>
          </div>
-         <div className={styles.contentWrapper}>
-            {data.map(data => (
-               <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
-                                     handleCredentialsToShare={handleCredentialsToShare}/>
-            ))}
-         </div>
+         {credentials.length > 6
+            ? <div ref={ref} className={styles.contentWrapper}>
+               <InfiniteScroll dataLength={credentials.length} endMessage={<Text grey small>No more credentials</Text>}
+                               hasMore={hasMore}
+                               loader={<Text grey small>No more credentials...</Text>}
+                               next={getMoreCredentials} scrollableTarget={ref}>
+                  {credentials ? credentials.map(data => (
+                     <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
+                                           handleCredentialsToShare={handleCredentialsToShare}/>
+                  )) : null}
+               </InfiniteScroll>
+            </div>
+            : <div className={styles.contentWrapper}>
+               {credentials.map(data => (
+                  <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
+                                        handleCredentialsToShare={handleCredentialsToShare}/>
+               ))}
+            </div>}
       </>
    )
 }
 
 export default StudentDashboard
-
-StudentDashboard.propTypes = { data: PropTypes.array }

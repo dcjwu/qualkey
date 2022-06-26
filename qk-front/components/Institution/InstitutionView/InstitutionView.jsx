@@ -12,7 +12,7 @@ import UserActionWithdrawModal from "../../UI/Modal/UserActionWithdrawModal"
 import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
 
-const InstitutionView = ({ children, institution, userData, notificationsData }) => {
+const InstitutionView = ({ children, institution, userData, notificationsData, credentials }) => {
 
    const resetCurrentFile = useResetRecoilState(currentFileState)
    const resetFilePrefix = useResetRecoilState(filePrefixState)
@@ -51,7 +51,7 @@ const InstitutionView = ({ children, institution, userData, notificationsData })
       <div className="main__wrapper">
          <Sidebar institution={institution}/>
          <Topbar institution={institution} notificationsData={notificationsData} userData={userData}/>
-         <div className="dashboard">
+         <div className={`dashboard ${credentials ? "credentials" : ""}`}>
             {children}
          </div>
          {openModal && <FileUploadModal/>}
@@ -66,5 +66,6 @@ export default InstitutionView
 InstitutionView.propTypes = {
    institution: PropTypes.bool,
    userData: PropTypes.object,
-   notificationsData: PropTypes.array
+   notificationsData: PropTypes.array,
+   credentials: PropTypes.bool
 }

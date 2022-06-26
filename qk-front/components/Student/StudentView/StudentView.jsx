@@ -11,7 +11,7 @@ import ShareModal from "../../UI/Modal/ShareModal"
 import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
 
-const StudentView = ({ children, userData, notificationsData }) => {
+const StudentView = ({ children, userData, notificationsData, credentials }) => {
 
    const showShareModal = useRecoilValue(showShareModalState)
    const [changePasswordModal, setChangePasswordModal] = useState(false)
@@ -27,7 +27,7 @@ const StudentView = ({ children, userData, notificationsData }) => {
          <div className="main__wrapper">
             <Sidebar/>
             <Topbar notificationsData={notificationsData} userData={userData}/>
-            <div className="dashboard">
+            <div className={`dashboard ${credentials ? "credentials" : ""}`}>
                {children}
             </div>
          </div>
@@ -41,5 +41,6 @@ export default StudentView
 
 StudentView.propTypes = {
    userData: PropTypes.object.isRequired,
-   notificationsData: PropTypes.array
+   notificationsData: PropTypes.array,
+   credentials: PropTypes.bool
 }

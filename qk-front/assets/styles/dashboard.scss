@@ -61,6 +61,11 @@
       display: block;
     }
   }
+
+  &.credentials {
+    height: initial;
+    padding-bottom: 4rem;
+  }
 }
 
 .buttonRow {
