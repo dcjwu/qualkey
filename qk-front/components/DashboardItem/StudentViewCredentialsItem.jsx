@@ -17,7 +17,7 @@ import styles from "./DashboardItem.module.scss"
 
 const StudentViewCredentialsItem = ({ data }) => {
 
-   const { push } = useRouter()
+   const { push, query } = useRouter()
 
    const [, setViewCertificateModal] = useRecoilState(viewCertificateModalState)
    const [loading, setLoading] = useState(false)
@@ -62,7 +62,7 @@ const StudentViewCredentialsItem = ({ data }) => {
             </div>
 
             <div className={`${styles.status} ${loading ? styles.loading : ""} ${validateStatusStyles(data.status, true)}`}
-               onClick={data.status === "UPLOADED_TO_BLOCKCHAIN" ? handlePaymentRequest : null}>
+               onClick={data.status === "UPLOADED_TO_BLOCKCHAIN" ? () => handlePaymentRequest(query.uuid) : null}>
                {data.status === "UPLOADED_TO_BLOCKCHAIN"
                   ? loading
                      ? <IconLoading/>
