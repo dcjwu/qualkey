@@ -7,7 +7,7 @@ import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
 import schoolLogo from "../../assets/images/mockUniLogo.webp"
-import { viewCertificateModalState } from "../../atoms"
+import { paymentCredentialsState, viewCertificateModalState } from "../../atoms"
 import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import { IconAcademicCap, IconCertificate, IconInfo, IconLoading, IconWarning } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
@@ -20,6 +20,7 @@ const StudentViewCredentialsItem = ({ data }) => {
    const { push, query } = useRouter()
 
    const [, setViewCertificateModal] = useRecoilState(viewCertificateModalState)
+   const [, setCredentialsData] = useRecoilState(paymentCredentialsState)
    const [loading, setLoading] = useState(false)
 
    /**
@@ -34,6 +35,8 @@ const StudentViewCredentialsItem = ({ data }) => {
     */
    const handlePaymentRequest = async id => {
       setLoading(true)
+      const { graduatedName, qualificationName } = data
+      setCredentialsData({ graduatedName, qualificationName })
       await axios.post(`${processingUrl}/payment`,
          { credentialUuids: [id] },
          { withCredentials: true })

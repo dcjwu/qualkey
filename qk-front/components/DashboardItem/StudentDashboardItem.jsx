@@ -7,7 +7,7 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilState, useRecoilValue } from "recoil"
 
-import { credentialsDetailsState, credentialsShowDetailsState, formShareState, showShareModalState } from "../../atoms"
+import { credentialsDetailsState, credentialsShowDetailsState, formShareState, paymentCredentialsState, showShareModalState } from "../../atoms"
 import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import StudentDetailsItem from "../DetailsItem/StudentDetailsItem"
 import StudentHistoryItem from "../HistoryItem/StudentHistoryItem"
@@ -60,6 +60,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
    const details = useRecoilValue(credentialsDetailsState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
    const [formShare, setFormShare] = useRecoilState(formShareState)
+   const [, setCredentialsData] = useRecoilState(paymentCredentialsState)
    const [showCredentialsHistory, setShowCredentialsHistory] = useState(false)
    const [loading, setLoading] = useState(false)
 
@@ -76,6 +77,8 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
     */
    const handlePaymentRequest = async id => {
       setLoading(true)
+      const { graduatedName, qualificationName } = data
+      setCredentialsData({ graduatedName, qualificationName })
       await axios.post(`${processingUrl}/payment`,
          { credentialUuids: [id] },
          { withCredentials: true })
