@@ -24,7 +24,7 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
     * Get data from server
     */
    const getMoreCredentials = async () => {
-      axios.get(`${processingUrl}/credential?${router.query.filter ? "filter= " + router.query.filter : null}&offset=${credentials.length}&limit=${credentials.length + 10}`, { withCredentials: true })
+      axios.get(`${processingUrl}/credential?${router.query.filter ? "filter=" + router.query.filter : null}&offset=${credentials.length}&limit=${credentials.length + 10}`, { withCredentials: true })
          .then(response => {
             if (!response.data.length) {
                setHasMore(false)
