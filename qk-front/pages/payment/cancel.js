@@ -17,8 +17,6 @@ export default function Cancel() {
    const credentialsData = useRecoilValue(paymentCredentialsState)
    const [seconds, setSeconds] = useState(10)
 
-   console.log(credentialsData)
-
    /**
     * Handler for timer and clearing data
     */

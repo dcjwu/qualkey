@@ -1,63 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import axios from "axios"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState, useResetRecoilState } from "recoil"
 
-import { credentialsDetailsState, credentialsShowDetailsState, formShareState, paymentCredentialsState, showShareModalState } from "../../atoms"
+import { formShareState, paymentCredentialsState, showShareModalState } from "../../atoms"
 import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
-import StudentDetailsItem from "../DetailsItem/StudentDetailsItem"
-import StudentHistoryItem from "../HistoryItem/StudentHistoryItem"
+import CredentialHistory from "../CredentialHistory/CredentialHistory"
 import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconLoading, IconOpenViewPage, IconShare, IconShowDropdownBig, IconWarning } from "../UI/_Icon"
 import HoverInfo from "../UI/HoverInfo/HoverInfo"
 import Input from "../UI/Input/Input"
 import Text from "../UI/Text/Text"
 import styles from "./DashboardItem.module.scss"
 
-const mockDataHistory = [
-   {
-      date: 1652174960,
-      details: {
-         sharedWith: "email@asf.com",
-         status: "Link Expired",
-         date: 1652174960
-      }
-   },
-   {
-      date: 1652174960,
-      details: {
-         sharedWith: "email@asf.com",
-         status: "Active",
-         date: 1652174960
-      }
-   },
-   {
-      date: 1652174960,
-      details: {
-         sharedWith: "email@adfgfdsf.com",
-         status: "Link Expired",
-         date: 1652174960
-      }
-   },
-   {
-      date: 1652174960,
-      details: {
-         sharedWith: "emdsfgdfsail@asf.com",
-         status: "Active",
-         date: 1652174960
-      }
-   }
-]
-
 const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentialsToShare }) => {
 
-   const { pathname, push } = useRouter()
+   const { pathname, push, query } = useRouter()
 
-   const showDetails = useRecoilValue(credentialsShowDetailsState)
-   const details = useRecoilValue(credentialsDetailsState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
    const [formShare, setFormShare] = useRecoilState(formShareState)
    const [, setCredentialsData] = useRecoilState(paymentCredentialsState)
@@ -113,6 +75,10 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
       ])
    }
 
+   useEffect(() => {
+      setShowCredentialsHistory(false)
+   }, [query.filter])
+
    return (
       <div className={`${styles.wrapper} ${styles.student}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
          <div className={`${styles.credentialWrapper} ${styles.student}`} style={{
@@ -162,27 +128,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
                }
             </div>
          </div>
-         <div className={`${styles.historyWrapper} ${styles.student}`} style={{
-            display: showCredentialsHistory
-               ? "block" : "none", borderRadius: "0 0 15px 15px"
-         }}>
-            <div className={`${styles.history} ${styles.student}`}>
-               <div className={styles.left}>
-                  <Text bold large>Credentials History</Text>
-                  <div className={styles.historyItemWrapper}>
-                     {mockDataHistory.map((data, index) => (
-                        <StudentHistoryItem key={index} data={data}/>
-                     ))}
-                  </div>
-               </div>
-               <div className={styles.right}>
-                  <Text bold large>Details</Text>
-                  <div className={styles.rightWrapper}>
-                     {showDetails && <StudentDetailsItem data={details}/>}
-                  </div>
-               </div>
-            </div>
-         </div>
+         <CredentialHistory data={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
       </div>
    )
 }

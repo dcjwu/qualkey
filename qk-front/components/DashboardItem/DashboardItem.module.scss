@@ -489,10 +489,10 @@
   border-top: none;
   display: grid;
   grid-template-columns: 1fr 0.7fr;
-  height: 30rem;
   padding: 0 3rem;
   width: calc(100% - 3rem - 3rem);
   border-right: none;
+  height: 100%;
 
   @include breakpoint-max($bp-screen-lg) {
     padding: 0 2rem;
