@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import axios from "axios"
 import { useRouter } from "next/router"
@@ -14,21 +14,18 @@ import styles from "./InstitutionDashboard.module.scss"
 const InstitutionDashboard = ({ data, allCredentialsData }) => {
 
    const ref = useRef()
-   
+
    const router = useRouter()
-   const [credentials, setCredentials] = useState(data)
+   const [credentials, setCredentials] = useState([])
    const [hasMore, setHasMore] = useState(true)
    const [searchValue, setSearchValue] = useState("")
-
-   console.log(credentials)
 
    /**
     * Get data from server
     */
    const getMoreCredentials = async () => {
-      axios.get(`${processingUrl}/credential?offset=${credentials.length}&limit=${credentials.length + 10}`, { withCredentials: true })
+      axios.get(`${processingUrl}/credential?${router.query.filter ? "filter= " + router.query.filter : null}&offset=${credentials.length}&limit=${credentials.length + 10}`, { withCredentials: true })
          .then(response => {
-            console.log(response, "RESPONSE")
             if (!response.data.length) {
                setHasMore(false)
             }
@@ -57,28 +54,46 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
       }
    }
 
+   /**
+    * Listener to properly manage data and hasMore flag
+    */
+   useEffect(() => {
+      setCredentials(data)
+      setSearchValue("")
+      return () => {
+         setHasMore(true)
+      }
+   }, [])
+
+   /**
+    * Listener to set proper data when query changes
+    */
+   useEffect(() => {
+      setCredentials(data)
+      setSearchValue("")
+      if (!router.query.filter) {
+         setHasMore(true)
+      }
+   }, [router.query.filter])
+
    return (
       <>
          <div className={styles.searchWrapper}>
             <Text blackSpan
                   semiBold>Showing <span>{credentials && credentials.length}</span> from <span>{allCredentialsData ? allCredentialsData.length : credentials?.length}</span> results</Text>
-            <Input type={"search"} onChange={handleInputChange} onKeyDown={handleSubmitSearch}/>
+            <Input type={"search"} value={searchValue} onChange={handleInputChange}
+                   onKeyDown={handleSubmitSearch}/>
          </div>
-         {credentials.length > 6
-            ? <div ref={ref} className={styles.contentWrapper}>
-               <InfiniteScroll dataLength={credentials.length} endMessage={<Text grey small>No more credentials</Text>} hasMore={hasMore}
+         <div ref={ref} className={styles.contentWrapper}>
+            <InfiniteScroll dataLength={credentials.length} endMessage={<Text grey small>No more credentials</Text>}
+                               hasMore={hasMore}
                                loader={<Text grey small>No more credentials...</Text>}
                                next={getMoreCredentials} scrollableTarget={ref}>
-                  {credentials ? credentials.map(data => (
-                     <InstitutionDashboardItem key={data.uuid} data={data}/>
-                  )) : null}
-               </InfiniteScroll>
-            </div>
-            : <div className={styles.contentWrapper}>
                {credentials ? credentials.map(data => (
                   <InstitutionDashboardItem key={data.uuid} data={data}/>
                )) : null}
-            </div>}
+            </InfiniteScroll>
+         </div>
       </>
    )
 }

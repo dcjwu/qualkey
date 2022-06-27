@@ -7,8 +7,6 @@ import styles from "./CredentialsInfo.module.scss"
 
 const SharedCredentialsInfo = ({ data }) => {
 
-   console.log(data, "SharedCredentialsInfo")
-
    return (
       <>
          <div className={`${styles.wrapper} ${styles.shared}`}>

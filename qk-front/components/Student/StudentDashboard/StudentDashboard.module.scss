@@ -9,9 +9,9 @@
 }
 
 .contentWrapper {
-  height: 58%;
-  overflow: hidden;
-  overflow-y: scroll;
+  //height: 58%;
+  //overflow: hidden;
+  //overflow-y: scroll;
   padding-top: 5rem;
 
   @include breakpoint-max($bp-screen-xxs) {
@@ -19,11 +19,11 @@
   }
 
   @include breakpoint-max-vertical($bp-vertical-680) {
-    height: 45%;
+    //height: 45%;
   }
 
   @include breakpoint-max-vertical($bp-vertical-570) {
-    height: 35%;
+    //height: 35%;
   }
 
   p {

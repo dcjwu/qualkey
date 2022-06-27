@@ -69,7 +69,6 @@ export const getServerSideProps = async (ctx) => {
    try {
       const responseShare = await axios.get(`${apiUrl}/credential/share/${query.uuid}?password=${query.password}`)
       const { data: shareData } = responseShare
-      console.log(shareData)
       return { props: { shareData } }
    } catch (error) {
       return { props: { serverErrorMessage: error.response ? error.response.statusText : "Something went wrong" } }

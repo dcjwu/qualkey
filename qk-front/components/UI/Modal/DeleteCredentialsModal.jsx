@@ -17,8 +17,6 @@ const DeleteCredentialsModal = () => {
    
    const router = useRouter()
 
-   console.log(router)
-
    const [, setDeleteCredentialsModal] = useRecoilState(deleteCredentialsModalState)
    const [loading, setLoading] = useState(false)
    const [step, setStep] = useState(1)

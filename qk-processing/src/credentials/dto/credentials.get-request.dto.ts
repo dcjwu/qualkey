@@ -20,7 +20,7 @@ export class CredentialsGetRequestDto {
     @Type(() => Number)
     @IsNumber()
     @Min(10)
-    @Max(50)
+    @Max(1000)
     public readonly limit?: number = 10;
 
     @IsOptional()
