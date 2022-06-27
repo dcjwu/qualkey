@@ -8,6 +8,10 @@
   height: $topbar-height-initial;
   justify-content: flex-end;
   padding-left: $sidebar-width-initial;
+  position: fixed;
+  width: calc(100% - 20rem);
+  z-index: 99;
+  box-shadow: 0 4px 34px rgba(0, 0, 0, 0.05);
 
   @include breakpoint-max($bp-screen-xxl) {
     padding-left: $sidebar-width-xxl;
@@ -17,6 +21,7 @@
     height: $topbar-height-lg;
     justify-content: space-between;
     padding-left: 0;
+    width: 100%;
   }
 
   @include breakpoint-max-vertical($bp-vertical-875) {
