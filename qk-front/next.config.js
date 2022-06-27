@@ -9,7 +9,7 @@ const nextConfig = {
       // Will be available on both server and client
       apiUrl: process.env.NEXT_PUBLIC_PROCESSING_URL
    },
-   images: { domains: ["public-images-qualkey-test.s3.eu-north-1.amazonaws.com"] }
+   images: { domains: ["public-images-qualkey-test.s3.eu-north-1.amazonaws.com", "portal.rgsl.edu.lv"] }
 }
 
 module.exports = nextConfig
