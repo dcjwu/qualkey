@@ -25,7 +25,7 @@ const TwoFactorForm = ({ forgotPassword }) => {
    const [buttonError, setButtonError] = useState("")
    const [pinError, setPinError] = useState(false)
    const [loading, setLoading] = useState(false)
-   const [seconds, setSeconds] = useState(15)
+   const [seconds, setSeconds] = useState(59)
 
    /**
     * Handler for timer and clearing data

@@ -15,7 +15,7 @@ export default function Cancel() {
    const { push } = useRouter()
    const resetCredentialsData = useResetRecoilState(paymentCredentialsState)
    const credentialsData = useRecoilValue(paymentCredentialsState)
-   const [seconds, setSeconds] = useState(10)
+   const [seconds, setSeconds] = useState(20)
 
    /**
     * Handler for timer and clearing data
