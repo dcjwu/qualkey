@@ -212,3 +212,67 @@
   display: flex;
   gap: 1rem;
 }
+
+.currency {
+  margin-top: 3rem;
+  > button:last-child {
+    position: absolute;
+    bottom: 4rem;
+    left: 50%;
+    padding: 1rem 2rem;
+    width: fit-content;
+    transform: translateX(-50%);
+  }
+}
+
+.currencyButton {
+  width: 60%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border: 1px solid $color-additional-medium-dark;
+  border-radius: 12px;
+  font-family: inherit;
+}
+
+.currencyWrapper {
+  position: relative;
+  + button:disabled {
+    p {
+      color: $color-secondary;
+    }
+  }
+}
+
+.currencyDropdown {
+  display: none;
+  position: absolute;
+  top: 3.2rem;
+  left: 0;
+  z-index: 99;
+  width: calc(60% - 2px);
+  background-color: $color-secondary;
+  border-radius: 0 0 12px 12px;
+  border: 1px solid $color-additional-medium-dark;
+  border-top: none;
+  ul {
+    padding-top: 1rem;
+    li {
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: .2s ease-in-out background-color;
+      &:last-child {
+        border-radius: 0 0 12px 12px;
+      }
+      &:hover {
+        background-color: $color-additional-medium;
+      }
+      > p:last-child {
+        color: $color-primary-light;
+        font-weight: $font-weight-sm;
+      }
+    }
+  }
+}
