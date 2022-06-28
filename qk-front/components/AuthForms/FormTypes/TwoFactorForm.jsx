@@ -100,7 +100,7 @@ const TwoFactorForm = ({ forgotPassword }) => {
       await axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
          .then(response => {
             if (response.status === 201) {
-               setSeconds(15)
+               setSeconds(59)
             }
          })
          .catch(error => console.log(error))
