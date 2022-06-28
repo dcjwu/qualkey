@@ -37,7 +37,7 @@ export default function Cancel() {
       if (!seconds) {
          push("/dashboard")
       }
-   }, [seconds])
+   }, [seconds]) // eslint-disable-line react-hooks/exhaustive-deps
 
    /**
     * Redirect user back if not data passed
@@ -49,7 +49,7 @@ export default function Cancel() {
       return () => {
          resetCredentialsData()
       }
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>

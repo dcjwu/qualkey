@@ -99,7 +99,6 @@ const TwoFactorForm = ({ forgotPassword }) => {
    const handleResendCode = async () => {
       await axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
          .then(response => {
-            console.log(response, "OTP NEW")
             if (response.status === 201) {
                setSeconds(15)
             }

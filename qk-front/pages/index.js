@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 import axios from "axios"
-import moment from "moment"
 import getConfig from "next/config"
 import Image from "next/image"
 import { useRecoilState } from "recoil"
@@ -79,7 +78,6 @@ export default function Home({ serverErrorMessage }) {
       if (showTwoFactor) {
          axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
             .then(response => {
-               console.log(response, "OTP")
                setFormData({
                   ...formData,
                   otpUuid: response.data.otpUuid

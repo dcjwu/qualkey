@@ -31,7 +31,7 @@ const Sidebar = ({ institution, employer }) => {
             password: query.password
          })
       }
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    const isScreenLg = useMediaQuery({ query: "(max-width: 991px)" })
    const isScreenMd = useMediaQuery({ query: "(max-width: 767px" })

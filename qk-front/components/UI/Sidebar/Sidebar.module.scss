@@ -19,8 +19,8 @@
   height: 100vh;
   padding: 4rem 0 8rem;
   position: fixed;
-  z-index: 999;
   width: $sidebar-width-initial;
+  z-index: 999;
 
   &.active {
     transform: translateX(0);

@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useRecoilState, useResetRecoilState } from "recoil"
+import { useRecoilState } from "recoil"
 
 import { formShareState, paymentCredentialsState, showShareModalState } from "../../atoms"
 import { awsUrl, processingUrl, validateStatus, validateStatusStyles } from "../../utils"

@@ -3,3 +3,4 @@ components/DashboardItem/DashboardItem.module.scss
 components/UI/Modal/Modal.module.scss
 components/AuthForms/AuthForm.module.scss
 components/CredentialsInfo/CredentialsInfo.module.scss
+components/SettingsView/SettingsView.module.scss

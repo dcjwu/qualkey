@@ -4,6 +4,7 @@
 .topbar {
   align-items: center;
   background-color: $color-secondary;
+  box-shadow: 0 4px 34px rgb(0 0 0 / 5%);
   display: flex;
   height: $topbar-height-initial;
   justify-content: flex-end;
@@ -11,7 +12,6 @@
   position: fixed;
   width: calc(100% - 20rem);
   z-index: 99;
-  box-shadow: 0 4px 34px rgba(0, 0, 0, 0.05);
 
   @include breakpoint-max($bp-screen-xxl) {
     padding-left: $sidebar-width-xxl;

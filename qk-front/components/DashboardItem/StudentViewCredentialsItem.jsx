@@ -6,7 +6,6 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
-import schoolLogo from "../../assets/images/mockUniLogo.webp"
 import { paymentCredentialsState, viewCertificateModalState } from "../../atoms"
 import { awsUrl, processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import { IconAcademicCap, IconCertificate, IconInfo, IconLoading, IconWarning } from "../UI/_Icon"
