@@ -23,7 +23,6 @@ export default function Home({ serverErrorMessage }) {
    const [, setFormError] = useRecoilState(formValidationErrorsState)
    const [, setLoading] = useRecoilState(loadingState)
    const [showTwoFactor, setShowTwoFactor] = useState(false)
-   const [canBeResendAt, setCanBeResendAt] = useState(null)
 
    /**
     * Input value handling.
@@ -80,7 +79,7 @@ export default function Home({ serverErrorMessage }) {
       if (showTwoFactor) {
          axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
             .then(response => {
-               setCanBeResendAt(moment.utc(response.data.canBeResentAt).valueOf() / 1000)
+               console.log(response, "OTP")
                setFormData({
                   ...formData,
                   otpUuid: response.data.otpUuid
@@ -106,7 +105,7 @@ export default function Home({ serverErrorMessage }) {
                {
                   !showTwoFactor
                      ? <LoginForm changeFormHandler={handleLoginFormChange} submitFormHandler={handleLoginFormSubmit}/>
-                     : <TwoFactorForm canBeResendAt={canBeResendAt}/>
+                     : <TwoFactorForm/>
                }
                <div className="logo">
                   <div className="logo__image-wrapper">
