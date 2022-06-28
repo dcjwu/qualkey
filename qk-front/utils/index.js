@@ -1,5 +1,6 @@
 export * from "./validateLoginForm"
 export * from "./processingUrl"
+export * from "./awsUrl"
 export * from "./validateMappingFields"
 export * from "./userRoles"
 export * from "./frontUrl"
