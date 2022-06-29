@@ -40,3 +40,7 @@ export * from "./IconEllipseTR"
 export * from "./IconCheckMark"
 export * from "./IconLock"
 export * from "./IconLinkedin"
+export * from "./IconEmail"
+export * from "./IconTwitter"
+export * from "./IconLinkedinSmall"
+
