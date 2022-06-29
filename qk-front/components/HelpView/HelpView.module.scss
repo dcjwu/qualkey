@@ -1,0 +1,149 @@
+@import "../../assets/styles/helpers/variables";
+@import "../../assets/styles/helpers/mixins";
+
+.wrapper {
+  margin-top: 3rem;
+
+  > button {
+    background-color: red;
+  }
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @include breakpoint-max($bp-screen-lg) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  @include breakpoint-max($bp-screen-lg) {
+    //flex-grow: 1;
+    flex: 1 1 0;
+    overflow: hidden;
+    overflow-x: scroll;
+    width: 100%;
+  }
+
+  > button {
+    background-color: transparent;
+    font-family: inherit;
+    color: $color-highlight;
+    border: 1px solid $color-highlight;
+    border-radius: 12px;
+    padding: .5rem 1.5rem;
+    transition: background-color .2s ease-in-out, color .2s ease-in-out;
+
+    &:hover,
+    &.active {
+      background-color: $color-highlight;
+      color: $color-secondary;
+    }
+
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+  }
+}
+
+.expand {
+  padding-left: 2rem;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid $color-additional-medium-dark;
+  gap: 2rem;
+  @include breakpoint-max($bp-screen-lg) {
+    align-self: flex-end;
+  }
+
+  > p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+  }
+}
+
+.radio {
+  margin: 0;
+  overflow: initial;
+  padding: 0;
+  position: relative;
+  appearance: none;
+  outline: none;
+  width: 5rem;
+  height: 3rem;
+  background-color: $color-secondary;
+  border: 1px solid $color-additional-medium-dark;
+  border-radius: 50px;
+  transition-duration: 200ms;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 26px;
+    height: 26px;
+    background-color: transparent;
+    border-radius: 50%;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  &:checked {
+    border-color: $color-highlight;
+    box-shadow: inset 20px 0 0 0 $color-highlight;
+
+    &:after {
+      left: 2rem;
+      box-shadow: -2px 4px 3px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+.content {
+  margin-top: 2.5rem;
+}
+
+.contentWrapper {
+  margin-bottom: 1.5rem;
+
+  p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+  }
+}
+
+.contentItem {
+  cursor: pointer;
+  width: calc(100% - 3rem - 3rem);
+  background-color: $color-secondary;
+  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  svg {
+    width: 2.4rem;
+    height: 1.8rem;
+  }
+}
+
+.contentInfo {
+  display: none;
+  border-radius: 0 0 12px 12px;
+  padding: 1.5rem 3rem 2rem;
+  background-color: $color-secondary;
+}
