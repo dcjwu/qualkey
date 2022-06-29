@@ -9,7 +9,7 @@ const topics = [
    "Topic 1", "Topic 2", "Topic 3"
 ]
 
-const ContactView = () => {
+const ContactView = ({ feedback }) => {
    
    const [showDropdown, setShowDropdown] = useState(false)
    const [activeOption, setActiveOption] = useState("")
@@ -42,21 +42,23 @@ const ContactView = () => {
          </div>
          <div className={styles.right}>
             <Text bold>Send us an email message</Text>
-            <div className={styles.dropdownWrapper}>
-               <button onClick={() => setShowDropdown(prevState => !prevState)}>
-                  <div className={styles.dropdownRow}>
-                     <Text semiBold>{!activeOption ? "Select Topic" : activeOption}</Text>
-                     <IconShowDropdown/>
+            {!feedback
+               ? <div className={styles.dropdownWrapper}>
+                  <button onClick={() => setShowDropdown(prevState => !prevState)}>
+                     <div className={styles.dropdownRow}>
+                        <Text semiBold>{!activeOption ? "Select Topic" : activeOption}</Text>
+                        <IconShowDropdown/>
+                     </div>
+                  </button>
+                  <div className={styles.dropdownContent} style={{ display: showDropdown ? "block" : "" }}>
+                     <ul>
+                        {topics.map(item => (
+                           <li key={item} value={item} onClick={handleChooseOption}>{item}</li>
+                        ))}
+                     </ul>
                   </div>
-               </button>
-               <div className={styles.dropdownContent} style={{ display: showDropdown ? "block" : "" }}>
-                  <ul>
-                     {topics.map(item => (
-                        <li key={item} value={item} onClick={handleChooseOption}>{item}</li>
-                     ))}
-                  </ul>
                </div>
-            </div>
+               : <Text grey>Your feedback is incredibly important to us as it helps improve service and your experience.</Text>}
             <textarea placeholder="Start typing your message here..."/>
             <Button blue thin>
                <div className={styles.buttonRow}>
