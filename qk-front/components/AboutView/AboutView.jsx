@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-import mockImage from "../../assets/images/aboutMock.jpeg"
+import mockImage from "../../assets/images/aboutImage.png"
 import avatar from "../../assets/images/avatarMock.webp"
 import { IconLinkedin, IconShowDropdown } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
