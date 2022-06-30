@@ -39,6 +39,7 @@ AdminJS.registerAdapter({ Database, Resource });
     UserModule,
     PrismaModule,
     CredentialsModule,
+    // TODO: Move admin module to separate file
     AdminModule.createAdminAsync({
       imports: [PrismaModule, AwsModule],
       inject: [PrismaService, AwsSesService, ConfigService],

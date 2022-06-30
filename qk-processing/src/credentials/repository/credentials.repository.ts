@@ -38,7 +38,7 @@ export class CredentialsRepository {
         NOT: { status: { equals: CredentialStatus.DELETED } },
       },
       include: {
-        credentialChanges: { orderBy: { changedAt: "desc" } },
+        credentialChanges: { orderBy: { createdAt: "desc" } },
         institution: {
           include: {
             representatives: {
@@ -82,7 +82,7 @@ export class CredentialsRepository {
         NOT: { status: { equals: CredentialStatus.DELETED } },
       },
       include: {
-        credentialChanges: { orderBy: { changedAt: "desc" } },
+        credentialChanges: { orderBy: { createdAt: "desc" } },
         institution: true,
       },
     });
@@ -106,7 +106,7 @@ export class CredentialsRepository {
           NOT: { status: { equals: CredentialStatus.DELETED } },
         },
         include: {
-          credentialChanges: { orderBy: { changedAt: "desc" } },
+          credentialChanges: { orderBy: { createdAt: "desc" } },
           institution: true,
         },
       });
@@ -119,7 +119,7 @@ export class CredentialsRepository {
           NOT: { status: { equals: CredentialStatus.DELETED } },
         },
         include: {
-          credentialChanges: { orderBy: { changedAt: "desc" } },
+          credentialChanges: { orderBy: { createdAt: "desc" } },
           institution: true,
         },
       });
@@ -143,7 +143,7 @@ export class CredentialsRepository {
           NOT: { status: { equals: CredentialStatus.DELETED } },
         },
         include: {
-          credentialChanges: { orderBy: { changedAt: "desc" } },
+          credentialChanges: { orderBy: { createdAt: "desc" } },
           institution: true,
         },
       });
@@ -158,7 +158,7 @@ export class CredentialsRepository {
           NOT: { status: { equals: CredentialStatus.DELETED } },
         },
         include: {
-          credentialChanges: { orderBy: { changedAt: "desc" } },
+          credentialChanges: { orderBy: { createdAt: "desc" } },
           institution: true,
         },
       });
@@ -170,7 +170,7 @@ export class CredentialsRepository {
       take: 100,
       where: { status: CredentialStatus.NEW },
       orderBy: { createdAt: "asc" },
-      include: { credentialChanges: { take: 1, orderBy: { changedAt: "desc" } } },
+      include: { credentialChanges: { take: 1, orderBy: { createdAt: "desc" } } },
     });
   }
 }

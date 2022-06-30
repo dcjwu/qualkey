@@ -31,7 +31,7 @@ import {
   CredentialsWithdrawalRequestDto,
   CredentialsShareRequestDto,
   CredentialsGetRequestDto,
-  CredentialsChangeGetRequestDto,
+  CredentialsChangeGetRequestDto, CredentialsGetSharesRequestDto,
 } from "./dto";
 import { CredentialsRequestChangeDto } from "./dto/credentials.request-change.dto";
 import { CredentialsChangeRepository } from "./repository/credentials-change.repository";
@@ -143,8 +143,13 @@ export class CredentialsController {
   @Get("share")
   async getCredentialsShares(
       @GetUser() user: User,
+      @Body() dto: CredentialsGetSharesRequestDto,
   ): Promise<CredentialShare[]> {
-    return await this.credentialsShareRepository.findAllByUser(user);
+    if (null === dto.credentialUuid) {
+      return await this.credentialsShareRepository.findAllByUser(user);
+    }
+
+    return await this.credentialsShareRepository.findAllByCredentialUuid(user, dto.credentialUuid);
   }
 
   /**

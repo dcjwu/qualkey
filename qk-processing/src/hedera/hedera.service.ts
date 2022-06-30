@@ -54,7 +54,7 @@ export class HederaService {
           .addString(credentialChange.credentialDid)
           .addBytes32(Buffer.from(credentialChange.hash, "hex"))
           .addString(this.config.get<string>("QUALKEY_DID_SERVER")+"/"+credentialChange.credentialDid)
-          .addUint32(Math.round(new Date(credentialChange.changedAt).getTime() / 1000)))
+          .addUint32(Math.round(new Date(credentialChange.createdAt).getTime() / 1000)))
         .execute(client);
       const transactionReceipt = await responseExecuteTransaction.getReceipt(client);
       const transactionResponse = await responseExecuteTransaction.getRecord(client);

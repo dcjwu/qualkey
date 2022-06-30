@@ -24,4 +24,16 @@ export class CredentialsShareRepository {
       orderBy: { createdAt: "desc" },
     });
   }
+
+  public async findAllByCredentialUuid(user: User, credentialUuid: string): Promise<CredentialShare[]> {
+    return await this.prisma.credentialShare.findMany({
+      where: {
+        AND: [
+          { sharedBy: user.uuid },
+          { credentialUuids: { has: credentialUuid } },
+        ],
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
 }

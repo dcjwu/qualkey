@@ -21,6 +21,7 @@ export class CredentialsShareFactory {
         recipientEmails: dto.recipientEmails,
         sharedBy: credentialsList[0].studentUuid,
         credentialUuids: credentialsList.map(c => c.uuid),
+        credentialQualificationNames: credentialsList.map(c => c.qualificationName),
         sharedFields: dto.sharedFields,
         temporaryPassword: PasswordGenerator.generate(4, true,false),
         expiresAt: new Date(dto.expiresAt),

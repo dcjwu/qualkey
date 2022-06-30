@@ -142,14 +142,15 @@ model Upload {
 }
 
 model CredentialShare {
-    uuid                        String @id @default(uuid())
-    sharedBy                    String // uuid of the user which shared
-    recipientEmails             String[] // array with recepient emails
-    credentialUuids             String[] // array with credential uuids
-    sharedFields                String[] // array with field names allowed for sharing  full_name;majors;qualification_level
-    temporaryPassword           String
-    expiresAt                   DateTime
-    createdAt                   DateTime @default(now())
+    uuid                            String @id @default(uuid())
+    sharedBy                        String // uuid of the user which shared
+    recipientEmails                 String[] // array with recepient emails
+    credentialUuids                 String[] // array with credential uuids
+    credentialQualificationNames    String[] // array with credential qualification names
+    sharedFields                    String[] // array with field names allowed for sharing  full_name;majors;qualification_level
+    temporaryPassword               String
+    expiresAt                       DateTime
+    createdAt                       DateTime @default(now())
 
     @@map("credentialShares")
 }
@@ -163,7 +164,7 @@ model CredentialChange {
     changedFrom                 String[] // array with changes from   1;Peter;Dinklage
     changedTo                   String[] // array with changes to     2;fyodor;Pupkin
     fieldName                   String[] // array with field names    id;first_name;last_name
-    changedAt                   DateTime @default(now())
+    createdAt                   DateTime @default(now())
     hash                        String @unique
     smartContractId             String?
 

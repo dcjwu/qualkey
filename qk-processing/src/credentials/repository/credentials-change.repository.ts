@@ -37,7 +37,7 @@ export class CredentialsChangeRepository {
   public async getLastByCredentialsDid(credentialDid: string): Promise<CredentialChange> {
     const credentialsChange = await this.prisma.credentialChange.findFirst({
       where: { credentialDid: credentialDid },
-      orderBy: { changedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     });
 
     if (null === credentialsChange) {

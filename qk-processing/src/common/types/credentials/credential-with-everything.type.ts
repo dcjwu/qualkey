@@ -11,7 +11,7 @@ async function getCredentialWithEverything(uuid: string): Promise<any> {
       NOT: { status: { equals: CredentialStatus.DELETED } },
     },
     include: {
-      credentialChanges: { orderBy: { changedAt: "desc" } },
+      credentialChanges: { orderBy: { createdAt: "desc" } },
       institution: {
         include: {
           representatives: {
