@@ -1,0 +1,108 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.certificateWrapper {
+  position: relative;
+  margin-bottom: 2rem;
+  padding: 2rem 3.5rem 3rem 3.5rem;
+  border: 6px solid $color-highlight;
+
+  svg {
+    position: absolute;
+    z-index: 9999;
+
+    &:nth-child(1) {
+      top: -6px;
+      left: -6px;
+    }
+
+    &:nth-child(2) {
+      top: -6px;
+      right: -6px;
+    }
+
+    &:nth-child(3) {
+      bottom: -6px;
+      left: -6px;
+    }
+
+    &:nth-child(4) {
+      bottom: -6px;
+      right: -6px;
+    }
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    > canvas {
+      padding: .2rem;
+      border: 4px solid $color-highlight;
+    }
+
+    > .imageWrapper {
+      width: 45%;
+    }
+  }
+
+  .bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    > p {
+      width: 55%;
+      line-height: 1.6;
+      &:last-child {
+        line-height: 2rem;
+      }
+    }
+
+    .imageWrapper {
+      position: relative;
+      width: 9rem;
+      height: 9rem;
+    }
+  }
+}
+
+.certificateInner {
+  margin: 3rem 0 6rem 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    > div {
+      p:last-child {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .right {
+    height: 27rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    overflow: hidden;
+    overflow-y: scroll;
+    .imageWrapper {
+      width: 100%;
+      height: 5rem;
+      position: relative;
+    }
+  }
+}
+
+.rowButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}

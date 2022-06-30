@@ -112,13 +112,26 @@
       padding-top: 2rem;
       margin-bottom: 2rem;
     }
+
+    &.viewCertificate {
+      padding: 5rem 3rem 2rem 3rem;
+      > p:nth-child(3) {
+        margin-top: 1rem;
+      }
+    }
   }
 
   &.viewCertificate {
-    height: 100vh;
-    overflow-y: scroll;
+    width: 45vw;
+    padding: 0;
+    @include breakpoint-max($bp-screen-xxl) {
+      width: 55vw;
+    }
+    @include breakpoint-max($bp-screen-xl) {
+      width: 65vw;
+    }
     @include breakpoint-max($bp-screen-lg) {
-      width: 95%;
+      width: 80vw;
     }
   }
 }
@@ -365,76 +378,7 @@
 
 .viewCertificate {
   > h2 {
-    margin-bottom: 4rem;
-  }
-}
-
-.certificateWrapper {
-  margin-bottom: 2rem;
-  padding: 2rem 3.5rem 3rem 3.5rem;
-  border: 6px solid $color-highlight;
-  position: relative;
-
-  svg {
-    position: absolute;
-    z-index: 9999;
-
-    &:nth-child(1) {
-      top: -6px;
-      left: -6px;
-    }
-
-    &:nth-child(2) {
-      top: -6px;
-      right: -6px;
-    }
-
-    &:nth-child(3) {
-      bottom: -6px;
-      left: -6px;
-    }
-
-    &:nth-child(4) {
-      bottom: -6px;
-      right: -6px;
-    }
-  }
-
-  .imageWrapper {
-    margin: 0 auto;
-    width: 45%;
-  }
-
-  .bottom {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    justify-content: center;
-
-    > p {
-      width: 55%;
-      line-height: 1.6;
-    }
-  }
-}
-
-.certificateInner {
-  margin: 4rem 0 10rem 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  .left {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .right {
-    margin-right: 5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -825,4 +769,28 @@
 
 .lastItem {
   margin-top: 2rem;
+}
+
+.shareButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  button {
+    width: fit-content;
+    padding: 1rem 3rem;
+    &:nth-child(2),
+    &:nth-child(3) {
+      &:hover {
+        background-color: $color-secondary;
+        svg {
+          background-color: initial;
+
+          path {
+            stroke: none;
+          }
+        }
+      }
+    }
+  }
 }
