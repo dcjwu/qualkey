@@ -160,15 +160,16 @@
     width: 100vw;
   }
 
+  ul > li:last-child {
+    border-radius: 0 0 15px 15px;
+  }
+
   li {
     align-items: center;
     display: flex;
     gap: 1rem;
     padding: 1rem 0 1rem 2rem;
     transition: background-color 0.2s ease-in-out;
-    &:last-child {
-      border-radius: 0 0 15px 15px;
-    }
 
     &:hover {
       background-color: $color-additional-light;

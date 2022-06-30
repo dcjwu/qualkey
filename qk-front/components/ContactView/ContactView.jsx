@@ -2,6 +2,7 @@ import { useState } from "react"
 
 import { IconEmail, IconLinkedinSmall, IconMessage, IconShowDropdown, IconTwitter } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
+import Input from "../UI/Input/Input"
 import Text from "../UI/Text/Text"
 import styles from "./ContactView.module.scss"
 
@@ -9,7 +10,7 @@ const topics = [
    "Topic 1", "Topic 2", "Topic 3"
 ]
 
-const ContactView = ({ feedback }) => {
+const ContactView = ({ feedback, employer }) => {
    
    const [showDropdown, setShowDropdown] = useState(false)
    const [activeOption, setActiveOption] = useState("")
@@ -42,6 +43,10 @@ const ContactView = ({ feedback }) => {
          </div>
          <div className={styles.right}>
             <Text bold>Send us an email message</Text>
+            {employer ? <div className={styles.inputs}>
+               <Input placeholder="Email" type="email"/>
+               <Input placeholder="Your name" type="text"/>
+            </div> : null}
             {!feedback
                ? <div className={styles.dropdownWrapper}>
                   <button onClick={() => setShowDropdown(prevState => !prevState)}>

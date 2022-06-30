@@ -128,7 +128,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
                }
             </div>
          </div>
-         <CredentialHistory data={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
+         <CredentialHistory changeData={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
       </div>
    )
 }

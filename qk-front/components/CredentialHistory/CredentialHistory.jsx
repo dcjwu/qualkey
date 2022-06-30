@@ -6,7 +6,7 @@ import stylesItem from "../DashboardItem/DashboardItem.module.scss"
 import Text from "../UI/Text/Text"
 import styles from "./CredentialHistory.module.scss"
 
-const CredentialHistory = ({ data, showCredentialsHistory }) => {
+const CredentialHistory = ({ changeData, showCredentialsHistory }) => {
 
    const [detailsIndex, setDetailsIndex] = useState(0)
 
@@ -27,8 +27,8 @@ const CredentialHistory = ({ data, showCredentialsHistory }) => {
             <div className={stylesItem.left}>
                <Text bold large>Credentials History</Text>
                <div className={stylesItem.historyItemWrapper}>
-                  {data.length !== 1 && data[detailsIndex].changedByUuid
-                     ? data.map((item, index) => (
+                  {changeData.length !== 1 && changeData[detailsIndex].changedByUuid
+                     ? changeData.map((item, index) => (
                         item.changedByUuid ? <div key={item.changedAt}
                                                      className={`${styles.historyItem} ${index === detailsIndex ? styles.active : ""}`}
                                                      onClick={() => setDetailsIndex(index)}>
@@ -51,12 +51,12 @@ const CredentialHistory = ({ data, showCredentialsHistory }) => {
                      )) : <Text grey>No data to show</Text>}
                </div>
             </div>
-            {data[detailsIndex].changedByUuid && <div className={stylesItem.right}>
+            {changeData[detailsIndex].changedByUuid && <div className={stylesItem.right}>
                <Text bold large>Details</Text>
                <div className={styles.detailsItem}>
-                  <Text blackSpan>Date: <span>{moment.utc(data[detailsIndex].changedAt).format("DD.MM.YYYY HH:mm")}</span></Text>
-                  {!!zip(data[detailsIndex].changedFrom, data[detailsIndex].changedTo) === true
-                     ? zip(data[detailsIndex].changedFrom, data[detailsIndex].changedTo).map(item => {
+                  <Text blackSpan>Date: <span>{moment.utc(changeData[detailsIndex].changedAt).format("DD.MM.YYYY HH:mm")}</span></Text>
+                  {!!zip(changeData[detailsIndex].changedFrom, changeData[detailsIndex].changedTo) === true
+                     ? zip(changeData[detailsIndex].changedFrom, changeData[detailsIndex].changedTo).map(item => {
                         return <Text key={item[0]} blackSpan><span>{item[0]}</span> changed
                            to <span>{item[1]}</span></Text>
                      }) : null}
