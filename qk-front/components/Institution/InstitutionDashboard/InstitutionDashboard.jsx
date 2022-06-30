@@ -63,7 +63,7 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
       return () => {
          setHasMore(true)
       }
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    /**
     * Listener to set proper data when query changes
@@ -74,7 +74,7 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
       if (!router.query.filter) {
          setHasMore(true)
       }
-   }, [router.query.filter])
+   }, [router.query.filter]) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>

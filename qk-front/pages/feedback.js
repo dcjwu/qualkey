@@ -2,6 +2,7 @@ import axios from "axios"
 import getConfig from "next/config"
 import Head from "next/head"
 
+import ContactView from "../components/ContactView/ContactView"
 import InstitutionView from "../components/Institution/InstitutionView/InstitutionView"
 import StudentView from "../components/Student/StudentView/StudentView"
 import Heading from "../components/UI/Heading/Heading"
@@ -24,6 +25,7 @@ export default function Feedback({ userData, notificationsData, serverErrorMessa
          </Head>
          <InstitutionView institution notificationsData={notificationsData} userData={userData}>
             <Heading blue h1>Give Feedback</Heading>
+            <ContactView feedback/>
          </InstitutionView>
       </>
    )
@@ -35,6 +37,7 @@ export default function Feedback({ userData, notificationsData, serverErrorMessa
          </Head>
          <StudentView notificationsData={notificationsData} userData={userData}>
             <Heading blue h1>Give Feedback</Heading>
+            <ContactView feedback/>
          </StudentView>
       </>
    )

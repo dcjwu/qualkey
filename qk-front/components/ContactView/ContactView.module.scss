@@ -1,0 +1,165 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.wrapper {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 34px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  background-color: $color-secondary;
+  height: 90%;
+  @include breakpoint-max($bp-screen-md) {
+    flex-direction: column;
+  }
+}
+
+.left {
+  padding: 5rem 3rem;
+  background-color: $color-additional-medium;
+  border-radius: 12px 0 0 12px;
+  height: calc(100% - 5rem - 5rem);
+  @include breakpoint-max($bp-screen-md) {
+    height: initial;
+    width: calc(100% - 3rem - 3rem);
+    border-radius: 12px 12px 0 0;
+  }
+  > p {
+    @include breakpoint-max($bp-screen-md) {
+      display: none;
+    }
+  }
+}
+
+.contacts {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  @include breakpoint-max($bp-screen-md) {
+    flex-direction: row;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+  }
+  @include breakpoint-max($bp-screen-sm) {
+    gap: 3rem;
+  }
+}
+
+.contactsItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  > p {
+    @include breakpoint-max($bp-screen-sm) {
+      display: none;
+    }
+  }
+}
+
+.right {
+  padding: 5rem 3rem;
+  width: calc(100% - 3rem - 3rem);
+  height: calc(100% - 5rem - 5rem);
+  @include breakpoint-max($bp-screen-md) {
+    padding-top: 2rem;
+    height: calc(100% - 5rem - 2rem);
+  }
+
+  > p:first-child {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  >p:nth-child(2) {
+    margin-bottom: 2rem;
+  }
+
+  > button {
+    display: block;
+    &:last-child {
+      display: block;
+      margin: 2rem auto 0 auto;
+      width: fit-content;
+      padding: 1rem 2rem;
+    }
+  }
+  > textarea {
+    font-family: inherit;
+    width: calc(100% - 2.5rem - 2.5rem);
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    height: 50%;
+    border: 1px solid $color-additional-medium;
+    resize: none;
+    &::placeholder {
+      font-style: italic;
+    }
+  }
+}
+
+.dropdownWrapper {
+  position: relative;
+  width: 25rem;
+  @include breakpoint-max($bp-screen-sm) {
+    width: 100%;
+  }
+  button {
+    width: 100%;
+    margin-bottom: 2rem;
+    font-family: inherit;
+    background-color: $color-secondary;
+    border: 1px solid $color-primary-light;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+  }
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  top: 3.2rem;
+  left: 0;
+  z-index: 999;
+  background-color: $color-secondary;
+  border: 1px solid $color-primary-light;
+  width: calc(100% - 2px);
+  border-radius: 0 0 12px 12px;
+  border-top: none;
+  padding-top: 1rem;
+  ul > li {
+    padding: 0.5rem 1rem;
+    transition: background-color .2s ease-in-out;
+    cursor: pointer;
+    &:last-child {
+      border-radius: 0 0 12px 12px;
+    }
+    &:hover {
+      background-color: $color-additional-medium;
+    }
+  }
+}
+
+.dropdownRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttonRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  input {
+    border-width: 1px;
+  }
+}

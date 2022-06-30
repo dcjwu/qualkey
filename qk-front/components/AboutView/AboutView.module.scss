@@ -1,0 +1,116 @@
+@import "assets/styles/helpers/variables";
+@import "assets/styles/helpers/mixins";
+
+.wrapper {
+  margin-top: 3rem;
+  background-color: $color-secondary;
+  padding: 3rem 4rem 7rem 4rem;
+  border-radius: 12px;
+}
+
+.image {
+  width: 100%;
+  background-color: $color-additional-medium;
+  height: 27rem;
+  position: relative;
+  margin-bottom: 2rem;
+  @include breakpoint-max($bp-screen-md) {
+    display: none;
+  }
+}
+
+.text {
+  position: absolute;
+  top: 9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  letter-spacing: 0.028em;
+  p {
+    text-align: center;
+    &:last-child {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  @include breakpoint-max($bp-screen-xl) {
+    gap: 2rem;
+  }
+  @include breakpoint-max($bp-screen-md) {
+    flex-direction: column;
+  }
+}
+
+.left {
+  margin-top: -12.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  @include breakpoint-max($bp-screen-md) {
+    margin-top: 0;
+  }
+}
+
+.leftItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > p {
+    text-align: center;
+    &:nth-child(2) {
+      font-size: 1.8rem;
+    }
+  }
+  > a:last-child {
+    margin-top: 1rem;
+  }
+}
+
+.imageWrapper {
+  margin-bottom: 1rem;
+  position: relative;
+  width: 12rem;
+  height: 12rem;
+  img {
+    border-radius: 50% !important;
+  }
+}
+
+.right {
+  width: 50%;
+  > p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.45rem;
+    }
+    &:first-child {
+      margin-bottom: 2.5rem;
+    }
+  }
+  > button {
+    margin: 2.5rem auto 0 auto;
+    display: block;
+    width: fit-content;
+    padding: 1rem 2rem;
+    font-size: 1.65rem;
+  }
+  @include breakpoint-max($bp-screen-md) {
+    width: 100%;
+  }
+}
+
+.buttonRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  svg {
+    path {
+      stroke: $color-secondary;
+    }
+  }
+}

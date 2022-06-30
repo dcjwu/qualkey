@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil"
 
 import qkLogo from "../../../assets/images/qk-logo-text-blue.svg"
 import { viewCertificateModalState } from "../../../atoms"
+import { awsUrl } from "../../../utils"
 import { IconClose, IconEllipseBl, IconEllipseBr, IconEllipseTl, IconEllipseTr, IconShare } from "../_Icon"
 import Button from "../Button/Button"
 import Heading from "../Heading/Heading"
@@ -44,7 +45,7 @@ const ViewCertificateModal = ({ data }) => {
                      <IconEllipseBr/>
                      <div className={styles.imageWrapper}>
                         <Image alt="uni logo" height={102} objectFit="contain"
-                               src={!data?.institution?.logoUrl ? data.institutionLogoUrl : data?.institution?.logoUrl}
+                               src={!data?.institution?.logoUrl ? `${awsUrl}/${data.institutionLogoUrl}` : `${awsUrl}/${data?.institution?.logoUrl}`}
                                width={308}/>
                      </div>
                      <div className={styles.certificateInner}>

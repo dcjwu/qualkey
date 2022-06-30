@@ -2,11 +2,12 @@ import { useState } from "react"
 
 import axios from "axios"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 
 import avatar from "../../assets/images/avatarMock.webp"
 import { processingUrl } from "../../utils"
-import { IconCheckMark, IconLoading } from "../UI/_Icon"
+import { IconCheckMark, IconLoading, IconShowDropdown } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
 import Input from "../UI/Input/Input"
 import Text from "../UI/Text/Text"
@@ -14,7 +15,15 @@ import styles from "./SettingsView.module.scss"
 
 const changePassInitialState = { oldPassword: "", password: "", passwordRepeat: "" }
 
+const currencies = [
+   { currency: "GBP", name: "British Pound" },
+   { currency: "USD", name: "US Dollar" },
+   { currency: "EUR", name: "Euro" }
+]
+
 const SettingsView = ({ institution, userData }) => {
+   
+   const router = useRouter()
 
    const { firstName, lastName, email } = userData
 
@@ -23,6 +32,8 @@ const SettingsView = ({ institution, userData }) => {
    const [error, setError] = useState("")
    const [loading, setLoading] = useState(false)
    const [success, setSuccess] = useState(false)
+   const [currencyDropdownShow, setCurrencyDropdownShow] = useState(false)
+   const [currencyDropdownValue, setCurrencyDropdownValue] = useState(userData.currency)
 
    /**
     * Input value handling
@@ -74,6 +85,53 @@ const SettingsView = ({ institution, userData }) => {
       setFormChangePass(changePassInitialState)
    }
 
+   /**
+    * Show dropdown handler
+    */
+   const handleShowCurrencyDropdown = () => {
+      setCurrencyDropdownShow(prevState => !prevState)
+   }
+
+   /**
+    * Check currency helper function
+    */
+   const checkCurrency = value => {
+      if (value === "GBP") return "British Pound"
+      if (value === "USD") return "US Dollar"
+      if (value === "EUR") return "Euro"
+   }
+
+   /**
+    * Currency option handler
+    */
+   const handleCurrencyOption = event => {
+      setCurrencyDropdownValue(event.target.getAttribute("value"))
+      setCurrencyDropdownShow(false)
+   }
+
+   /**
+    * Submit currency change
+    */
+   const handleCurrencyChangeRequest = async () => {
+      await axios.patch(`${processingUrl}/user/setting`, {
+         settingName: "currency",
+         newValue: currencyDropdownValue
+      }, { withCredentials: true })
+         .then(response => {
+            setLoading(false)
+            if (response.status === 200) {
+               setError("")
+               setSuccess(true)
+               router.reload(window.location.pathname)
+            }
+         })
+         .catch(error => {
+            console.log(error)
+            setLoading(false)
+            setError(error.response.data.message)
+         })
+   }
+
    return (
       <div className={styles.wrapper}>
          <div className={styles.left}>
@@ -94,6 +152,9 @@ const SettingsView = ({ institution, userData }) => {
                   </li>
                   {!institution && <li className={view === 3 ? styles.active : ""} onClick={() => viewSetter(3)}>
                      <Text semiBold>Security & Privacy</Text>
+                  </li>}
+                  {!institution && <li className={view === 4 ? styles.active : ""} onClick={() => viewSetter(4)}>
+                     <Text semiBold>Currency</Text>
                   </li>}
                </ul>
             </div>
@@ -179,7 +240,58 @@ const SettingsView = ({ institution, userData }) => {
                               </Button>
                            </form>
                         </>
-                        : null
+                        : view === 4
+                           ? <>
+                              <Text big bold>Currency</Text>
+                              <div className={styles.currency}>
+                                 <Text grey small>Select default currency</Text>
+                                 <div className={styles.currencyWrapper}>
+                                    <button className={styles.currencyButton} onClick={handleShowCurrencyDropdown}>
+                                       <Text blackSpan><span>{!currencyDropdownValue ? userData.currency : currencyDropdownValue}</span>&nbsp;&nbsp;{!currencyDropdownValue ? checkCurrency(userData.currency) : checkCurrency(currencyDropdownValue)}
+                                       </Text>
+                                       <IconShowDropdown/>
+                                    </button>
+                                    <div className={styles.currencyDropdown}
+                                         style={{ display: currencyDropdownShow ? "block" : "" }}>
+                                       <ul>
+                                          {!currencyDropdownValue ? currencies.filter(item => userData.currency !== item.currency).map(item => (
+                                             <li key={item.currency} value={item.currency} onClick={handleCurrencyOption}>
+                                                {item.currency}
+                                             </li>
+                                          )) : currencies.filter(item => currencyDropdownValue !== item.currency).map(item => (
+                                             <li key={item.currency} value={item.currency} onClick={handleCurrencyOption}>
+                                                {item.currency}
+                                             </li>))}
+                                       </ul>
+                                    </div>
+                                 </div>
+                                 {
+                                    error
+                                       ? <Button error thin>
+                                          <div className={styles.buttonRow}>
+                                             <IconCheckMark/>
+                                             <Text>{error}</Text>
+                                          </div>
+                                       </Button>
+                                       : <Button blue thin disabled={userData.currency === currencyDropdownValue}
+                                                 onClick={handleCurrencyChangeRequest}>
+                                          <div className={styles.buttonRow}>
+                                             <IconCheckMark/>
+                                             <Text>
+                                                {loading
+                                                   ? <IconLoading/>
+                                                   : success
+                                                      ? "Success!"
+                                                      : "Save Changes"
+                                                }
+                                             </Text>
+                                          </div>
+                                       </Button>
+                                 }
+
+                              </div>
+                           </>
+                           : null
             }
          </div>
       </div>

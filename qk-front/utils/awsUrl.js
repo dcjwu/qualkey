@@ -1,0 +1,1 @@
+export const awsUrl = "https://public-images-qualkey-test.s3.eu-north-1.amazonaws.com"

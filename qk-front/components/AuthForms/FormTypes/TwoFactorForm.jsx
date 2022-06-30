@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 import axios from "axios"
-import moment from "moment"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilValue, useResetRecoilState } from "recoil"
@@ -15,30 +14,33 @@ import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "../AuthForm.module.scss"
 
-const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
+const TwoFactorForm = ({ forgotPassword }) => {
 
    const { push } = useRouter()
-
-   const calculateDuration = eventTime => moment.duration(Math.max(eventTime - (Math.floor(moment.utc(new Date().toISOString()).valueOf() / 1000)), 0), "seconds")
 
    const resetFormData = useResetRecoilState(loginFormState)
    const formData = useRecoilValue(loginFormState)
    const forgotFormData = useRecoilValue(forgotFormState)
-   const [hideResendButton, setHideResendButton] = useState(false)
-   const [duration, setDuration] = useState(calculateDuration(canBeResendAt))
    const [pinValues, setPinValues] = useState(["", "", "", ""])
    const [buttonError, setButtonError] = useState("")
    const [pinError, setPinError] = useState(false)
    const [loading, setLoading] = useState(false)
+   const [seconds, setSeconds] = useState(59)
 
    /**
-    * Countdown setter logic.
-    **/
-   let timerRef = useRef(0)
-   let timerCallback = useCallback(() => {
-      setDuration(calculateDuration(canBeResendAt))
-      setHideResendButton(false)
-   }, [canBeResendAt])
+    * Handler for timer and clearing data
+    */
+   useEffect(() => {
+      const intervalId = setInterval(() => {
+         setSeconds(prevState => prevState - 1)
+      }, 1000)
+      if (seconds === 0) {
+         clearInterval(intervalId)
+      }
+      return () => {
+         clearInterval(intervalId)
+      }
+   }, [seconds])
 
    /**
     * Form submit handling.
@@ -97,31 +99,12 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
    const handleResendCode = async () => {
       await axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
          .then(response => {
-            console.log(response)
+            if (response.status === 201) {
+               setSeconds(59)
+            }
          })
          .catch(error => console.log(error))
    }
-
-   /**
-    * Countdown updater logic.
-    **/
-   useEffect(() => {
-      timerRef.current = setInterval(timerCallback, 1000)
-      return () => {
-         clearInterval(timerRef.current)
-      }
-   }, [canBeResendAt]) // eslint-disable-line react-hooks/exhaustive-deps
-
-   /**
-    * Hides reset button and sets loading to false.
-    **/
-   useEffect(() => {
-      setHideResendButton(true)
-      return () => {
-         setLoading(false)
-
-      }
-   }, [])
 
    return (
       <div className={`${styles.loginPage}`}>
@@ -136,12 +119,9 @@ const TwoFactorForm = ({ canBeResendAt, forgotPassword }) => {
                {buttonError ? <Button bold error thin>{buttonError}</Button> : <Button blue bold thin
                                                                                        disabled={loading}>{loading ?
                      <IconLoading/> : "Next"}</Button>}
-               {
-                  hideResendButton ? <Text transparent>-</Text>
-                     : duration.minutes() === 0 && duration.seconds() === 0
-                        ? <Text grey onClick={handleResendCode}>Resend code</Text>
-                        : <Text grey>{`${duration.minutes()}:${duration.seconds() < 10 ? "0" + duration.seconds() : duration.seconds()}`}</Text>
-               }
+               {seconds
+                  ? <Text grey>00:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+                  : <Text grey onClick={handleResendCode}>Resend code</Text>}
             </form>
          </div>
          <div className={styles.copyright}>

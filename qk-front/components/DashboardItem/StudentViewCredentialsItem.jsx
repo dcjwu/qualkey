@@ -6,9 +6,8 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
-import schoolLogo from "../../assets/images/mockUniLogo.webp"
 import { paymentCredentialsState, viewCertificateModalState } from "../../atoms"
-import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
+import { awsUrl, processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import { IconAcademicCap, IconCertificate, IconInfo, IconLoading, IconWarning } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
 import HoverInfo from "../UI/HoverInfo/HoverInfo"
@@ -56,7 +55,7 @@ const StudentViewCredentialsItem = ({ data }) => {
          <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.student}`}
               style={{ borderRadius: "15px 15px 15px 15px" }}>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
-                   objectFit="contain" src={data.institution.logoUrl} width={196}/>
+                   objectFit="contain" src={`${awsUrl}/${data.institution.logoUrl}`} width={196}/>
             <div className={styles.itemWrapper}>
                <IconAcademicCap/>
                <div className={styles}>

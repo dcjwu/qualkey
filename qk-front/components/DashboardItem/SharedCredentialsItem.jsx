@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import { useRecoilState } from "recoil"
 
 import { viewCertificateModalState } from "../../atoms"
-import { processingUrl } from "../../utils"
+import { awsUrl, processingUrl } from "../../utils"
 import SharedCredentialsInfo from "../CredentialsInfo/SharedCredentialsInfo"
 import { IconAcademicCap, IconCertificate, IconHideDropdownBig, IconShowDropdownBig } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
@@ -38,7 +38,7 @@ const SharedCredentialsItem = ({ data }) => {
          .catch(error => {
             console.log(error)
          })
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>
@@ -47,7 +47,7 @@ const SharedCredentialsItem = ({ data }) => {
             <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.shared}`}
                  style={{ borderRadius: showData ? "15px 15px 0 0" : "15px 15px 15px 15px" }}>
                <Image alt="school name" className={styles.studentSchoolLogo} height={64}
-                      objectFit="contain" src={data.institutionLogoUrl} width={196}/>
+                      objectFit="contain" src={`${awsUrl}/${data.institutionLogoUrl}`} width={196}/>
                <div className={styles.itemWrapper}>
                   <IconAcademicCap/>
                   <div className={styles}>

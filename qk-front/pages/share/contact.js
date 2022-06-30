@@ -1,5 +1,6 @@
 import Head from "next/head"
 
+import ContactView from "../../components/ContactView/ContactView"
 import EmployerView from "../../components/EmployerView/EmployerView"
 import Heading from "../../components/UI/Heading/Heading"
 
@@ -11,6 +12,7 @@ export default function Contact() {
          </Head>
          <EmployerView>
             <Heading blue h1>Contact Us</Heading>
+            <ContactView employer/>
          </EmployerView>
       </>
    )

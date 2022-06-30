@@ -113,37 +113,6 @@
   }
 }
 
-.security {
-  margin-top: 3rem;
-
-  > div {
-    margin-bottom: 1.5rem;
-  }
-
-  > button {
-    bottom: 4rem;
-    left: 50%;
-    padding: 1rem 2rem;
-    position: absolute;
-    transform: translateX(-50%);
-    width: fit-content;
-
-    @include breakpoint-max($bp-screen-sm) {
-      bottom: 2rem;
-    }
-
-    @include breakpoint-max-vertical($bp-vertical-875) {
-      bottom: 0;
-    }
-
-    &:disabled {
-      > div > p {
-        color: $color-secondary;
-      }
-    }
-  }
-}
-
 .form {
   margin-top: 3rem;
 
@@ -207,8 +176,110 @@
   }
 }
 
+.security {
+  margin-top: 3rem;
+
+  > div {
+    margin-bottom: 1.5rem;
+  }
+
+  > button {
+    bottom: 4rem;
+    left: 50%;
+    padding: 1rem 2rem;
+    position: absolute;
+    transform: translateX(-50%);
+    width: fit-content;
+
+    @include breakpoint-max($bp-screen-sm) {
+      bottom: 2rem;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-875) {
+      bottom: 0;
+    }
+
+    &:disabled {
+      > div > p {
+        color: $color-secondary;
+      }
+    }
+  }
+}
+
 .buttonRow {
   align-items: center;
   display: flex;
   gap: 1rem;
+}
+
+.currency {
+  margin-top: 3rem;
+
+  > button:last-child {
+    bottom: 4rem;
+    left: 50%;
+    padding: 1rem 2rem;
+    position: absolute;
+    transform: translateX(-50%);
+    width: fit-content;
+  }
+}
+
+.currencyButton {
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid $color-additional-medium-dark;
+  border-radius: 12px;
+  display: flex;
+  font-family: inherit;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  width: 60%;
+}
+
+.currencyWrapper {
+  position: relative;
+
+  + button:disabled {
+    p {
+      color: $color-secondary;
+    }
+  }
+}
+
+.currencyDropdown {
+  background-color: $color-secondary;
+  border: 1px solid $color-additional-medium-dark;
+  border-radius: 0 0 12px 12px;
+  border-top: none;
+  display: none;
+  left: 0;
+  position: absolute;
+  top: 3.2rem;
+  width: calc(60% - 2px);
+  z-index: 99;
+
+  ul {
+    padding-top: 1rem;
+
+    li {
+      cursor: pointer;
+      padding: 1rem 2rem;
+      transition: 0.2s ease-in-out background-color;
+
+      &:last-child {
+        border-radius: 0 0 12px 12px;
+      }
+
+      &:hover {
+        background-color: $color-additional-medium;
+      }
+
+      > p:last-child {
+        color: $color-primary-light;
+        font-weight: $font-weight-sm;
+      }
+    }
+  }
 }

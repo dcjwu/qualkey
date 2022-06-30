@@ -5,10 +5,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useRecoilState, useResetRecoilState } from "recoil"
+import { useRecoilState } from "recoil"
 
 import { formShareState, paymentCredentialsState, showShareModalState } from "../../atoms"
-import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
+import { awsUrl, processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import CredentialHistory from "../CredentialHistory/CredentialHistory"
 import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconLoading, IconOpenViewPage, IconShare, IconShowDropdownBig, IconWarning } from "../UI/_Icon"
 import HoverInfo from "../UI/HoverInfo/HoverInfo"
@@ -89,7 +89,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
             <Input checkboxSolo disabled={data.status !== "ACTIVATED"} type="checkbox"
                    onChange={handleInputShareChange}/>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
-                   objectFit="contain" src={data.institution.logoUrl} width={196}/>
+                   objectFit="contain" src={`${awsUrl}/${data.institution.logoUrl}`} width={196}/>
             <div className={`${styles.itemWrapper} ${data.status === "EXPIRED" ? styles.expired : ""}`}>
                <IconAcademicCap/>
                <Text semiBold>{data.qualificationName}</Text>
@@ -128,7 +128,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
                }
             </div>
          </div>
-         <CredentialHistory data={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
+         <CredentialHistory changeData={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
       </div>
    )
 }

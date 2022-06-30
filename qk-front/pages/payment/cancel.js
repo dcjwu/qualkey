@@ -15,7 +15,7 @@ export default function Cancel() {
    const { push } = useRouter()
    const resetCredentialsData = useResetRecoilState(paymentCredentialsState)
    const credentialsData = useRecoilValue(paymentCredentialsState)
-   const [seconds, setSeconds] = useState(10)
+   const [seconds, setSeconds] = useState(20)
 
    /**
     * Handler for timer and clearing data
@@ -37,7 +37,7 @@ export default function Cancel() {
       if (!seconds) {
          push("/dashboard")
       }
-   }, [seconds])
+   }, [seconds]) // eslint-disable-line react-hooks/exhaustive-deps
 
    /**
     * Redirect user back if not data passed
@@ -49,7 +49,7 @@ export default function Cancel() {
       return () => {
          resetCredentialsData()
       }
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>

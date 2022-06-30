@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 import axios from "axios"
-import moment from "moment"
 import getConfig from "next/config"
 import Image from "next/image"
 import { useRecoilState } from "recoil"
@@ -23,7 +22,6 @@ export default function Home({ serverErrorMessage }) {
    const [, setFormError] = useRecoilState(formValidationErrorsState)
    const [, setLoading] = useRecoilState(loadingState)
    const [showTwoFactor, setShowTwoFactor] = useState(false)
-   const [canBeResendAt, setCanBeResendAt] = useState(null)
 
    /**
     * Input value handling.
@@ -80,7 +78,6 @@ export default function Home({ serverErrorMessage }) {
       if (showTwoFactor) {
          axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
             .then(response => {
-               setCanBeResendAt(moment.utc(response.data.canBeResentAt).valueOf() / 1000)
                setFormData({
                   ...formData,
                   otpUuid: response.data.otpUuid
@@ -106,7 +103,7 @@ export default function Home({ serverErrorMessage }) {
                {
                   !showTwoFactor
                      ? <LoginForm changeFormHandler={handleLoginFormChange} submitFormHandler={handleLoginFormSubmit}/>
-                     : <TwoFactorForm canBeResendAt={canBeResendAt}/>
+                     : <TwoFactorForm/>
                }
                <div className="logo">
                   <div className="logo__image-wrapper">

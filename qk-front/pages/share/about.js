@@ -1,5 +1,6 @@
 import Head from "next/head"
 
+import AboutView from "../../components/AboutView/AboutView"
 import EmployerView from "../../components/EmployerView/EmployerView"
 import Heading from "../../components/UI/Heading/Heading"
 
@@ -11,6 +12,7 @@ export default function About() {
          </Head>
          <EmployerView>
             <Heading blue h1>About Us</Heading>
+            <AboutView/>
          </EmployerView>
       </>
    )

@@ -10,7 +10,7 @@ import { useRecoilValue } from "recoil"
 import avatar from "../../../assets/images/avatarMock.webp"
 import bell from "../../../assets/images/bell.svg"
 import { queryShareState } from "../../../atoms"
-import { processingUrl } from "../../../utils"
+import { awsUrl, processingUrl } from "../../../utils"
 import NotificationWrapper from "../../Notification/NotificationWrapper/NotificationWrapper"
 import { IconAcademicCap, IconArrowLeft, IconBackLeft, IconHideDropdownBig, IconLogout, IconMessage, IconSettings } from "../_Icon"
 import BurgerButton from "../BurgerButton/BurgerButton"
@@ -158,7 +158,7 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData })
             {institution && userData.institution.logoUrl ? <div className={styles.imageWrapperLogo}>
                <Image alt="uni" className={styles.logo} layout="fill"
                       objectFit={"contain"}
-                      quality={100} src={userData.institution.logoUrl}/>
+                      quality={100} src={`${awsUrl}/${userData.institution.logoUrl}`}/>
             </div> : null}
             <div className={styles.userWrapper} onClick={handleShowMenu}>
                <div className={styles.imageWrapperUser}>

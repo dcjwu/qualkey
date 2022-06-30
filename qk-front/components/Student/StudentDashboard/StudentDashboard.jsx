@@ -89,7 +89,7 @@ const StudentDashboard = ({ data }) => {
          <div className={styles.contentWrapper}>
             {data ? data.map(data => (
                <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
-                                           handleCredentialsToShare={handleCredentialsToShare}/>
+                                     handleCredentialsToShare={handleCredentialsToShare}/>
             )) : null}
          </div>
       </>

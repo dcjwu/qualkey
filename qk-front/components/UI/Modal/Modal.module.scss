@@ -788,3 +788,41 @@
     margin: 0 auto;
   }
 }
+
+.details {
+  padding: 5rem 8rem !important;
+  button:last-child {
+    margin-top: 4rem !important;
+    padding: 1rem 3rem;
+    background-color: transparent;
+    border: 1px solid $color-highlight;
+    color: $color-highlight;
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+}
+
+.detailsWrapper {
+  margin: 2rem auto 0 auto;
+  width: 80%;
+}
+
+.detailsItem {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &:last-child {
+    > p:last-child {
+      flex-grow: 1;
+      overflow: hidden;
+      overflow-x: scroll;
+      width: 100%;
+    }
+  }
+}
+
+.lastItem {
+  margin-top: 2rem;
+}
