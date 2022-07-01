@@ -38,18 +38,14 @@ export class CredentialsPublicController {
   @Get(":did")
   async getCredentialsViewData(
       @Param("did") did: string,
-      @Query("shareUuid") shareUuid: string,
   ): Promise<CredentialsPublicViewDto> {
     const credentials = await this.credentialsRepository.getByDidWithLastChange(did);
     const credentialChange = await this.credentialsChangeRepository.getLastByCredentialsDid(did);
-    const credentialsShare = await this.credentialsShareRepository.getByUuid(shareUuid);
+    const credentialsShares = await this.credentialsShareRepository.findAllNotExpiredByCredentialUuid(credentials.uuid);
 
-    if (! credentialsShare.credentialUuids.includes(credentials.uuid)) throw new ForbiddenException("These credentials were not shared");
+    if (0 === credentialsShares.length) throw new ForbiddenException("These credentials were not shared");
 
-    // if expired throw exception
-    if (credentialsShare.expiresAt < new Date()) throw new CredentialsShareExpiredException();
-
-    return await this.credentialsPublicViewDtoFactory.createFromCredentials(credentials, credentialChange, credentialsShare.sharedFields);
+    return await this.credentialsPublicViewDtoFactory.createFromCredentials(credentials, credentialChange, credentialsShares[0].sharedFields);
   }
 
   /**

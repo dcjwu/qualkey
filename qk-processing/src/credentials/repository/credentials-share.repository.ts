@@ -36,4 +36,16 @@ export class CredentialsShareRepository {
       orderBy: { createdAt: "desc" },
     });
   }
+
+  public async findAllNotExpiredByCredentialUuid(credentialUuid: string): Promise<CredentialShare[]> {
+    return await this.prisma.credentialShare.findMany({
+      where: {
+        AND: [
+          { credentialUuids: { has: credentialUuid } },
+          { expiresAt: { gt: new Date() } }
+        ],
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }
 }
