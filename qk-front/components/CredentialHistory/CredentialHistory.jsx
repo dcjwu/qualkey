@@ -36,7 +36,7 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
                console.log(error)
             })
       }
-   }, [showCredentialsHistory])
+   }, [showCredentialsHistory]) // eslint-disable-line react-hooks/exhaustive-deps
 
    const checkExpiration = expiresAt => {
       const dateNow = moment(new Date(Date.now()).toUTCString())
@@ -83,8 +83,8 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
                      </Text>
                      {!!historyData[activeValue.index].changedByUuid === true
                         ? zip(historyData[activeValue.index].changedFrom, historyData[activeValue.index].changedTo).map(item => {
-                           return <div>
-                              <Text key={item[0]} blackSpan><span>{item[0]}</span> changed
+                           return <div key={item[0]}>
+                              <Text blackSpan><span>{item[0]}</span> changed
                                  to <span>{item[1]}</span></Text>
                            </div>
                         })

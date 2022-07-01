@@ -10,20 +10,22 @@
 }
 
 .top {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-between;
+
   @include breakpoint-max($bp-screen-lg) {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
     gap: 1rem;
   }
 }
 
 .buttons {
-  display: flex;
   align-items: center;
+  display: flex;
   gap: 1rem;
+
   @include breakpoint-max($bp-screen-lg) {
     //flex-grow: 1;
     flex: 1 1 0;
@@ -34,12 +36,12 @@
 
   > button {
     background-color: transparent;
-    font-family: inherit;
-    color: $color-highlight;
     border: 1px solid $color-highlight;
     border-radius: 12px;
-    padding: .5rem 1.5rem;
-    transition: background-color .2s ease-in-out, color .2s ease-in-out;
+    color: $color-highlight;
+    font-family: inherit;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
     &:hover,
     &.active {
@@ -54,11 +56,12 @@
 }
 
 .expand {
-  padding-left: 2rem;
-  display: flex;
   align-items: center;
   border-left: 1px solid $color-additional-medium-dark;
+  display: flex;
   gap: 2rem;
+  padding-left: 2rem;
+
   @include breakpoint-max($bp-screen-lg) {
     align-self: flex-end;
   }
@@ -71,38 +74,38 @@
 }
 
 .radio {
-  margin: 0;
-  overflow: initial;
-  padding: 0;
-  position: relative;
   appearance: none;
-  outline: none;
-  width: 5rem;
-  height: 3rem;
   background-color: $color-secondary;
   border: 1px solid $color-additional-medium-dark;
   border-radius: 50px;
+  height: 3rem;
+  margin: 0;
+  outline: none;
+  overflow: initial;
+  padding: 0;
+  position: relative;
   transition-duration: 200ms;
+  width: 5rem;
 
-  &:after {
-    content: "";
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    width: 26px;
-    height: 26px;
+  &::after {
     background-color: transparent;
     border-radius: 50%;
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 4px 6px rgb(0 0 0 / 20%);
+    content: "";
+    height: 26px;
+    left: 1px;
+    position: absolute;
+    top: 1px;
+    width: 26px;
   }
 
   &:checked {
     border-color: $color-highlight;
     box-shadow: inset 20px 0 0 0 $color-highlight;
 
-    &:after {
+    &::after {
+      box-shadow: -2px 4px 3px rgb(0 0 0 / 5%);
       left: 2rem;
-      box-shadow: -2px 4px 3px rgba(0, 0, 0, 0.05);
     }
   }
 }
@@ -122,28 +125,28 @@
 }
 
 .contentItem {
-  cursor: pointer;
-  width: calc(100% - 3rem - 3rem);
-  background-color: $color-secondary;
-  padding: 1rem 3rem;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
+  background-color: $color-secondary;
   border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+  width: calc(100% - 3rem - 3rem);
 
   &:last-child {
     margin-bottom: 0;
   }
 
   svg {
-    width: 2.4rem;
     height: 1.8rem;
+    width: 2.4rem;
   }
 }
 
 .contentInfo {
-  display: none;
-  border-radius: 0 0 12px 12px;
-  padding: 1.5rem 3rem 2rem;
   background-color: $color-secondary;
+  border-radius: 0 0 12px 12px;
+  display: none;
+  padding: 1.5rem 3rem 2rem;
 }

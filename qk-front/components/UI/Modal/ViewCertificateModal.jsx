@@ -5,7 +5,6 @@ import { viewCertificateModalState } from "../../../atoms"
 import Certificate from "../../Certificate/Certificate"
 import { IconClose, IconInstagramColor, IconLinkedinColor, IconShare } from "../_Icon"
 import Button from "../Button/Button"
-import Heading from "../Heading/Heading"
 import Text from "../Text/Text"
 import styles from "./Modal.module.scss"
 

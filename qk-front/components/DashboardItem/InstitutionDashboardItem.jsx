@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 
-import axios from "axios"
 import moment from "moment"
 import Image from "next/image"
 import Link from "next/link"
@@ -8,7 +7,7 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 
 import avatar from "../../assets/images/avatarMock.webp"
-import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
+import { validateStatus, validateStatusStyles } from "../../utils"
 import CredentialHistory from "../CredentialHistory/CredentialHistory"
 import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconOpenViewPage, IconShowDropdownBig } from "../UI/_Icon"
 import Text from "../UI/Text/Text"

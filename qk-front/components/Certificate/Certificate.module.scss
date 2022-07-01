@@ -2,23 +2,23 @@
 @import "assets/styles/helpers/mixins";
 
 .certificateWrapper {
-  position: relative;
-  margin-bottom: 2rem;
-  padding: 2rem 3.5rem 3rem 3.5rem;
   border: 6px solid $color-highlight;
+  margin-bottom: 2rem;
+  padding: 2rem 3.5rem 3rem;
+  position: relative;
 
   svg {
     position: absolute;
     z-index: 9999;
 
     &:nth-child(1) {
-      top: -6px;
       left: -6px;
+      top: -6px;
     }
 
     &:nth-child(2) {
-      top: -6px;
       right: -6px;
+      top: -6px;
     }
 
     &:nth-child(3) {
@@ -33,13 +33,13 @@
   }
 
   .top {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: space-between;
 
     > canvas {
-      padding: .2rem;
       border: 4px solid $color-highlight;
+      padding: 0.2rem;
     }
 
     > .imageWrapper {
@@ -48,36 +48,38 @@
   }
 
   .bottom {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: space-between;
 
     > p {
-      width: 55%;
       line-height: 1.6;
+      width: 55%;
+
       &:last-child {
         line-height: 2rem;
       }
     }
 
     .imageWrapper {
+      height: 9rem;
       position: relative;
       width: 9rem;
-      height: 9rem;
     }
   }
 }
 
 .certificateInner {
-  margin: 3rem 0 6rem 0;
-  display: flex;
   align-items: flex-start;
+  display: flex;
   justify-content: space-between;
+  margin: 3rem 0 6rem;
 
   .left {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
     > div {
       p:last-child {
         font-size: 1.8rem;
@@ -86,23 +88,24 @@
   }
 
   .right {
-    height: 27rem;
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 0.5rem;
+    height: 27rem;
     overflow: hidden;
     overflow-y: scroll;
+
     .imageWrapper {
-      width: 100%;
       height: 5rem;
       position: relative;
+      width: 100%;
     }
   }
 }
 
 .rowButton {
-  display: flex;
   align-items: center;
+  display: flex;
   gap: 1rem;
   justify-content: center;
 }

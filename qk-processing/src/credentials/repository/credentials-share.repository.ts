@@ -42,7 +42,7 @@ export class CredentialsShareRepository {
       where: {
         AND: [
           { credentialUuids: { has: credentialUuid } },
-          { expiresAt: { gt: new Date() } }
+          { expiresAt: { gt: new Date() } },
         ],
       },
       orderBy: { createdAt: "desc" },
