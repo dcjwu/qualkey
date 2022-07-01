@@ -1,0 +1,24 @@
+{
+  "name": "qk",
+  "version": "1.0.0",
+  "description": "Qualkey project made by Web3App.agency",
+  "main": "index.js",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IgorAbramov/qk-processing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IgorAbramov/qk-processing/issues"
+  },
+  "homepage": "https://github.com/IgorAbramov/qk-processing#readme"
+}
