@@ -43,4 +43,6 @@ export * from "./IconLinkedin"
 export * from "./IconEmail"
 export * from "./IconTwitter"
 export * from "./IconLinkedinSmall"
+export * from "./IconInstagramColor"
+export * from "./IconLinkedinColor"
 
