@@ -106,7 +106,7 @@ const FileUploadModal = () => {
    }
 
    /**
-    * Sends upload request to processing and delete file from front-end folder.
+    * Sends upload request to process ng and delete file from front-end folder.
     **/
    const handleSubmitMapping = async () => {
       const arrayOfValues = mappingToValues.map(mapping => mapping?.value)

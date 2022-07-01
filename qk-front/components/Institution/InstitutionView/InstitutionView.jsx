@@ -1,11 +1,13 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import axios from "axios"
+import { getCookie } from "cookies-next"
 import PropTypes from "prop-types"
 import { useRecoilValue, useResetRecoilState } from "recoil"
 
 import { confirmUploadModalState, currentFileState, filenameState, filePrefixState, uploadModalState, userActionWithdrawModalState } from "../../../atoms"
 import { frontUrl } from "../../../utils"
+import ChangePasswordModal from "../../UI/Modal/ChangePasswordModal"
 import ConfirmUploadModal from "../../UI/Modal/ConfirmUploadModal"
 import FileUploadModal from "../../UI/Modal/FileUploadModal"
 import UserActionWithdrawModal from "../../UI/Modal/UserActionWithdrawModal"
@@ -25,6 +27,8 @@ const InstitutionView = ({ children, institution, userData, notificationsData, c
    
    const confirmUploadModal = useRecoilValue(confirmUploadModalState)
    const withdrawModal = useRecoilValue(userActionWithdrawModalState)
+
+   const [changePasswordModal, setChangePasswordModal] = useState(false)
 
    /**
     * File deletion processing.
@@ -47,6 +51,12 @@ const InstitutionView = ({ children, institution, userData, notificationsData, c
       }
    }, [openModal]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   useEffect(() => {
+      if (getCookie("first_login") === true) {
+         setChangePasswordModal(true)
+      }
+   }, [])
+
    return (
       <div className="main__wrapper">
          <Sidebar institution={institution}/>
@@ -57,6 +67,7 @@ const InstitutionView = ({ children, institution, userData, notificationsData, c
          {openModal && <FileUploadModal/>}
          {confirmUploadModal && <ConfirmUploadModal/>}
          {withdrawModal && <UserActionWithdrawModal/>}
+         {changePasswordModal && <ChangePasswordModal/>}
       </div>
    )
 }
