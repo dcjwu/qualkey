@@ -10,8 +10,6 @@ import styles from "./Certificate.module.scss"
 
 const Certificate = ({ data }) => {
 
-   console.log(data, "CERTIFICATE")
-
    return (
       <>
          <div className={styles.certificateWrapper}>

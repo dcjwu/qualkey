@@ -1,14 +1,18 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
+import axios from "axios"
 import moment from "moment"
 
+import { processingUrl } from "../../utils"
 import stylesItem from "../DashboardItem/DashboardItem.module.scss"
+import { IconArrowLeft } from "../UI/_Icon"
 import Text from "../UI/Text/Text"
 import styles from "./CredentialHistory.module.scss"
 
-const CredentialHistory = ({ changeData, showCredentialsHistory }) => {
+const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
 
-   const [detailsIndex, setDetailsIndex] = useState(0)
+   const [activeValue, setActiveValue] = useState({ index: 0, type: "" })
+   const [historyData, setHistoryData] = useState([])
 
    const zip = (a1, a2) => {
       if (a1.length && a2.length) {
@@ -16,6 +20,28 @@ const CredentialHistory = ({ changeData, showCredentialsHistory }) => {
       } else {
          return false
       }
+   }
+
+   useEffect(() => {
+      if (showCredentialsHistory) {
+         axios.get(`${processingUrl}/credential/share?credentialUuid=${uuid}`,
+            { withCredentials: true })
+            .then(response => {
+               const newData = [...response.data, ...changeData].sort((a, b) => {
+                  return new Date(b.createdAt) - new Date(a.createdAt)
+               })
+               setHistoryData(newData)
+            })
+            .catch(error => {
+               console.log(error)
+            })
+      }
+   }, [showCredentialsHistory])
+
+   const checkExpiration = expiresAt => {
+      const dateNow = moment(new Date(Date.now()).toUTCString())
+      const dateExpires = moment(expiresAt)
+      return dateExpires.diff(dateNow) > 0
    }
 
    return (
@@ -27,41 +53,64 @@ const CredentialHistory = ({ changeData, showCredentialsHistory }) => {
             <div className={stylesItem.left}>
                <Text bold large>Credentials History</Text>
                <div className={stylesItem.historyItemWrapper}>
-                  {changeData.length !== 1 && changeData[detailsIndex].changedByUuid
-                     ? changeData.map((item, index) => (
-                        item.changedByUuid ? <div key={item.changedAt}
-                                                     className={`${styles.historyItem} ${index === detailsIndex ? styles.active : ""}`}
-                                                     onClick={() => setDetailsIndex(index)}>
-                           <Text grey>{moment(item.changedAt).format("DD.MM.YYYY")}</Text>
+                  {historyData.map((item, index) => {
+                     if (item["sharedBy"]) {
+                        return <div key={item.uuid}
+                                    className={`${styles.historyItem} ${index === activeValue.index ? styles.active : ""}`}
+                                    onClick={() => setActiveValue({ index: index, type: "sharedBy" })}>
+                           <Text grey>{moment(item.createdAt).format("DD.MM.YYYY")}</Text>
+                           <Text bold>Credential Share</Text>
+                           <IconArrowLeft/>
+                        </div>
+                     } else if (item["changedByUuid"]) {
+                        return <div key={item.id}
+                                    className={`${styles.historyItem} ${index === activeValue.index ? styles.active : ""}`}
+                                    onClick={() => setActiveValue({ index: index, type: "changedByUuid" })}>
+                           <Text grey>{moment(item.createdAt).format("DD.MM.YYYY")}</Text>
                            <Text bold>Credential Change</Text>
-                           <svg fill="none" height="17" viewBox="0 0 16 17"
-                                   width="16" xmlns="http://www.w3.org/2000/svg">
-                              <g clipPath="url(#clip0_462_14165)">
-                                 <path d="M2.5416 0.613091L8.26348 7.43809C8.43223 7.66666 8.50098 7.88094 8.50098 8.06309C8.50098 8.24523 8.43163 8.49059 8.29198 8.65559L2.5416 15.5127C2.25723 15.8554 1.7541 15.8666 1.48223 15.5384C1.18145 15.2125 1.17166 14.6677 1.45977 14.3274L6.71348 8.06309L1.46348 1.7988C1.17538 1.45952 1.18516 0.913805 1.48594 0.587734C1.7541 0.25952 2.25723 0.270234 2.5416 0.613091Z"
-                                          fill="#737373"/>
-                              </g>
-                              <defs>
-                                 <clipPath id="clip0_462_14165">
-                                    <rect fill="white" height="16" transform="translate(0 16.0635) rotate(-90)"
-                                             width="16"/>
-                                 </clipPath>
-                              </defs>
-                           </svg>
-                        </div> : null
-                     )) : <Text grey>No data to show</Text>}
+                           <IconArrowLeft/>
+                        </div>
+                     }
+                  })}
                </div>
             </div>
-            {changeData[detailsIndex].changedByUuid && <div className={stylesItem.right}>
-               <Text bold large>Details</Text>
-               <div className={styles.detailsItem}>
-                  <Text blackSpan>Date: <span>{moment.utc(changeData[detailsIndex].changedAt).format("DD.MM.YYYY HH:mm")}</span></Text>
-                  {!!zip(changeData[detailsIndex].changedFrom, changeData[detailsIndex].changedTo) === true
-                     ? zip(changeData[detailsIndex].changedFrom, changeData[detailsIndex].changedTo).map(item => {
-                        return <Text key={item[0]} blackSpan><span>{item[0]}</span> changed
-                           to <span>{item[1]}</span></Text>
-                     }) : null}
+            {historyData.length > 1
+               ? <div className={stylesItem.right}>
+                  <Text bold large>Details</Text>
+                  <div className={styles.detailsItem}>
+                     <Text blackSpan>Date:&nbsp;
+                        <span>{moment.utc(historyData[activeValue.index].createdAt).format("DD.MM.YYYY HH:mm")}</span>
+                     </Text>
+                     {!!historyData[activeValue.index].changedByUuid === true
+                        ? zip(historyData[activeValue.index].changedFrom, historyData[activeValue.index].changedTo).map(item => {
+                           return <div>
+                              <Text key={item[0]} blackSpan><span>{item[0]}</span> changed
+                                 to <span>{item[1]}</span></Text>
+                           </div>
+                        })
+                        : !!historyData[activeValue.index].sharedBy === true
+                           ? <>
+                              <div>
+                                 {checkExpiration(historyData[activeValue.index].expiresAt)
+                                    ? <Text semiBold success>Link Active</Text> : <Text error semiBold>Link Expired</Text>}
+                              </div>
+                              <div className={styles.emails}>
+                                 <Text grey>Shared with:</Text>
+                                 {historyData[activeValue.index].recipientEmails.map(item => {
+                                    return <Text key={item}>{item}</Text>
+                                 })}
+                              </div>
+                              <div className={styles.shares}>
+                                 <Text grey>Shared credentials:</Text>
+                                 {historyData[activeValue.index].credentialQualificationNames.map(item => {
+                                    return <Text key={item} semiBold>{item}</Text>
+                                 })}
+                              </div>
+                           </>
+                           : null}
+                  </div>
                </div>
-            </div>}
+               : null}
          </div>
       </div>
    )

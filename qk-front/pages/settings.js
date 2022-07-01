@@ -18,8 +18,6 @@ export default function Settings({ userData, notificationsData, serverErrorMessa
 
    const { role } = userData
 
-   console.log(userData)
-
    if (role === userRoles.institution) return (
       <>
          <Head>

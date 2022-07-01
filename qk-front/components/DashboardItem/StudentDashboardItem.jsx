@@ -23,6 +23,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
    const [, setShowShareModal] = useRecoilState(showShareModalState)
    const [formShare, setFormShare] = useRecoilState(formShareState)
    const [, setCredentialsData] = useRecoilState(paymentCredentialsState)
+   const [shareData, setShareData] = useState([])
    const [showCredentialsHistory, setShowCredentialsHistory] = useState(false)
    const [loading, setLoading] = useState(false)
 
@@ -128,7 +129,8 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
                }
             </div>
          </div>
-         <CredentialHistory changeData={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
+         <CredentialHistory changeData={data.credentialChanges} shareData={shareData} showCredentialsHistory={showCredentialsHistory}
+                            uuid={data.uuid}/>
       </div>
    )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import axios from "axios"
 import moment from "moment"
 import Image from "next/image"
 import Link from "next/link"
@@ -7,7 +8,7 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 
 import avatar from "../../assets/images/avatarMock.webp"
-import { validateStatus, validateStatusStyles } from "../../utils"
+import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import CredentialHistory from "../CredentialHistory/CredentialHistory"
 import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconOpenViewPage, IconShowDropdownBig } from "../UI/_Icon"
 import Text from "../UI/Text/Text"
@@ -22,11 +23,7 @@ const InstitutionDashboardItem = ({ data }) => {
     * Credential history dropdown handling.
     **/
    const handleShowDropdown = () => {
-      if (showCredentialsHistory) {
-         setShowCredentialsHistory(false)
-      } else {
-         setShowCredentialsHistory(true)
-      }
+      setShowCredentialsHistory(prevState => !prevState)
    }
 
    useEffect(() => {
@@ -67,7 +64,7 @@ const InstitutionDashboardItem = ({ data }) => {
                }
             </div>
          </div>
-         <CredentialHistory data={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
+         <CredentialHistory changeData={data.credentialChanges} showCredentialsHistory={showCredentialsHistory}/>
       </div>
    )
 }

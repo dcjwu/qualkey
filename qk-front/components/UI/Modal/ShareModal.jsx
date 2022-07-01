@@ -172,7 +172,6 @@ const ShareModal = () => {
       event.preventDefault()
       await axios.post(`${processingUrl}/credential/share`, { ...formData }, { withCredentials: true })
          .then(response => {
-            console.log(response)
             setError("")
             setStep(3)
          })

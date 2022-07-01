@@ -143,7 +143,7 @@ export class CredentialsController {
   @Get("share")
   async getCredentialsShares(
       @GetUser() user: User,
-      @Body() dto: CredentialsGetSharesRequestDto,
+      @Query() dto: CredentialsGetSharesRequestDto,
   ): Promise<CredentialShare[]> {
     if (null === dto.credentialUuid) {
       return await this.credentialsShareRepository.findAllByUser(user);

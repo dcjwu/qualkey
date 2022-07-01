@@ -40,8 +40,6 @@ const UserActionWithdrawModal = () => {
       setStep(1)
    }
 
-   console.log(credentialData)
-
    /**
     * Gets credential data when modal opens.
     */
