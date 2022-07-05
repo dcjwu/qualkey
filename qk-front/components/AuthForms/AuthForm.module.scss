@@ -38,10 +38,10 @@
 
   h1 {
     align-self: flex-start;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 
     + p {
-      margin-bottom: 4rem;
+      margin-bottom: 2.4rem;
     }
   }
 
@@ -101,11 +101,7 @@
 
   &.forgot {
     > h1 {
-      margin-bottom: 1.5rem;
-
-      + p {
-        margin-bottom: 1.5rem;
-      }
+      margin-bottom: 1rem;
     }
   }
 }

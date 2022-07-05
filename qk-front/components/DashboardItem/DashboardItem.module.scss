@@ -22,6 +22,7 @@
   }
 
   &.student {
+    justify-content: center;
     border: 1px solid $color-pending;
     border-radius: 15px;
     @include breakpoint-max($bp-screen-md) {
@@ -458,6 +459,18 @@
   > button {
     width: fit-content;
     padding: 1rem 2rem;
+    margin-top: 0;
+    color: $color-highlight;
+    background-color: $color-secondary;
+    border: 1px solid $color-highlight;
+    &:hover {
+      background-color: $color-secondary !important;
+    }
+    svg {
+      path {
+        stroke: $color-highlight;
+      }
+    }
   }
 
   p {
@@ -480,6 +493,9 @@
     }
     > button {
       height: 5.5rem;
+      &:focus {
+        background-color: $color-secondary;
+      }
     }
   }
 }
@@ -633,8 +649,8 @@
       width: initial;
       height: initial;
       path {
-        stroke: $color-secondary;
-        fill: $color-secondary;
+        stroke: $color-highlight;
+        fill: $color-highlight;
       }
     }
   }

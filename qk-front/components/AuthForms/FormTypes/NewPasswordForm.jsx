@@ -20,6 +20,7 @@ const NewPasswordForm = ({ formChangeHandler, formSubmitHandler, buttonError, lo
       <div className={`${styles.loginPage} ${styles.forgot} ${styles.newPassword}`}>
          <div className={styles.wrapper}>
             <Heading blue h1>Set new password</Heading>
+            <Text>Please set a new password that is going to be used from now on.</Text>
             <form onSubmit={formSubmitHandler}>
                <Input placeholder="New Password" type={"password"} value={inputState.password}
                       onChange={formChangeHandler}/>

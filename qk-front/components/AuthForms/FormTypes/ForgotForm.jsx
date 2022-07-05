@@ -33,7 +33,7 @@ const ForgotForm = ({ changeFormHandler, submitFormHandler, buttonError }) => {
       <div className={`${styles.loginPage} ${styles.forgot}`}>
          <div className={`${styles.wrapper} ${styles.forgot}`}>
             <Heading blue h1>Forgot password</Heading>
-            <Text>Enter your emai and we will send you a 4-digit code needed to reset your password.</Text>
+            <Text>Enter your email and we will send you a 4-digit code needed to reset your password.</Text>
             <form onSubmit={submitFormHandler}>
                <Input placeholder="Email" type={"email"} value={inputState.email}
                       onChange={changeFormHandler}/>
@@ -42,7 +42,7 @@ const ForgotForm = ({ changeFormHandler, submitFormHandler, buttonError }) => {
                                                                                        disabled={loading}>
                   {loading
                      ? <IconLoading style={{ height: 15 }}/>
-                     : <p>Send 4-digit code</p>
+                     : <p>Enter the 4-digit code</p>
                   }
                </Button>}
             </form>

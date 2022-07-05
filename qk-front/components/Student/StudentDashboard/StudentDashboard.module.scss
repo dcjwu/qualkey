@@ -40,7 +40,7 @@
 .searchShareWrapper {
   align-items: center;
   display: flex;
-  gap: 2rem;
+  gap: 1.6rem;
   justify-content: flex-end;
   margin-bottom: 1rem;
 
@@ -61,8 +61,10 @@
   }
 
   > button {
-    padding: 1rem 2rem;
+    margin-top: 0;
+    padding: 1rem 3.2rem;
     width: fit-content;
+    border-radius: 12px;
 
     @include breakpoint-max($bp-screen-sm) {
       display: none;

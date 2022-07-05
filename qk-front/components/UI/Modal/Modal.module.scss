@@ -523,6 +523,9 @@
     background-color: $color-secondary;
     border: 1px solid $color-highlight;
     padding: 1rem 2rem;
+    &:focus {
+      background-color: transparent;
+    }
 
     > div p {
       color: $color-highlight;
