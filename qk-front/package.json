@@ -1,6 +1,7 @@
 {
   "name": "qk-front",
   "version": "0.1.0",
+  "author": "Web3App.agency",
   "private": true,
   "scripts": {
     "dev": "next dev",

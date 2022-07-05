@@ -1,4 +1,4 @@
-.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump dump-new test test-watch backup
+.PHONY: help go go-prod build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump dump-new test test-watch backup
 
 DOCKER_COMPOSE=docker-compose
 DOCKER_COMPOSE_RUN=$(DOCKER_COMPOSE) run --rm --no-deps
@@ -36,6 +36,9 @@ help:
 
 ## One command to setup and start the project
 go: build start dump migrate
+
+## One command to setup and start the project
+go-prod: build-prod start-prod dump migrate
 
 ## Build project
 build:
