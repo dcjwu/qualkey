@@ -1,4 +1,4 @@
-.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump dump-new test test-watch backup
+.PHONY: help go build build-prod start start-prod stop restart restart-front restart-back restart-db shell shell-front shell-db shell-pg migrate dump dump-new test test-watch backup dump-big
 
 DOCKER_COMPOSE=docker-compose
 DOCKER_COMPOSE_RUN=$(DOCKER_COMPOSE) run --rm --no-deps
@@ -14,6 +14,7 @@ dev_db_user = qualkey
 dev_dv_volume = qk_pgdata
 dev_db_dump = qk_db-dev-dump.sql
 dev_db_dump_new = qk_db-dev-dump-new.sql
+dev_db_dump_big = qk_db-dev-dump-big.sql
 
 COLOR_RESET   = \033[0m
 COLOR_INFO    = \033[32m
@@ -108,6 +109,10 @@ dump:
 ## Restore admin database Igor
 dump-new:
 	cat db.docker/$(dev_db_dump_new) | docker exec -i $(db) psql -U $(dev_db_user)
+
+## Restore admin database Alex
+dump-big:
+	cat db.docker/$(dev_db_dump_big) | docker exec -i $(db) psql -U $(dev_db_user)
 
 ## Apply changes from Prisma schema to DB
 schema-push:
