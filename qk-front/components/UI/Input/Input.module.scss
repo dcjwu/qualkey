@@ -25,6 +25,7 @@
   border-radius: 1rem;
   color: $color-primary;
   font-family: $font-primary;
+  background-color: $color-additional-light;
   font-size: 1.6rem;
   letter-spacing: 0.028em;
   padding: 1.5rem 2.5rem;
@@ -34,7 +35,7 @@
   }
 
   &::placeholder {
-    color: #96999c;
+    color: $color-primary-light;
   }
 
   &:read-only {
@@ -115,13 +116,18 @@
 }
 
 .search {
-  background: url("../../../assets/images/search.svg") no-repeat 10px 9px;
+  background-color: $color-additional-medium-dark;
+  background-image: url("../../../assets/images/search.svg");
+  background-repeat: no-repeat;
+  background-position: 10px 9px;
   border: 1px solid $color-additional;
   border-radius: 15px;
+  color: $color-primary;
+  font-family: $font-primary;
   padding: 1.2rem 2rem 1.2rem 4rem;
 
   &::placeholder {
-    color: $color-additional;
+    color: $color-primary-light;
   }
 
   &:focus {

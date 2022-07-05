@@ -22,7 +22,7 @@ const currencies = [
 ]
 
 const SettingsView = ({ institution, userData }) => {
-   
+
    const router = useRouter()
 
    const { firstName, lastName, email } = userData
@@ -208,7 +208,8 @@ const SettingsView = ({ institution, userData }) => {
                                        <Text>{error}</Text>
                                     </div>
                                  </Button>
-                                 : <Button blue thin>
+                                 : <Button blue thin
+                                           disabled={formChangePass.password === "" && formChangePass.oldPassword === "" && formChangePass.passwordRepeat === ""}>
                                     <div className={styles.buttonRow}>
                                        <IconCheckMark/>
                                        <Text>
@@ -243,8 +244,8 @@ const SettingsView = ({ institution, userData }) => {
                         : view === 4
                            ? <>
                               <Text big bold>Currency</Text>
+                              <Text grey>Please set the default currency you wish to make payments in</Text>
                               <div className={styles.currency}>
-                                 <Text grey small>Select default currency</Text>
                                  <div className={styles.currencyWrapper}>
                                     <button className={styles.currencyButton} onClick={handleShowCurrencyDropdown}>
                                        <Text blackSpan><span>{!currencyDropdownValue ? userData.currency : currencyDropdownValue}</span>&nbsp;&nbsp;{!currencyDropdownValue ? checkCurrency(userData.currency) : checkCurrency(currencyDropdownValue)}

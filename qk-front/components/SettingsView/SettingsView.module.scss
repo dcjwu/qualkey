@@ -114,11 +114,11 @@
 }
 
 .form {
-  margin-top: 3rem;
+  margin-top: 2.4rem;
 
   input {
     border-width: 1px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.6rem;
     width: calc(100% - 3rem - 3rem);
 
     @include breakpoint-max($bp-screen-sm) {
@@ -154,10 +154,9 @@
 
   > button {
     bottom: 4rem;
-    left: 50%;
+    left: 3rem;
     padding: 1rem 2rem;
     position: absolute;
-    transform: translateX(-50%);
     width: fit-content;
 
     @include breakpoint-max($bp-screen-sm) {
@@ -185,10 +184,9 @@
 
   > button {
     bottom: 4rem;
-    left: 50%;
+    left: 3rem;
     padding: 1rem 2rem;
     position: absolute;
-    transform: translateX(-50%);
     width: fit-content;
 
     @include breakpoint-max($bp-screen-sm) {
@@ -214,14 +212,13 @@
 }
 
 .currency {
-  margin-top: 3rem;
+  margin-top: 2.4rem;
 
   > button:last-child {
     bottom: 4rem;
-    left: 50%;
+    left: 3rem;
     padding: 1rem 2rem;
     position: absolute;
-    transform: translateX(-50%);
     width: fit-content;
   }
 }
@@ -235,7 +232,7 @@
   font-family: inherit;
   justify-content: space-between;
   padding: 1rem 2rem;
-  width: 60%;
+  width: 80%;
 }
 
 .currencyWrapper {
@@ -257,7 +254,7 @@
   left: 0;
   position: absolute;
   top: 3.2rem;
-  width: calc(60% - 2px);
+  width: calc(80% - 2px);
   z-index: 99;
 
   ul {
