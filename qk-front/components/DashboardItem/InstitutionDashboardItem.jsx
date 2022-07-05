@@ -43,7 +43,7 @@ const InstitutionDashboardItem = ({ data }) => {
             </div>
             <div className={styles.itemWrapper}>
                <IconAcademicCap/>
-               <Text>{`${data.qualificationName.slice(0, 35).trim()}...`}</Text>
+               <Text>{`${data.qualificationName.length > 36 ? data.qualificationName.slice(0, 35).trim() + "..." : data.qualificationName}`}</Text>
             </div>
             <div className={`${styles.status} ${validateStatusStyles(data.status)}`}>
                <IconInfo/>
