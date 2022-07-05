@@ -8,5 +8,25 @@ services:
     build:
       context: ./qk-processing/
     command: npm run start:dev
+    depends_on:
+      - qualkey_db
     volumes:
       - ./qk-processing/:/app
+  qualkey_db:
+    container_name: qualkey_db
+    image: postgres:13
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: qualkey
+      POSTGRES_PASSWORD: qualkey
+      POSTGRES_DB: qualkey
+      PG_DATA: /var/lib/postgresql/data
+    networks:
+      - qualkey
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
