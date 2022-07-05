@@ -4,9 +4,9 @@ import PropTypes from "prop-types"
 import { useRecoilState, useRecoilValue } from "recoil"
 
 import { credentialsState, dropdownSelectionListenerState } from "../../../../atoms"
+import { requiredMappingFields } from "../../../../utils"
 import { IconShowDropdown, IconX } from "../../_Icon"
 import styles from "./FileUploadDropdown.module.scss"
-import FileUploadDropdownItem from "./FileUploadDropdownItem"
 
 const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
 
@@ -35,6 +35,15 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
       handleOption(event, valueIndex)
    }
 
+   /**
+    * Check if passed value is required one
+    */
+   const checkValue = value => {
+      for (let i = 0; i < requiredMappingFields.length; i++) {
+         if (requiredMappingFields[i] === value) return true
+      }
+   }
+
    return (
       <div className={styles.wrapper}>
          <div className={styles.dropdown}>
@@ -42,13 +51,14 @@ const FileUploadDropdown = ({ handleOption, valueIndex, resetDropdown }) => {
                <span style={{ color: showDropdown ? "#e5e5e5" : "" }}>
                   {optionDropdown ? optionDropdown : "Choose"}
                </span>
-               <IconShowDropdown/>
+               {!optionDropdown ? <IconShowDropdown/> : null}
             </button>
             <div className={styles.content} style={{ display: showDropdown ? "block" : "none" }}>
                <ul>
-                  {credentialsData.map(data => (
-                     <FileUploadDropdownItem key={data.value} data={data} handleChooseOptionDropdown={handleChooseOptionDropdown}/>
-                  ))}
+                  {credentialsData.map(data => {
+                     return <li key={data.value} style={{ color: checkValue(data.value) ? "#05558a" : null }} value={data.value}
+                                onClick={handleChooseOptionDropdown}>{data.title}</li>
+                  })}
                </ul>
             </div>
          </div>

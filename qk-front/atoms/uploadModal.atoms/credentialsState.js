@@ -2,10 +2,6 @@ import { atom } from "recoil"
 
 const initialValue = [
    {
-      title: "Certificate ID",
-      value: "certificateId"
-   },
-   {
       title: "Full Name",
       value: "graduatedName"
    },

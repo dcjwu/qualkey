@@ -82,9 +82,6 @@ const FileUploadModal = () => {
     **/
    const handleOption = (event, index) => {
       let dropdownTitle = event.target.innerText
-      if (dropdownTitle[dropdownTitle.length - 1] === "*") {
-         dropdownTitle = dropdownTitle.slice(0, -1)
-      }
       mappingToValues[index] = {
          title: dropdownTitle,
          value: event.target.getAttribute("value")
