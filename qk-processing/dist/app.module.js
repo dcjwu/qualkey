@@ -254,7 +254,7 @@ AppModule = __decorate([
                         host: config.get("REDIS_HOST"),
                         port: 6379,
                     },
-                })
+                }),
             }),
             bull_1.BullModule.forRootAsync({
                 inject: [config_1.ConfigService],
@@ -263,7 +263,7 @@ AppModule = __decorate([
                         host: config.get("REDIS_HOST"),
                         port: 6379,
                     },
-                })
+                }),
             }),
             schedule_1.ScheduleModule.forRoot(),
             throttler_1.ThrottlerModule.forRootAsync({
