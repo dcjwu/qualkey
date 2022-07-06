@@ -251,18 +251,24 @@ AdminJS.registerAdapter({ Database, Resource });
         };
       },
     }),
-    RedisModule.forRoot({
-      closeClient: true,
-      config: {
-        host: "redis",
-        port: 6379,
-      },
+    RedisModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        closeClient: true,
+        config: {
+          host: config.get("REDIS_HOST"),
+          port: 6379,
+        },
+      })
     }),
-    BullModule.forRoot({
-      redis: {
-        host: "redis",
-        port: 6379,
-      },
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        redis: {
+          host: config.get("REDIS_HOST"),
+          port: 6379,
+        },
+      })
     }),
     ScheduleModule.forRoot(),
     ThrottlerModule.forRootAsync({

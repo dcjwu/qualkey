@@ -246,18 +246,24 @@ AppModule = __decorate([
                     };
                 },
             }),
-            nestjs_redis_1.RedisModule.forRoot({
-                closeClient: true,
-                config: {
-                    host: "redis",
-                    port: 6379,
-                },
+            nestjs_redis_1.RedisModule.forRootAsync({
+                inject: [config_1.ConfigService],
+                useFactory: (config) => ({
+                    closeClient: true,
+                    config: {
+                        host: config.get("REDIS_HOST"),
+                        port: 6379,
+                    },
+                })
             }),
-            bull_1.BullModule.forRoot({
-                redis: {
-                    host: "redis",
-                    port: 6379,
-                },
+            bull_1.BullModule.forRootAsync({
+                inject: [config_1.ConfigService],
+                useFactory: (config) => ({
+                    redis: {
+                        host: config.get("REDIS_HOST"),
+                        port: 6379,
+                    },
+                })
             }),
             schedule_1.ScheduleModule.forRoot(),
             throttler_1.ThrottlerModule.forRootAsync({
