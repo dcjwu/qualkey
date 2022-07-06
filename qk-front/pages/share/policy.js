@@ -2,6 +2,7 @@ import Head from "next/head"
 
 import EmployerView from "../../components/EmployerView/EmployerView"
 import Heading from "../../components/UI/Heading/Heading"
+import PolicyView from "../../components/PolicyView/PolicyView"
 
 const Policy = () => {
    return (
@@ -11,6 +12,7 @@ const Policy = () => {
          </Head>
          <EmployerView>
             <Heading blue h1>Privacy Policy</Heading>
+            <PolicyView/>
          </EmployerView>
       </>
    )

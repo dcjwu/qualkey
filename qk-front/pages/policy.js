@@ -7,6 +7,7 @@ import StudentView from "../components/Student/StudentView/StudentView"
 import Heading from "../components/UI/Heading/Heading"
 import { userRoles } from "../utils"
 import Error from "./_error"
+import PolicyView from "../components/PolicyView/PolicyView"
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
@@ -24,6 +25,7 @@ export default function Policy({ userData, notificationsData, serverErrorMessage
          </Head>
          <InstitutionView institution notificationsData={notificationsData} userData={userData}>
             <Heading blue h1>Privacy Policy</Heading>
+            <PolicyView/>
          </InstitutionView>
       </>
    )
@@ -35,6 +37,7 @@ export default function Policy({ userData, notificationsData, serverErrorMessage
          </Head>
          <StudentView notificationsData={notificationsData} userData={userData}>
             <Heading blue h1>Privacy Policy</Heading>
+            <PolicyView/>
          </StudentView>
       </>
    )

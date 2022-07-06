@@ -1,0 +1,52 @@
+@import "../../assets/styles/helpers/variables";
+@import "../../assets/styles/helpers/mixins";
+
+.wrapper {
+  margin-top: 3rem;
+  background-color: $color-secondary;
+  padding: 3rem;
+  border-radius: 12px;
+  height: 75%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.top {
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid $color-highlight;
+  margin-bottom: 1.5rem;
+}
+
+.intro {
+  margin-bottom: 3rem;
+  > p {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.topBlock {
+  > p {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.vocabItem {
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: .4fr 1fr;
+}
+
+.block {
+  margin-top: 2rem;
+}
+
+.blockItem {
+  margin-top: 1.5rem;
+  > p {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.subBlockItem {
+  margin-left: 8rem;
+}
