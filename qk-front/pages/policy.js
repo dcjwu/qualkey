@@ -3,11 +3,11 @@ import getConfig from "next/config"
 import Head from "next/head"
 
 import InstitutionView from "../components/Institution/InstitutionView/InstitutionView"
+import PolicyView from "../components/PolicyView/PolicyView"
 import StudentView from "../components/Student/StudentView/StudentView"
 import Heading from "../components/UI/Heading/Heading"
 import { userRoles } from "../utils"
 import Error from "./_error"
-import PolicyView from "../components/PolicyView/PolicyView"
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
