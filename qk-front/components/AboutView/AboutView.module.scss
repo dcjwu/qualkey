@@ -8,6 +8,16 @@
   padding: 3rem 4rem 7rem;
 }
 
+.page {
+  height: 100%;
+}
+
+.imageWrapper1 {
+  height: 9rem;
+  width: 12.1rem;
+  position: absolute;
+}
+
 .image {
   background-color: $color-additional-medium;
   height: 27rem;
@@ -17,6 +27,13 @@
 
   @include breakpoint-max($bp-screen-md) {
     display: none;
+  }
+
+  > svg {
+    position: absolute;
+    top: 50%;
+    right: 3rem;
+    transform: translateY(-50%);
   }
 }
 
@@ -126,6 +143,43 @@
   svg {
     path {
       stroke: $color-secondary;
+    }
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  + p {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+
+.imageWrapperSmall {
+  height: 10rem;
+  position: relative;
+  width: 10rem;
+
+  img {
+    border-radius: 50% !important;
+  }
+}
+
+.story {
+  > p {
+    margin-bottom: 1.5rem;
+  }
+  + button {
+    width: fit-content;
+    padding: 1rem 2rem;
+    display: block;
+    margin: 0 auto;
+    svg {
+      transform: rotate(180deg);
     }
   }
 }
