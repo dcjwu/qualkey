@@ -93,25 +93,40 @@ const ShareModal = () => {
       event.stopPropagation()
    }
 
+   /**
+    * Shows expires dropdown
+    */
    const handleShopExpiresDropdown = event => {
       event.preventDefault()
       setShowExpires(prevState => !prevState)
    }
 
+   /**
+    * Selects all data to share
+    */
    const handleShareAll = () => {
       setShareSelection(false)
       setShareAll(true)
    }
 
+   /**
+    * Allows to choose what data to share
+    */
    const handleShareSelection = () => {
       setShareSelection(true)
       setShareAll(false)
    }
 
+   /**
+    * Email input handler
+    */
    const handleEmailInput = ({ target }) => {
       setEmailInput(target.value)
    }
 
+   /**
+    * Expiration dropdown value handler
+    */
    const handleDropdownValue = ({ target }) => {
       setDropdownValue(target.innerText)
       setShowExpires(false)
@@ -122,6 +137,9 @@ const ShareModal = () => {
       })
    }
 
+   /**
+    * Handler that adjust which data to share
+    */
    const handleRemoveShareData = ({ target }) => {
       const { value, checked } = target
       if (checked === false) {
@@ -137,6 +155,9 @@ const ShareModal = () => {
       }
    }
 
+   /**
+    * Adds shared data to new array
+    */
    useEffect(() => {
       let newArray = []
       shareData.map(item => {
@@ -145,13 +166,19 @@ const ShareModal = () => {
       setDataToShare(newArray)
    }, [])
 
+   /**
+    * Set recipientEmail value
+    */
    useEffect(() => {
       setFormData({
          ...formData,
-         recipientEmails: emailInput.split("; ")
+         recipientEmails: [emailInput]
       })
    }, [emailInput]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   /**
+    * Sets sharedFields value
+    */
    useEffect(() => {
       setFormData({
          ...formData,
@@ -159,6 +186,9 @@ const ShareModal = () => {
       })
    }, [dataToShare.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   /**
+    * Sets uuids value
+    */
    useEffect(() => {
       if (formUuids.length) {
          setFormData({
@@ -168,8 +198,12 @@ const ShareModal = () => {
       }
    }, [formUuids.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   /**
+    * Share submit handler
+    */
    const handleFormSubmit = async event => {
       event.preventDefault()
+
       await axios.post(`${processingUrl}/credential/share`, { ...formData }, { withCredentials: true })
          .then(() => {
             setError("")
@@ -248,6 +282,7 @@ const ShareModal = () => {
                                     </button>
                                     <div className={styles.showExpires} style={{ display: showExpires ? "block" : "" }}>
                                        <ul>
+                                          <li value={1577847600000} onClick={handleDropdownValue}>Never</li>
                                           <li value={172800000} onClick={handleDropdownValue}>48 Hours</li>
                                           <li value={1209600000} onClick={handleDropdownValue}>14 Days</li>
                                        </ul>
