@@ -28,6 +28,7 @@
     @include breakpoint-max($bp-screen-md) {
       border: none;
     }
+
     + div {
       > svg {
         &:first-child {
@@ -113,6 +114,7 @@
   path {
     stroke: $color-highlight;
   }
+
   &.student {
     + div {
       > svg {
@@ -272,8 +274,8 @@
     overflow-x: scroll;
   }
 
-  >span:first-child,
-  >span:nth-child(2){
+  > span:first-child,
+  > span:nth-child(2) {
     padding: 0 .6rem !important;
     @include breakpoint-max($bp-screen-xxl) {
       padding: 1rem .6rem;
@@ -292,7 +294,7 @@
     @include breakpoint-max($bp-screen-xxl) {
       margin-left: 0;
     }
-     @include breakpoint-max($bp-screen-md) {
+    @include breakpoint-max($bp-screen-md) {
       justify-self: center;
     }
   }
@@ -463,9 +465,12 @@
     color: $color-highlight;
     background-color: $color-secondary;
     border: 1px solid $color-highlight;
-    &:hover {
+
+    &:hover,
+    &:focus, {
       background-color: $color-secondary !important;
     }
+
     svg {
       path {
         stroke: $color-highlight;
@@ -487,12 +492,15 @@
         height: 3rem;
         width: 3rem;
       }
+
       path {
         stroke: $color-primary;
       }
     }
+
     > button {
       height: 5.5rem;
+
       &:focus {
         background-color: $color-secondary;
       }
@@ -648,6 +656,7 @@
     svg {
       width: initial;
       height: initial;
+
       path {
         stroke: $color-highlight;
         fill: $color-highlight;

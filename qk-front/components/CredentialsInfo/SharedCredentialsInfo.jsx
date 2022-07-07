@@ -100,7 +100,7 @@ const SharedCredentialsInfo = ({ data }) => {
                <Button blue thin>
                   <div className={styles.buttonRow}>
                      <IconVerified/>
-                     <Text semiBold white>Verify ID</Text>
+                     <Text semiBold white>Verify Hedera ID</Text>
                   </div>
                </Button>
             </div>

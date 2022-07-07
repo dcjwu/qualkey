@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 
 import axios from "axios"
 import { useRouter } from "next/router"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 
-import { formShareState, showShareModalState } from "../../../atoms"
+import { formEmailState, formShareState, showShareModalState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
 import { IconClose, IconLock, IconShare, IconShowDropdown } from "../_Icon"
 import Button from "../Button/Button"
@@ -56,7 +56,9 @@ const ShareModal = () => {
 
    const router = useRouter()
 
+   const resetFormEmailFromReshare = useResetRecoilState(formEmailState)
    const formUuids = useRecoilValue(formShareState)
+   const formEmailFromReshare = useRecoilValue(formEmailState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
    const [step, setStep] = useState(1)
    const [showExpires, setShowExpires] = useState(false)
@@ -68,6 +70,8 @@ const ShareModal = () => {
    const [dropdownValue, setDropdownValue] = useState("")
    const [dataToShare, setDataToShare] = useState([])
    const [error, setError] = useState("")
+
+   console.log(formData)
 
    /**
     * Ask if modal should be closed
@@ -197,6 +201,29 @@ const ShareModal = () => {
          })
       }
    }, [formUuids.length]) // eslint-disable-line react-hooks/exhaustive-deps
+
+   /**
+    * Check if this is resharing flow
+    */
+   useEffect(() => {
+      if (formEmailFromReshare) {
+         setEmailInput(formEmailFromReshare)
+         setFormData({
+            ...formData,
+            recipientEmails: [formEmailFromReshare],
+            uuids: [...formUuids]
+         })
+      }
+   }, [formEmailFromReshare])
+
+   /**
+    * Reset email from reshare flow
+    */
+   useEffect(() => {
+      return () => {
+         resetFormEmailFromReshare()
+      }
+   }, [])
 
    /**
     * Share submit handler
