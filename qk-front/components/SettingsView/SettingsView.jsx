@@ -233,12 +233,15 @@ const SettingsView = ({ institution, userData }) => {
                                      type="checkbox"/>
                               <Input checkboxText="Receive deals and sales information through email"
                                      inputName="dealsAndSales" type="checkbox"/>
-                              <Button blue disabled thin>
-                                 <div className={styles.buttonRow}>
-                                    <IconCheckMark/>
-                                    <Text>Save Changes</Text>
-                                 </div>
-                              </Button>
+                              <div className={styles.bottomWrapper}>
+                                 <Button blue disabled thin>
+                                    <div className={styles.buttonRow}>
+                                       <IconCheckMark/>
+                                       <Text>Save Changes</Text>
+                                    </div>
+                                 </Button>
+                                 <Text grey>Delete Account</Text>
+                              </div>
                            </form>
                         </>
                         : view === 4

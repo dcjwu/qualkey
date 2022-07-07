@@ -178,30 +178,8 @@
 .security {
   margin-top: 3rem;
 
-  > div {
+  > div:not(:last-child) {
     margin-bottom: 1.5rem;
-  }
-
-  > button {
-    bottom: 4rem;
-    left: 3rem;
-    padding: 1rem 2rem;
-    position: absolute;
-    width: fit-content;
-
-    @include breakpoint-max($bp-screen-sm) {
-      bottom: 2rem;
-    }
-
-    @include breakpoint-max-vertical($bp-vertical-875) {
-      bottom: 0;
-    }
-
-    &:disabled {
-      > div > p {
-        color: $color-secondary;
-      }
-    }
   }
 }
 
@@ -276,6 +254,39 @@
       > p:last-child {
         color: $color-primary-light;
         font-weight: $font-weight-sm;
+      }
+    }
+  }
+}
+
+
+.bottomWrapper {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  justify-content: center;
+  bottom: 4rem;
+  left: 3rem;
+  position: absolute;
+  > p {
+    cursor: pointer;
+  }
+  > button {
+    margin-top: 0;
+    padding: 1rem 2rem;
+    width: fit-content;
+
+    @include breakpoint-max($bp-screen-sm) {
+      bottom: 2rem;
+    }
+
+    @include breakpoint-max-vertical($bp-vertical-875) {
+      bottom: 0;
+    }
+
+    &:disabled {
+      > div > p {
+        color: $color-secondary;
       }
     }
   }

@@ -214,7 +214,7 @@ const ShareModal = () => {
             uuids: [...formUuids]
          })
       }
-   }, [formEmailFromReshare])
+   }, [formEmailFromReshare]) // eslint-disable-line react-hooks/exhaustive-deps
 
    /**
     * Reset email from reshare flow
@@ -223,7 +223,7 @@ const ShareModal = () => {
       return () => {
          resetFormEmailFromReshare()
       }
-   }, [])
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    /**
     * Share submit handler
