@@ -87,6 +87,13 @@ const StudentDashboard = ({ data }) => {
             </Button>
          </div>
          <div className={styles.contentWrapper}>
+            <div className={styles.titles}>
+               <Text grey small>&nbsp;</Text>
+               <Text grey small>School Name</Text>
+               <Text grey small>Degree</Text>
+               <Text grey small>Credentials Status</Text>
+               <Text grey small>Actions</Text>
+            </div>
             {data ? data.map(data => (
                <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
                                      handleCredentialsToShare={handleCredentialsToShare}/>

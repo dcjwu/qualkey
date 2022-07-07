@@ -13,33 +13,42 @@ const InstitutionViewCredentialsItem = ({ data }) => {
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
    
    return (
-      <div className={`${styles.wrapper} ${styles.viewWrapper}`} style={{
-         borderRadius: "15px 15px 15px" +
+      <>
+         <div className={styles.titles}>
+            <Text grey small>Student Information</Text>
+            <Text grey small>Degree</Text>
+            <Text grey small>Status</Text>
+            <Text grey small>Last Modified</Text>
+            <Text grey small>Edit</Text>
+         </div>
+         <div className={`${styles.wrapper} ${styles.viewWrapper}`} style={{
+            borderRadius: "15px 15px 15px" +
             " 15px" 
-      }}>
-         <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
-            <div className={`${styles.itemWrapper} ${styles.viewName}`}>
-               <IconAcademicCapPerson/>
-               <div>
-                  <Text bold>{data.graduatedName}</Text>
+         }}>
+            <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper}`} style={{ borderRadius: "15px 15px 15px 15px" }}>
+               <div className={`${styles.itemWrapper} ${styles.viewName}`}>
+                  <IconAcademicCapPerson/>
+                  <div>
+                     <Text bold>{data.graduatedName}</Text>
+                  </div>
                </div>
-            </div>
-            <div className={styles.itemWrapper}>
-               <IconAcademicCap/>
-               <div className={styles}>
-                  <Text bold>{data.qualificationName}</Text>
+               <div className={styles.itemWrapper}>
+                  <IconAcademicCap/>
+                  <div className={styles}>
+                     <Text bold>{data.qualificationName}</Text>
+                  </div>
                </div>
-            </div>
-            <div className={`${styles.status} ${validateStatusStyles(data.status)} ${styles.viewStatus}`}>
-               <IconInfo/>
-               <Text bold>{validateStatus(data.status)}</Text>
-            </div>
-            <Text bold>{moment.utc(data.updatedAt).format("HH:mm DD/MM/YYYY")}</Text>
-            <div className={`${styles.actions} ${styles.viewActions}`}>
-               <IconEdit onClick={() => setShowEditCredentials(true)}/>
+               <div className={`${styles.status} ${validateStatusStyles(data.status)} ${styles.viewStatus}`}>
+                  <IconInfo/>
+                  <Text bold>{validateStatus(data.status)}</Text>
+               </div>
+               <Text bold>{moment.utc(data.updatedAt).format("HH:mm DD/MM/YYYY")}</Text>
+               <div className={`${styles.actions} ${styles.viewActions}`}>
+                  <IconEdit onClick={() => setShowEditCredentials(true)}/>
+               </div>
             </div>
          </div>
-      </div>
+      </>
    )
 }
 
