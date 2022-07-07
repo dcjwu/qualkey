@@ -18,7 +18,7 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
    const [historyData, setHistoryData] = useState([])
    const [, setFormEmail] = useRecoilState(formEmailState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
-   const [formShare, setFormShare] = useRecoilState(formShareState)
+   const [, setFormShare] = useRecoilState(formShareState)
 
    const zip = (a1, a2) => {
       if (a1.length && a2.length) {
