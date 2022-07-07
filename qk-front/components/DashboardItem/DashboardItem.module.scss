@@ -225,10 +225,11 @@
 }
 
 .iconWrapper {
+  cursor: pointer;
   position: relative;
 
   &:hover {
-    > div {
+    div {
       display: block;
     }
   }
@@ -436,24 +437,28 @@
   }
 
   &.student {
-    > svg {
-      height: 3.5rem;
-      width: 3.5rem;
+    > .iconWrapper {
+      > svg {
+        height: 3.5rem;
+        width: 3.5rem;
 
-      @include breakpoint-max($bp-screen-md) {
-        height: 3rem;
-        width: 3rem;
-      }
+        @include breakpoint-max($bp-screen-md) {
+          height: 3rem;
+          width: 3rem;
+        }
 
-      path {
-        stroke: $color-primary;
+        path {
+          stroke: $color-primary;
+        }
       }
     }
 
-    > a svg {
-      @include breakpoint-max($bp-screen-md) {
-        height: 3rem;
-        width: 3rem;
+    > .iconWrapper {
+      > a svg {
+        @include breakpoint-max($bp-screen-md) {
+          height: 3rem;
+          width: 3rem;
+        }
       }
     }
   }

@@ -56,8 +56,6 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
       setFormShare([uuid])
    }
 
-   console.log(formShare)
-
    return (
       <div className={`${stylesItem.historyWrapper} ${stylesItem.student}`} style={{
          display: showCredentialsHistory
