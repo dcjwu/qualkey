@@ -4,7 +4,7 @@
 .dashboard {
   background-color: $color-additional-medium;
   height: calc(100vh - #{$topbar-height-initial} - 7rem);
-  padding: 10rem 15rem 0 calc(15rem + #{$sidebar-width-initial});
+  padding: 10rem 20rem 0 calc(20rem + #{$sidebar-width-initial});
 
   @include breakpoint-max($bp-screen-xxl) {
     padding: 10rem 7rem 0 calc(7rem + #{$sidebar-width-xxl});

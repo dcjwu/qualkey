@@ -81,3 +81,19 @@
     }
   }
 }
+
+.titles {
+  display: grid;
+  justify-items: stretch;
+  padding: 0 2rem;
+  width: calc(100% - 2rem - 2rem);
+  grid-template-columns: 0.2fr 0.6fr 1.3fr 0.8fr 0.7fr;
+  @include breakpoint-max($bp-screen-md) {
+    display: none;
+  }
+  > p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.2rem !important;
+    }
+  }
+}

@@ -95,7 +95,7 @@ const DeleteCredentialsModal = () => {
                      <Text semiBold>You may now return to Dashboard</Text>
                      : error
                         ? <Text error semiBold>Error: {error}.</Text>
-                        : <Text semiBold>This action may NOT be reversed</Text>}
+                        : <Text semiBold>This action CANNOT be reversed</Text>}
                   {step === 3
                      ? <Button blue thin onClick={closeModal}>
                         Return to Dashboard

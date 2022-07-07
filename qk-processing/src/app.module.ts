@@ -259,7 +259,7 @@ AdminJS.registerAdapter({ Database, Resource });
           host: config.get("REDIS_HOST"),
           port: 6379,
         },
-      })
+      }),
     }),
     BullModule.forRootAsync({
       inject: [ConfigService],
@@ -268,7 +268,7 @@ AdminJS.registerAdapter({ Database, Resource });
           host: config.get("REDIS_HOST"),
           port: 6379,
         },
-      })
+      }),
     }),
     ScheduleModule.forRoot(),
     ThrottlerModule.forRootAsync({

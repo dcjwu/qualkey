@@ -2,10 +2,13 @@ import { useEffect, useState } from "react"
 
 import axios from "axios"
 import moment from "moment"
+import { useRecoilState } from "recoil"
 
+import { formEmailState, formShareState, showShareModalState } from "../../atoms"
 import { processingUrl } from "../../utils"
 import stylesItem from "../DashboardItem/DashboardItem.module.scss"
-import { IconArrowLeft } from "../UI/_Icon"
+import { IconArrowLeft, IconShare } from "../UI/_Icon"
+import Button from "../UI/Button/Button"
 import Text from "../UI/Text/Text"
 import styles from "./CredentialHistory.module.scss"
 
@@ -13,6 +16,9 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
 
    const [activeValue, setActiveValue] = useState({ index: 0, type: "" })
    const [historyData, setHistoryData] = useState([])
+   const [, setFormEmail] = useRecoilState(formEmailState)
+   const [, setShowShareModal] = useRecoilState(showShareModalState)
+   const [, setFormShare] = useRecoilState(formShareState)
 
    const zip = (a1, a2) => {
       if (a1.length && a2.length) {
@@ -42,6 +48,12 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
       const dateNow = moment(new Date(Date.now()).toUTCString())
       const dateExpires = moment(expiresAt)
       return dateExpires.diff(dateNow) > 0
+   }
+
+   const handleShareCredentials = () => {
+      setShowShareModal(true)
+      setFormEmail(historyData[activeValue.index].recipientEmails[0])
+      setFormShare([uuid])
    }
 
    return (
@@ -79,7 +91,7 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
                   <Text bold large>Details</Text>
                   <div className={styles.detailsItem}>
                      <Text blackSpan>Date:&nbsp;
-                        <span>{moment.utc(historyData[activeValue.index].createdAt).format("DD.MM.YYYY HH:mm")}</span>
+                        <span>{moment.utc(historyData[activeValue.index].createdAt).local().format("DD.MM.YYYY HH:mm")}</span>
                      </Text>
                      {!!historyData[activeValue.index].changedByUuid === true
                         ? zip(historyData[activeValue.index].changedFrom, historyData[activeValue.index].changedTo).map(item => {
@@ -106,6 +118,12 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
                                     return <Text key={item} semiBold>{item}</Text>
                                  })}
                               </div>
+                              <Button thin white onClick={handleShareCredentials}>
+                                 <div className={styles.buttonRow}>
+                                    <IconShare/>
+                                    <Text>Reshare Credentials</Text>
+                                 </div>
+                              </Button>
                            </>
                            : null}
                   </div>

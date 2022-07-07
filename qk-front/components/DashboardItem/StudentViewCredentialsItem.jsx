@@ -50,50 +50,58 @@ const StudentViewCredentialsItem = ({ data }) => {
    }
 
    return (
-      <div className={`${styles.wrapper} ${styles.viewWrapper} ${styles.student}`}
+      <>
+         <div className={styles.titlesStudent}>
+            <Text grey small>School Name</Text>
+            <Text grey small>Degree</Text>
+            <Text grey small>Status</Text>
+            <Text grey small>Actions</Text>
+         </div>
+         <div className={`${styles.wrapper} ${styles.viewWrapper} ${styles.student}`}
            style={{ borderRadius: "15px 15px 15px 15px" }}>
-         <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.student}`}
+            <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.student}`}
               style={{ borderRadius: "15px 15px 15px 15px" }}>
-            <Image alt="school name" className={styles.studentSchoolLogo} height={64}
+               <Image alt="school name" className={styles.studentSchoolLogo} height={64}
                    objectFit="contain" src={`${awsUrl}/${data.institution.logoUrl}`} width={196}/>
-            <div className={styles.itemWrapper}>
-               <IconAcademicCap/>
-               <div className={styles}>
-                  <Text bold>{data.qualificationName}</Text>
+               <div className={styles.itemWrapper}>
+                  <IconAcademicCap/>
+                  <div className={styles}>
+                     <Text bold>{data.qualificationName}</Text>
+                  </div>
                </div>
-            </div>
 
-            <div className={`${styles.status} ${loading ? styles.loading : ""} ${validateStatusStyles(data.status, true)}`}
+               <div className={`${styles.status} ${loading ? styles.loading : ""} ${validateStatusStyles(data.status, true)}`}
                onClick={data.status === "UPLOADED_TO_BLOCKCHAIN" ? () => handlePaymentRequest(query.uuid) : null}>
-               {data.status === "UPLOADED_TO_BLOCKCHAIN"
-                  ? loading
-                     ? <IconLoading/>
+                  {data.status === "UPLOADED_TO_BLOCKCHAIN"
+                     ? loading
+                        ? <IconLoading/>
+                        : <>
+                           <div className={styles.iconWrapper}>
+                              <IconWarning/>
+                              <HoverInfo status={data.status}/>
+                           </div>
+                           <Text bold>{validateStatus(data.status, true)}</Text>
+                        </>
                      : <>
                         <div className={styles.iconWrapper}>
-                           <IconWarning/>
+                           <IconInfo/>
                            <HoverInfo status={data.status}/>
                         </div>
                         <Text bold>{validateStatus(data.status, true)}</Text>
-                     </>
-                  : <>
-                     <div className={styles.iconWrapper}>
-                        <IconInfo/>
-                        <HoverInfo status={data.status}/>
-                     </div>
-                     <Text bold>{validateStatus(data.status, true)}</Text>
-                  </>}
-            </div>
-            <div className={styles.actions}>
-               <Button blue thin disabled={data.status !== "ACTIVATED"}
+                     </>}
+               </div>
+               <div className={styles.actions}>
+                  <Button blue thin disabled={data.status !== "ACTIVATED"}
                        onClick={handleViewCertificate}>
-                  <div className={styles.buttonRow}>
-                     <IconCertificate/>
-                     <Text semiBold>Certificate</Text>
-                  </div>
-               </Button>
+                     <div className={styles.buttonRow}>
+                        <IconCertificate/>
+                        <Text semiBold>Certificate</Text>
+                     </div>
+                  </Button>
+               </div>
             </div>
          </div>
-      </div>
+      </>
    )
 }
 

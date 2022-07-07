@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 
 import axios from "axios"
 import { useRouter } from "next/router"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 
-import { formShareState, showShareModalState } from "../../../atoms"
+import { formEmailState, formShareState, showShareModalState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
 import { IconClose, IconLock, IconShare, IconShowDropdown } from "../_Icon"
 import Button from "../Button/Button"
@@ -56,7 +56,9 @@ const ShareModal = () => {
 
    const router = useRouter()
 
+   const resetFormEmailFromReshare = useResetRecoilState(formEmailState)
    const formUuids = useRecoilValue(formShareState)
+   const formEmailFromReshare = useRecoilValue(formEmailState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
    const [step, setStep] = useState(1)
    const [showExpires, setShowExpires] = useState(false)
@@ -68,6 +70,8 @@ const ShareModal = () => {
    const [dropdownValue, setDropdownValue] = useState("")
    const [dataToShare, setDataToShare] = useState([])
    const [error, setError] = useState("")
+
+   console.log(formData)
 
    /**
     * Ask if modal should be closed
@@ -93,25 +97,40 @@ const ShareModal = () => {
       event.stopPropagation()
    }
 
+   /**
+    * Shows expires dropdown
+    */
    const handleShopExpiresDropdown = event => {
       event.preventDefault()
       setShowExpires(prevState => !prevState)
    }
 
+   /**
+    * Selects all data to share
+    */
    const handleShareAll = () => {
       setShareSelection(false)
       setShareAll(true)
    }
 
+   /**
+    * Allows to choose what data to share
+    */
    const handleShareSelection = () => {
       setShareSelection(true)
       setShareAll(false)
    }
 
+   /**
+    * Email input handler
+    */
    const handleEmailInput = ({ target }) => {
       setEmailInput(target.value)
    }
 
+   /**
+    * Expiration dropdown value handler
+    */
    const handleDropdownValue = ({ target }) => {
       setDropdownValue(target.innerText)
       setShowExpires(false)
@@ -122,6 +141,9 @@ const ShareModal = () => {
       })
    }
 
+   /**
+    * Handler that adjust which data to share
+    */
    const handleRemoveShareData = ({ target }) => {
       const { value, checked } = target
       if (checked === false) {
@@ -137,6 +159,9 @@ const ShareModal = () => {
       }
    }
 
+   /**
+    * Adds shared data to new array
+    */
    useEffect(() => {
       let newArray = []
       shareData.map(item => {
@@ -145,13 +170,19 @@ const ShareModal = () => {
       setDataToShare(newArray)
    }, [])
 
+   /**
+    * Set recipientEmail value
+    */
    useEffect(() => {
       setFormData({
          ...formData,
-         recipientEmails: emailInput.split("; ")
+         recipientEmails: [emailInput]
       })
    }, [emailInput]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   /**
+    * Sets sharedFields value
+    */
    useEffect(() => {
       setFormData({
          ...formData,
@@ -159,6 +190,9 @@ const ShareModal = () => {
       })
    }, [dataToShare.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   /**
+    * Sets uuids value
+    */
    useEffect(() => {
       if (formUuids.length) {
          setFormData({
@@ -168,8 +202,35 @@ const ShareModal = () => {
       }
    }, [formUuids.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
+   /**
+    * Check if this is resharing flow
+    */
+   useEffect(() => {
+      if (formEmailFromReshare) {
+         setEmailInput(formEmailFromReshare)
+         setFormData({
+            ...formData,
+            recipientEmails: [formEmailFromReshare],
+            uuids: [...formUuids]
+         })
+      }
+   }, [formEmailFromReshare]) // eslint-disable-line react-hooks/exhaustive-deps
+
+   /**
+    * Reset email from reshare flow
+    */
+   useEffect(() => {
+      return () => {
+         resetFormEmailFromReshare()
+      }
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+   /**
+    * Share submit handler
+    */
    const handleFormSubmit = async event => {
       event.preventDefault()
+
       await axios.post(`${processingUrl}/credential/share`, { ...formData }, { withCredentials: true })
          .then(() => {
             setError("")
@@ -248,6 +309,7 @@ const ShareModal = () => {
                                     </button>
                                     <div className={styles.showExpires} style={{ display: showExpires ? "block" : "" }}>
                                        <ul>
+                                          <li value={1577847600000} onClick={handleDropdownValue}>Never</li>
                                           <li value={172800000} onClick={handleDropdownValue}>48 Hours</li>
                                           <li value={1209600000} onClick={handleDropdownValue}>14 Days</li>
                                        </ul>

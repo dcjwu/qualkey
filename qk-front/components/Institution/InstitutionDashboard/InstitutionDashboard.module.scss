@@ -61,3 +61,31 @@
     }
   }
 }
+
+.titles {
+  display: grid;
+  grid-template-columns: 1.1fr 1.5fr 0.7fr 0.5fr 0.5fr;
+  justify-items: stretch;
+  padding: 0 2rem;
+  width: calc(100% - 2rem - 2rem);
+  > p {
+    @include breakpoint-max($bp-screen-xl) {
+      font-size: 1.2rem !important;
+    }
+  }
+  @include breakpoint-max($bp-screen-lg) {
+    grid-template-columns: 0.9fr 1.5fr 0.7fr 0.5fr 0.5fr;
+  }
+
+  @include breakpoint-max($bp-screen-md) {
+    grid-template-columns: 0.9fr 1.5fr 0.4fr 1.05fr 0.5fr;
+  }
+  @include breakpoint-max($bp-screen-sm) {
+    grid-template-columns: 0.9fr 1.5fr 0.4fr 0.5fr;
+    padding: 0 1rem;
+    width: calc(100% - 1rem - 1rem);
+  }
+  @include breakpoint-max($bp-screen-md) {
+    display: none;
+  }
+}

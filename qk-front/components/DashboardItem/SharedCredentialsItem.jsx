@@ -42,6 +42,11 @@ const SharedCredentialsItem = ({ data }) => {
 
    return (
       <>
+         <div className={styles.titlesEmployer}>
+            <Text grey small>School Name</Text>
+            <Text grey small>Degree</Text>
+            <Text grey small>Actions</Text>
+         </div>
          <div className={`${styles.wrapper} ${styles.viewWrapper} ${styles.student}`}
               style={{ borderRadius: "15px 15px 15px 15px" }}>
             <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.shared}`}

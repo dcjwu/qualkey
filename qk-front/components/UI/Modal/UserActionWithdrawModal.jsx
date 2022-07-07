@@ -149,7 +149,7 @@ const UserActionWithdrawModal = () => {
                            step === 3
                               ? <Text semiBold>You may now return to dashboard</Text>
                               : step === 2
-                                 ? <Text bold error large>This action may NOT be reversed</Text>
+                                 ? <Text bold error large>This action CANNOT be reversed</Text>
                                  : <Text semiBold>{uploadDecision.initiatorName} has put forward a credential withdrawal
                                     request.</Text>
                         }
