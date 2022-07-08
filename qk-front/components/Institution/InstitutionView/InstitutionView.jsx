@@ -4,7 +4,7 @@ import { getCookie } from "cookies-next"
 import PropTypes from "prop-types"
 import { useRecoilValue, useResetRecoilState } from "recoil"
 
-import { confirmUploadModalState, currentFileState, filenameState, filePrefixState, uploadModalState, userActionWithdrawModalState } from "../../../atoms"
+import { confirmUploadModalState, currentFileState, filenameState, uploadModalState, userActionWithdrawModalState } from "../../../atoms"
 import ChangePasswordModal from "../../UI/Modal/ChangePasswordModal"
 import ConfirmUploadModal from "../../UI/Modal/ConfirmUploadModal"
 import FileUploadModal from "../../UI/Modal/FileUploadModal"
@@ -15,18 +15,17 @@ import Topbar from "../../UI/Topbar/Topbar"
 const InstitutionView = ({ children, institution, userData, notificationsData, credentials }) => {
 
    const resetCurrentFile = useResetRecoilState(currentFileState)
-   const resetFilePrefix = useResetRecoilState(filePrefixState)
    const resetFileName = useResetRecoilState(filenameState)
 
    const openModal = useRecoilValue(uploadModalState)
    const currentFile = useRecoilValue(currentFileState)
-   // const filePrefix = useRecoilValue(filePrefixState)
-   // const fileName = useRecoilValue(filenameState)
    
    const confirmUploadModal = useRecoilValue(confirmUploadModalState)
    const withdrawModal = useRecoilValue(userActionWithdrawModalState)
 
    const [changePasswordModal, setChangePasswordModal] = useState(false)
+
+   console.log(currentFile)
 
    /**
     * File deletion processing.
@@ -35,20 +34,6 @@ const InstitutionView = ({ children, institution, userData, notificationsData, c
       if (currentFile) {
          resetCurrentFile()
          resetFileName()
-         resetFilePrefix()
-         // const removeUploadedFile = async () => {
-         //    const data = JSON.stringify(`${filePrefix}-${fileName}`)
-         //    await axios.post(`${frontUrl}/api/file-delete`, data, { headers: { "Content-type": "application/json" } })
-         // }
-         // removeUploadedFile()
-         //    .then(() => {
-         //       resetCurrentFile()
-         //       resetFileName()
-         //       resetFilePrefix()
-         //    })
-         //    .catch(error => {
-         //       console.log(error)
-         //    })
       }
    }, [openModal]) // eslint-disable-line react-hooks/exhaustive-deps
 

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 
 import axios from "axios"
+import Papa from "papaparse"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
-import { credentialsState, currentFileState, dropdownSelectionListenerState, filenameState, filePrefixState, fileUploadErrorState, uploadModalState } from "../../../atoms"
-import { frontUrl, processingUrl, validateMappingFields } from "../../../utils"
+import { credentialsState, currentFileState, dropdownSelectionListenerState, filenameState, fileUploadErrorState, uploadModalState } from "../../../atoms"
+import { processingUrl, validateMappingFields } from "../../../utils"
 import { IconClose, IconLoading, IconUpload } from "../_Icon"
 import Button from "../Button/Button"
 import FileUploadDropdown from "../Dropdown/FileUploadDropdown/FileUploadDropdown"
@@ -18,7 +19,6 @@ const FileUploadModal = () => {
 
    const resetCredentialsFields = useResetRecoilState(credentialsState)
    const resetCurrentFile = useResetRecoilState(currentFileState)
-   const resetFilePrefix = useResetRecoilState(filePrefixState)
    const resetFileName = useResetRecoilState(filenameState)
 
    const [credentialsFields, setCredentialsFields] = useRecoilState(credentialsState)
@@ -27,7 +27,6 @@ const FileUploadModal = () => {
    const [fileUploadModalErrorButton, setFileUploadModalErrorButton] = useState("")
    const [dropdownSelectionListener, setDropdownSelectionListener] = useRecoilState(dropdownSelectionListenerState)
    const [currentFile, setCurrentFile] = useRecoilState(currentFileState)
-   const [, setFilePrefix] = useRecoilState(filePrefixState)
    const [fileName, setFileName] = useRecoilState(filenameState)
    const [parsedValuesFromUpload, setParsedValuesFromUpload] = useState([])
    const [mappingToValues, setMappingToValues] = useState([])
@@ -39,22 +38,20 @@ const FileUploadModal = () => {
     * File upload to front-end processing.
     **/
    const uploadFileToClient = async event => {
-      const fileType = event.target.files[0]?.type
-      if (fileType === "text/csv"
-         || fileType === "application/vnd.ms-excel"
-         || fileType === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      if (event.target.files[0].type === "text/csv") {
          setCurrentFile(event.target.files[0])
          setFileName(event.target.files[0].name)
-         const formData = new FormData()
-         formData.append("uploadedFile", event.target.files[0])
-         try {
-            const response = await axios.post(`${frontUrl}/api/file-upload`, formData, { headers: { "Content-type": "multipart/form-data" } })
-            setParsedValuesFromUpload(response.data.file)
-            setFilePrefix(response.data.prefix)
-            setStep(prevState => prevState + 1)
-         } catch (error) {
-            setFileUploadModalError(error?.response?.statusText)
-         }
+         Papa.parse(event.target.files[0], {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+               setParsedValuesFromUpload(results.meta.fields)
+               setStep(prevState => prevState + 1)
+            },
+            error: (error) => {
+               setFileUploadModalError(error.message)
+            }
+         })
       } else {
          setFileUploadModalError("Invalid file format. Make sure you have selected a valid file and try again.")
       }
@@ -124,23 +121,7 @@ const FileUploadModal = () => {
                   setLoading(false)
                   setUploadSuccess(true)
                   resetCurrentFile()
-                  resetFilePrefix()
                   resetFileName()
-                  // const data = JSON.stringify(`${filePrefix}-${fileName}`)
-                  // axios.post(`${frontUrl}/api/file-delete`, data, { headers: { "Content-type": "application/json" } })
-                  //    .then(response => {
-                  //       if (response.data === "OK") {
-                  //          setLoading(false)
-                  //          setUploadSuccess(true)
-                  //          resetCurrentFile()
-                  //          resetFilePrefix()
-                  //          resetFileName()
-                  //       }
-                  //    })
-                  //    .catch(error => {
-                  //       setLoading(false)
-                  //       setFileUploadModalErrorButton(error.response.statusText)
-                  //    })
                }
             })
             .catch(error => {

@@ -1,1 +1,0 @@
-export const frontUrl = process.env.NEXT_PUBLIC_FRONT_URL
