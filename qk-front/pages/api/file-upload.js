@@ -51,5 +51,7 @@ export default async (req, res) => { // eslint-disable-line import/no-anonymous-
       } catch (error) {
          res.status(500).json({ message: error.message })
       }
+   } else {
+      res.status(405).json({ message: "Method not allowed" })
    }
 }
