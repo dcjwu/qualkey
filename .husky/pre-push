@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd qk-front && npm run build && cd ../qk-processing && npm run build
+cd qk-front && npm run build
