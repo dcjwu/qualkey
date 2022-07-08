@@ -27,7 +27,7 @@ const FileUploadModal = () => {
    const [fileUploadModalErrorButton, setFileUploadModalErrorButton] = useState("")
    const [dropdownSelectionListener, setDropdownSelectionListener] = useRecoilState(dropdownSelectionListenerState)
    const [currentFile, setCurrentFile] = useRecoilState(currentFileState)
-   const [filePrefix, setFilePrefix] = useRecoilState(filePrefixState)
+   const [, setFilePrefix] = useRecoilState(filePrefixState)
    const [fileName, setFileName] = useRecoilState(filenameState)
    const [parsedValuesFromUpload, setParsedValuesFromUpload] = useState([])
    const [mappingToValues, setMappingToValues] = useState([])
@@ -121,21 +121,26 @@ const FileUploadModal = () => {
          await axios.post(`${processingUrl}/upload`, formData, { withCredentials: true })
             .then(response => {
                if (response.status === 201) {
-                  const data = JSON.stringify(`${filePrefix}-${fileName}`)
-                  axios.post(`${frontUrl}/api/file-delete`, data, { headers: { "Content-type": "application/json" } })
-                     .then(response => {
-                        if (response.data === "OK") {
-                           setLoading(false)
-                           setUploadSuccess(true)
-                           resetCurrentFile()
-                           resetFilePrefix()
-                           resetFileName()
-                        }
-                     })
-                     .catch(error => {
-                        setLoading(false)
-                        setFileUploadModalErrorButton(error.response.statusText)
-                     })
+                  setLoading(false)
+                  setUploadSuccess(true)
+                  resetCurrentFile()
+                  resetFilePrefix()
+                  resetFileName()
+                  // const data = JSON.stringify(`${filePrefix}-${fileName}`)
+                  // axios.post(`${frontUrl}/api/file-delete`, data, { headers: { "Content-type": "application/json" } })
+                  //    .then(response => {
+                  //       if (response.data === "OK") {
+                  //          setLoading(false)
+                  //          setUploadSuccess(true)
+                  //          resetCurrentFile()
+                  //          resetFilePrefix()
+                  //          resetFileName()
+                  //       }
+                  //    })
+                  //    .catch(error => {
+                  //       setLoading(false)
+                  //       setFileUploadModalErrorButton(error.response.statusText)
+                  //    })
                }
             })
             .catch(error => {

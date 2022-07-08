@@ -1,4 +1,4 @@
-import fs, { promises } from "fs"
+import fs from "fs"
 
 import { parse } from "csv-parse"
 import { IncomingForm } from "formidable"
@@ -23,12 +23,9 @@ export default async (req, res) => { // eslint-disable-line import/no-anonymous-
          const file = data.files.uploadedFile
          const temporaryPath = file.filepath
          const filePrefix = Date.now()
-         const pathToWriteFile = `uploads/${filePrefix}-${file.originalFilename}`
-         const fileWrite = await promises.readFile(temporaryPath)
-         await promises.writeFile(pathToWriteFile, fileWrite)
 
          if (file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || file.mimetype === "application/vnd.ms-excel") {
-            const workbook = XLSX.readFile(pathToWriteFile)
+            const workbook = XLSX.readFile(temporaryPath)
             const data = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 })
             res.status(200).json({
                file: data[0],
@@ -36,7 +33,7 @@ export default async (req, res) => { // eslint-disable-line import/no-anonymous-
             })
          } else if (file.mimetype === "text/csv") {
             const parsedData = []
-            fs.createReadStream(pathToWriteFile)
+            fs.createReadStream(temporaryPath)
                .pipe(parse({ delimiter: ",", relax_column_count: true }))
                .on("data", response => {
                   parsedData.push(response)
