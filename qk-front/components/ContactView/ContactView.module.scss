@@ -18,8 +18,8 @@
 .left {
   background-color: $color-additional-medium;
   border-radius: 12px 0 0 12px;
-  height: calc(100% - 5rem - 5rem);
-  padding: 5rem 3rem;
+  height: calc(100% - 3.2rem - 3.2rem);
+  padding: 3.2rem 3rem;
 
   @include breakpoint-max($bp-screen-md) {
     border-radius: 12px 12px 0 0;
@@ -38,7 +38,7 @@
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  margin-top: 5rem;
+  margin-top: 3.2rem;
 
   @include breakpoint-max($bp-screen-md) {
     align-items: center;
@@ -66,18 +66,13 @@
 }
 
 .right {
-  height: calc(100% - 5rem - 5rem);
-  padding: 5rem 3rem;
+  height: calc(100% - 3.2rem - 3.2rem);
+  padding: 3.2rem 3rem;
   width: calc(100% - 3rem - 3rem);
 
   @include breakpoint-max($bp-screen-md) {
     height: calc(100% - 5rem - 2rem);
     padding-top: 2rem;
-  }
-
-  > p:first-child {
-    font-size: 2rem;
-    margin-bottom: 2rem;
   }
 
   >p:nth-child(2) {
@@ -89,8 +84,8 @@
 
     &:last-child {
       display: block;
-      margin: 2rem auto 0;
-      padding: 1rem 2rem;
+      margin: 2rem 0 0;
+      padding: 1.2rem 3.2rem;
       width: fit-content;
     }
   }
@@ -126,6 +121,7 @@
     margin-bottom: 2rem;
     padding: 1rem 2rem;
     width: 100%;
+    margin-top: 1.6rem;
   }
 }
 

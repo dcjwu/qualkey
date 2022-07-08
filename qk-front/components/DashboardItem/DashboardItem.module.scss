@@ -217,6 +217,7 @@
   }
 
   &.student {
+    margin-right: 2rem;
     svg {
       cursor: pointer;
       display: flex;
@@ -332,7 +333,7 @@
     }
 
     > *:not(:last-child) {
-      padding: 1rem 1rem !important;
+      padding: 1rem 2rem !important;
       @include breakpoint-max($bp-screen-xxs) {
         padding: 0.5rem !important;
       }
@@ -465,7 +466,7 @@
 
   > button {
     width: fit-content;
-    padding: 1rem 2rem;
+    padding: 1.2rem 3.2rem;
     margin-top: 0;
     color: $color-highlight;
     background-color: $color-secondary;
@@ -679,9 +680,11 @@
 }
 
 .titles {
+  padding: 0 2rem;
   display: grid;
   grid-template-columns: 1.1fr 1.5fr 0.7fr 1.05fr 0.3fr;
   > p {
+    padding: 0 .6rem;
     @include breakpoint-max($bp-screen-xl) {
       font-size: 1.2rem !important;
     }
@@ -720,6 +723,17 @@
     display: none;
   }
   > p {
+
+    &:not(:last-child) {
+      padding: 0 2rem !important;
+      @include breakpoint-max($bp-screen-xxs) {
+        padding: 0 0.5rem !important;
+      }
+    }
+
+    &:nth-child(2) {
+      padding-left: 3rem !important;
+    }
     @include breakpoint-max($bp-screen-xl) {
       font-size: 1.2rem !important;
     }

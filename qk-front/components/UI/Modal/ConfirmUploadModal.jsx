@@ -175,7 +175,7 @@ const ConfirmUploadModal = () => {
                                  <IconLoading/>
                               </Button>
                               : <Button blue thin onClick={handleFileDownload}>
-                                 <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                 <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                                     <IconDownload/>
                                     <Text semiBold>{step === 2 ? fileName : "Examine file"}</Text>
                                  </div>
@@ -185,13 +185,13 @@ const ConfirmUploadModal = () => {
                   {step === 2
                      ? <div className={styles.stepWrapper}>
                         <Button blue thin onClick={handleConfirm}>
-                           <div className={`${styles.row} ${styles.confirmUpload}`}>
+                           <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                               <IconDownload/>
                               <Text semiBold>Approve</Text>
                            </div>
                         </Button>
                         <Button error thin onClick={handleReject}>
-                           <div className={`${styles.row} ${styles.confirmUpload}`}>
+                           <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                               <IconDownload/>
                               <Text semiBold>Reject</Text>
                            </div>
@@ -204,14 +204,14 @@ const ConfirmUploadModal = () => {
                         : confirmed
                            ? <div className={`${styles.stepWrapper} ${styles.approved}`}>
                               <Button blue thin onClick={handleConfirmRequest}>
-                                 <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                 <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                                     <IconDownload/>
                                     <Text semiBold>Approve</Text>
                                  </div>
                               </Button>
                               <Button blue thin
                                       onClick={handleGoBack}>
-                                 <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                 <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                                     <IconDownload/>
                                     <Text semiBold>Go Back</Text>
                                  </div>

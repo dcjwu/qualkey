@@ -129,7 +129,6 @@ const InstitutionEditCredentials = ({ data }) => {
    return (
       <div className={styles.edit}>
          <div className={styles.topWrapper}>
-            <Text large semiBold>Edit Credentials</Text>
             <div className={styles.back} onClick={() => setShowEditCredentials(false)}>
                <IconBackLeft/>
                <Text semiBold>Back</Text>

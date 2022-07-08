@@ -155,7 +155,7 @@
   > button {
     bottom: 4rem;
     left: 3rem;
-    padding: 1rem 2rem;
+    padding: 1.2rem 3.2rem;
     position: absolute;
     width: fit-content;
 
@@ -195,7 +195,7 @@
   > button:last-child {
     bottom: 4rem;
     left: 3rem;
-    padding: 1rem 2rem;
+    padding: 1.2rem 3.2rem;
     position: absolute;
     width: fit-content;
   }
@@ -273,7 +273,7 @@
   }
   > button {
     margin-top: 0;
-    padding: 1rem 2rem;
+    padding: 1.2rem 3.2rem;
     width: fit-content;
 
     @include breakpoint-max($bp-screen-sm) {

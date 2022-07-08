@@ -116,14 +116,14 @@ const ConfirmWithdrawModal = () => {
                                  <IconLoading/>
                               </Button>
                               : step === 2
-                                 ? <Button errorModal thin onClick={handleWithdrawRequest}>
-                                    <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                 ? <Button error thin onClick={handleWithdrawRequest}>
+                                    <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                                        <IconDownload/>
                                        <Text semiBold>Confirm Request</Text>
                                     </div>
                                  </Button>
-                                 : <Button errorModal thin onClick={handleApproveWithdraw}>
-                                    <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                 : <Button error thin onClick={handleApproveWithdraw}>
+                                    <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                                        <IconDownload/>
                                        <Text semiBold>Withdraw</Text>
                                     </div>

@@ -10,7 +10,7 @@ const CredentialsInfo = ({ data }) => {
    return (
       <>
          <div className={styles.tab}>
-            <Text large>Credential Information</Text>
+            <Text large semiBold>Credential Information</Text>
          </div>
          <div className={styles.wrapper}>
             <div className={styles.info}>

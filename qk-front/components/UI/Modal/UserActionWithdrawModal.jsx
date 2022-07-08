@@ -177,7 +177,7 @@ const UserActionWithdrawModal = () => {
                               : <div className={`${styles.stepWrapper} ${styles.approved}`}>
                                  <Button errorModal thin
                                          onClick={step === 1 ? handleApproveWithdraw : step === 2 ? handleApproveRequest : null}>
-                                    <div className={`${styles.row} ${styles.confirmUpload}`}>
+                                    <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                                        <IconDownload/>
                                        <Text semiBold>Withdraw</Text>
                                     </div>

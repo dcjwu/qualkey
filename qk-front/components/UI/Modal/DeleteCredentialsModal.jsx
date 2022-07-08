@@ -114,13 +114,13 @@ const DeleteCredentialsModal = () => {
                               </Button>
                               : step === 2
                                  ? <Button errorModal thin onClick={handleDeleteCredentials}>
-                                    <div className={`${styles.row} ${styles.confirmUpload} ${styles.deleteCredentials}`}>
+                                    <div className={`${styles.rowButton} ${styles.confirmUpload} ${styles.deleteCredentials}`}>
                                        <IconTrash/>
                                        <Text semiBold>Confirm</Text>
                                     </div>
                                  </Button>
                                  : <Button errorModal thin onClick={handleApproveWithdraw}>
-                                    <div className={`${styles.row} ${styles.confirmUpload} ${styles.deleteCredentials}`}>
+                                    <div className={`${styles.rowButton} ${styles.confirmUpload} ${styles.deleteCredentials}`}>
                                        <IconTrash/>
                                        <Text semiBold>Delete</Text>
                                     </div>

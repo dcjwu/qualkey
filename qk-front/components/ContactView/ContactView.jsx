@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { IconEmail, IconLinkedinSmall, IconMessage, IconShowDropdown, IconTwitter } from "../UI/_Icon"
+import { IconEmail, IconLinkedinSmall, IconMessage, IconSend, IconShowDropdown, IconTwitter } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
 import Input from "../UI/Input/Input"
 import Text from "../UI/Text/Text"
@@ -23,7 +23,7 @@ const ContactView = ({ feedback, employer }) => {
    return (
       <div className={styles.wrapper}>
          <div className={styles.left}>
-            <Text bold>Contact Information</Text>
+            <Text bold large>Contact Information</Text>
             <div className={styles.contacts}>
                <a className={styles.contactsItem} href="mailto:info@qualkey.org">
                   <IconEmail/>
@@ -42,7 +42,7 @@ const ContactView = ({ feedback, employer }) => {
             </div>
          </div>
          <div className={styles.right}>
-            <Text bold>Send us an email message</Text>
+            <Text bold large>Send us an email message</Text>
             {employer ? <div className={styles.inputs}>
                <Input placeholder="Email" type="email"/>
                <Input placeholder="Your name" type="text"/>
@@ -64,10 +64,10 @@ const ContactView = ({ feedback, employer }) => {
                   </div>
                </div>
                : <Text grey>Your feedback is incredibly important to us as it helps improve service and your experience.</Text>}
-            <textarea placeholder="Start typing your message here..."/>
+            <textarea cols={10} placeholder="Start typing your message here..."/>
             <Button blue thin>
                <div className={styles.buttonRow}>
-                  <IconMessage/>
+                  <IconSend/>
                   <Text white>Send message</Text>
                </div>
             </Button>

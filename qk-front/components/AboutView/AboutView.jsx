@@ -100,25 +100,27 @@ const AboutView = () => {
                </div>
                <div className={styles.content}>
                   <div className={styles.left}>
-                     <div className={styles.leftItem}>
-                        <div className={styles.imageWrapper}>
-                           <Image alt="avatar" layout="fill" src={avatar}/>
+                     <div className={styles.wrapperLeft}>
+                        <div className={styles.leftItem}>
+                           <div className={styles.imageWrapper}>
+                              <Image alt="avatar" layout="fill" src={avatar}/>
+                           </div>
+                           <Text bold>Hans Winkler</Text>
+                           <Text grey>Co-founder</Text>
+                           <a href="https://linkedin.com" rel="noreferrer" target="_blank">
+                              <IconLinkedin/>
+                           </a>
                         </div>
-                        <Text bold>Hans Winkler</Text>
-                        <Text grey>Co-founder</Text>
-                        <a href="https://linkedin.com" rel="noreferrer" target="_blank">
-                           <IconLinkedin/>
-                        </a>
-                     </div>
-                     <div className={styles.leftItem}>
-                        <div className={styles.imageWrapper}>
-                           <Image alt="avatar" layout="fill" src={avatar}/>
+                        <div className={styles.leftItem}>
+                           <div className={styles.imageWrapper}>
+                              <Image alt="avatar" layout="fill" src={avatar}/>
+                           </div>
+                           <Text bold>Philip Whetstone</Text>
+                           <Text grey>Co-founder</Text>
+                           <a href="https://linkedin.com" rel="noreferrer" target="_blank">
+                              <IconLinkedin/>
+                           </a>
                         </div>
-                        <Text bold>Philip Whetstone</Text>
-                        <Text grey>Co-founder</Text>
-                        <a href="https://linkedin.com" rel="noreferrer" target="_blank">
-                           <IconLinkedin/>
-                        </a>
                      </div>
                   </div>
                   <div className={styles.right}>

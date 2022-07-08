@@ -178,16 +178,22 @@ const FileUploadModal = () => {
                <IconClose onClick={closeModal}/>
                <ModalSteps step={3} totalSteps={3}/>
                <div className={styles.wrapperInner}
-                    style={{ height: parsedValuesFromUpload.length ? "100%" : "", paddingBottom: "6rem" }}>
+                    style={{ height: parsedValuesFromUpload.length ? "100%" : "" }}>
                   <div className={styles.top}>
                      <Heading blue h2 medium
                               modal
                               style={{ marginBottom: "1rem" }}>Credentials Upload Complete
                      </Heading>
-                     <Text style={{ marginBottom: "1.5rem" }}>You will be notified as soon as you organisation’s Assigned
+                     <Text style={{ marginBottom: "3.2rem" }}>You will be notified as soon as you organisation’s Assigned
                         Approver confirms these
                         credentials. You many now return to the dashboard</Text>
-                     <Button blue thin style={{ display: "flex", justifyContent: "center", margin: "0 auto" }}
+                     <Button blue thin style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        margin: "0 auto",
+                        width: "fit-content",
+                        padding: "1.2rem 3.2rem"
+                     }}
                              onClick={closeModal}>
                         Return to Dashboard
                      </Button>
@@ -201,7 +207,7 @@ const FileUploadModal = () => {
                <IconClose onClick={closeModal}/>
                <ModalSteps step={step} totalSteps={3}/>
                <div className={styles.wrapperInner} style={{ height: parsedValuesFromUpload.length ? "100%" : "" }}>
-                  <div className={styles.top}>
+                  <div className={`${styles.top} ${parsedValuesFromUpload.length ? styles.multi : ""}`}>
                      <Heading blue h2 modal>Multi-Upload</Heading>
                      {fileUploadModalError && <Text error large>{fileUploadModalError}</Text>}
                      <Input fileName={fileName} inputName="csvUploader" isFileUploaded={!!parsedValuesFromUpload.length}
@@ -211,9 +217,13 @@ const FileUploadModal = () => {
                   {
                      !!parsedValuesFromUpload.length
                      && <>
+                        <div className={styles.titles}>
+                           <Text grey small>Column Title</Text>
+                           <Text grey small>Values</Text>
+                        </div>
                         <div className={styles.middle}>
                            {parsedValuesFromUpload.map((value, index) => (
-                              <div key={value} className={`${styles.row} ${styles.massUpload}`}>
+                              <div key={value} className={`${styles.rowButton} ${styles.massUpload}`}>
                                  <Input readOnly inputName={value} type={"text"}
                                         value={value}/>
                                  <FileUploadDropdown key={value} handleOption={handleOption}

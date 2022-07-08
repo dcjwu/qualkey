@@ -7,7 +7,7 @@
   border-radius: 1rem;
   color: $color-secondary;
   font-family: $font-primary;
-  font-size: 2rem;
+  font-size: 1.6rem;
   text-align: center;
   width: 38rem;
   z-index: 1;
@@ -62,13 +62,14 @@
 }
 
 .confirmEdit {
+  margin-top: 0;
   background-color: transparent;
   border: 1px solid $color-success;
   color: $color-success;
   font-size: 1.45rem;
-  padding: 0.5rem 1rem;
+  padding: 1.2rem 3.2rem;
   position: absolute;
-  right: -9.5rem;
+  right: -8rem;
   top: 50%;
   transform: translateY(-50%);
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -82,13 +83,14 @@
 }
 
 .undoEdit {
+  margin-top: 0;
   background-color: transparent;
   border: 1px solid $color-highlight;
   color: $color-highlight;
   font-size: 1.45rem;
-  padding: 0.5rem 1rem;
+  padding: 1.2rem 3.2rem;
   position: absolute;
-  right: -8.6rem;
+  right: -8rem;
   top: 50%;
   transform: translateY(-50%);
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;

@@ -5,7 +5,7 @@
   background-color: $color-secondary;
   border-radius: 12px;
   margin-top: 3rem;
-  padding: 3rem 4rem 7rem;
+  padding: 3.2rem;
 }
 
 .page {
@@ -21,7 +21,7 @@
 .image {
   background-color: $color-additional-medium;
   height: 27rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.4rem;
   position: relative;
   width: 100%;
 
@@ -57,8 +57,7 @@
 .content {
   align-items: center;
   display: flex;
-  gap: 5rem;
-  justify-content: center;
+  justify-content: space-between;
 
   @include breakpoint-max($bp-screen-xl) {
     gap: 2rem;
@@ -73,7 +72,7 @@
   align-items: center;
   display: flex;
   gap: 2rem;
-  margin-top: -12.5rem;
+  margin: -12.5rem auto 0 auto;
 
   @include breakpoint-max($bp-screen-md) {
     margin-top: 0;
@@ -110,7 +109,7 @@
 }
 
 .right {
-  width: 50%;
+  width: 45%;
 
   > p {
     @include breakpoint-max($bp-screen-xl) {
@@ -118,15 +117,15 @@
     }
 
     &:first-child {
-      margin-bottom: 2.5rem;
+      margin-bottom: 2.4rem;
     }
   }
 
   > button {
     display: block;
     font-size: 1.65rem;
-    margin: 2.5rem auto 0;
-    padding: 1rem 2rem;
+    margin: 3.2rem 0 0;
+    padding: 1.2rem 3.2rem;
     width: fit-content;
   }
 
@@ -172,14 +171,24 @@
 .story {
   > p {
     margin-bottom: 1.5rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
   + button {
+    margin: 3.2rem auto 0 auto;
     width: fit-content;
-    padding: 1rem 2rem;
+    padding: 1.2rem 3.2rem;
     display: block;
-    margin: 0 auto;
     svg {
       transform: rotate(180deg);
     }
   }
+}
+
+.wrapperLeft {
+  display: flex;
+  align-items: center;
+  gap: 7.2rem;
+  justify-content: center;
 }
