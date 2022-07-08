@@ -121,7 +121,7 @@ const CredentialHistory = ({ changeData, uuid, showCredentialsHistory }) => {
                               <Button thin white onClick={handleShareCredentials}>
                                  <div className={styles.buttonRow}>
                                     <IconShare/>
-                                    <Text>Reshare Credentials</Text>
+                                    <Text semiBold>Reshare Credentials</Text>
                                  </div>
                               </Button>
                            </>
