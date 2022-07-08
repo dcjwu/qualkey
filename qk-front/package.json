@@ -14,8 +14,10 @@
     "lint:style": "npm run lint:globals & npm run lint:components"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^3.0.4",
     "@stripe/react-stripe-js": "^1.8.1",
     "@stripe/stripe-js": "^1.31.0",
+    "aws-amplify": "^4.3.27",
     "axios": "^0.27.2",
     "cookies-next": "^2.0.4",
     "csv-parse": "^5.0.4",
