@@ -25,8 +25,6 @@ const InstitutionView = ({ children, institution, userData, notificationsData, c
 
    const [changePasswordModal, setChangePasswordModal] = useState(false)
 
-   console.log(currentFile)
-
    /**
     * File deletion processing.
     **/
