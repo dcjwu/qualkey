@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { IconEmail, IconLinkedinSmall, IconMessage, IconSend, IconShowDropdown, IconTwitter } from "../UI/_Icon"
+import { IconEmail, IconLinkedinSmall, IconSend, IconShowDropdown, IconTwitter } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
 import Input from "../UI/Input/Input"
 import Text from "../UI/Text/Text"
