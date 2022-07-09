@@ -91,8 +91,6 @@ const Sidebar = ({ institution, employer, publicPage, did }) => {
       }
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-   console.log(pathname)
-
    return (
       <div className={burgerMenuActive ? styles.darken : ""}>
          <div ref={outsideClickRef} className={`${styles.sidebar} ${burgerMenuActive ? styles.active : ""}`}>

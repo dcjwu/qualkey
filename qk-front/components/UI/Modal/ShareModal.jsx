@@ -246,8 +246,6 @@ const ShareModal = () => {
          })
    }
 
-   console.log(formData)
-
    return (
       <div className={styles.modal} onClick={closeModalOutside}>
          <div className={`${styles.wrapper}`} onClick={event => event.stopPropagation()}>

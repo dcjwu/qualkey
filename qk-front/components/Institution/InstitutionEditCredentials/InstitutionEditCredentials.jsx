@@ -110,7 +110,7 @@ const InstitutionEditCredentials = ({ data }) => {
                setError(error.response.data.message)
             })
       } else {
-         console.log("WTF, please!")
+         console.log("Unexpected editing error")
       }
    }
 
