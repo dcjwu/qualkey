@@ -352,7 +352,7 @@
   }
 
   &.shared {
-    grid-template-columns: 1fr 1.2fr .8fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
@@ -506,10 +506,24 @@
     }
 
     > button {
-      height: 5.5rem;
+      height: 5.6rem;
+      background-color: $color-highlight;
+      color: $color-secondary;
+      svg {
+        path {
+          fill: $color-secondary;
+        }
+      }
 
-      &:focus {
-        background-color: $color-secondary;
+      &:focus,
+      &:hover {
+        background-color: $color-highlight !important;
+        color: $color-secondary !important;
+        svg {
+          path {
+            fill: $color-secondary !important;
+          }
+        }
       }
     }
   }
@@ -742,8 +756,17 @@
 }
 
 .titlesEmployer {
-  grid-template-columns: 1fr 1.2fr .8fr;
+  grid-template-columns: 1fr 1fr 1fr;
   display: grid;
   padding: 0 2rem;
   width: calc(100% - 2rem - 2rem);
+  > p {
+    &:nth-child(1),
+    &:nth-child(2) {
+      padding: 0 0.6rem;
+    }
+    &:last-child {
+      padding-left: 2rem;
+    }
+  }
 }

@@ -8,11 +8,11 @@ import { IconEllipseBl, IconEllipseBr, IconEllipseTl, IconEllipseTr } from "../U
 import Text from "../UI/Text/Text"
 import styles from "./Certificate.module.scss"
 
-const Certificate = ({ data }) => {
+const Certificate = ({ data, sharePage }) => {
 
    return (
       <>
-         <div className={styles.certificateWrapper}>
+         <div className={`${styles.certificateWrapper} ${sharePage ? styles.sharePage : ""}`}>
             <IconEllipseTl/>
             <IconEllipseTr/>
             <IconEllipseBl/>
@@ -41,21 +41,32 @@ const Certificate = ({ data }) => {
                   </div>
                </div>
                <div className={styles.right}>
-                  {data.institution.representatives.map(item => {
-                     return <div key={`${item.firstName}-${item.lastName}`} style={styles.rightItem}>
+                  {!sharePage
+                     ? data.institution.representatives.map(item => {
+                        return <div key={`${item.firstName}-${item.lastName}`} style={styles.rightItem}>
+                           <div className={styles.imageWrapper}>
+                              <Image alt="Signature" layout="fill" objectFit="contain"
+                                        src={`${awsUrl}/${item.signatureUrl}`}/>
+                           </div>
+                           <Text semiBold small>{item.firstName} {item.lastName}</Text>
+                           <Text semiBold small>{item.title}</Text>
+                        </div>
+                     })
+                     : <div style={styles.rightItem}>
                         <div className={styles.imageWrapper}>
                            <Image alt="Signature" layout="fill" objectFit="contain"
-                                  src={`${awsUrl}/${item.signatureUrl}`}/>
+                                  src={`${awsUrl}/${data.authenticatedBySignatureUrl}`}/>
                         </div>
-                        <Text semiBold small>{item.firstName} {item.lastName}</Text>
-                        <Text semiBold small>{item.title}</Text>
-                     </div>
-                  })}
+                        <Text semiBold small>{data.authenticatedBy}</Text>
+                        <Text semiBold small>{data.authenticatedTitle}</Text>
+                     </div>}
                </div>
             </div>
             <div className={styles.bottom}>
                <div className={styles.imageWrapper}>
-                  <Image alt="Stamp" layout="fill" src={`${awsUrl}/${data.institution.stampUrl}`}/>
+                  {!sharePage
+                     ? <Image alt="Stamp" layout="fill" src={`${awsUrl}/${data.institution.stampUrl}`}/>
+                     : <Image alt="Stamp" layout="fill" src={`${awsUrl}/${data.institutionStampUrl}`}/>}
                </div>
                <Image alt="qk logo" height={80} src={qkLogo}
                       width={116}/>

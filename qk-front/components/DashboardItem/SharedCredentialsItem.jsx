@@ -1,27 +1,18 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
-import axios from "axios"
 import Image from "next/image"
-import { useRouter } from "next/router"
-import { useRecoilState } from "recoil"
+import Link from "next/link"
 
-import { viewCertificateModalState } from "../../atoms"
-import { awsUrl, processingUrl } from "../../utils"
+import { awsUrl } from "../../utils"
 import SharedCredentialsInfo from "../CredentialsInfo/SharedCredentialsInfo"
 import { IconAcademicCap, IconCertificate, IconHideDropdownBig, IconShowDropdownBig } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
-import ViewCertificateModal from "../UI/Modal/ViewCertificateModal"
 import Text from "../UI/Text/Text"
 import styles from "./DashboardItem.module.scss"
 
 const SharedCredentialsItem = ({ data }) => {
-   
-   const router = useRouter()
-
-   const [viewCertificateModal, setViewCertificateModal] = useRecoilState(viewCertificateModalState)
-   
+      
    const [showData, setShowData] = useState(false)
-   const [certificateData, setCertificateData] = useState({})
 
    /**
     * Show credential data handler
@@ -29,16 +20,6 @@ const SharedCredentialsItem = ({ data }) => {
    const handleExpandData = () => {
       setShowData(prevState => !prevState)
    }
-
-   useEffect(() => {
-      axios.get(`${processingUrl}/credential/${data.did}?shareUuid=${router.query.uuid}`)
-         .then(response => {
-            setCertificateData(response.data)
-         })
-         .catch(error => {
-            console.log(error)
-         })
-   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>
@@ -60,19 +41,22 @@ const SharedCredentialsItem = ({ data }) => {
                   </div>
                </div>
                <div className={`${styles.actions} ${styles.shared}`}>
-                  <IconCertificate onClick={() => setViewCertificateModal(true)}/>
+                  <Link href={`/${data.did}`}>
+                     <a target="_blank">
+                        <IconCertificate/>
+                     </a>
+                  </Link>
                   <Button blue thin
                           onClick={handleExpandData}>
                      <div className={`${styles.buttonRow} ${styles.shared}`}>
                         {!showData ? <IconHideDropdownBig/> : <IconShowDropdownBig/>}
-                        <Text semiBold>Certificate</Text>
+                        <Text semiBold>View Credentials</Text>
                      </div>
                   </Button>
                </div>
             </div>
          </div>
          {showData ? <SharedCredentialsInfo data={data}/> : null}
-         {viewCertificateModal && <ViewCertificateModal data={certificateData}/>}
       </>
    )
 }

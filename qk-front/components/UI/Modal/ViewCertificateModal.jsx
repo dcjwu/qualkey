@@ -8,7 +8,7 @@ import Button from "../Button/Button"
 import Text from "../Text/Text"
 import styles from "./Modal.module.scss"
 
-const ViewCertificateModal = ({ data }) => {
+const ViewCertificateModal = ({ data, sharePage }) => {
 
    const [, setViewCertificateModal] = useRecoilState(viewCertificateModalState)
 
@@ -33,7 +33,7 @@ const ViewCertificateModal = ({ data }) => {
             <IconClose onClick={closeModal}/>
             <div className={`${styles.top}`}>
                <div className={`${styles.wrapperInner} ${styles.viewCertificate}`}>
-                  <Certificate data={data}/>
+                  <Certificate data={data} sharePage={sharePage}/>
                   <Text grey medium>Your QualKey certificate may look different to the paper or digital certificate
                      issued by your
                      Academic institution. QualKey adds a unique QR code so that third parties can securely and

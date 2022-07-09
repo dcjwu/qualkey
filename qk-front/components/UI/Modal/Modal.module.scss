@@ -111,7 +111,6 @@
 
     &.password {
       padding-top: 2rem;
-      margin-bottom: 2rem;
     }
 
     &.viewCertificate {
@@ -767,6 +766,7 @@
   }
 
   button {
+    margin-top: 0;
     width: fit-content;
     padding: 1.2rem 3.2rem;
   }
@@ -838,6 +838,7 @@
   margin-top: 1rem;
 
   button {
+    margin-top: 0;
     width: fit-content;
     padding: 1.2rem 3.2rem;
 

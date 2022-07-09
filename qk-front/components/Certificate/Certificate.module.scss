@@ -7,6 +7,12 @@
   padding: 2rem 3.5rem 3rem;
   position: relative;
 
+  &.sharePage {
+    margin-top: 2rem;
+    width: 50vw;
+    background-color: $color-secondary;
+  }
+
   svg {
     position: absolute;
     z-index: 9999;

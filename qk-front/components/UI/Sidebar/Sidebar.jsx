@@ -16,7 +16,7 @@ import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
 import styles from "./Sidebar.module.scss"
 
-const Sidebar = ({ institution, employer }) => {
+const Sidebar = ({ institution, employer, publicPage, did }) => {
 
    const { push, pathname, query } = useRouter()
 
@@ -91,6 +91,8 @@ const Sidebar = ({ institution, employer }) => {
       }
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+   console.log(pathname)
+
    return (
       <div className={burgerMenuActive ? styles.darken : ""}>
          <div ref={outsideClickRef} className={`${styles.sidebar} ${burgerMenuActive ? styles.active : ""}`}>
@@ -114,9 +116,9 @@ const Sidebar = ({ institution, employer }) => {
                               </Text>
                            </a>
                         </Link> :
-                        <Link href={`/share/${shareState.uuid}?password=${shareState.password}`}>
+                        <Link href={!publicPage ? `/share/${shareState.uuid}?password=${shareState.password}` : `/${did}`}>
                            <a>
-                              <Text bold sidebar active={pathname === "/share/[uuid]"}>
+                              <Text bold sidebar active={pathname === "/share/[uuid]" || publicPage}>
                                  <IconAcademicCapPerson/>
                                  <span>Shared Credentials</span>
                               </Text>
@@ -133,7 +135,7 @@ const Sidebar = ({ institution, employer }) => {
                   <hr className={styles.hr}/>
                   <div className={styles.helpers}>
                      <Link href={!employer ? "/help" : "/share/help"}>
-                        <a>
+                        <a target={publicPage ? "_black" : "_self"}>
                            <Text sidebar sidebarMin active={pathname.includes("/help")}>
                               <IconQuestion/>
                               <span>Help & FAQ</span>
@@ -141,7 +143,7 @@ const Sidebar = ({ institution, employer }) => {
                         </a>
                      </Link>
                      <Link href={!employer ? "/contact" : "/share/contact"}>
-                        <a>
+                        <a target={publicPage ? "_black" : "_self"}>
                            <Text sidebar sidebarMin
                                  active={pathname.includes("/contact") || pathname.includes("/feedback")}>
                               <IconMessage/>
@@ -150,7 +152,7 @@ const Sidebar = ({ institution, employer }) => {
                         </a>
                      </Link>
                      <Link href={!employer ? "/about" : "/share/about"}>
-                        <a>
+                        <a target={publicPage ? "_black" : "_self"}>
                            <Text sidebar sidebarMin active={pathname.includes("/about")}>
                               <IconKey/>
                               <span>About Us</span>
@@ -158,7 +160,7 @@ const Sidebar = ({ institution, employer }) => {
                         </a>
                      </Link>
                      <Link href={!employer ? "/policy" : "/share/policy"}>
-                        <a>
+                        <a target={publicPage ? "_black" : "_self"}>
                            <Text sidebar sidebarMin active={pathname.includes("/policy")}>
                               <IconPolicy/>
                               <span>Privacy Policy</span>
@@ -168,7 +170,7 @@ const Sidebar = ({ institution, employer }) => {
                      {!employer ? <Text sidebar sidebarMin onClick={handleLogout}>
                         <IconLogout/>
                         <span>Log Out</span>
-                     </Text> : <Link href="/"><a><Text sidebar sidebarMin onClick={handleLogout}>
+                     </Text> : <Link href="/"><a><Text sidebar sidebarMin>
                         <IconLogout/>
                         <span>Log In</span>
                      </Text></a></Link>}
