@@ -22,7 +22,7 @@ const Certificate = ({ data, sharePage }) => {
                          src={!data?.institution?.logoUrl ? `${awsUrl}/${data.institutionLogoUrl}` : `${awsUrl}/${data?.institution?.logoUrl}`}
                          width={308}/>
             </div>
-            <QRCodeSVG size={110} value="https://facebook.com"/>
+            <QRCodeSVG size={110} value={`${process.env.NEXT_PUBLIC_FRONT_URL}/${data.did}`}/>
          </div>
          <div className={styles.certificateInner}>
             <div className={styles.left}>
