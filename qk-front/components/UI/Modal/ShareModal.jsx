@@ -71,8 +71,6 @@ const ShareModal = () => {
    const [dataToShare, setDataToShare] = useState([])
    const [error, setError] = useState("")
 
-   console.log(formData)
-
    /**
     * Ask if modal should be closed
     */
