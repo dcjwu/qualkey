@@ -26,6 +26,14 @@ const ViewCertificateModal = ({ data, sharePage }) => {
       closeModal()
       event.stopPropagation()
    }
+   
+   const handleInstagramShare = async () => {
+      console.log("Inst")
+   }
+
+   const handleLinkedinShare = async () => {
+      console.log("Linkedin")
+   }
 
    return (
       <div className={styles.modal} onClick={closeModalOutside}>
@@ -47,13 +55,13 @@ const ViewCertificateModal = ({ data, sharePage }) => {
                            <Text white>Email</Text>
                         </div>
                      </Button>
-                     <Button thin white>
+                     <Button thin white onClick={handleInstagramShare}>
                         <div className={styles.rowButton}>
                            <IconInstagramColor/>
                            <Text blue>Instagram</Text>
                         </div>
                      </Button>
-                     <Button thin white>
+                     <Button thin white onClick={handleLinkedinShare}>
                         <div className={styles.rowButton}>
                            <IconLinkedinColor/>
                            <Text blue>LinkedIn</Text>

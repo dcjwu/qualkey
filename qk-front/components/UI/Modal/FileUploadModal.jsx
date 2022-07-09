@@ -223,7 +223,7 @@ const FileUploadModal = () => {
                         </div>
                         <div className={styles.middle}>
                            {parsedValuesFromUpload.map((value, index) => (
-                              <div key={value} className={`${styles.rowButton} ${styles.massUpload}`}>
+                              <div key={value} className={`${styles.row} ${styles.massUpload}`}>
                                  <Input readOnly inputName={value} type={"text"}
                                         value={value}/>
                                  <FileUploadDropdown key={value} handleOption={handleOption}
