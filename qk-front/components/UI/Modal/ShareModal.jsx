@@ -4,7 +4,7 @@ import axios from "axios"
 import { useRouter } from "next/router"
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 
-import { formEmailState, formShareState, showShareModalState } from "../../../atoms"
+import { formEmailState, formShareState, showShareModalState, studentNameState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
 import { IconClose, IconLock, IconShare, IconShowDropdown } from "../_Icon"
 import Button from "../Button/Button"
@@ -56,9 +56,11 @@ const ShareModal = () => {
 
    const router = useRouter()
 
+
    const resetFormEmailFromReshare = useResetRecoilState(formEmailState)
    const formUuids = useRecoilValue(formShareState)
    const formEmailFromReshare = useRecoilValue(formEmailState)
+   const studentName = useRecoilValue(studentNameState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
    const [step, setStep] = useState(1)
    const [showExpires, setShowExpires] = useState(false)
@@ -244,6 +246,8 @@ const ShareModal = () => {
          })
    }
 
+   console.log(formData)
+
    return (
       <div className={styles.modal} onClick={closeModalOutside}>
          <div className={`${styles.wrapper}`} onClick={event => event.stopPropagation()}>
@@ -273,12 +277,22 @@ const ShareModal = () => {
                            {error && <Text error>{error}</Text>}
                         </div>
                         <form className={styles.emailForm} onSubmit={handleFormSubmit}>
-                           <div className={styles.shareEmail}>
-                              <input placeholder="To:" type="text" value={emailInput}
+                           <div className={styles.inputWrapper}>
+                              <input required id="emailInput" type="text"
+                                     value={emailInput}
                                      onChange={handleEmailInput}/>
+                              {!emailInput && <label htmlFor="emailInput">Email:</label>}
+                           </div>
+                           <div className={styles.shareEmail}>
                               <div className={styles.message}>
-                                 <Text medium>Dear, <span><input type="text"/></span></Text>
-                                 <Text medium><span>John Reed</span> has chosen to share their authenticated education
+                                 <div className={styles.dear}>
+                                    <Text medium>Dear, </Text>
+                                    <div className={styles.inputWrapper}>
+                                       <input required id="dearInput" type="text"/>
+                                       <label htmlFor="dearInput">{"Recipient's name:"}</label>
+                                    </div>
+                                 </div>
+                                 <Text medium><span>{studentName}</span> has chosen to share their authenticated education
                                     credentials with you.</Text>
                                  <Text medium>QualKey uses blockchain technology to provide secure and instant credential
                                     verification.</Text>
@@ -350,7 +364,8 @@ const ShareModal = () => {
                                     {shareData.map(item => {
                                        return <li key={item.value} className={styles.adjustDataItem}>
                                           <Text>{item.title}</Text>
-                                          <input checked={dataToShare.includes(item.value)} type="checkbox" value={item.value}
+                                          <input checked={dataToShare.includes(item.value)} type="checkbox"
+                                                 value={item.value}
                                                  onChange={handleRemoveShareData}/>
                                        </li>
                                     })}
@@ -366,7 +381,8 @@ const ShareModal = () => {
                                  <Heading blue h2 modal>Congratulations</Heading>
                                  <Text>Your credentials have been shared! You now may close this window.</Text>
                               </div>
-                              <Button blue thin onClick={() => router.reload(window.location.pathname)}>Return to Dashboard</Button>
+                              <Button blue thin onClick={() => router.reload(window.location.pathname)}>Return to
+                                 Dashboard</Button>
                            </div>
                            : null
             }

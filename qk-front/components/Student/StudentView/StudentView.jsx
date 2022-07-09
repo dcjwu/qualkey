@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 
 import { getCookie } from "cookies-next"
 import PropTypes from "prop-types"
-import { useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 
 
-import { showShareModalState } from "../../../atoms"
+import { showShareModalState , studentNameState } from "../../../atoms"
 import ChangePasswordModal from "../../UI/Modal/ChangePasswordModal"
 import ShareModal from "../../UI/Modal/ShareModal"
 import Sidebar from "../../UI/Sidebar/Sidebar"
@@ -15,12 +15,17 @@ const StudentView = ({ children, userData, notificationsData, credentials }) => 
 
    const showShareModal = useRecoilValue(showShareModalState)
    const [changePasswordModal, setChangePasswordModal] = useState(false)
+   const [, setStudentGlobalName] = useRecoilState(studentNameState)
 
    useEffect(() => {
       if (getCookie("first_login") === true) {
          setChangePasswordModal(true)
       }
    }, [])
+
+   useEffect(() => {
+      setStudentGlobalName(`${userData.firstName} ${userData.lastName}`)
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>

@@ -98,6 +98,7 @@
 
     &.share {
       padding-bottom: 0;
+
       > p {
         margin-top: -1rem;
         text-align: center !important;
@@ -115,6 +116,7 @@
 
     &.viewCertificate {
       padding: 5rem 3rem 2rem 3rem;
+
       > p:nth-child(3) {
         margin-top: 1rem;
       }
@@ -164,11 +166,6 @@
 
       + p {
         margin-bottom: 1.5rem;
-
-        //+ button {
-        //  margin-top: 2rem;
-        //  padding: 1rem 1.2rem;
-        //}
       }
     }
 
@@ -220,6 +217,7 @@
       }
     }
   }
+
   &.shareReturn {
     padding-bottom: 4rem;
   }
@@ -280,6 +278,7 @@
   &.deleteCredentials {
     > svg {
       width: 2.5rem;
+
       path {
         stroke: $color-secondary;
       }
@@ -328,7 +327,7 @@
 
   &.approved {
     button {
-      flex: 1 1 0px;
+      flex: 1 1 0;
     }
 
     button:last-child {
@@ -461,38 +460,58 @@
   margin: 0 auto 2rem auto;
 }
 
-.shareEmail {
-  padding: 1.5rem 2rem;
-  background-color: $color-additional-light;
-  border-radius: 15px;
-  border: 1px solid $color-additional-medium-dark;
-  margin-bottom: 2rem;
+.inputWrapper {
+  position: relative;
 
   > input {
-    margin: 0;
-    font-size: 1.4rem;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid $color-additional-medium-dark;
-    width: 100%;
+    padding: 1.2rem 1.6rem;
+    width: calc(100% - 1.6rem - 1.6rem);
+    border-radius: 12px;
+    color: $color-primary;
     font-family: $font-primary;
+    background-color: $color-additional-light;
+    border: 1px solid $color-additional-medium;
+    margin-bottom: 1.6rem;
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:focus + label {
+      display: none;
+    }
+  }
+
+  > label {
+    position: absolute;
+    top: 0;
+    left: 1.42rem;
+    color: $color-primary-light;
+    font-family: $font-primary;
+    cursor: text;
+    width: 100% !important;
+
+    &::after {
+      position: relative;
+      top: -3px;
+      left: 1px;
+      display: inline-block;
+      content: "*";
+      color: #d0011b;
+    }
   }
 }
 
+.shareEmail {
+  padding: 2.4rem;
+  background-color: $color-secondary;
+  border-radius: 15px;
+  border: 1px solid $color-additional-medium-dark;
+  margin-bottom: 2rem;
+}
+
 .message {
-  margin-top: 2rem;
-
-  input {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid $color-additional-medium-dark;
-    font-family: $font-primary;
-    padding: 0;
-    width: 20%;
-    margin: 0 0 2rem 1rem !important;
-  }
-
-  > p:nth-child(2) > span {
+    > p:nth-child(2) > span {
     font-weight: $font-weight-md;
     color: $color-primary;
   }
@@ -505,6 +524,24 @@
     font-weight: $font-weight-md;
     color: $color-highlight;
     margin-top: 2rem;
+  }
+}
+
+.dear {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  > .inputWrapper {
+    > input {
+      font-size: 1.4rem;
+      padding: .8rem;
+      width: calc(100% - .8rem - .8rem);
+    }
+    > label {
+      font-size: 1.4rem;
+      padding: .8rem;
+      left: 0.02rem;
+    }
   }
 }
 
@@ -533,6 +570,7 @@
     background-color: $color-secondary;
     border: 1px solid $color-highlight;
     padding: 1.2rem 3.2rem;
+
     &:focus {
       background-color: transparent;
     }
@@ -552,6 +590,7 @@
     display: block;
     width: fit-content;
     padding: 1.2rem 3.2rem;
+
     &:disabled {
       > div p {
         color: $color-secondary;
@@ -614,6 +653,7 @@
 .wrapperAdjust {
   margin-top: 4rem;
   padding: 0 15rem 4rem 15rem;
+
   > button:last-child {
     margin: 3rem auto 0 auto;
     width: fit-content;
@@ -719,11 +759,13 @@
   gap: 5rem;
   width: 100%;
   margin: 0 auto;
+
   input {
     width: 100%;
     padding: 1.2rem 1rem;
     margin-bottom: 0;
   }
+
   button {
     width: fit-content;
     padding: 1.2rem 3.2rem;
@@ -733,11 +775,13 @@
 .newPassword {
   width: 60%;
   margin: 0 auto;
+
   input {
     padding: 1.2rem 1rem;
     width: 100%;
     margin-bottom: 2rem;
   }
+
   > button:last-child {
     width: fit-content;
     padding: 1.2rem 3.2rem;
@@ -748,12 +792,14 @@
 
 .details {
   padding: 5rem 8rem !important;
+
   button:last-child {
     margin-top: 2rem !important;
     padding: 1rem 3rem;
     background-color: transparent;
     border: 1px solid $color-highlight;
     color: $color-highlight;
+
     &:hover {
       color: $color-secondary;
     }
@@ -770,6 +816,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   &:last-child {
     > p:last-child {
       flex-grow: 1;
@@ -789,13 +836,16 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
+
   button {
     width: fit-content;
     padding: 1.2rem 3.2rem;
+
     &:nth-child(2),
     &:nth-child(3) {
       &:hover {
         background-color: $color-secondary;
+
         svg {
           background-color: initial;
 
