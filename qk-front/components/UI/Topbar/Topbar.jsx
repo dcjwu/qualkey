@@ -55,7 +55,7 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData })
     */
    const handleCutFirstName = fullName => {
       const cutName = fullName.split(" ")
-      console.log(`${cutName[0][0]}. ${cutName[1]}`)
+      return `${cutName[0][0]}. ${cutName[1]}`
    }
 
    /**
@@ -172,7 +172,7 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData })
                   <Image alt="user" className={styles.user} layout="fill"
                          quality={100} src={avatar}/>
                </div>
-               {userData?.fullName ? <Text semiBold>{() => handleCutFirstName(userData.fullName)}</Text> : null}
+               {userData.fullName ? <Text semiBold>{handleCutFirstName(userData.fullName)}</Text> : null}
                <IconHideDropdownBig/>
                <div ref={outsideClickRef} className={styles.menu} style={{ display: showMenu ? "block" : "none" }}>
                   <ul>
