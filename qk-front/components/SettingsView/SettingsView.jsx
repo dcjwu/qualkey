@@ -7,7 +7,7 @@ import PropTypes from "prop-types"
 
 import avatar from "../../assets/images/avatarMock.webp"
 import { processingUrl } from "../../utils"
-import { IconCheckMark, IconLoading, IconShowDropdown } from "../UI/_Icon"
+import { IconAccount, IconChangePass, IconCheckMark, IconCurrency, IconLoading, IconSecurity, IconShowDropdown } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
 import Input from "../UI/Input/Input"
 import Text from "../UI/Text/Text"
@@ -145,16 +145,28 @@ const SettingsView = ({ institution, userData }) => {
             <div className={styles.handlers}>
                <ul>
                   <li className={view === 1 ? styles.active : ""} onClick={() => viewSetter(1)}>
-                     <Text semiBold>Account</Text>
+                     <div className={styles.buttonRow}>
+                        <IconAccount/>
+                        <Text semiBold>Account</Text>
+                     </div>
                   </li>
                   <li className={view === 2 ? styles.active : ""} onClick={() => viewSetter(2)}>
-                     <Text semiBold>Change Password</Text>
+                     <div className={styles.buttonRow}>
+                        <IconChangePass/>
+                        <Text semiBold>Change Password</Text>
+                     </div>
                   </li>
                   {!institution && <li className={view === 3 ? styles.active : ""} onClick={() => viewSetter(3)}>
-                     <Text semiBold>Security & Privacy</Text>
+                     <div className={styles.buttonRow}>
+                        <IconSecurity/>
+                        <Text semiBold>Security & Privacy</Text>
+                     </div>
                   </li>}
                   {!institution && <li className={view === 4 ? styles.active : ""} onClick={() => viewSetter(4)}>
-                     <Text semiBold>Currency</Text>
+                     <div className={styles.buttonRow}>
+                        <IconCurrency/>
+                        <Text semiBold>Currency</Text>
+                     </div>
                   </li>}
                </ul>
             </div>

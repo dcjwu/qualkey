@@ -335,8 +335,14 @@
 
     > *:not(:last-child) {
       padding: 1rem 2rem !important;
-      @include breakpoint-max($bp-screen-xxs) {
+      @include breakpoint-max($bp-screen-sm) {
         padding: 0.5rem !important;
+        margin: 0;
+      }
+      &.status {
+        @include breakpoint-max($bp-screen-sm) {
+          justify-self: center;
+        }
       }
     }
 
@@ -453,6 +459,12 @@
           stroke: $color-primary;
         }
       }
+      &:last-child {
+        svg {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+      }
     }
 
     > .iconWrapper {
@@ -533,7 +545,7 @@
   border: 1px solid $color-additional-medium;
   border-top: none;
   display: grid;
-  grid-template-columns: 1fr 0.7fr;
+  grid-template-columns: 1fr 1fr;
   padding: 0 3rem;
   width: calc(100% - 3rem - 3rem);
   border-right: none;
@@ -580,6 +592,9 @@
   @include breakpoint-max($bp-screen-md) {
     padding-right: 1.5rem;
   }
+  @include breakpoint-max($bp-screen-sm) {
+    width: 22rem;
+  }
 }
 
 .historyItemWrapper {
@@ -590,7 +605,7 @@
 
 .right {
   border-left: 1px solid $color-additional-medium;
-  padding-left: 3rem;
+  padding: 0 3rem;
 
   @include breakpoint-max($bp-screen-md) {
     padding-left: 1.5rem;

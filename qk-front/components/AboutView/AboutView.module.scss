@@ -8,14 +8,13 @@
   padding: 3.2rem;
 }
 
-.page {
-  height: 100%;
-}
-
 .imageWrapper1 {
   height: 9rem;
   width: 12.1rem;
   position: absolute;
+  @include breakpoint-max($bp-screen-md) {
+    display: none;
+  }
 }
 
 .image {
@@ -102,6 +101,10 @@
   margin-bottom: 1rem;
   position: relative;
   width: 12rem;
+  @include breakpoint-max($bp-screen-sm) {
+    width: 7rem;
+    height: 7rem;
+  }
 
   img {
     border-radius: 50% !important;
@@ -189,6 +192,9 @@
 .wrapperLeft {
   display: flex;
   align-items: center;
-  gap: 7.2rem;
+  gap: 4rem;
   justify-content: center;
+  @include breakpoint-max($bp-screen-sm) {
+    gap: 1rem;
+  }
 }

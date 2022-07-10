@@ -62,7 +62,7 @@ const ShareModal = () => {
    const formEmailFromReshare = useRecoilValue(formEmailState)
    const studentName = useRecoilValue(studentNameState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
-   const [step, setStep] = useState(1)
+   const [step, setStep] = useState(3)
    const [showExpires, setShowExpires] = useState(false)
    const [shareAll, setShareAll] = useState(true)
    const [shareSelection, setShareSelection] = useState(false)
@@ -248,7 +248,7 @@ const ShareModal = () => {
 
    return (
       <div className={styles.modal} onClick={closeModalOutside}>
-         <div className={`${styles.wrapper}`} onClick={event => event.stopPropagation()}>
+         <div className={`${styles.wrapper} ${styles.share}`} onClick={event => event.stopPropagation()}>
             <IconClose onClick={handleRequestCloseModal}/>
             <ModalSteps step={step} totalSteps={3}/>
             {

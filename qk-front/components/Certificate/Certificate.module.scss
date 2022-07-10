@@ -7,6 +7,10 @@
   padding: 2rem 3.5rem 3rem;
   position: relative;
 
+  @include breakpoint-max($bp-screen-sm) {
+    padding: 1.2rem 2.4rem;
+  }
+
   &.sharePage {
     margin-top: 2rem;
     width: 50vw;
@@ -50,6 +54,12 @@
 
     > .imageWrapper {
       width: 45%;
+      + canvas {
+        @include breakpoint-max($bp-screen-sm) {
+          width: 8rem !important;
+          height: 8rem !important;
+        }
+      }
     }
   }
 
@@ -57,10 +67,18 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    gap: 3rem;
+    @include breakpoint-max($bp-screen-md) {
+      flex-direction: column;
+      gap: 1rem;
+    }
 
     > p {
       line-height: 1.6;
       width: 55%;
+      @include breakpoint-max($bp-screen-md) {
+        width: 100%;
+      }
 
       &:last-child {
         line-height: 2rem;
@@ -75,11 +93,22 @@
   }
 }
 
+.bottomWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  @include breakpoint-max($bp-screen-md) {
+    justify-self: flex-start;
+  }
+}
+
 .certificateInner {
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  margin: 3rem 0 6rem;
+  gap: 3rem;
+  margin: 3rem 0;
 
   .left {
     display: flex;
@@ -89,6 +118,9 @@
     > div {
       p:last-child {
         font-size: 1.8rem;
+        @include breakpoint-max($bp-screen-sm) {
+          font-size: 1.5rem;
+        }
       }
     }
   }

@@ -1,9 +1,9 @@
 import Text from "../Text/Text"
 import styles from "./HoverInfo.module.scss"
 
-const HoverInfo = ({ status, ...otherProps }) => {
+const HoverInfo = ({ status, actions, ...otherProps }) => {
    return (
-      <div className={styles.wrapper} {...otherProps}>
+      <div className={`${styles.wrapper} ${actions ? styles.actions : "" }`} {...otherProps}>
          {status === "UPLOADED_TO_BLOCKCHAIN"
             ? <Text>Please submit your payment
                in order to activate credentials</Text>

@@ -12,7 +12,7 @@
   width: 75%;
 
   @include breakpoint-max($bp-screen-xl) {
-    width: 85%;
+    width: 95%;
   }
 
   @include breakpoint-max($bp-screen-md) {
@@ -22,6 +22,7 @@
   @include breakpoint-max($bp-screen-sm) {
     display: block;
     position: relative;
+    height: 75vh;
   }
 
   @include breakpoint-max-vertical($bp-vertical-875) {
@@ -78,6 +79,11 @@
       align-items: center;
       display: flex;
     }
+    p {
+      @include breakpoint-max($bp-screen-sm) {
+        display: none;
+      }
+    }
   }
 
   li {
@@ -99,6 +105,11 @@
     &.active {
       background-color: $color-highlight;
       color: $color-secondary;
+        svg {
+          path {
+            stroke: $color-secondary;
+          }
+        }
     }
 
     > p {
@@ -268,6 +279,9 @@
   bottom: 4rem;
   left: 3rem;
   position: absolute;
+  @include breakpoint-max($bp-screen-sm) {
+    flex-direction: column;
+  }
   > p {
     cursor: pointer;
   }

@@ -54,3 +54,12 @@
     }
   }
 }
+
+.actions {
+  left: 1.5rem;
+  @include breakpoint-max($bp-screen-sm) {
+    p {
+      display: block !important;
+    }
+  }
+}

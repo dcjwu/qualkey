@@ -117,13 +117,13 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
             <div className={`${styles.actions} ${styles.student}`}>
                <div className={styles.iconWrapper}>
                   <IconShare onClick={handleShowShareModal}/>
-                  <HoverInfo status="SHARE" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
+                  <HoverInfo actions status="SHARE" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
                </div>
                <div className={styles.iconWrapper}>
                   <Link passHref href={`${pathname}/${data.uuid}`}>
                      <a>
                         <IconOpenViewPage/>
-                        <HoverInfo status="VIEW" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
+                        <HoverInfo actions status="VIEW" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
                      </a>
                   </Link>
                </div>
@@ -132,7 +132,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
                      ? <IconShowDropdownBig onClick={handleShowDropdown}/>
                      : <div className={styles.iconWrapper}>
                         <IconHideDropdownBig onClick={handleShowDropdown}/>
-                        <HoverInfo status="EXPAND" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
+                        <HoverInfo actions status="EXPAND" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
                      </div>
                }
             </div>

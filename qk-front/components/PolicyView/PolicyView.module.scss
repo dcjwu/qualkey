@@ -35,6 +35,9 @@
   margin-bottom: 1.6rem;
   display: grid;
   grid-template-columns: .4fr 1fr;
+  > p {
+    margin-right: 1rem;
+  }
 }
 
 .block {
