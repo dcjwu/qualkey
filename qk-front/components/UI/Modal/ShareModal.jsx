@@ -198,8 +198,6 @@ const ShareModal = () => {
       })
    }, [recipientInput]) // eslint-disable-line react-hooks/exhaustive-deps
 
-   console.log(formData)
-
    /**
     * Sets sharedFields value
     */

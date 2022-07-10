@@ -51,6 +51,14 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData })
    }
 
    /**
+    * Cut first name
+    */
+   const handleCutFirstName = fullName => {
+      const cutName = fullName.split(" ")
+      console.log(`${cutName[0][0]}. ${cutName[1]}`)
+   }
+
+   /**
     * Dynamic adaptive layout handler.
     */
    useEffect(() => {
@@ -109,7 +117,6 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData })
                   </a>
                </Link>
                : <Link href={`/share/${shareState.uuid}?password=${shareState.password}`}>
-                  {/*TODO: Should be dynamic link*/}
                   <a>
                      <Text grey>Shared Credentials</Text>
                   </a>
@@ -165,7 +172,7 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData })
                   <Image alt="user" className={styles.user} layout="fill"
                          quality={100} src={avatar}/>
                </div>
-               {userData?.firstName && userData?.lastName ? <Text semiBold>{userData.firstName[0]}. {userData.lastName}</Text> : null}
+               {userData?.fullName ? <Text semiBold>{() => handleCutFirstName(userData.fullName)}</Text> : null}
                <IconHideDropdownBig/>
                <div ref={outsideClickRef} className={styles.menu} style={{ display: showMenu ? "block" : "none" }}>
                   <ul>
