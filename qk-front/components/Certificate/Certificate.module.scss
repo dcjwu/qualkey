@@ -15,6 +15,9 @@
     margin-top: 2rem;
     width: 50vw;
     background-color: $color-secondary;
+    @include breakpoint-max($bp-screen-md) {
+      width: calc(100vw - 1.6rem - 7rem);
+    }
   }
 
   svg {

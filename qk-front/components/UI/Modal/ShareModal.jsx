@@ -62,7 +62,7 @@ const ShareModal = () => {
    const formEmailFromReshare = useRecoilValue(formEmailState)
    const studentName = useRecoilValue(studentNameState)
    const [, setShowShareModal] = useRecoilState(showShareModalState)
-   const [step, setStep] = useState(3)
+   const [step, setStep] = useState(1)
    const [showExpires, setShowExpires] = useState(false)
    const [shareAll, setShareAll] = useState(true)
    const [shareSelection, setShareSelection] = useState(false)
@@ -266,7 +266,7 @@ const ShareModal = () => {
                      </div>
                   </div>
                   : step === 1
-                     ? <div className={`${styles.top}`}>
+                     ? <div className={`${styles.top} ${styles.share}`}>
                         <div className={`${styles.wrapperInner} ${styles.share}`}>
                            <Heading blue h2 modal>Review your email</Heading>
                            <Text grey>You are sharing <span>({formUuids.length})</span> credentials. Please review your

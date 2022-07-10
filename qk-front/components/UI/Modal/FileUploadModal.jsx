@@ -38,8 +38,8 @@ const FileUploadModal = () => {
     * File upload to front-end processing.
     **/
    const uploadFileToClient = async event => {
-      const fileType = event.target.files[0].type
-      if (fileType === "text/csv" || fileType === "application/csv") {
+      const extension = event.target.files[0].name.split(".").pop()
+      if (extension === "csv") {
          setCurrentFile(event.target.files[0])
          setFileName(event.target.files[0].name)
          Papa.parse(event.target.files[0], {
