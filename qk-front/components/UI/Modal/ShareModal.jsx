@@ -49,13 +49,13 @@ const initialValues = {
    uuids: [],
    recipientEmails: [],
    sharedFields: [],
+   recipientName: "",
    expiresAt: 0
 }
 
 const ShareModal = () => {
 
    const router = useRouter()
-
 
    const resetFormEmailFromReshare = useResetRecoilState(formEmailState)
    const formUuids = useRecoilValue(formShareState)
@@ -69,6 +69,7 @@ const ShareModal = () => {
    const [toCloseModal, setToCloseModal] = useState(false)
    const [formData, setFormData] = useState(initialValues)
    const [emailInput, setEmailInput] = useState("")
+   const [recipientInput, setRecipientInput] = useState("")
    const [dropdownValue, setDropdownValue] = useState("")
    const [dataToShare, setDataToShare] = useState([])
    const [error, setError] = useState("")
@@ -129,6 +130,13 @@ const ShareModal = () => {
    }
 
    /**
+    * Recipients input handler
+    */
+   const handleRecipientsInput = ({ target }) => {
+      setRecipientInput(target.value)
+   }
+
+   /**
     * Expiration dropdown value handler
     */
    const handleDropdownValue = ({ target }) => {
@@ -179,6 +187,18 @@ const ShareModal = () => {
          recipientEmails: [emailInput]
       })
    }, [emailInput]) // eslint-disable-line react-hooks/exhaustive-deps
+
+   /**
+    * Set recipientName value
+    */
+   useEffect(() => {
+      setFormData({
+         ...formData,
+         recipientName: recipientInput
+      })
+   }, [recipientInput]) // eslint-disable-line react-hooks/exhaustive-deps
+
+   console.log(formData)
 
    /**
     * Sets sharedFields value
@@ -286,8 +306,9 @@ const ShareModal = () => {
                                  <div className={styles.dear}>
                                     <Text medium>Dear, </Text>
                                     <div className={styles.inputWrapper}>
-                                       <input required id="dearInput" type="text"/>
-                                       <label htmlFor="dearInput">{"Recipient's name:"}</label>
+                                       <input required id="dearInput" type="text"
+                                              value={recipientInput} onChange={handleRecipientsInput}/>
+                                       {!recipientInput && <label htmlFor="dearInput">{"Recipient's name:"}</label>}
                                     </div>
                                  </div>
                                  <Text medium><span>{studentName}</span> has chosen to share their authenticated education
