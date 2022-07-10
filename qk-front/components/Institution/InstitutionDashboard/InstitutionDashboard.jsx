@@ -11,7 +11,7 @@ import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "./InstitutionDashboard.module.scss"
 
-const InstitutionDashboard = ({ data, allCredentialsData }) => {
+const InstitutionDashboard = ({ data }) => {
 
    const ref = useRef()
 
@@ -26,10 +26,10 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
    const getMoreCredentials = async () => {
       axios.get(`${processingUrl}/credential?${router.query.filter ? "filter=" + router.query.filter : ""}&offset=${credentials.length}&limit=10`, { withCredentials: true })
          .then(response => {
-            if (!response.data.length) {
+            if (!response.data[1].length) {
                setHasMore(false)
             }
-            setCredentials(prevState => [...prevState, ...response.data])
+            setCredentials(prevState => [...prevState, ...response.data[1]])
          })
    }
 
@@ -58,7 +58,7 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
     * Listener to properly manage data and hasMore flag
     */
    useEffect(() => {
-      setCredentials(data)
+      setCredentials(data[1])
       setSearchValue("")
       return () => {
          setHasMore(true)
@@ -69,7 +69,7 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
     * Listener to set proper data when query changes
     */
    useEffect(() => {
-      setCredentials(data)
+      setCredentials(data[1])
       setSearchValue("")
       if (!router.query.filter) {
          setHasMore(true)
@@ -80,7 +80,7 @@ const InstitutionDashboard = ({ data, allCredentialsData }) => {
       <>
          <div className={styles.searchWrapper}>
             <Text blackSpan
-                  semiBold>Showing <span>{credentials && credentials.length}</span> from <span>{allCredentialsData ? allCredentialsData.length : credentials?.length}</span> results</Text>
+                  semiBold>Showing <span>{credentials && credentials.length}</span> from <span>{data[0]}</span> results</Text>
             <Input type={"search"} value={searchValue} onChange={handleInputChange}
                    onKeyDown={handleSubmitSearch}/>
          </div>

@@ -14,7 +14,7 @@ import Error from "./../_error"
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
-export default function Dashboard({ data, allCredentialsData, userData, notificationsData, serverErrorMessage }) {
+export default function Dashboard({ data, userData, notificationsData, serverErrorMessage }) {
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
@@ -29,7 +29,7 @@ export default function Dashboard({ data, allCredentialsData, userData, notifica
                           userData={userData}>
             <Heading blue h1 xxl>University Dashboard</Heading>
             <Text large>browse all credential records</Text>
-            <InstitutionDashboard allCredentialsData={allCredentialsData} data={data}/>
+            <InstitutionDashboard data={data}/>
          </InstitutionView>
       </>
    )
@@ -51,16 +51,11 @@ export default function Dashboard({ data, allCredentialsData, userData, notifica
 export const getServerSideProps = async (ctx) => {
    const { req, query } = ctx
    let response
-   let responseAllCredentials
    let responseUser
 
    if (query.filter) {
       try {
          response = await axios.get(`${apiUrl}/credential?filter=${query.filter}`, {
-            withCredentials: true,
-            headers: { Cookie: req.headers.cookie || "" }
-         })
-         responseAllCredentials = await axios.get(`${apiUrl}/credential?offset=0&limit=1000`, {
             withCredentials: true,
             headers: { Cookie: req.headers.cookie || "" }
          })
@@ -73,10 +68,9 @@ export const getServerSideProps = async (ctx) => {
             headers: { Cookie: req.headers.cookie || "" }
          })
          const { data } = response
-         const { data: allCredentialsData } = responseAllCredentials
          const { data: userData } = responseUser
          const { data: notificationsData } = responseNotifications
-         return { props: { data, allCredentialsData, userData, notificationsData } }
+         return { props: { data, userData, notificationsData } }
       } catch (error) {
          return { props: { serverErrorMessage: error.response.statusText } }
       }
@@ -86,10 +80,6 @@ export const getServerSideProps = async (ctx) => {
             withCredentials: true,
             headers: { Cookie: req.headers.cookie || "" }
          })
-         responseAllCredentials = await axios.get(`${apiUrl}/credential?offset=0&limit=1000`, {
-            withCredentials: true,
-            headers: { Cookie: req.headers.cookie || "" }
-         })
          responseUser = await axios.get(`${apiUrl}/user/me`, {
             withCredentials: true,
             headers: { Cookie: req.headers.cookie || "" }
@@ -99,11 +89,11 @@ export const getServerSideProps = async (ctx) => {
             headers: { Cookie: req.headers.cookie || "" }
          })
          const { data } = response
-         const { data: allCredentialsData } = responseAllCredentials
          const { data: userData } = responseUser
          const { data: notificationsData } = responseNotifications
-         return { props: { data, userData, notificationsData, allCredentialsData } }
+         return { props: { data, userData, notificationsData } }
       } catch (error) {
+         console.log(error)
          return { props: { serverErrorMessage: error.response ? error.response.statusText : "Something went wrong" } }
       }
    }

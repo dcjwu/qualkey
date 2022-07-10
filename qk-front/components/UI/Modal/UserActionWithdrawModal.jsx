@@ -46,7 +46,6 @@ const UserActionWithdrawModal = () => {
    useEffect(() => {
       axios.get(`${processingUrl}/credential?uuid=${uploadDecision.credentialsUuid}`, { withCredentials: true })
          .then(response => {
-            console.log(response)
             if (response.status === 200) {
                setCredentialData(response.data[0])
             }
