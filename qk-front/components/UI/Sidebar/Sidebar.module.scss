@@ -50,7 +50,9 @@
   height: calc(100% - 4rem - 1.5rem);
   justify-content: space-between;
 
-  @include breakpoint-max-vertical($bp-vertical-400) {
+  @include breakpoint-max-vertical($bp-vertical-680) {
+    height: 85vh;
+    overflow: hidden;
     overflow-y: scroll;
   }
 }
