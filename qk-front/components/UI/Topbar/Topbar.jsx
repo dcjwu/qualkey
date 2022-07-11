@@ -19,7 +19,8 @@ import styles from "./Topbar.module.scss"
 
 const Topbar = ({ institution, userData, employer, payment, notificationsData, publicPage, share }) => {
 
-   const { pathname, push, back } = useRouter()
+   const router = useRouter()
+   const { pathname, push } = router
 
    const shareState = useRecoilValue(queryShareState)
 
@@ -144,13 +145,13 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData, p
                </div>}
                {checkIfPathIncludesView() && isScreenLg
                   ? <div className={styles.backRow} style={{ marginLeft: lgMarginLeft || mdMarginLeft }}
-                         onClick={!share ? () => push("/dashboard") : back()}>
+                         onClick={!share ? () => push("/dashboard") : () => router.back()}>
                      <IconBackLeft/>
                      <Text>Back</Text>
                   </div>
                   : checkIfPathIncludesView() && isScreenMd
                      ? <div className={styles.backRow} style={{ marginLeft: lgMarginLeft || mdMarginLeft }}
-                            onClick={!share ? () => push("/dashboard") : back()}>
+                            onClick={!share ? () => push("/dashboard") : () => router.back()}>
                         <IconBackLeft/>
                         <Text>Back</Text>
                      </div>
