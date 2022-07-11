@@ -17,9 +17,9 @@ import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
 import styles from "./Topbar.module.scss"
 
-const Topbar = ({ institution, userData, employer, payment, notificationsData, publicPage }) => {
+const Topbar = ({ institution, userData, employer, payment, notificationsData, publicPage, share }) => {
 
-   const { pathname, push } = useRouter()
+   const { pathname, push, back } = useRouter()
 
    const shareState = useRecoilValue(queryShareState)
 
@@ -144,13 +144,13 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData, p
                </div>}
                {checkIfPathIncludesView() && isScreenLg
                   ? <div className={styles.backRow} style={{ marginLeft: lgMarginLeft || mdMarginLeft }}
-                         onClick={() => push("/dashboard")}>
+                         onClick={!share ? () => push("/dashboard") : back()}>
                      <IconBackLeft/>
                      <Text>Back</Text>
                   </div>
                   : checkIfPathIncludesView() && isScreenMd
                      ? <div className={styles.backRow} style={{ marginLeft: lgMarginLeft || mdMarginLeft }}
-                            onClick={() => push("/dashboard")}>
+                            onClick={!share ? () => push("/dashboard") : back()}>
                         <IconBackLeft/>
                         <Text>Back</Text>
                      </div>

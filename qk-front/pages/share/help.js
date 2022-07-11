@@ -10,7 +10,7 @@ export default function Help() {
          <Head>
             <title>Help & FAQ | QualKey</title>
          </Head>
-         <EmployerView>
+         <EmployerView share>
             <Heading blue h1>Help & FAQ</Heading>
             <HelpView/>
          </EmployerView>

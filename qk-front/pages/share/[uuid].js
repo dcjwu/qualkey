@@ -10,6 +10,7 @@ import EmployerView from "../../components/EmployerView/EmployerView"
 import Heading from "../../components/UI/Heading/Heading"
 import ShareTemporaryPasswordModal from "../../components/UI/Modal/ShareTemporaryPasswordModal"
 import Text from "../../components/UI/Text/Text"
+import Error from "../_error"
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
@@ -43,7 +44,7 @@ export default function ShareCredentialsPage({ shareData, serverErrorMessage }) 
          </Head>
          {
             shareData
-               ? <EmployerView>
+               ? <EmployerView share>
                   <Heading blue h1 share><span>{shareData[0].graduatedName}</span> has shared their credentials with
                      you</Heading>
                   <Text large>view shared credentials</Text>
@@ -57,7 +58,7 @@ export default function ShareCredentialsPage({ shareData, serverErrorMessage }) 
                   ? <ShareTemporaryPasswordModal handleFormSubmit={handleFormSubmit}
                                                  handlePassword={handlePassword}
                                                  temporaryPassword={temporaryPassword}/>
-                  : null
+                  : <Error serverErrorMessage={serverErrorMessage}/>
          }
       </>
    )

@@ -359,6 +359,15 @@
 
   &.shared {
     grid-template-columns: 1fr 1fr 1fr;
+    width: initial !important;
+    @include breakpoint-max($bp-screen-sm) {
+      grid-template-columns: 1fr 1fr;
+    }
+    span {
+      @include breakpoint-max($bp-screen-sm) {
+        display: none !important;
+      }
+    }
   }
 }
 
@@ -521,6 +530,9 @@
       height: 5.6rem;
       background-color: $color-highlight;
       color: $color-secondary;
+      @include breakpoint-max($bp-screen-sm) {
+        padding: .8rem 1.2rem;
+      }
       svg {
         path {
           fill: $color-secondary;
@@ -690,12 +702,17 @@
 
   &.shared {
     svg {
-      width: initial;
-      height: initial;
+      width: 2.5rem;
 
       path {
         stroke: $color-highlight;
         fill: $color-highlight;
+      }
+    }
+
+    p {
+      @include breakpoint-max($bp-screen-sm) {
+        display: block !important;
       }
     }
   }
@@ -775,6 +792,9 @@
   display: grid;
   padding: 0 2rem;
   width: calc(100% - 2rem - 2rem);
+  @include breakpoint-max($bp-screen-md) {
+    display: none;
+  }
   > p {
     &:nth-child(1),
     &:nth-child(2) {

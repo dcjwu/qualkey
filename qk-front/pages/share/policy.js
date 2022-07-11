@@ -10,7 +10,7 @@ const Policy = () => {
          <Head>
             <title>Privacy Policy | QualKey</title>
          </Head>
-         <EmployerView>
+         <EmployerView share>
             <Heading blue h1>Privacy Policy</Heading>
             <PolicyView/>
          </EmployerView>

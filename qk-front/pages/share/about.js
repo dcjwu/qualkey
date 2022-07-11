@@ -10,7 +10,7 @@ export default function About() {
          <Head>
             <title>About Us | QualKey</title>
          </Head>
-         <EmployerView>
+         <EmployerView share>
             <Heading blue h1>About Us</Heading>
             <AboutView/>
          </EmployerView>

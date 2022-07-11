@@ -49,7 +49,7 @@ const SharedCredentialsItem = ({ data }) => {
                           onClick={handleExpandData}>
                      <div className={`${styles.buttonRow} ${styles.shared}`}>
                         {!showData ? <IconHideDropdownBig/> : <IconShowDropdownBig/>}
-                        <Text semiBold>View Credentials</Text>
+                        <Text semiBold>View</Text>
                      </div>
                   </Button>
                </div>

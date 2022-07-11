@@ -10,7 +10,7 @@ export default function Contact() {
          <Head>
             <title>Contact Us | QualKey</title>
          </Head>
-         <EmployerView>
+         <EmployerView share>
             <Heading blue h1>Contact Us</Heading>
             <ContactView employer/>
          </EmployerView>
