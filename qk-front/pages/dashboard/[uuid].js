@@ -1,9 +1,10 @@
 import axios from "axios"
 import getConfig from "next/config"
 import Head from "next/head"
+import { useRouter } from "next/router"
 import { useRecoilState, useRecoilValue } from "recoil"
 
-import { confirmWithdrawModalState, deleteCredentialsModalState, showEditCredentialsState, viewCertificateModalState } from "../../atoms"
+import { confirmWithdrawModalState, deleteCredentialsModalState, formShareState, showEditCredentialsState, showShareModalState, viewCertificateModalState } from "../../atoms"
 import CredentialsInfo from "../../components/CredentialsInfo/CredentialsInfo"
 import InstitutionViewCredentialsItem from "../../components/DashboardItem/InstitutionViewCredentialsItem"
 import StudentViewCredentialsItem from "../../components/DashboardItem/StudentViewCredentialsItem"
@@ -24,9 +25,14 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
 export default function CredentialsView({ data, userData, notificationsData, serverErrorMessage }) {
-   
+
+   const { query } = useRouter()
+
    const viewCertificateModal = useRecoilValue(viewCertificateModalState)
    const showEditCredentials = useRecoilValue(showEditCredentialsState)
+
+   const [, setShowShareModal] = useRecoilState(showShareModalState)
+   const [, setFormShare] = useRecoilState(formShareState)
 
    const [withdrawModal, setWithdrawModal] = useRecoilState(confirmWithdrawModalState)
    const [deleteCredentialsModal, setDeleteCredentialsModal] = useRecoilState(deleteCredentialsModalState)
@@ -42,6 +48,11 @@ export default function CredentialsView({ data, userData, notificationsData, ser
 
    const handleDeleteCredentials = () => {
       setDeleteCredentialsModal(true)
+   }
+   
+   const handleShowShareModal = () => {
+      setShowShareModal(true)
+      setFormShare([query.uuid])
    }
 
    if (role === userRoles.institution) return (
@@ -73,7 +84,8 @@ export default function CredentialsView({ data, userData, notificationsData, ser
             <Heading blue h1>View Credentials</Heading>
             <Text large>view, share and manage your credentials</Text>
             <StudentViewCredentialsItem data={data[0]}/>
-            <Button blue thin disabled={data[0].status !== "ACTIVATED"}>
+            <Button blue thin disabled={data[0].status !== "ACTIVATED"}
+onClick={handleShowShareModal}>
                <div className="buttonRow">
                   <IconShare/>
                   <Text semiBold style={{ color: data[0].status !== "ACTIVATED" ? "white" : "" }}>Share Credential</Text>

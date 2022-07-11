@@ -145,6 +145,18 @@
     @include breakpoint-max($bp-screen-lg) {
       width: 95vw;
     }
+    @include breakpoint-max-vertical($bp-vertical-930) {
+      height: 70vh;
+      overflow: hidden;
+      overflow-y: scroll;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    > .top {
+      height: 100%;
+    }
   }
 }
 
@@ -233,6 +245,7 @@
 
   &.shareReturn {
     padding-bottom: 4rem;
+    height: 100%;
   }
 }
 
@@ -789,7 +802,7 @@
 }
 
 .sureToClose {
-  padding: 0 5rem;
+  padding: 0 5rem 2rem 5rem;
 }
 
 .passwordForm {

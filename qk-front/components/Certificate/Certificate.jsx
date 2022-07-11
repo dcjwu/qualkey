@@ -9,8 +9,6 @@ import styles from "./Certificate.module.scss"
 
 const Certificate = ({ data, sharePage }) => {
 
-   console.log(data)
-
    return (
       <div className={`${styles.certificateWrapper} ${sharePage ? styles.sharePage : ""}`}>
          <IconEllipseTl/>
