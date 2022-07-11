@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilValue } from "recoil"
@@ -15,6 +17,8 @@ const NewPasswordForm = ({ formChangeHandler, formSubmitHandler, buttonError, lo
    const { push } = useRouter()
 
    const inputState = useRecoilValue(repeatPasswordState)
+   const [showPassword, setShowPassword] = useState(false)
+   const [showRepeatPassword, setShowRepeatPassword] = useState(false)
 
    return (
       <div className={`${styles.loginPage} ${styles.forgot} ${styles.newPassword}`}>
@@ -22,14 +26,16 @@ const NewPasswordForm = ({ formChangeHandler, formSubmitHandler, buttonError, lo
             <Heading blue h1>Set new password</Heading>
             <Text>Please set a new password that is going to be used from now on.</Text>
             <form onSubmit={formSubmitHandler}>
-               <Input placeholder="New Password" type={"password"} value={inputState.password}
+               <Input hidePassword={() => setShowPassword(prevState => !prevState)} inputName="password"
+                      placeholder="New Password" type={!showPassword ? "password" : "text"}
+                      value={inputState.password}
                       onChange={formChangeHandler}/>
-               {/*<Text error small>Wrong email</Text>*/}
-               <Input passwordRepeat placeholder="Confirm New Password" type={"password"}
+               <Input hidePassword={() => setShowRepeatPassword(prevState => !prevState)} inputName="repeatPassword"
+                      placeholder="Repeat New Password" type={!showRepeatPassword ? "password" : "text"}
                       value={inputState.passwordRepeat}
                       onChange={formChangeHandler}/>
-               {/*<Text error small>Wrong email</Text>*/}
-               {buttonError ? <Button bold error thin>{buttonError}</Button> : <Button blue bold thin>{loading ? <IconLoading/> : "Set New Password"}</Button>}
+               {buttonError && <Text error small>{buttonError}</Text>}
+               <Button blue bold thin>{loading ? <IconLoading/> : "Set New Password"}</Button>
             </form>
             <Button semiBold thin white
                     onClick={() => push("/")}>

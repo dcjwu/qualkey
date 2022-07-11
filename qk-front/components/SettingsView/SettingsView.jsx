@@ -25,7 +25,7 @@ const SettingsView = ({ institution, userData }) => {
 
    const router = useRouter()
 
-   const { firstName, lastName, email } = userData
+   const { fullName, email } = userData
 
    const [view, setView] = useState(1)
    const [formChangePass, setFormChangePass] = useState(changePassInitialState)
@@ -140,7 +140,7 @@ const SettingsView = ({ institution, userData }) => {
                   <Image alt="user" className={styles.user} layout="fill"
                          quality={100} src={avatar}/>
                </div>
-               {firstName && lastName ? <Text big bold>{firstName[0]}. {lastName}</Text> : null}
+               {fullName? <Text big bold>{fullName}</Text> : null}
             </div>
             <div className={styles.handlers}>
                <ul>
@@ -177,11 +177,8 @@ const SettingsView = ({ institution, userData }) => {
                   ? <>
                      <Text big bold>Account</Text>
                      <form className={styles.form}>
-                        <Text grey small>First Name</Text>
-                        <Input disabled inputName="firstName" placeholder={firstName}
-                               type="text"/>
-                        <Text grey small>Last Name</Text>
-                        <Input disabled inputName="lastName" placeholder={lastName}
+                        <Text grey small>Full Name</Text>
+                        <Input disabled inputName="firstName" placeholder={fullName}
                                type="text"/>
                         <Text grey small>Email Address</Text>
                         <Input disabled inputName="email" placeholder={email}

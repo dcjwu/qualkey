@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import axios from "axios"
+import { useRouter } from "next/router"
 import Papa from "papaparse"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
@@ -16,6 +17,8 @@ import ModalSteps from "./_ModalSteps/ModalSteps"
 import styles from "./Modal.module.scss"
 
 const FileUploadModal = () => {
+   
+   const router = useRouter()
 
    const resetCredentialsFields = useResetRecoilState(credentialsState)
    const resetCurrentFile = useResetRecoilState(currentFileState)
@@ -30,9 +33,9 @@ const FileUploadModal = () => {
    const [fileName, setFileName] = useRecoilState(filenameState)
    const [parsedValuesFromUpload, setParsedValuesFromUpload] = useState([])
    const [mappingToValues, setMappingToValues] = useState([])
-   const [uploadSuccess, setUploadSuccess] = useState(false)
+   const [uploadSuccess, setUploadSuccess] = useState(true)
    const [loading, setLoading] = useState(false)
-   const [step, setStep] = useState(1)
+   const [step, setStep] = useState(3)
 
    /**
     * File upload to front-end processing.
@@ -62,9 +65,13 @@ const FileUploadModal = () => {
     * Close modal handler.
     */
    const closeModal = () => {
-      setOpenModal(false)
-      resetCredentialsFields()
-      setDropdownSelectionListener([])
+      if (step === 3 && uploadSuccess) {
+         router.reload(window.location.pathname)
+      } else {
+         setOpenModal(false)
+         resetCredentialsFields()
+         setDropdownSelectionListener([])
+      }
    }
 
    /**

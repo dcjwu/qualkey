@@ -1,7 +1,8 @@
 import Text from "../Text/Text"
 import styles from "./HoverInfo.module.scss"
 
-const HoverInfo = ({ status, actions, ...otherProps }) => {
+const HoverInfo = ({ status, actions, isActivated, ...otherProps }) => {
+
    return (
       <div className={`${styles.wrapper} ${actions ? styles.actions : "" }`} {...otherProps}>
          {status === "UPLOADED_TO_BLOCKCHAIN"
@@ -19,7 +20,7 @@ const HoverInfo = ({ status, actions, ...otherProps }) => {
                      : status === "UPLOADING_TO_BLOCKCHAIN"
                         ? <Text>Your certification was just uploaded. Please wait upload to blockchain.</Text>
                         : status === "SHARE"
-                           ? <Text>Share your credentials</Text>
+                           ? <Text>{isActivated ? "Share your credentials" : "Credentials are not active"}</Text>
                            : status === "VIEW"
                               ? <Text>View your credentials</Text>
                               : status === "EXPAND"

@@ -72,7 +72,7 @@ export const getServerSideProps = async (ctx) => {
          const { data: notificationsData } = responseNotifications
          return { props: { data, userData, notificationsData } }
       } catch (error) {
-         return { props: { serverErrorMessage: error.response.statusText } }
+         return { props: { serverErrorMessage: error.response ? error.response.statusText : "Something went wrong" } }
       }
    } else {
       try {
@@ -93,7 +93,14 @@ export const getServerSideProps = async (ctx) => {
          const { data: notificationsData } = responseNotifications
          return { props: { data, userData, notificationsData } }
       } catch (error) {
-         console.log(error)
+         if (error.response.statusText === "Forbidden" || error.response.statusText === "Unauthorized") {
+            return {
+               redirect: {
+                  permanent: false,
+                  destination: "/"
+               }
+            }
+         }
          return { props: { serverErrorMessage: error.response ? error.response.statusText : "Something went wrong" } }
       }
    }

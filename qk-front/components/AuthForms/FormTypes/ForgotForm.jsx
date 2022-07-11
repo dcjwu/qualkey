@@ -17,7 +17,6 @@ const ForgotForm = ({ changeFormHandler, submitFormHandler, buttonError }) => {
    const resetInputState = useResetRecoilState(forgotFormState)
    const resetFormError = useResetRecoilState(formValidationErrorsState)
    const inputState = useRecoilValue(forgotFormState)
-   const formError = useRecoilValue(formValidationErrorsState)
    const loading = useRecoilValue(loadingState)
 
    /**
@@ -37,14 +36,14 @@ const ForgotForm = ({ changeFormHandler, submitFormHandler, buttonError }) => {
             <form onSubmit={submitFormHandler}>
                <Input placeholder="Email" type={"email"} value={inputState.email}
                       onChange={changeFormHandler}/>
-               {formError.email && <Text error small>{formError.email}</Text>}
-               {buttonError ? <Button bold error thin>{buttonError}</Button> : <Button blue bold thin
-                                                                                       disabled={loading}>
+               {buttonError && <Text error small>{buttonError}</Text>}
+               <Button blue bold thin
+                       disabled={loading}>
                   {loading
                      ? <IconLoading style={{ height: 15 }}/>
-                     : <p>Enter the 4-digit code</p>
+                     : <p>Continue</p>
                   }
-               </Button>}
+               </Button>
             </form>
             <Button semiBold thin white
                     onClick={handleGoBack}>

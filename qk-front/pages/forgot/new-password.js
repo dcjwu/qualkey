@@ -37,22 +37,23 @@ export default function NewPassword() {
     */
    const handleFormSubmit = e => {
       e.preventDefault()
-      if (repeatPasswordFormData.password !== repeatPasswordFormData.passwordRepeat) {
+      if (repeatPasswordFormData.password !== repeatPasswordFormData.repeatPassword) {
          setButtonError("Password no match")
-      } else if (repeatPasswordFormData.password.trim() === "" || repeatPasswordFormData.passwordRepeat.trim() === "") {
+      } else if (repeatPasswordFormData.password.trim() === "" || repeatPasswordFormData.repeatPassword.trim() === "") {
          setButtonError("Field cannot be empty")
       } else {
          setLoading(true)
          axios.post(`${processingUrl}/auth/password-forgot`, { ...forgotFormData, newPassword: repeatPasswordFormData.password }, { withCredentials: true })
             .then(response => {
+               setLoading(false)
                if (response.status === 200) {
-                  push("/dashboard")
+                  push("/")
                } else {
                   setButtonError("Unexpected error")
                }
             })
             .catch(error => {
-               console.log(error)
+               setLoading(false)
                setButtonError(error.response.statusText)
             })
       }
@@ -64,7 +65,6 @@ export default function NewPassword() {
    useEffect(() => {
       resetRepeatPasswordFormData()
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
 
    return (
       <div className="auth">

@@ -127,7 +127,7 @@ const DeleteCredentialsModal = () => {
                                  </Button>
                            }
                            <Button blue thin
-                                   onClick={step === 2 || step === 3 ? () => setStep(prevState => prevState - 1) : closeModal}>
+                                   onClick={closeModal}>
                               <Text semiBold>Go Back</Text>
                            </Button>
                         </div>}

@@ -1,6 +1,6 @@
 import { atom } from "recoil"
 
-export const initialRepeatFormState = { password: "", passwordRepeat: "" }
+export const initialRepeatFormState = { password: "", repeatPassword: "" }
 
 export const repeatPasswordState = atom({
    key: "repeatPasswordState",

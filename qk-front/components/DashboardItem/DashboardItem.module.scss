@@ -785,3 +785,10 @@
     }
   }
 }
+
+.disabledIcon {
+  pointer-events: none;
+  path {
+    stroke: $color-additional-medium-dark !important;
+  }
+}

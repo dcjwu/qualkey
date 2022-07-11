@@ -93,6 +93,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .helpers {
@@ -100,12 +101,23 @@
   width: 100%;
 
   a p {
-    justify-content: center;
+    display: grid;
+    //width: 100%;
+    grid-template-columns: .2fr 1fr;
     padding: 1.5rem 0;
   }
 
   p:last-child {
-    justify-content: center;
+    display: grid;
+    grid-template-columns: .2fr 1fr;
     padding: 1.5rem 0;
+  }
+}
+
+.activeRow {
+  width: calc(100% - 2.5rem - 2.5rem);
+  padding: 0 2.5rem;
+  &.active {
+    background-color: $color-highlight-dark;
   }
 }

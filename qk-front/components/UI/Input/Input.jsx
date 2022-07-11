@@ -52,14 +52,26 @@ const Input = ({
       </div>
    )
 
+   // if (type === "text") return (
+   //    inputName !== "password" && inputName !== "repeatPassword"
+   //       ?       <input {...otherProps} className={`${styles.input}
+   //    ${error ? styles.error : ""}`}
+   //                   name={inputName}
+   //                   placeholder={placeholder}
+   //                   type="text"/>
+   //       : <div className={styles.container}>
+   //          <input {...otherProps} className={`${styles.input}
+   //    ${error ? styles.error : ""}`}
+   //                 name={inputName}
+   //                 placeholder={placeholder}
+   //                 type="text"/>
+   //          <IconHideInput onClick={hidePassword}/>
+   //       </div>
+   // )
+   
    if (type === "text") return (
-      inputName !== "password"
-         ?       <input {...otherProps} className={`${styles.input}
-      ${error ? styles.error : ""}`}
-                     name={inputName}
-                     placeholder={placeholder}
-                     type="text"/>
-         : <div className={styles.container}>
+      inputName === "password"
+         ? <div className={styles.container}>
             <input {...otherProps} className={`${styles.input}
       ${error ? styles.error : ""}`}
                    name={inputName}
@@ -67,6 +79,20 @@ const Input = ({
                    type="text"/>
             <IconHideInput onClick={hidePassword}/>
          </div>
+         : inputName === "repeatPassword"
+            ? <div className={styles.container}>
+               <input {...otherProps} className={`${styles.input}
+      ${error ? styles.error : ""}`}
+                      name={inputName}
+                      placeholder={placeholder}
+                      type="text"/>
+               <IconHideInput onClick={hidePassword}/>
+            </div>
+            : <input {...otherProps} className={`${styles.input}
+      ${error ? styles.error : ""}`}
+                  name={inputName}
+                  placeholder={placeholder}
+                  type="text"/>
    )
 
    if (type === "pinCode") return (

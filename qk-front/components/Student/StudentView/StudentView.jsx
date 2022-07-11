@@ -11,7 +11,7 @@ import ShareModal from "../../UI/Modal/ShareModal"
 import Sidebar from "../../UI/Sidebar/Sidebar"
 import Topbar from "../../UI/Topbar/Topbar"
 
-const StudentView = ({ children, userData, notificationsData, credentials }) => {
+const StudentView = ({ children, userData, notificationsData, credentials, publicPage }) => {
 
    const showShareModal = useRecoilValue(showShareModalState)
    const [changePasswordModal, setChangePasswordModal] = useState(false)
@@ -24,14 +24,14 @@ const StudentView = ({ children, userData, notificationsData, credentials }) => 
    }, [])
 
    useEffect(() => {
-      setStudentGlobalName(`${userData.firstName} ${userData.lastName}`)
+      setStudentGlobalName(userData.fullName)
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <>
          <div className="main__wrapper">
-            <Sidebar/>
-            <Topbar notificationsData={notificationsData} userData={userData}/>
+            <Sidebar pagePolicy={publicPage}/>
+            <Topbar notificationsData={notificationsData} publicPage={publicPage} userData={userData}/>
             <div className={`dashboard ${credentials ? "credentials" : ""}`}>
                {children}
             </div>

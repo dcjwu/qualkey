@@ -8,7 +8,7 @@ import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
 
 import { formShareState, paymentCredentialsState, showShareModalState } from "../../atoms"
-import { awsUrl, processingUrl, validateStatus, validateStatusStyles } from "../../utils"
+import { processingUrl, validateStatus, validateStatusStyles } from "../../utils"
 import CredentialHistory from "../CredentialHistory/CredentialHistory"
 import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconLoading, IconOpenViewPage, IconShare, IconShowDropdownBig, IconWarning } from "../UI/_Icon"
 import HoverInfo from "../UI/HoverInfo/HoverInfo"
@@ -89,7 +89,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
             <Input checkboxSolo disabled={data.status !== "ACTIVATED"} type="checkbox"
                    onChange={handleInputShareChange}/>
             <Image alt="school name" className={styles.studentSchoolLogo} height={64}
-                   objectFit="contain" src={`${awsUrl}/${data.institution.logoUrl}`} width={196}/>
+                   objectFit="contain" src={`${process.env.NEXT_PUBLIC_AWS_URL}/${data.institution.logoUrl}`} width={196}/>
             <div className={`${styles.itemWrapper} ${data.status === "EXPIRED" ? styles.expired : ""}`}>
                <IconAcademicCap/>
                <Text semiBold>{data.qualificationName}</Text>
@@ -116,14 +116,17 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
             </div>
             <div className={`${styles.actions} ${styles.student}`}>
                <div className={styles.iconWrapper}>
-                  <IconShare onClick={handleShowShareModal}/>
-                  <HoverInfo actions status="SHARE" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
+                  <IconShare className={data.status !== "ACTIVATED" ? styles.disabledIcon : ""}
+                             onClick={handleShowShareModal}/>
+                  <HoverInfo actions isActivated={data.status === "ACTIVATED"} status="SHARE"
+                             style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
                </div>
                <div className={styles.iconWrapper}>
                   <Link passHref href={`${pathname}/${data.uuid}`}>
                      <a>
                         <IconOpenViewPage/>
-                        <HoverInfo actions status="VIEW" style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
+                        <HoverInfo actions isActivated={data.status === "ACTIVATED"} status="VIEW"
+                                   style={{ width: "20rem", textAlign: "center", top: "-5rem" }}/>
                      </a>
                   </Link>
                </div>

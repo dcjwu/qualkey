@@ -68,6 +68,8 @@ const TwoFactorForm = ({ forgotPassword }) => {
                   setLoading(false)
                   if (error.response.statusText === "Unprocessable Entity") {
                      setButtonError("Incorrect code")
+                  } else if (error.response.statusText === "Not Found") {
+                     setButtonError("Not authorized to view this page")
                   } else {
                      setButtonError(error.response.statusText)
                   }
@@ -82,6 +84,8 @@ const TwoFactorForm = ({ forgotPassword }) => {
                   setLoading(false)
                   if (error.response.statusText === "Unprocessable Entity") {
                      setButtonError("Incorrect code")
+                  } else if (error.response.statusText === "Not Found") {
+                     setButtonError("Not authorized to view this page")
                   } else {
                      setButtonError(error.response.statusText)
                   }
@@ -116,9 +120,10 @@ const TwoFactorForm = ({ forgotPassword }) => {
                <Input loading={loading} pinError={pinError} pinValues={pinValues}
                       setPinValues={setPinValues}
                       type={"pinCode"}/>
-               {buttonError ? <Button bold error thin>{buttonError}</Button> : <Button blue bold thin
-                                                                                       disabled={loading}>{loading ?
-                     <IconLoading/> : "Next"}</Button>}
+               {buttonError && <Text error small>{buttonError}</Text>}
+               <Button blue bold thin
+                       disabled={loading}>{loading ?
+                     <IconLoading/> : "Next"}</Button>
                {seconds
                   ? <Text grey>00:{seconds < 10 ? `0${seconds}` : seconds}</Text>
                   : <Text grey onClick={handleResendCode}>Resend code</Text>}

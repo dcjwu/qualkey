@@ -30,7 +30,7 @@
   }
 
   @include breakpoint-max-vertical($bp-vertical-930) {
-    height: 95vh;
+    height: 70vh;
     overflow: hidden;
     overflow-y: scroll;
     display: flex;

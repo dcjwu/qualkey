@@ -52,7 +52,7 @@ const LoginForm = ({ submitFormHandler, changeFormHandler }) => {
          <div className={styles.copyright}>
             <Text grey small>Copyright &copy; 2021 <span>QualKey Limited</span> All rights reserved.</Text>
             <Text grey small underline
-                  link="/terms">Terms & Conditions</Text>
+                  link="/policy">Privacy Policy</Text>
          </div>
       </div>
    )

@@ -15,6 +15,25 @@
   &:disabled {
     background-color: #d1d1d1;
     color: $color-primary;
+    border: 1px solid transparent;
+    svg {
+      path {
+        stroke: $color-secondary;
+      }
+    }
+    &:hover,
+    &:focus {
+      background-color: #d1d1d1 !important;
+      border: 1px solid transparent !important;
+      svg {
+        path {
+          stroke: $color-secondary !important;
+        }
+      }
+      p {
+        color: $color-secondary !important;
+      }
+    }
   }
 }
 

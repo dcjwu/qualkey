@@ -16,7 +16,7 @@ import BurgerButton from "../BurgerButton/BurgerButton"
 import Text from "../Text/Text"
 import styles from "./Sidebar.module.scss"
 
-const Sidebar = ({ institution, employer, publicPage, did }) => {
+const Sidebar = ({ institution, employer, publicPage, did, pagePolicy }) => {
 
    const { push, pathname, query } = useRouter()
 
@@ -96,14 +96,18 @@ const Sidebar = ({ institution, employer, publicPage, did }) => {
          <div ref={outsideClickRef} className={`${styles.sidebar} ${burgerMenuActive ? styles.active : ""}`}>
             <div className={styles.wrapper}>
                <div className={styles.top}>
-                  <div className={styles.imageWrapper}>
-                     <Image alt="Qualkey" layout="fill" quality={100}
-                            src={logo}/>
-                  </div>
+                  <Link href="/dashboard">
+                     <a>
+                        <div className={styles.imageWrapper}>
+                           <Image alt="Qualkey" layout="fill" quality={100}
+                                  src={logo}/>
+                        </div>
+                     </a>
+                  </Link>
                   <BurgerButton style={
                      { marginLeft: lgMarginLeft || mdMarginLeft, marginBottom: "1.7rem" }}/>
                   <hr className={styles.hr}/>
-                  <div className={styles.menu}>
+                  {!pagePolicy ? <div className={styles.menu}>
                      {!employer
                         ? <Link href="/dashboard">
                            <a>
@@ -127,51 +131,64 @@ const Sidebar = ({ institution, employer, publicPage, did }) => {
                         <IconPlus/>
                         <span>Upload</span>
                      </Text>}
-                  </div>
+                  </div> : null}
                </div>
                <div className={styles.bottom}>
                   <hr className={styles.hr}/>
                   <div className={styles.helpers}>
-                     <Link href={!employer ? "/help" : "/share/help"}>
-                        <a target={publicPage ? "_black" : "_self"}>
-                           <Text sidebar sidebarMin active={pathname.includes("/help")}>
-                              <IconQuestion/>
-                              <span>Help & FAQ</span>
+                     <div className={`${styles.activeRow} ${pathname.includes("/help") ? styles.active : ""}`}>
+                        <Link href={publicPage ? "/help" :employer ? "/share/help" : "/help"}>
+                           <a target={publicPage ? "_black" : "_self"}>
+                              <Text sidebar sidebarMin>
+                                 <IconQuestion/>
+                                 <span>Help & FAQ</span>
+                              </Text>
+                           </a>
+                        </Link>
+                     </div>
+                     <div className={`${styles.activeRow} ${pathname.includes("/contact") || pathname.includes("/feedback") ? styles.active : ""}`}>
+                        <Link href={publicPage ? "/contact" :employer ? "/share/contact" : "/contact"}>
+                           <a target={publicPage ? "_black" : "_self"}>
+                              <Text sidebar sidebarMin>
+                                 <IconMessage/>
+                                 <span>Contact Us</span>
+                              </Text>
+                           </a>
+                        </Link>
+                     </div>
+                     <div className={`${styles.activeRow} ${pathname.includes("/about") ? styles.active : ""}`}>
+                        <Link href={publicPage ? "/about" :employer ? "/share/about" : "/about"}>
+                           <a target={publicPage ? "_black" : "_self"}>
+                              <Text sidebar sidebarMin>
+                                 <IconKey/>
+                                 <span>About Us</span>
+                              </Text>
+                           </a>
+                        </Link>
+                     </div>
+                     <div className={`${styles.activeRow} ${pathname.includes("/policy") ? styles.active : ""}`}>
+                        <Link href={publicPage ? "/policy" :employer ? "/share/policy" : "/policy"}>
+                           <a target={publicPage ? "_black" : "_self"}>
+                              <Text sidebar sidebarMin>
+                                 <IconPolicy/>
+                                 <span>Privacy Policy</span>
+                              </Text>
+                           </a>
+                        </Link>
+                     </div>
+                     {employer || pagePolicy
+                        ? <div className={styles.activeRow}>
+                           <Link href="/"><a><Text sidebar sidebarMin>
+                              <IconLogout style={{ transform: "rotate(180deg)" }}/>
+                              <span>Log In</span>
+                           </Text></a></Link>
+                        </div>
+                        : <div className={styles.activeRow}>
+                           <Text sidebar sidebarMin onClick={handleLogout}>
+                              <IconLogout/>
+                              <span>Log Out</span>
                            </Text>
-                        </a>
-                     </Link>
-                     <Link href={!employer ? "/contact" : "/share/contact"}>
-                        <a target={publicPage ? "_black" : "_self"}>
-                           <Text sidebar sidebarMin
-                                 active={pathname.includes("/contact") || pathname.includes("/feedback")}>
-                              <IconMessage/>
-                              <span>Contact Us</span>
-                           </Text>
-                        </a>
-                     </Link>
-                     <Link href={!employer ? "/about" : "/share/about"}>
-                        <a target={publicPage ? "_black" : "_self"}>
-                           <Text sidebar sidebarMin active={pathname.includes("/about")}>
-                              <IconKey/>
-                              <span>About Us</span>
-                           </Text>
-                        </a>
-                     </Link>
-                     <Link href={!employer ? "/policy" : "/share/policy"}>
-                        <a target={publicPage ? "_black" : "_self"}>
-                           <Text sidebar sidebarMin active={pathname.includes("/policy")}>
-                              <IconPolicy/>
-                              <span>Privacy Policy</span>
-                           </Text>
-                        </a>
-                     </Link>
-                     {!employer ? <Text sidebar sidebarMin onClick={handleLogout}>
-                        <IconLogout/>
-                        <span>Log Out</span>
-                     </Text> : <Link href="/"><a><Text sidebar sidebarMin>
-                        <IconLogout/>
-                        <span>Log In</span>
-                     </Text></a></Link>}
+                        </div>}
                   </div>
                </div>
             </div>

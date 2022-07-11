@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
@@ -30,13 +31,11 @@ const StudentDashboard = ({ data }) => {
     * Search input handling.
     **/
    const handleSubmitSearch = e => {
-      if (searchValue.trim() !== "") {
-         if (e.key === "Enter") {
-            router.push({
-               pathname: "/dashboard",
-               query: { filter: searchValue }
-            })
-         }
+      if (e.key === "Enter") {
+         router.push({
+            pathname: "/dashboard",
+            query: { filter: searchValue }
+         })
       }
    }
 
@@ -73,6 +72,10 @@ const StudentDashboard = ({ data }) => {
       }
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+   useEffect(() => {
+      setSearchValue("")
+   }, [router.query])
+
    return (
       <>
          <div className={styles.searchShareWrapper}>
@@ -87,14 +90,22 @@ const StudentDashboard = ({ data }) => {
             </Button>
          </div>
          <div className={styles.contentWrapper}>
-            <div className={styles.titles}>
+            {!data.length && <div className={styles.center}>
+               <Text grey>No credentials found</Text>
+               <Link href="/dashboard">
+                  <a>
+                     <Button blue thin>Go Back</Button>
+                  </a>
+               </Link>
+            </div>}
+            {data.length ? <div className={styles.titles}>
                <Text grey small>&nbsp;</Text>
                <Text grey small>School Name</Text>
                <Text grey small>Degree</Text>
                <Text grey small>Credentials Status</Text>
                <Text grey small>Actions</Text>
-            </div>
-            {data ? data.map(data => (
+            </div> : null}
+            {data.length ? data.map(data => (
                <StudentDashboardItem key={data.uuid} data={data} deleteCredentialToShare={deleteCredentialToShare}
                                      handleCredentialsToShare={handleCredentialsToShare}/>
             )) : null}

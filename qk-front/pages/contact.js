@@ -14,7 +14,18 @@ const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
 
 export default function Contact({ userData, notificationsData, serverErrorMessage }) {
 
-   if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
+   if (serverErrorMessage && serverErrorMessage !== "Unauthorized") return <Error serverErrorMessage={serverErrorMessage}/>
+   else if (serverErrorMessage && serverErrorMessage === "Unauthorized") return (
+      <>
+         <Head>
+            <title>Contact Us | QualKey</title>
+         </Head>
+         <StudentView publicPage notificationsData={[]} userData={[]}>
+            <Heading blue h1>Contact Us</Heading>
+            <ContactView/>
+         </StudentView>
+      </>
+   )
 
    const { role } = userData
 
@@ -59,7 +70,6 @@ export const getServerSideProps = async (ctx) => {
       const { data: notificationsData } = responseNotifications
       return { props: { userData, notificationsData } }
    } catch (error) {
-      console.log(error)
       return { props: { serverErrorMessage: error.response ? error.response.statusText : "Something went wrong" } }
    }
 }

@@ -73,6 +73,7 @@ const ShareModal = () => {
    const [dropdownValue, setDropdownValue] = useState("")
    const [dataToShare, setDataToShare] = useState([])
    const [error, setError] = useState("")
+   const [expirationText, setExpirationText] = useState("")
 
    /**
     * Ask if modal should be closed
@@ -147,6 +148,15 @@ const ShareModal = () => {
          ...formData,
          expiresAt: new Date(newDate).toISOString()
       })
+      if (target.innerText === "Never") {
+         setExpirationText("This link will never expire.")
+      } else if (target.innerText === "48 Hours") {
+         setExpirationText("This link will expire in 48 hours.")
+      } else if (target.innerText === "14 Days") {
+         setExpirationText("This link will expire in 14 days.")
+      } else {
+         setExpirationText("")
+      }
    }
 
    /**
@@ -313,8 +323,7 @@ const ShareModal = () => {
                                     credentials with you.</Text>
                                  <Text medium>QualKey uses blockchain technology to provide secure and instant credential
                                     verification.</Text>
-                                 <Text medium>Please follow the link below to view the credentials. This link will expire
-                                    in 48 hours.</Text>
+                                 <Text medium>Please follow the link below to view the credentials. {expirationText}</Text>
                                  <div className={styles.mockButton}><Text medium>Link to shared credentials</Text></div>
                                  <Text medium>Kind Regards,</Text>
                                  <Text medium>Qualkey</Text>

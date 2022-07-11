@@ -45,9 +45,9 @@
     }
   }
 
-  > p {
+  p {
     color: $color-secondary !important;
-    font-size: 1.35rem;
+    font-size: 1.2rem !important;
 
     @include breakpoint-max($bp-screen-sm) {
       font-size: 1.1rem !important;
@@ -56,7 +56,8 @@
 }
 
 .actions {
-  left: 1.5rem;
+  left: 50%;
+  width: fit-content;
   @include breakpoint-max($bp-screen-sm) {
     p {
       display: block !important;
