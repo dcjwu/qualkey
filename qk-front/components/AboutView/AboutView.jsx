@@ -3,7 +3,8 @@ import { useState } from "react"
 import Image from "next/image"
 
 import mockImage from "../../assets/images/aboutImage.png"
-import avatar from "../../assets/images/avatarMock.webp"
+import hans from "../../assets/images/Hans-Winkler.jpeg"
+import phil from "../../assets/images/Phil-Whetstone.jpeg"
 import qkLogo from "../../assets/images/qk-logo-text-blue.svg"
 import { IconLinkedin, IconShowDropdown } from "../UI/_Icon"
 import Button from "../UI/Button/Button"
@@ -103,7 +104,7 @@ const AboutView = () => {
                      <div className={styles.wrapperLeft}>
                         <div className={styles.leftItem}>
                            <div className={styles.imageWrapper}>
-                              <Image alt="avatar" layout="fill" src={avatar}/>
+                              <Image alt="avatar" layout="fill" src={hans}/>
                            </div>
                            <Text bold>Hans Winkler</Text>
                            <Text grey>Co-founder</Text>
@@ -113,7 +114,7 @@ const AboutView = () => {
                         </div>
                         <div className={styles.leftItem}>
                            <div className={styles.imageWrapper}>
-                              <Image alt="avatar" layout="fill" src={avatar}/>
+                              <Image alt="avatar" layout="fill" src={phil}/>
                            </div>
                            <Text bold>Philip Whetstone</Text>
                            <Text grey>Co-founder</Text>
@@ -143,10 +144,10 @@ const AboutView = () => {
                </div>
                <div className={styles.center}>
                   <div className={styles.imageWrapperSmall}>
-                     <Image alt="avatar" layout="fill" src={avatar}/>
+                     <Image alt="avatar" layout="fill" src={hans}/>
                   </div>
                   <div className={styles.imageWrapperSmall}>
-                     <Image alt="avatar" layout="fill" src={avatar}/>
+                     <Image alt="avatar" layout="fill" src={phil}/>
                   </div>
                </div>
                <Text bold large>Our Story</Text>
