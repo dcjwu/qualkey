@@ -4,8 +4,7 @@ import axios from "axios"
 import { useRouter } from "next/router"
 import Papa from "papaparse"
 import { useRecoilState, useResetRecoilState } from "recoil"
-import { read, set_cptable, utils } from "xlsx"
-import * as cptable from "xlsx/dist/cpexcel.full.mjs"
+import { read, utils } from "xlsx"
 
 import { credentialsState, currentFileState, dropdownSelectionListenerState, filenameState, fileUploadErrorState, uploadModalState } from "../../../atoms"
 import { processingUrl, validateMappingFields } from "../../../utils"
@@ -17,8 +16,6 @@ import Input from "../Input/Input"
 import Text from "../Text/Text"
 import ModalSteps from "./_ModalSteps/ModalSteps"
 import styles from "./Modal.module.scss"
-
-set_cptable(cptable)
 
 const FileUploadModal = () => {
    
