@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import axios from "axios"
+import moment from "moment"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useRecoilState } from "recoil"
@@ -29,6 +30,8 @@ const mockDataMapping = new Map([
    ["studyLanguage", "Study language"],
    ["studyStartedAt", "Study started at"]
 ])
+
+const dateTimeFields = ["expiresAt", "graduatedAt", "studyEndedAt", "studyStartedAt"]
 
 const InstitutionEditCredentials = ({ data }) => {
 
@@ -63,13 +66,31 @@ const InstitutionEditCredentials = ({ data }) => {
     * Saves edited value.
     **/
    const saveValue = inputName => {
-      setSavedData({
-         ...savedData,
-         [inputName]: formData[inputName]
-      })
-      const formDataCopy = { ...formData }
-      delete formDataCopy[inputName]
-      setFormData(formDataCopy)
+      
+      if (dateTimeFields.includes(inputName)) {
+         const isDateValid = moment(formData[inputName], "DD/MM/YYYY", true).isValid()
+         if (!isDateValid) {
+            setError("Invalid date format")
+         } else {
+            const inputDate = moment(formData[inputName], "DD/MM/YYYY").toDate()
+            setSavedData({
+               ...savedData,
+               [inputName]: inputDate
+            })
+            const formDataCopy = { ...formData }
+            delete formDataCopy[inputName]
+            setFormData(formDataCopy)
+            setError("")
+         }
+      } else {
+         setSavedData({
+            ...savedData,
+            [inputName]: formData[inputName]
+         })
+         const formDataCopy = { ...formData }
+         delete formDataCopy[inputName]
+         setFormData(formDataCopy)
+      }
    }
 
    /**
