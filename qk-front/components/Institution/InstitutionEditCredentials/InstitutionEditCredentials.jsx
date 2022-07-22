@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import axios from "axios"
 import moment from "moment"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useResetRecoilState } from "recoil"
 
 import { showEditCredentialsState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
@@ -36,7 +36,7 @@ const dateTimeFields = ["expiresAt", "graduatedAt", "studyEndedAt", "studyStarte
 const InstitutionEditCredentials = ({ data }) => {
 
    const router = useRouter()
-
+   
    const [savedData, setSavedData] = useState({})
    const [formData, setFormData] = useState({})
    const [, setActiveIndex] = useState(null)
@@ -44,6 +44,7 @@ const InstitutionEditCredentials = ({ data }) => {
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
+   const resetShowEdit = useResetRecoilState(showEditCredentialsState)
 
    /**
     * Input value handling
@@ -146,6 +147,12 @@ const InstitutionEditCredentials = ({ data }) => {
       setIsInputValid([...notValidatedFields])
       return [...notValidatedFields].length
    }
+   
+   useEffect(() => {
+      return () => {
+         resetShowEdit()
+      }
+   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    return (
       <div className={styles.edit}>

@@ -85,21 +85,22 @@ const InstitutionDashboard = ({ data }) => {
                    onKeyDown={handleSubmitSearch}/>
          </div>
          <div ref={ref} className={styles.contentWrapper}>
-            <div className={styles.titles}>
-               <Text grey small>Student Name</Text>
-               <Text grey small>Qualification Name</Text>
-               <Text grey small>Credentials Status</Text>
-               <Text grey small>Last Modified</Text>
-               <Text grey small>Actions</Text>
-            </div>
-            <InfiniteScroll dataLength={credentials.length}
-                               hasMore={hasMore}
-                               loader={<Text grey small>Loading...</Text>}
-                               next={getMoreCredentials} scrollableTarget={ref}>
-               {credentials ? credentials.map(data => (
-                  <InstitutionDashboardItem key={`${data.uuid} ${data.studentUuid} ${data.updatedAt}`} data={data}/>
-               )) : null}
-            </InfiniteScroll>
+            {data[1].length ? <>
+               <div className={styles.titles}>
+                  <Text grey small>Student Name</Text>
+                  <Text grey small>Qualification Name</Text>
+                  <Text grey small>Credentials Status</Text>
+                  <Text grey small>Last Modified</Text>
+                  <Text grey small>Actions</Text>
+               </div>
+               <InfiniteScroll dataLength={credentials.length}
+                                            hasMore={hasMore}
+                                            loader={<Text grey small>Loading...</Text>}
+                                            next={getMoreCredentials} scrollableTarget={ref}>
+                  {credentials ? credentials.map(data => (
+                     <InstitutionDashboardItem key={`${data.uuid} ${data.studentUuid} ${data.updatedAt}`} data={data}/>
+                  )) : null}
+               </InfiniteScroll></> : <Text grey small>No records found</Text>}
          </div>
       </>
    )

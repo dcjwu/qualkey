@@ -37,7 +37,6 @@ export default function CredentialsView({ data, userData, notificationsData, ser
    const [withdrawModal, setWithdrawModal] = useRecoilState(confirmWithdrawModalState)
    const [deleteCredentialsModal, setDeleteCredentialsModal] = useRecoilState(deleteCredentialsModalState)
 
-
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
 
    const { role } = userData
@@ -49,7 +48,7 @@ export default function CredentialsView({ data, userData, notificationsData, ser
    const handleDeleteCredentials = () => {
       setDeleteCredentialsModal(true)
    }
-   
+
    const handleShowShareModal = () => {
       setShowShareModal(true)
       setFormShare([query.uuid])
@@ -85,7 +84,7 @@ export default function CredentialsView({ data, userData, notificationsData, ser
             <Text large>view, share and manage your credentials</Text>
             <StudentViewCredentialsItem data={data[0]}/>
             <Button blue thin disabled={data[0].status !== "ACTIVATED"}
-onClick={handleShowShareModal}>
+                    onClick={handleShowShareModal}>
                <div className="buttonRow">
                   <IconShare/>
                   <Text semiBold style={{ color: data[0].status !== "ACTIVATED" ? "white" : "" }}>Share Credential</Text>

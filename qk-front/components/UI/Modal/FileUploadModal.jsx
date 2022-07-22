@@ -4,6 +4,8 @@ import axios from "axios"
 import { useRouter } from "next/router"
 import Papa from "papaparse"
 import { useRecoilState, useResetRecoilState } from "recoil"
+import { read, set_cptable, utils } from "xlsx"
+import * as cptable from "xlsx/dist/cpexcel.full.mjs"
 
 import { credentialsState, currentFileState, dropdownSelectionListenerState, filenameState, fileUploadErrorState, uploadModalState } from "../../../atoms"
 import { processingUrl, validateMappingFields } from "../../../utils"
@@ -15,6 +17,8 @@ import Input from "../Input/Input"
 import Text from "../Text/Text"
 import ModalSteps from "./_ModalSteps/ModalSteps"
 import styles from "./Modal.module.scss"
+
+set_cptable(cptable)
 
 const FileUploadModal = () => {
    
@@ -36,12 +40,14 @@ const FileUploadModal = () => {
    const [uploadSuccess, setUploadSuccess] = useState(false)
    const [loading, setLoading] = useState(false)
    const [step, setStep] = useState(1)
+   const [parsingError, setPasingError] = useState([])
 
    /**
     * File upload to front-end processing.
     **/
    const uploadFileToClient = async event => {
       const extension = event.target.files[0].name.split(".").pop()
+
       if (extension === "csv") {
          setCurrentFile(event.target.files[0])
          setFileName(event.target.files[0].name)
@@ -49,13 +55,26 @@ const FileUploadModal = () => {
             header: true,
             skipEmptyLines: true,
             complete: (results) => {
-               setParsedValuesFromUpload(results.meta.fields)
-               setStep(prevState => prevState + 1)
+               if (results.errors.length) {
+                  setPasingError(results.errors)
+               } else {
+                  setParsedValuesFromUpload(results.meta.fields)
+                  setStep(prevState => prevState + 1)
+               }
             },
             error: (error) => {
-               setFileUploadModalError(error.message)
+               console.log(error, "ERR")
             }
          })
+      } else if (extension === "xls" || extension === "xlsx") {
+         setCurrentFile(event.target.files[0])
+         setFileName(event.target.files[0].name)
+         const data = await event.target.files[0].arrayBuffer()
+         const wb = read(data)
+         const dataFields = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 })
+         setParsedValuesFromUpload(dataFields[0])
+         setStep(prevState => prevState + 1)
+
       } else {
          setFileUploadModalError("Invalid file format. Make sure you have selected a valid file and try again.")
       }
@@ -208,56 +227,76 @@ const FileUploadModal = () => {
                </div>
             </div>
          </div>
-         : <div className={styles.modal} onClick={closeModalOutside}>
-            <div className={styles.wrapper}
-                 style={{ height: parsedValuesFromUpload.length ? "90%" : "" }} onClick={event => event.stopPropagation()}>
-               <IconClose onClick={closeModal}/>
-               <ModalSteps step={step} totalSteps={3}/>
-               <div className={styles.wrapperInner} style={{ height: parsedValuesFromUpload.length ? "100%" : "" }}>
-                  <div className={`${styles.top} ${parsedValuesFromUpload.length ? styles.multi : ""}`}>
-                     <Heading blue h2 modal>Multi-Upload</Heading>
-                     {fileUploadModalError && <Text error large>{fileUploadModalError}</Text>}
-                     <Input fileName={fileName} inputName="csvUploader" isFileUploaded={!!parsedValuesFromUpload.length}
-                            type={"fileUpload"}
-                            onChange={uploadFileToClient}/>
+         : parsingError.length
+            ? <div className={styles.modal} onClick={closeModalOutside}>
+               <div className={styles.wrapper}>
+                  <IconClose onClick={closeModal}/>
+                  <div className={styles.wrapperInner}
+                       style={{ height: parsedValuesFromUpload.length ? "100%" : "" }}>
+                     <div className={styles.top}>
+                        <Heading error h2 medium
+                                 modal
+                                 style={{ marginBottom: "1rem" }}>File parsing error
+                        </Heading>
+                        <div>
+                           {parsingError.map((item, index) => {
+                              return <Text key={item.row + index} error>Error on row {item.row} - {item.message}</Text>
+                           })}
+                        </div>
+                     </div>
                   </div>
-                  {
-                     !!parsedValuesFromUpload.length
-                     && <>
-                        <div className={styles.titles}>
-                           <Text grey small>Column Title</Text>
-                           <Text grey small>Values</Text>
-                        </div>
-                        <div className={styles.middle}>
-                           {parsedValuesFromUpload.map((value, index) => (
-                              <div key={value} className={`${styles.row} ${styles.massUpload}`}>
-                                 <Input readOnly inputName={value} type={"text"}
-                                        value={value}/>
-                                 <FileUploadDropdown key={value} handleOption={handleOption}
-                                                     resetDropdown={resetDropdown} valueIndex={index}/>
-                              </div>
-                           ))}
-                        </div>
-                        {
-                           fileUploadModalErrorButton
-                              ? <Button errorModal onClick={handleSubmitMapping}>
-                                 <IconUpload/>
-                                 <span>{fileUploadModalErrorButton}</span>
-                              </Button>
-                              : loading
-                                 ? <Button disabled>
-                                    <IconLoading/>
-                                 </Button>
-                                 : <Button blue onClick={handleSubmitMapping}>
-                                    <IconUpload/>
-                                    <span>Upload Now</span>
-                                 </Button>
-                        }
-                     </>
-                  }
                </div>
             </div>
-         </div>
+            : <div className={styles.modal} onClick={closeModalOutside}>
+               <div className={styles.wrapper}
+                    style={{ height: parsedValuesFromUpload.length ? "90%" : "" }} onClick={event => event.stopPropagation()}>
+                  <IconClose onClick={closeModal}/>
+                  <ModalSteps step={step} totalSteps={3}/>
+                  <div className={styles.wrapperInner} style={{ height: parsedValuesFromUpload.length ? "100%" : "" }}>
+                     <div className={`${styles.top} ${parsedValuesFromUpload.length ? styles.multi : ""}`}>
+                        <Heading blue h2 modal>Multi-Upload</Heading>
+                        {fileUploadModalError && <Text error large>{fileUploadModalError}</Text>}
+                        <Input fileName={fileName} inputName="csvUploader" isFileUploaded={!!parsedValuesFromUpload.length}
+                               type={"fileUpload"}
+                               onChange={uploadFileToClient}/>
+                     </div>
+                     {
+                        !!parsedValuesFromUpload.length
+                        && <>
+                           <div className={styles.titles}>
+                              <Text grey small>Column Title</Text>
+                              <Text grey small>Values</Text>
+                           </div>
+                           <div className={styles.middle}>
+                              {parsedValuesFromUpload.map((value, index) => (
+                                 <div key={value} className={`${styles.row} ${styles.massUpload}`}>
+                                    <Input readOnly inputName={value} type={"text"}
+                                           value={value}/>
+                                    <FileUploadDropdown key={value} handleOption={handleOption}
+                                                        resetDropdown={resetDropdown} valueIndex={index}/>
+                                 </div>
+                              ))}
+                           </div>
+                           {
+                              fileUploadModalErrorButton
+                                 ? <Button errorModal onClick={handleSubmitMapping}>
+                                    <IconUpload/>
+                                    <span>{fileUploadModalErrorButton}</span>
+                                 </Button>
+                                 : loading
+                                    ? <Button disabled>
+                                       <IconLoading/>
+                                    </Button>
+                                    : <Button blue onClick={handleSubmitMapping}>
+                                       <IconUpload/>
+                                       <span>Upload Now</span>
+                                    </Button>
+                           }
+                        </>
+                     }
+                  </div>
+               </div>
+            </div>
    )
 }
 

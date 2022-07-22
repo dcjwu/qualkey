@@ -40,6 +40,8 @@ const ChangePasswordModal = () => {
       e.preventDefault()
       if (formChangePass.password !== formChangePass.passwordRepeat) {
          setError("Password no match")
+      } else if (formChangePass.oldPassword === formChangePass.password) {
+         setError("New password cannot be the same")
       } else {
          setLoading(true)
          await axios.post(`${processingUrl}/auth/password-reset`, {
