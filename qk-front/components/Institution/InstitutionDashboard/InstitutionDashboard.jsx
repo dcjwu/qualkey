@@ -44,13 +44,11 @@ const InstitutionDashboard = ({ data }) => {
     * Search input handling.
     **/
    const handleSubmitSearch = e => {
-      if (searchValue.trim() !== "") {
-         if (e.key === "Enter") {
-            router.push({
-               pathname: "/dashboard",
-               query: { filter: searchValue }
-            })
-         }
+      if (e.key === "Enter") {
+         router.push({
+            pathname: "/dashboard",
+            query: { filter: searchValue }
+         })
       }
    }
 

@@ -1,5 +1,4 @@
 import PropTypes from "prop-types"
-import { PinInput } from "react-input-pin-code"
 
 import { IconFileUpload, IconHideInput } from "../_Icon"
 import Text from "../Text/Text"
@@ -15,10 +14,6 @@ const Input = ({
    checkboxText,
    fileName,
    isFileUploaded,
-   pinValues,
-   setPinValues,
-   pinError,
-   loading,
    checkboxSolo,
    hideEye,
    ...otherProps
@@ -51,23 +46,6 @@ const Input = ({
          {!checkboxSolo && <Text medium>{checkboxText}</Text>}
       </div>
    )
-
-   // if (type === "text") return (
-   //    inputName !== "password" && inputName !== "repeatPassword"
-   //       ?       <input {...otherProps} className={`${styles.input}
-   //    ${error ? styles.error : ""}`}
-   //                   name={inputName}
-   //                   placeholder={placeholder}
-   //                   type="text"/>
-   //       : <div className={styles.container}>
-   //          <input {...otherProps} className={`${styles.input}
-   //    ${error ? styles.error : ""}`}
-   //                 name={inputName}
-   //                 placeholder={placeholder}
-   //                 type="text"/>
-   //          <IconHideInput onClick={hidePassword}/>
-   //       </div>
-   // )
    
    if (type === "text") return (
       inputName === "password"
@@ -93,18 +71,6 @@ const Input = ({
                   name={inputName}
                   placeholder={placeholder}
                   type="text"/>
-   )
-
-   if (type === "pinCode") return (
-      <PinInput autoFocus={true}
-                containerClassName={`pinCode${pinError ? " error" : ""}${loading ? " loading" : ""}`}
-                disabled={false} //TODO: Use this while server request.
-                name="pinCode"
-                placeholder=""
-                size="sm"
-                values={pinValues}
-                onChange={(value, index, values) => setPinValues(values)}
-      />
    )
 
    if (type === "fileUpload") return (

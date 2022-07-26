@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
+import { PinInput } from "react-input-pin-code"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
 import { forgotFormState, loginFormState } from "../../../atoms"
@@ -10,7 +11,6 @@ import { processingUrl } from "../../../utils"
 import { IconLoading } from "../../UI/_Icon"
 import Button from "../../UI/Button/Button"
 import Heading from "../../UI/Heading/Heading"
-import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "../AuthForm.module.scss"
 
@@ -128,9 +128,15 @@ const TwoFactorForm = ({ forgotPassword }) => {
             <Text grey>Enter the 4-digit code we’ve sent to your
                email</Text>
             <form onSubmit={handleSubmitForm}>
-               <Input loading={loading} pinError={pinError} pinValues={pinValues}
-                      setPinValues={setPinValues}
-                      type={"pinCode"}/>
+               <PinInput autoFocus={true}
+                         containerClassName={`pinCode${pinError ? " error" : ""}${loading ? " loading" : ""}`}
+                         disabled={false}
+                         name="pinCode"
+                         placeholder=""
+                         size="sm"
+                         values={pinValues}
+                         onChange={(value, index, values) => setPinValues(values)}
+               />
                {buttonError && <Text error small>{buttonError}</Text>}
                <Button blue bold thin
                        disabled={loading}>{loading ?
