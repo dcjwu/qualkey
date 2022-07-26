@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 
-import Link from "next/link"
 import { useRouter } from "next/router"
 import { useRecoilState, useResetRecoilState } from "recoil"
 
@@ -90,14 +89,7 @@ const StudentDashboard = ({ data }) => {
             </Button>
          </div>
          <div className={styles.contentWrapper}>
-            {!data.length && <div className={styles.center}>
-               <Text grey>No credentials found</Text>
-               <Link href="/dashboard">
-                  <a>
-                     <Button blue thin>Go Back</Button>
-                  </a>
-               </Link>
-            </div>}
+            {!data.length && <Text grey small>No records found</Text>}
             {data.length ? <div className={styles.titles}>
                <Text grey small>&nbsp;</Text>
                <Text grey small>School Name</Text>

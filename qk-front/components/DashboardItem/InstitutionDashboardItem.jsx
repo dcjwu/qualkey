@@ -10,6 +10,7 @@ import avatar from "../../assets/images/avatarMock.webp"
 import { validateStatus, validateStatusStyles } from "../../utils"
 import CredentialHistory from "../CredentialHistory/CredentialHistory"
 import { IconAcademicCap, IconHideDropdownBig, IconInfo, IconOpenViewPage, IconShowDropdownBig } from "../UI/_Icon"
+import HoverInfo from "../UI/HoverInfo/HoverInfo"
 import Text from "../UI/Text/Text"
 import styles from "./DashboardItem.module.scss"
 
@@ -46,20 +47,31 @@ const InstitutionDashboardItem = ({ data }) => {
                <Text>{`${data.qualificationName.length > 36 ? data.qualificationName.slice(0, 35).trim() + "..." : data.qualificationName}`}</Text>
             </div>
             <div className={`${styles.status} ${validateStatusStyles(data.status)}`}>
-               <IconInfo/>
+               <div className={styles.iconWrapper}>
+                  <IconInfo/>
+                  <HoverInfo status={data.status}/>
+               </div>
                <Text bold>{validateStatus(data.status)}</Text>
             </div>
             <Text bold>{moment.utc(data.updatedAt).format("HH:mm DD/MM/YYYY")}</Text>
             <div className={styles.actions}>
-               <Link passHref href={`${pathname}/${data.uuid}`}>
-                  <a>
-                     <IconOpenViewPage/>
-                  </a>
-               </Link>
+               <div className={styles.iconWrapper}>
+                  <Link passHref href={`${pathname}/${data.uuid}`}>
+                     <a>
+                        <IconOpenViewPage/>
+                        <HoverInfo institutionUuid isActivated={data.status === "ACTIVATED"} status="VIEW"
+                                   style={{ width: "20rem", textAlign: "center", top: "-5rem", left: "0" }}/>
+                     </a>
+                  </Link>
+               </div>
                {
                   showCredentialsHistory
                      ? <IconShowDropdownBig onClick={handleShowDropdown}/>
-                     : <IconHideDropdownBig onClick={handleShowDropdown}/>
+                     : <div className={styles.iconWrapper}>
+                        <IconHideDropdownBig onClick={handleShowDropdown}/>
+                        <HoverInfo actions institutionExpand status="EXPAND"
+                                   style={{ width: "20rem", textAlign: "center", top: "-5rem", left: "-6rem" }}/>
+                     </div>
                }
             </div>
          </div>

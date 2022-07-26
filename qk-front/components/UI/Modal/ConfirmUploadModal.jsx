@@ -33,7 +33,7 @@ const ConfirmUploadModal = () => {
     */
    const closeModal = () => {
       if (step === 4) {
-         router.reload(window.location.pathname)
+         router.replace(router.asPath)
       }
       setConfirmUploadModal(false)
       resetUploadDecision()

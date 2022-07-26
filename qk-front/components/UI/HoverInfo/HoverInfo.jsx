@@ -1,10 +1,10 @@
 import Text from "../Text/Text"
 import styles from "./HoverInfo.module.scss"
 
-const HoverInfo = ({ status, actions, isActivated, ...otherProps }) => {
+const HoverInfo = ({ status, actions, isActivated, institutionExpand, institutionUuid, ...otherProps }) => {
 
    return (
-      <div className={`${styles.wrapper} ${actions ? styles.actions : "" }`} {...otherProps}>
+      <div className={`${styles.wrapper} ${actions ? styles.actions : ""} ${institutionExpand ? styles.institutionExpand : ""} ${institutionUuid ? styles.institutionUuid : ""}`} {...otherProps}>
          {status === "UPLOADED_TO_BLOCKCHAIN"
             ? <Text>Please submit your payment
                in order to activate credentials</Text>

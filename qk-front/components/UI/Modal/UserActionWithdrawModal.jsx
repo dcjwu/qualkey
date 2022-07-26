@@ -32,7 +32,7 @@ const UserActionWithdrawModal = () => {
     */
    const closeModal = () => {
       if (step === 3) {
-         router.reload(window.location.pathname)
+         router.replace(router.asPath)
       }
       setWithdrawModal(false)
       resetUploadDecision()

@@ -88,7 +88,7 @@ const ShareModal = () => {
    const closeModal = () => {
       setShowShareModal(false)
       setFormData(initialValues)
-      router.reload(window.location.pathname)
+      router.replace(router.asPath)
    }
 
    /**
@@ -407,7 +407,7 @@ const ShareModal = () => {
                                  <Heading blue h2 modal>Congratulations</Heading>
                                  <Text>Your credentials have been shared! You now may close this window.</Text>
                               </div>
-                              <Button blue thin onClick={() => router.reload(window.location.pathname)}>Return to
+                              <Button blue thin onClick={() => router.replace(router.asPath)}>Return to
                                  Dashboard</Button>
                            </div>
                            : null

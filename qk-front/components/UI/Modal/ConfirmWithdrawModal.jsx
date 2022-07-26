@@ -27,7 +27,7 @@ const ConfirmWithdrawModal = () => {
     */
    const closeModal = () => {
       if (step === 3) {
-         router.reload(window.location.pathname)
+         router.replace(router.asPath)
       }
       setWithdrawModal(false)
       setError("")
@@ -130,7 +130,7 @@ const ConfirmWithdrawModal = () => {
                                  </Button>
                            }
                            <Button blue thin
-                                   onClick={step === 2 || step === 3 ? () => setStep(prevState => prevState - 1) : closeModal}>
+                                   onClick={closeModal}>
                               <Text semiBold>Go Back</Text>
                            </Button>
                         </div>}

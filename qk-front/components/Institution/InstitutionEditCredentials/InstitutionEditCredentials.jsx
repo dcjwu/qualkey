@@ -123,7 +123,7 @@ const InstitutionEditCredentials = ({ data }) => {
             .then(response => {
                setLoading(false)
                if (response.status === 200) {
-                  router.reload(window.location.pathname)
+                  router.replace(router.asPath)
                }
             })
             .catch(error => {

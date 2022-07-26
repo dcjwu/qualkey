@@ -45,6 +45,18 @@
     }
   }
 
+  &.institutionExpand {
+    &::after {
+      left: 84%;
+    }
+  }
+
+  &.institutionUuid {
+    &::after {
+      left: 59%;
+    }
+  }
+
   p {
     color: $color-secondary !important;
     font-size: 1.2rem !important;
