@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
+import { useRecoilState, useResetRecoilState } from "recoil"
 
 import { forgotFormState, loginFormState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
