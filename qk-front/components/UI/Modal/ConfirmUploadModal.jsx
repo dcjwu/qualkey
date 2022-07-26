@@ -33,7 +33,7 @@ const ConfirmUploadModal = () => {
     */
    const closeModal = () => {
       if (step === 4) {
-         router.replace(router.asPath)
+         router.reload(window.location.pathname)
       }
       setConfirmUploadModal(false)
       resetUploadDecision()
@@ -129,15 +129,6 @@ const ConfirmUploadModal = () => {
          })
    }
 
-   /**
-    * Go Back button handler.
-    */
-   const handleGoBack = () => {
-      setStep(prevState => prevState - 1)
-      setConfirmed(false)
-      setRejected(false)
-   }
-
    return (
       <div className={styles.modal} onClick={closeModalOutside}>
          <div className={styles.wrapper} onClick={event => event.stopPropagation()}>
@@ -210,7 +201,7 @@ const ConfirmUploadModal = () => {
                                  </div>
                               </Button>
                               <Button blue thin
-                                      onClick={handleGoBack}>
+                                      onClick={closeModal}>
                                  <div className={`${styles.rowButton} ${styles.confirmUpload}`}>
                                     <IconDownload/>
                                     <Text semiBold>Go Back</Text>

@@ -94,6 +94,9 @@ const InstitutionEditCredentials = ({ data }) => {
       }
    }
 
+   console.log(Object.values(savedData))
+   console.log(Object.keys(savedData))
+
    /**
     * Resets changed value to initial state.
     **/
