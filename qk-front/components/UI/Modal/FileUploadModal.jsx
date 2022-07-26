@@ -73,7 +73,7 @@ const FileUploadModal = () => {
          setStep(prevState => prevState + 1)
 
       } else {
-         setFileUploadModalError("Invalid file format. Make sure you have selected a valid file and try again.")
+         setFileUploadModalError("Please, select .csv | .xls | .xlsx file and try again")
       }
    }
 

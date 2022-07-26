@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useRecoilValue, useResetRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 
 import { forgotFormState, loginFormState } from "../../../atoms"
 import { processingUrl } from "../../../utils"
@@ -14,18 +14,21 @@ import Input from "../../UI/Input/Input"
 import Text from "../../UI/Text/Text"
 import styles from "../AuthForm.module.scss"
 
+const otpSeconds = 10
+const otpValuesInitialState = ["", "", "", ""]
+
 const TwoFactorForm = ({ forgotPassword }) => {
 
    const { push } = useRouter()
 
    const resetFormData = useResetRecoilState(loginFormState)
-   const formData = useRecoilValue(loginFormState)
-   const forgotFormData = useRecoilValue(forgotFormState)
-   const [pinValues, setPinValues] = useState(["", "", "", ""])
+   const [formData, setFormData] = useRecoilState(loginFormState)
+   const [forgotFormData, setForgotFormData] = useRecoilState(forgotFormState)
+   const [pinValues, setPinValues] = useState(otpValuesInitialState)
    const [buttonError, setButtonError] = useState("")
    const [pinError, setPinError] = useState(false)
    const [loading, setLoading] = useState(false)
-   const [seconds, setSeconds] = useState(59)
+   const [seconds, setSeconds] = useState(otpSeconds)
 
    /**
     * Handler for timer and clearing data
@@ -66,13 +69,8 @@ const TwoFactorForm = ({ forgotPassword }) => {
                })
                .catch(error => {
                   setLoading(false)
-                  if (error.response.statusText === "Unprocessable Entity") {
-                     setButtonError("Incorrect code")
-                  } else if (error.response.statusText === "Not Found") {
-                     setButtonError("Not authorized to view this page")
-                  } else {
-                     setButtonError(error.response.statusText)
-                  }
+                  setPinValues(otpValuesInitialState)
+                  setButtonError(error.response.data.message)
                })
          } else {
             axios.post(`${processingUrl}/auth/login`, { ...formData, otp: pinValues.join("") }, { withCredentials: true })
@@ -82,13 +80,8 @@ const TwoFactorForm = ({ forgotPassword }) => {
                })
                .catch(error => {
                   setLoading(false)
-                  if (error.response.statusText === "Unprocessable Entity") {
-                     setButtonError("Incorrect code")
-                  } else if (error.response.statusText === "Not Found") {
-                     setButtonError("Not authorized to view this page")
-                  } else {
-                     setButtonError(error.response.statusText)
-                  }
+                  setPinValues(otpValuesInitialState)
+                  setButtonError(error.response.data.message)
                })
          }
       } else {
@@ -101,13 +94,31 @@ const TwoFactorForm = ({ forgotPassword }) => {
     * Resend code handler
     */
    const handleResendCode = async () => {
-      await axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
-         .then(response => {
-            if (response.status === 201) {
-               setSeconds(59)
-            }
-         })
-         .catch(error => console.log(error))
+      if (forgotPassword) {
+         await axios.post(`${processingUrl}/auth/otp`, { email: forgotFormData.email })
+            .then(response => {
+               if (response.status === 201) {
+                  setForgotFormData({
+                     ...forgotFormData,
+                     otpUuid: response.data.otpUuid
+                  })
+                  setSeconds(otpSeconds)
+               }
+            })
+            .catch(error => console.log(error))
+      } else {
+         await axios.post(`${processingUrl}/auth/otp`, { email: formData.email })
+            .then(response => {
+               if (response.status === 201) {
+                  setFormData({
+                     ...formData,
+                     otpUuid: response.data.otpUuid
+                  })
+                  setSeconds(otpSeconds)
+               }
+            })
+            .catch(error => console.log(error))
+      }
    }
 
    return (

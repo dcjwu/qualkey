@@ -60,7 +60,6 @@ const ChangePasswordModal = () => {
                }
             })
             .catch(error => {
-               console.log(error)
                setLoading(false)
                setError(error.response.data.message)
             })
