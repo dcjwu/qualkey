@@ -34,7 +34,7 @@ const InstitutionEditCredentialsItem = ({
          <div className={styles.infoItem}>
             <Text grey>{mapping.get(mappingKey)}:</Text>
             <Input disabled={disabledFields.includes(mappingKey)} inputName={mappingKey}
-                   type={"text"}
+                   readOnly={Object.keys(savedData).includes(mappingKey)} type={"text"}
                    value={formData[mappingKey]}
                    onChange={handleFormChange}/>
          </div>
