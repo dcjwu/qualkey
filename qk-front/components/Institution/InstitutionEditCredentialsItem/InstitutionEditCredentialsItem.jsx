@@ -16,19 +16,6 @@ const InstitutionEditCredentialsItem = ({
    undoValue
 }) => {
 
-   //    placeholder={
-   //       mappingKey === "studyStartedAt"
-   //    || mappingKey === "graduatedAt"
-   //    || mappingKey === "studyEndedAt"
-   //    || mappingKey === "expiresAt"
-   //       ? data[mappingKey] === null
-   //          ? null
-   //          : moment(data[mappingKey]).format("DD/MM/YYYY")
-   //       : data[mappingKey]?.toString()
-   // }
-
-   // value={!!savedData[mappingKey] && savedData[mappingKey] !== undefined ? savedData[mappingKey] : formData[mappingKey] ? formData[mappingKey] : ""}
-
    return (
       <div className={styles.wrapper}>
          <div className={styles.infoItem}>
