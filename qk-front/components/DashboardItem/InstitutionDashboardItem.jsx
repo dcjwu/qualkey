@@ -49,7 +49,7 @@ const InstitutionDashboardItem = ({ data }) => {
             <div className={`${styles.status} ${validateStatusStyles(data.status)}`}>
                <div className={styles.iconWrapper}>
                   <IconInfo/>
-                  <HoverInfo status={data.status}/>
+                  <HoverInfo institution status={data.status}/>
                </div>
                <Text bold>{validateStatus(data.status)}</Text>
             </div>
@@ -59,7 +59,8 @@ const InstitutionDashboardItem = ({ data }) => {
                   <Link passHref href={`${pathname}/${data.uuid}`}>
                      <a>
                         <IconOpenViewPage/>
-                        <HoverInfo institutionUuid isActivated={data.status === "ACTIVATED"} status="VIEW"
+                        <HoverInfo institution institutionUuid isActivated={data.status === "ACTIVATED"}
+                                   status="VIEW"
                                    style={{ width: "20rem", textAlign: "center", top: "-5rem", left: "0" }}/>
                      </a>
                   </Link>
@@ -69,7 +70,8 @@ const InstitutionDashboardItem = ({ data }) => {
                      ? <IconShowDropdownBig onClick={handleShowDropdown}/>
                      : <div className={styles.iconWrapper}>
                         <IconHideDropdownBig onClick={handleShowDropdown}/>
-                        <HoverInfo actions institutionExpand status="EXPAND"
+                        <HoverInfo actions institution institutionExpand
+                                   status="EXPAND"
                                    style={{ width: "20rem", textAlign: "center", top: "-5rem", left: "-6rem" }}/>
                      </div>
                }

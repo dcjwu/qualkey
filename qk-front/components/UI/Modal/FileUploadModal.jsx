@@ -82,7 +82,7 @@ const FileUploadModal = () => {
     */
    const closeModal = () => {
       if (step === 3 && uploadSuccess) {
-         router.replace(router.asPath)
+         router.reload(window.location.pathname)
          setOpenModal(false)
       } else {
          setOpenModal(false)

@@ -94,7 +94,7 @@ const StudentDashboard = ({ data }) => {
                <Text grey small>&nbsp;</Text>
                <Text grey small>School Name</Text>
                <Text grey small>Degree</Text>
-               <Text grey small>Credentials Status</Text>
+               <Text grey small>Credential Status</Text>
                <Text grey small>Actions</Text>
             </div> : null}
             {data.length ? data.map(data => (

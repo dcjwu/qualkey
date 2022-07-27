@@ -108,7 +108,7 @@ const AboutView = () => {
                            </div>
                            <Text bold>Hans Winkler</Text>
                            <Text grey>Co-founder</Text>
-                           <a href="https://linkedin.com" rel="noreferrer" target="_blank">
+                           <a href="https://www.linkedin.com/in/winklerhans/" rel="noreferrer" target="_blank">
                               <IconLinkedin/>
                            </a>
                         </div>
@@ -118,7 +118,7 @@ const AboutView = () => {
                            </div>
                            <Text bold>Philip Whetstone</Text>
                            <Text grey>Co-founder</Text>
-                           <a href="https://linkedin.com" rel="noreferrer" target="_blank">
+                           <a href="https://www.linkedin.com/in/philwhetstone/" rel="noreferrer" target="_blank">
                               <IconLinkedin/>
                            </a>
                         </div>

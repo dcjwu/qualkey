@@ -14,6 +14,23 @@ import Text from "../../UI/Text/Text"
 import InstitutionEditCredentialsItem from "../InstitutionEditCredentialsItem/InstitutionEditCredentialsItem"
 import styles from "./InstitutionEditCredentials.module.scss"
 
+const allKeys = [
+   "authenticatedBy", "authenticatedDate",
+   "authenticatedTitle",
+   "awardLevel",
+   "awardingInstitution",
+   "expiresAt",
+   "graduatedAt",
+   "graduatedName",
+   "info",
+   "qualificationLevel",
+   "qualificationName",
+   "studyEndedAt",
+   "studyLanguage",
+   "studyStartedAt"]
+
+const dateTimeFields = ["expiresAt", "graduatedAt", "studyEndedAt", "studyStartedAt"]
+
 const mockDataMapping = new Map([
    ["authenticatedBy", "Authenticated by"],
    ["authenticatedDate", "Authenticated date"],
@@ -31,131 +48,118 @@ const mockDataMapping = new Map([
    ["studyStartedAt", "Study started at"]
 ])
 
-const dateTimeFields = ["expiresAt", "graduatedAt", "studyEndedAt", "studyStartedAt"]
-
 const InstitutionEditCredentials = ({ data }) => {
 
    const router = useRouter()
-   
+
    const [savedData, setSavedData] = useState({})
    const [formData, setFormData] = useState({})
-   const [, setActiveIndex] = useState(null)
-   const [isInputValid, setIsInputValid] = useState([])
+   const [initialData, setInitialData] = useState({})
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState("")
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
    const resetShowEdit = useResetRecoilState(showEditCredentialsState)
 
    /**
+    * Modify incoming data per needs
+    */
+   useEffect(() => {
+      let validValues = []
+      allKeys.forEach(item => {
+         validValues.push(data[item])
+      })
+      const result = Object.fromEntries(allKeys.map((_, i) => [allKeys[i], validValues[i]]))
+      Object.keys(result).forEach(key => {
+         if (moment(result[key], moment.ISO_8601, true).isValid()) {
+            result[key] = moment(result[key]).format("DD/MM/YYYY")
+         }
+      })
+
+      setFormData(result)
+      setInitialData(result)
+   }, [data])
+
+   /**
     * Input value handling
     **/
-   const handleFormChange = ({ target }, index) => {
-      setActiveIndex(index)
+   const handleFormChange = ({ target }) => {
       const { name, value } = target
       setFormData({
          ...formData,
          [name]: value
       })
-      if (value === "") {
-         const formDataCopy = { ...formData }
-         delete formDataCopy[name]
-         setFormData(formDataCopy)
-      }
    }
 
-   /**
-    * Saves edited value.
-    **/
-   const saveValue = inputName => {
-      
-      if (dateTimeFields.includes(inputName)) {
-         const isDateValid = moment(formData[inputName], "DD/MM/YYYY", true).isValid()
+   const saveValue = (key, value) => {
+      if (dateTimeFields.includes(key)) {
+         const isDateValid = moment(formData[key], "DD/MM/YYYY", true).isValid()
          if (!isDateValid) {
             setError("Invalid date format")
          } else {
-            const inputDate = moment(formData[inputName], "DD/MM/YYYY").toDate()
+            const inputDate = moment(formData[key], "DD/MM/YYYY").toISOString()
             setSavedData({
                ...savedData,
-               [inputName]: inputDate
+               [key]: inputDate
             })
-            const formDataCopy = { ...formData }
-            delete formDataCopy[inputName]
-            setFormData(formDataCopy)
             setError("")
          }
       } else {
          setSavedData({
             ...savedData,
-            [inputName]: formData[inputName]
+            [key]: value
          })
-         const formDataCopy = { ...formData }
-         delete formDataCopy[inputName]
-         setFormData(formDataCopy)
       }
    }
 
-   console.log(Object.values(savedData))
-   console.log(Object.keys(savedData))
-
-   /**
-    * Resets changed value to initial state.
-    **/
-   const resetValue = inputName => {
+   const undoValue = key => {
       const savedDataCopy = { ...savedData }
-      delete savedDataCopy[inputName]
+      delete savedDataCopy[key]
       setSavedData(savedDataCopy)
-      const updatedValidationArray = isInputValid.filter(value => value === [inputName])
-      setIsInputValid(updatedValidationArray)
-      const formDataCopy = { ...formData }
-      delete formDataCopy[inputName]
-      setFormData(formDataCopy)
+
+      const initialValue = initialData[key]
+      setFormData({
+         ...formData,
+         [key]: initialValue
+      })
    }
 
+   const validateInputs = () => {
+      const newArray = allKeys.filter(item => formData[item] !== initialData[item] && !savedData[item])
+      return newArray.length
+   }
    /**
     * Shows details in credential history.
     **/
    const handleFormSubmit = async () => {
-      const notValidFieldsLength = validateInputs()
-      if (notValidFieldsLength === 0) {
-         setLoading(true)
-         await axios.post(`${processingUrl}/credential/change`, {
-            uuid: data.uuid,
-            changedTo: Object.values(savedData),
-            fieldName: Object.keys(savedData)
-         }, { withCredentials: true })
-            .then(response => {
-               setLoading(false)
-               if (response.status === 200) {
-                  router.replace(router.asPath)
-               }
-            })
-            .catch(error => {
-               setLoading(false)
-               console.log(error)
-               setError(error.response.data.message)
-            })
-      } else {
-         console.log("Unexpected editing error")
-      }
+      setLoading(true)
+      await axios.post(`${processingUrl}/credential/change`, {
+         uuid: router.query.uuid,
+         changedTo: Object.values(savedData),
+         fieldName: Object.keys(savedData)
+      }, { withCredentials: true })
+         .then(response => {
+            setLoading(false)
+            if (response.status === 200) {
+               router.replace(router.asPath)
+               resetShowEdit()
+            }
+         })
+         .catch(error => {
+            setLoading(false)
+            console.log(error)
+            setError(error.response.data.message)
+         })
    }
 
-   /**
-    * Form submit handling.
-    **/
-   const validateInputs = () => {
-      const notValidatedFields = []
-      Object.keys(formData).forEach(key => {
-         notValidatedFields.push(key)
-      })
-      setIsInputValid([...notValidatedFields])
-      return [...notValidatedFields].length
-   }
-   
    useEffect(() => {
       return () => {
          resetShowEdit()
       }
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+   const isButtonDisabled = () => {
+      return !(validateInputs() === 0 && !!Object.keys(savedData).length === true)
+   }
 
    return (
       <div className={styles.edit}>
@@ -167,19 +171,17 @@ const InstitutionEditCredentials = ({ data }) => {
          </div>
          <div className={styles.wrapper}>
             {
-               Object.keys(data).map((key, index) => {
+               Object.keys(initialData).map(key => {
                   if (mockDataMapping.has(key)) {
                      return <InstitutionEditCredentialsItem key={key}
-                                                            data={data}
+                                                            data={initialData}
                                                             formData={formData}
                                                             handleFormChange={handleFormChange}
-                                                            index={index}
-                                                            isInputValid={isInputValid}
                                                             mapping={mockDataMapping}
                                                             mappingKey={key}
-                                                            resetValue={resetValue}
                                                             savedData={savedData}
-                                                            saveValue={saveValue}/>
+                                                            saveValue={saveValue}
+                                                            undoValue={undoValue}/>
                   }
                })
             }
@@ -194,14 +196,13 @@ const InstitutionEditCredentials = ({ data }) => {
                      </Text>
                   </div>
                </Button>
-               : <Button blue thin disabled={!Object.keys(savedData).length}
-                         onClick={handleFormSubmit}>
+               : <Button blue thin disabled={isButtonDisabled()}>
                   <div className={styles.buttonRow}>
                      {loading
                         ? <IconLoading/>
                         : <>
                            <IconShare/>
-                           <Text semiBold>
+                           <Text semiBold onClick={handleFormSubmit}>
                               Confirm Changes
                            </Text>
                         </>}

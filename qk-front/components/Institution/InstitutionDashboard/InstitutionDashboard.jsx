@@ -87,14 +87,14 @@ const InstitutionDashboard = ({ data }) => {
                <div className={styles.titles}>
                   <Text grey small>Student Name</Text>
                   <Text grey small>Qualification Name</Text>
-                  <Text grey small>Credentials Status</Text>
+                  <Text grey small>Credential Status</Text>
                   <Text grey small>Last Modified</Text>
                   <Text grey small>Actions</Text>
                </div>
                <InfiniteScroll dataLength={credentials.length} hasMore={hasMore}
                                             loader={<Text grey small>Loading...</Text>}
                                             next={getMoreCredentials}
-                                            scrollableTarget={ref} style={{ paddingTop: "5rem" }}>
+                                            scrollableTarget={ref} style={{ paddingTop: "5rem", overflow: "hidden" }}>
                   {credentials ? credentials.map(data => (
                      <InstitutionDashboardItem key={`${data.uuid} ${data.studentUuid} ${data.updatedAt}`} data={data}/>
                   )) : null}

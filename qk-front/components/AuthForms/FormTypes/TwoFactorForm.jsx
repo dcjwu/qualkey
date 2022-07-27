@@ -14,7 +14,7 @@ import Heading from "../../UI/Heading/Heading"
 import Text from "../../UI/Text/Text"
 import styles from "../AuthForm.module.scss"
 
-const otpSeconds = 10
+const otpSeconds = 59
 const otpValuesInitialState = ["", "", "", ""]
 
 const TwoFactorForm = ({ forgotPassword }) => {
