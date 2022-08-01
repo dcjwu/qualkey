@@ -122,7 +122,7 @@ const SettingsView = ({ institution, userData }) => {
             if (response.status === 200) {
                setError("")
                setSuccess(true)
-               router.replace(router.asPath)
+               router.reload(window.location.pathname)
             }
          })
          .catch(error => {

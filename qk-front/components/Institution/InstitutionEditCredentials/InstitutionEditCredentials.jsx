@@ -140,7 +140,7 @@ const InstitutionEditCredentials = ({ data }) => {
          .then(response => {
             setLoading(false)
             if (response.status === 200) {
-               router.replace(router.asPath)
+               router.reload(window.location.pathname)
                resetShowEdit()
             }
          })
