@@ -3,7 +3,7 @@ import { atom } from "recoil"
 export const initialLoginFormState = {
    email: "",
    password: "",
-   rememberMe: false
+   rememberMe: "false"
 }
 
 export const loginFormState = atom({

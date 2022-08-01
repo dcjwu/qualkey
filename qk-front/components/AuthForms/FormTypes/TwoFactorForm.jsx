@@ -74,8 +74,8 @@ const TwoFactorForm = ({ forgotPassword }) => {
                })
          } else {
             axios.post(`${processingUrl}/auth/login`, { ...formData, otp: pinValues.join("") }, { withCredentials: true })
-               .then(response => {
-                  push(response.data)
+               .then(() => {
+                  push("/dashboard")
                   resetFormData()
                })
                .catch(error => {

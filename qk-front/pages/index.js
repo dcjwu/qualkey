@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 
 import axios from "axios"
+import { getCookie } from "cookies-next"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { useRecoilState } from "recoil"
 
 import logo from "../assets/images/qk-logo-text.svg"
@@ -14,6 +16,8 @@ import Error from "./_error"
 
 export default function Home({ serverErrorMessage }) {
 
+   const router = useRouter()
+   
    const [formData, setFormData] = useRecoilState(loginFormState)
    const [, setFormError] = useRecoilState(formValidationErrorsState)
    const [, setLoading] = useRecoilState(loadingState)
@@ -32,7 +36,7 @@ export default function Home({ serverErrorMessage }) {
       } else {
          setFormData({
             ...formData,
-            [name]: checked
+            [name]: checked.toString()
          })
       }
    }
@@ -91,7 +95,12 @@ export default function Home({ serverErrorMessage }) {
    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
    useEffect(() => {
-      axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true })
+      const rememberMeValue = getCookie("remember_me")
+      if (rememberMeValue) {
+         router.push("/dashboard")
+      } else {
+         axios.post(`${processingUrl}/auth/logout`, {}, { withCredentials: true })
+      }
    }, [])
 
    if (serverErrorMessage) return <Error serverErrorMessage={serverErrorMessage}/>
