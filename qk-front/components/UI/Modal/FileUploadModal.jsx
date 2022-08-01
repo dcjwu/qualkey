@@ -55,7 +55,8 @@ const FileUploadModal = () => {
                if (results.errors.length) {
                   setPasingError(results.errors)
                } else {
-                  setParsedValuesFromUpload(results.meta.fields)
+                  const filterEmptyString = results.meta.fields.filter(item => item !== "")
+                  setParsedValuesFromUpload(filterEmptyString)
                   setStep(prevState => prevState + 1)
                }
             },
