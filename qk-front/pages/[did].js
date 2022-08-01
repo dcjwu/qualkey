@@ -1,12 +1,14 @@
 import axios from "axios"
 import getConfig from "next/config"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 import { useRouter } from "next/router"
 
-import Certificate from "../components/Certificate/Certificate"
 import EmployerView from "../components/EmployerView/EmployerView"
 import Heading from "../components/UI/Heading/Heading"
 import Error from "./_error"
+
+const Certificate = dynamic(import("../components/Certificate/Certificate"))
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
@@ -40,7 +42,12 @@ export default function DidPage({ didData, serverErrorMessage }) {
 }
 
 export const getServerSideProps = async (ctx) => {
-   const { query } = ctx
+   const { query, res } = ctx
+
+   res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=10, stale-while-revalidate=59"
+   )
 
    try {
       const responseDid = await axios.get(`${apiUrl}/credential/${query.did}`)

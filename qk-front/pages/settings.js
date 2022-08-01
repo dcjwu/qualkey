@@ -44,7 +44,12 @@ export default function Settings({ userData, notificationsData, serverErrorMessa
 }
 
 export const getServerSideProps = async (ctx) => {
-   const { req } = ctx
+   const { req, res } = ctx
+
+   res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=10, stale-while-revalidate=59"
+   )
 
    try {
       const responseUser = await axios.get(`${apiUrl}/user/me`, {

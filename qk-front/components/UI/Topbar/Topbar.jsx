@@ -158,7 +158,7 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData, p
                      : <BurgerButton style={{ marginLeft: lgMarginLeft || mdMarginLeft }}/>}
                {!employer && !payment ? <div className={styles.right}>
                   <div className={styles.imageWrapperNotification} onClick={handleShowNotifications}>
-                     <Image alt="bell" layout="fill" quality={100}
+                     <Image alt="Bell" layout="fill" quality={100}
                             src={bell}/>
                      {notificationsData?.length ?
                         <span className={styles.notification}>{notificationsData.length}</span> : null}
@@ -166,11 +166,11 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData, p
                                           show={showNotifications}/>
                   </div>
                   {institution && userData.institution.logoUrl ? <div className={styles.imageWrapperLogo}>
-                     <img alt="uni" className={styles.logo} src={`${process.env.NEXT_PUBLIC_AWS_URL}/${userData.institution.logoUrl}`}/>
+                     <img alt="University" className={styles.logo} src={`${process.env.NEXT_PUBLIC_AWS_URL}/${userData.institution.logoUrl}`}/>
                   </div> : null}
                   <div className={styles.userWrapper} onClick={handleShowMenu}>
                      <div className={styles.imageWrapperUser}>
-                        <Image alt="user" className={styles.user} layout="fill"
+                        <Image alt="Avatar" className={styles.user} layout="fill"
                                quality={100} src={avatar}/>
                      </div>
                      {userData.fullName ? <Text semiBold>{handleCutFirstName(userData.fullName)}</Text> : null}

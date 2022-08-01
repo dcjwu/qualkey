@@ -38,7 +38,7 @@ const InstitutionDashboardItem = ({ data }) => {
                : "15px 15px 0 0"
          }}>
             <div className={styles.itemWrapper}>
-               <Image alt="portrait" className={styles.photo} height={50}
+               <Image alt="Avatar" className={styles.photo} height={50}
                       quality={100} src={avatar} width={50}/>
                <Text bold>{data.graduatedName}</Text>
             </div>

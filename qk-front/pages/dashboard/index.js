@@ -1,15 +1,17 @@
 import axios from "axios"
 import getConfig from "next/config"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 
-import InstitutionDashboard from "../../components/Institution/InstitutionDashboard/InstitutionDashboard"
 import InstitutionView from "../../components/Institution/InstitutionView/InstitutionView"
-import StudentDashboard from "../../components/Student/StudentDashboard/StudentDashboard"
 import StudentView from "../../components/Student/StudentView/StudentView"
 import Heading from "../../components/UI/Heading/Heading"
 import Text from "../../components/UI/Text/Text"
 import { userRoles } from "../../utils"
 import Error from "./../_error"
+
+const InstitutionDashboard = dynamic(import("../../components/Institution/InstitutionDashboard/InstitutionDashboard"))
+const StudentDashboard = dynamic((import("../../components/Student/StudentDashboard/StudentDashboard")))
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
@@ -49,9 +51,14 @@ export default function Dashboard({ data, userData, notificationsData, serverErr
 }
 
 export const getServerSideProps = async (ctx) => {
-   const { req, query } = ctx
+   const { req, res, query } = ctx
    let response
    let responseUser
+
+   res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=10, stale-while-revalidate=59"
+   )
 
    if (query.filter) {
       try {

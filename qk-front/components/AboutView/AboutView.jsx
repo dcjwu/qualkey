@@ -20,7 +20,7 @@ const AboutView = () => {
          {!showMore
             ? <div className={styles.page}>
                <div className={styles.image}>
-                  <Image alt="mock" layout="fill" objectFit="cover"
+                  <Image alt="About" layout="fill" objectFit="cover"
                          quality={100} src={mockImage}/>
                   <svg fill="none" height="226" viewBox="0 0 435 226"
                        width="435" xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +104,7 @@ const AboutView = () => {
                      <div className={styles.wrapperLeft}>
                         <div className={styles.leftItem}>
                            <div className={styles.imageWrapper}>
-                              <Image alt="avatar" layout="fill" src={hans}/>
+                              <Image alt="Hans Winkler" layout="fill" src={hans}/>
                            </div>
                            <Text bold>Hans Winkler</Text>
                            <Text grey>Co-founder</Text>
@@ -114,7 +114,7 @@ const AboutView = () => {
                         </div>
                         <div className={styles.leftItem}>
                            <div className={styles.imageWrapper}>
-                              <Image alt="avatar" layout="fill" src={phil}/>
+                              <Image alt="Philip Whetstone" layout="fill" src={phil}/>
                            </div>
                            <Text bold>Philip Whetstone</Text>
                            <Text grey>Co-founder</Text>
@@ -144,10 +144,10 @@ const AboutView = () => {
                </div>
                <div className={styles.center}>
                   <div className={styles.imageWrapperSmall}>
-                     <Image alt="avatar" layout="fill" src={hans}/>
+                     <Image alt="Hans Winkler" layout="fill" src={hans}/>
                   </div>
                   <div className={styles.imageWrapperSmall}>
-                     <Image alt="avatar" layout="fill" src={phil}/>
+                     <Image alt="Philip Whetstone" layout="fill" src={phil}/>
                   </div>
                </div>
                <Text bold large>Our Story</Text>

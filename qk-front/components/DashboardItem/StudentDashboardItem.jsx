@@ -88,7 +88,7 @@ const StudentDashboardItem = ({ data, deleteCredentialToShare, handleCredentials
          }}>
             <Input checkboxSolo disabled={data.status !== "ACTIVATED"} type="checkbox"
                    onChange={handleInputShareChange}/>
-            <Image alt="school name" className={styles.studentSchoolLogo} height={64}
+            <Image alt="University" className={styles.studentSchoolLogo} height={64}
                    objectFit="contain" src={`${process.env.NEXT_PUBLIC_AWS_URL}/${data.institution.logoUrl}`} width={196}/>
             <div className={`${styles.itemWrapper} ${data.status === "EXPIRED" ? styles.expired : ""}`}>
                <IconAcademicCap/>
