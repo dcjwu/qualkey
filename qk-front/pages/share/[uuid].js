@@ -65,7 +65,12 @@ export default function ShareCredentialsPage({ shareData, serverErrorMessage }) 
 }
 
 export const getServerSideProps = async (ctx) => {
-   const { query } = ctx
+   const { query, res } = ctx
+
+   res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=10, stale-while-revalidate=59"
+   )
 
    try {
       const responseShare = await axios.get(`${apiUrl}/credential/share/${query.uuid}?password=${query.password}`)

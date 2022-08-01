@@ -1,25 +1,27 @@
 import axios from "axios"
 import getConfig from "next/config"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useRecoilState, useRecoilValue } from "recoil"
 
 import { confirmWithdrawModalState, deleteCredentialsModalState, formShareState, showEditCredentialsState, showShareModalState, viewCertificateModalState } from "../../atoms"
-import CredentialsInfo from "../../components/CredentialsInfo/CredentialsInfo"
-import InstitutionViewCredentialsItem from "../../components/DashboardItem/InstitutionViewCredentialsItem"
-import StudentViewCredentialsItem from "../../components/DashboardItem/StudentViewCredentialsItem"
-import InstitutionEditCredentials from "../../components/Institution/InstitutionEditCredentials/InstitutionEditCredentials"
 import InstitutionView from "../../components/Institution/InstitutionView/InstitutionView"
 import StudentView from "../../components/Student/StudentView/StudentView"
 import { IconShare } from "../../components/UI/_Icon"
 import Button from "../../components/UI/Button/Button"
 import Heading from "../../components/UI/Heading/Heading"
-import ConfirmWithdrawModal from "../../components/UI/Modal/ConfirmWithdrawModal"
-import DeleteCredentialsModal from "../../components/UI/Modal/DeleteCredentialsModal"
-import ViewCertificateModal from "../../components/UI/Modal/ViewCertificateModal"
 import Text from "../../components/UI/Text/Text"
 import { userRoles } from "../../utils"
 import Error from "../_error"
+
+const CredentialsInfo = dynamic(import("../../components/CredentialsInfo/CredentialsInfo"))
+const InstitutionViewCredentialsItem = dynamic(import("../../components/DashboardItem/InstitutionViewCredentialsItem"))
+const StudentViewCredentialsItem = dynamic(import("../../components/DashboardItem/StudentViewCredentialsItem"))
+const InstitutionEditCredentials = dynamic(import("../../components/Institution/InstitutionEditCredentials/InstitutionEditCredentials"))
+const ConfirmWithdrawModal = dynamic(import( "../../components/UI/Modal/ConfirmWithdrawModal"))
+const DeleteCredentialsModal = dynamic(import( "../../components/UI/Modal/DeleteCredentialsModal"))
+const ViewCertificateModal = dynamic(import( "../../components/UI/Modal/ViewCertificateModal"))
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 const apiUrl = serverRuntimeConfig.apiUrl || publicRuntimeConfig.apiUrl
@@ -102,7 +104,12 @@ export default function CredentialsView({ data, userData, notificationsData, ser
 }
 
 export const getServerSideProps = async (ctx) => {
-   const { req, query } = ctx
+   const { req, res, query } = ctx
+
+   res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=10, stale-while-revalidate=59"
+   )
 
    try {
       const response = await axios.get(`${apiUrl}/credential?uuid=${query.uuid}`, {

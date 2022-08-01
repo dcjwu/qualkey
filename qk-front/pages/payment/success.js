@@ -57,7 +57,7 @@ export default function Success() {
       <>
          <Topbar payment/>
          <div className="payment__wrapper">
-            <Image alt="success" src={success}/>
+            <Image alt="Payment success" src={success}/>
             <Heading blue h2 modal>Congratulations</Heading>
             <Text large>Your payment has been accepted. You will receive an
                email containing your transaction details.</Text>

@@ -31,7 +31,7 @@ const SharedCredentialsItem = ({ data }) => {
               style={{ borderRadius: "15px 15px 15px 15px" }}>
             <div className={`${styles.credentialWrapper} ${styles.viewCredentialWrapper} ${styles.shared}`}
                  style={{ borderRadius: showData ? "15px 15px 0 0" : "15px 15px 15px 15px" }}>
-               <Image alt="school name" className={styles.studentSchoolLogo} height={64}
+               <Image alt="University" className={styles.studentSchoolLogo} height={64}
                       objectFit="contain" src={`${process.env.NEXT_PUBLIC_AWS_URL}/${data.institutionLogoUrl}`} width={196}/>
                <div className={styles.itemWrapper}>
                   <IconAcademicCap/>

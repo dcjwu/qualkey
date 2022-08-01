@@ -122,7 +122,7 @@ const SettingsView = ({ institution, userData }) => {
             if (response.status === 200) {
                setError("")
                setSuccess(true)
-               router.replace(router.asPath)
+               router.reload(window.location.pathname)
             }
          })
          .catch(error => {
@@ -137,7 +137,7 @@ const SettingsView = ({ institution, userData }) => {
          <div className={styles.left}>
             <div className={styles.topLeft}>
                <div className={styles.imageWrapperUser}>
-                  <Image alt="user" className={styles.user} layout="fill"
+                  <Image alt="Avatar" className={styles.user} layout="fill"
                          quality={100} src={avatar}/>
                </div>
                {fullName? <Text big bold>{fullName}</Text> : null}
