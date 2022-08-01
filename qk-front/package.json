@@ -9,10 +9,6 @@
     "prod": "next start",
     "start": "next start",
     "lint": "next lint",
-    "find:unused": "next-unused",
-    "lint:globals": "stylelint --fix \"assets/styles/**/*.scss\" --custom-syntax postcss-scss",
-    "lint:components": "stylelint --fix \"components/**/*.scss\" --custom-syntax postcss-scss",
-    "lint:style": "npm run lint:globals & npm run lint:components"
   },
   "dependencies": {
     "axios": "^0.27.2",
