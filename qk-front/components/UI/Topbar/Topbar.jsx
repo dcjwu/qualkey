@@ -166,9 +166,7 @@ const Topbar = ({ institution, userData, employer, payment, notificationsData, p
                                           show={showNotifications}/>
                   </div>
                   {institution && userData.institution.logoUrl ? <div className={styles.imageWrapperLogo}>
-                     <Image alt="uni" className={styles.logo} layout="fill"
-                            objectFit={"contain"}
-                            quality={100} src={`${process.env.NEXT_PUBLIC_AWS_URL}/${userData.institution.logoUrl}`}/>
+                     <img alt="uni" className={styles.logo} src={`${process.env.NEXT_PUBLIC_AWS_URL}/${userData.institution.logoUrl}`}/>
                   </div> : null}
                   <div className={styles.userWrapper} onClick={handleShowMenu}>
                      <div className={styles.imageWrapperUser}>
