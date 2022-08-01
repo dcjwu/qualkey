@@ -8,7 +8,7 @@
     "build": "next build",
     "prod": "next start",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint"
   },
   "dependencies": {
     "axios": "^0.27.2",
