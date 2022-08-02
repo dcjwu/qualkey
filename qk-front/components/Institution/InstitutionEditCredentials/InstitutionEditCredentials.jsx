@@ -60,6 +60,8 @@ const InstitutionEditCredentials = ({ data }) => {
    const [, setShowEditCredentials] = useRecoilState(showEditCredentialsState)
    const resetShowEdit = useResetRecoilState(showEditCredentialsState)
 
+   console.log(savedData)
+
    /**
     * Modify incoming data per needs
     */

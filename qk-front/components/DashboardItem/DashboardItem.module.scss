@@ -348,6 +348,9 @@
 
     > div:nth-child(2) {
       padding-left: 3rem !important;
+      @include breakpoint-max($bp-screen-sm) {
+        display: none !important;
+      }
     }
 
     @include breakpoint-max($bp-screen-sm) {
