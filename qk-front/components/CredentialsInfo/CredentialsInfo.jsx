@@ -26,7 +26,7 @@ const CredentialsInfo = ({ data }) => {
                      </div>
                      <div className={styles.infoItem}>
                         <Text grey>Date authenticated:</Text>
-                        <Text semiBold>{moment.utc(data.authenticatedDate).format("DD/MM/YYYY")}</Text>
+                        <Text semiBold>{moment.utc(data.authenticatedAt).format("DD/MM/YYYY")}</Text>
                      </div>
                   </div>
                   <div className={styles.infoBlock}>

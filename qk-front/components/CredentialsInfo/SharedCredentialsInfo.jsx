@@ -45,10 +45,6 @@ const SharedCredentialsInfo = ({ data }) => {
                         <Text grey>Award level:</Text>
                         <Text semiBold>{data.awardLevel}</Text>
                      </div>
-                     <div className={styles.infoItem}>
-                        <Text grey>Specialisation:</Text>
-                        <Text semiBold>{data.awardLevel}</Text>
-                     </div>
                   </div>
                </div>
                <div className={styles.right}>
