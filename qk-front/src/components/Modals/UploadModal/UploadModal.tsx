@@ -4,14 +4,17 @@ import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import Papa from "papaparse"
 
-import { FileTypeMapping } from "@constants/fileTypeMapping"
 import { qualkeyUploadMapping } from "@constants/qualkeyUploadMapping"
 import { colorBrandBlue24, colorPending } from "@constants/styles"
-import { FileTypeEnum } from "@customTypes/components/Modals"
+import { FileExtensionEnum } from "@customTypes/components/Modals"
 import { useUploadDataValidation } from "@hooks/useUploadDataValidation"
 import { Button, Heading, Modal, Text } from "@lib/components"
 
-import type { UploadModalMappingFormType, UploadModalValidationType , UploadModalType } from "@customTypes/components/Modals"
+import type {
+   UploadModalMappingFormType,
+   UploadModalType,
+   UploadModalValidationType
+} from "@customTypes/components/Modals"
 import type { InstitutionMappingType } from "@interfaces/institution.interface"
 
 const UploadModalValidation = dynamic<UploadModalValidationType>(() => import("@components/Modals").then(module => module.UploadModalValidation))
@@ -51,65 +54,68 @@ export const UploadModal: React.FC<UploadModalType> = ({ isOpen, handleCloseModa
     */
    const handleGetFile = (event: React.ChangeEvent<HTMLInputElement>): void => {
       if (event.target.files && event.target.files.length) {
-         const fileExtension = FileTypeMapping.has(event.target.files[0].type as FileTypeEnum)
-            ? FileTypeMapping.get(event.target.files[0].type as FileTypeEnum)
-            : undefined
+         const fileExtension = event.target.files[0].name.split(".").pop()
 
          if (fileExtension) {
-            setSelectFileError("")
-            setSelectedFile(event.target.files[0])
+            if (Object.values(FileExtensionEnum).includes(fileExtension as FileExtensionEnum)) {
+               setSelectFileError("")
+               setSelectedFile(event.target.files[0])
 
-            if (fileExtension[0] == "csv") {
+               if (fileExtension === FileExtensionEnum.CSV) {
 
-               if (institutionData?.mapping) {
-                  Papa.parse(event.target.files[0], {
-                     header: true,
-                     skipEmptyLines: true,
+                  if (institutionData?.mapping) {
+                     Papa.parse(event.target.files[0], {
+                        header: true,
+                        skipEmptyLines: true,
 
-                     complete: (results) => {
-                        const filterMetaFields = results.meta.fields?.filter(field => field !== "")
-                        setParsedFields(filterMetaFields)
-                        if (results.errors.length) {
-                           setActiveStep(0)
-                           setParsingErrors(results.errors)
-
-                        } else {
-
-                           if (filterMetaFields) {
-                              const mappingDifference = institutionData?.mapping.filter(
-                                 data => !results.meta.fields?.includes(data.originalColumnName)
-                              )
-
-                              if (mappingDifference && mappingDifference.length > 0) {
-                                 setActiveStep(0)
-                                 setMappingIntersection(mappingDifference)
-
-                              } else {
-                                 handleValidation(institutionData.mapping, results.data as { [k: string]: string }[])
-                                 setActiveStep(prevState => prevState + 1)
-                              }
+                        complete: (results) => {
+                           const filterMetaFields = results.meta.fields?.filter(field => field !== "")
+                           setParsedFields(filterMetaFields)
+                           if (results.errors.length) {
+                              setActiveStep(0)
+                              setParsingErrors(results.errors)
 
                            } else {
-                              setSelectFileError("Unable to parse columns, please contact support")
-                           }
 
+                              if (filterMetaFields) {
+                                 const mappingDifference = institutionData?.mapping.filter(
+                                    data => !results.meta.fields?.includes(data.originalColumnName)
+                                 )
+
+                                 if (mappingDifference && mappingDifference.length > 0) {
+                                    setActiveStep(0)
+                                    setMappingIntersection(mappingDifference)
+
+                                 } else {
+                                    handleValidation(institutionData.mapping, results.data as { [k: string]: string }[])
+                                    setActiveStep(prevState => prevState + 1)
+                                 }
+
+                              } else {
+                                 setSelectFileError("Unable to parse columns, please contact support")
+                              }
+
+                           }
+                        },
+                        error: (error) => {
+                           setSelectFileError(`${error.message}. Unexpected error, please contact support`)
                         }
-                     },
-                     error: (error) => {
-                        setSelectFileError(`${error.message}. Unexpected error, please contact support`)
-                     }
-                  })
+                     })
+
+                  } else {
+                     setSelectFileError("Please add Institution mapping in Admin Panel")
+                  }
 
                } else {
-                  setSelectFileError("Please add Institution mapping in Admin Panel")
+                  setSelectFileError("Not possible to upload .xls/.xlsx files. We are working on it")
                }
 
             } else {
-               setSelectFileError("Not possible to upload .xls/.xlsx files. We are working on it")
+               setSelectFileError("Make sure you have selected a valid .csv/.xls/.xlsx file")
             }
 
          } else {
-            setSelectFileError("Make sure you have selected a valid .csv/.xls/.xlsx file")
+            setSelectFileError("Unable to select file, please contact support")
          }
 
       } else {
