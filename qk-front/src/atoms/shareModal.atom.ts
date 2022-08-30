@@ -5,7 +5,7 @@ import { qualkeyDataToShare } from "@constants/qualkeyDataToShare"
 import type { QualkeyDataToShareType } from "@customTypes/constants"
 
 /**
- * ShareItem modal open global state
+ * Share modal open global state
  */
 export const isShareModalOpen = atom<boolean>({
    key: "isShareModalOpen",

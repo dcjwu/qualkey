@@ -6,6 +6,10 @@
   flex-direction: column;
   gap: 1.2rem;
 
+  @include print() {
+    display: none;
+  }
+
   &.isStudent {
     flex-direction: row-reverse;
     button {

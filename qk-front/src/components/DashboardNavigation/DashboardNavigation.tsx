@@ -13,7 +13,6 @@ import type { DashboardNavigationType } from "@customTypes/components"
 
 import styles from "./DashboardNavigation.module.scss"
 
-
 const cx = classNames.bind(styles)
 
 const searchCredentialsInitialState = {

@@ -62,7 +62,7 @@ export const StudentQualificationItem: React.FC<QualificationItemType> = ({ data
    }
 
    /**
-    * ShareItem one credential handler
+    * Share one credential handler
     */
    const handleShareOne = (): void => {
       if (data.status === CredentialStatusEnum.ACTIVATED) {

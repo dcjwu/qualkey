@@ -40,6 +40,9 @@ $uniLogoH: 64px;
 
   > div:last-child {
     display: none;
+    @include print() {
+      display: block;
+    }
   }
 
   &.active {

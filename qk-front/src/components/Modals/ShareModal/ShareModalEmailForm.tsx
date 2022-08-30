@@ -41,7 +41,7 @@ export const ShareModalEmailForm: React.FC<ShareModalEmailFormType> = ({
    const [error, setError] = React.useState<string>("")
 
    /**
-    * ShareItem form submit handler
+    * Share form submit handler
     */
    const handleFormSubmit = async (event: React.SyntheticEvent, formData: FormDataType): Promise<void> => {
       event.preventDefault()
@@ -188,8 +188,8 @@ export const ShareModalEmailForm: React.FC<ShareModalEmailFormType> = ({
                     type="submit"
                     variant="primary">
 
-               {!isPublicShare && "ShareItem Credentials"}
-               {isPublicShare && "ShareItem Certificate"}
+               {!isPublicShare && "Share Credentials"}
+               {isPublicShare && "Share Certificate"}
 
             </Button>
          </Form>

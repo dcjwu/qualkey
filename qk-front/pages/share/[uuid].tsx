@@ -6,10 +6,10 @@ import dynamic from "next/dynamic"
 import Head from "next/head"
 import { useRouter } from "next/router"
 
-import { ShareItem } from "@components/Share/ShareItem"
 import { dashboardPageMaxWidth } from "@constants/styles"
 import { apiUrl, authUrl } from "@constants/urls"
-import { Button, Form, Heading, Input, Loading, Text } from "@lib/components"
+import { ShareItemType } from "@customTypes/components"
+import { Button, Form, Heading, Input, Loading, LoadingComponent, Text } from "@lib/components"
 
 import type { FormDataType } from "@customTypes/common"
 import type { MainLayoutType } from "@customTypes/layouts"
@@ -24,6 +24,8 @@ const temporaryPassInitialState = { password: "" }
 const MainLayout = dynamic<MainLayoutType>(() => import("@layouts/MainLayout/MainLayout").then(module => module.MainLayout),
    { loading: () => <Loading isOpen={true}/> })
 const Modal = dynamic<ModalType>(() => import("@lib/components").then(module => module.Modal))
+const ShareItem = dynamic<ShareItemType>(() => import("@components/Share/ShareItem")
+   .then(module => module.ShareItem), { loading: () => <LoadingComponent/> })
 
 const ShareUuid: NextPage<SharedUuidPageType> = ({ serverErrorMessage, userData, shareData, shareId }): JSX.Element => {
 

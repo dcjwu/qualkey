@@ -47,7 +47,7 @@ export const QualificationHistoryItem: React.FC<QualificationHistoryItemType> = 
          <Text color="800" component="p" size="paragraph">
 
             {!isShare && "Credential Change"}
-            {isShare && "Credential ShareItem"}
+            {isShare && "Credential Share"}
 
          </Text>
          <svg fill="none" height="16" viewBox="0 0 8 16"
