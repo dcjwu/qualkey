@@ -37,7 +37,7 @@ const Error: NextPage<ErrorPageType> = ({ serverErrorMessage }): JSX.Element => 
                   </Heading>
                </div>
                <Button loading={false} size="lg" variant="primary"
-                       onClick={(): Promise<boolean> => router.replace("/login")}>
+                       onClick={(): Promise<boolean> => router.replace("/dashboard")}>
                   Go back
                </Button>
             </div>}
