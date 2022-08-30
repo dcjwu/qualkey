@@ -10,8 +10,7 @@
     "lint:styles": "npm run lint:common-styles && npm run lint:component-styles && npm run lint:layout-styles",
     "lint:common-styles": "stylelint --fix src/assets/styles/* --custom-syntax postcss-scss",
     "lint:component-styles": "stylelint --fix src/components/**/*.scss --custom-syntax postcss-scss",
-    "lint:layout-styles": "stylelint --fix src/layouts/**/*.scss --custom-syntax postcss-scss",
-    "prepare": "husky install"
+    "lint:layout-styles": "stylelint --fix src/layouts/**/*.scss --custom-syntax postcss-scss"
   },
   "dependencies": {
     "@types/papaparse": "^5.3.3",
