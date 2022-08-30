@@ -64,4 +64,16 @@
   > p:last-child {
     @include qualificationTitles();
   }
+
+  &.disabled {
+    > div:first-child {
+      svg {
+        pointer-events: none;
+        path {
+          stroke: $color-black-200;
+        }
+      }
+    }
+  }
 }
+
