@@ -9,3 +9,5 @@ export const colorDanger: HEX =  "#D6193D"
 export const colorBlack300: HEX = "#D4D4D4"
 export const colorBlack500: HEX = "#737373"
 export const colorBlack800: HEX = "#262626"
+
+export const dashboardPageMaxWidth = "1110px"

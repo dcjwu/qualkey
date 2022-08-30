@@ -34,8 +34,8 @@ export const useCredentialChangeDisplay = (data: ICredentialChange, id: number |
             if (fieldName) {
                changedDataArray.push({
                   fieldName: fieldName,
-                  changedTo: isValueDate(data.changedTo[index]),
-                  changedFrom: isValueDate(data.changedFrom[index])
+                  changedTo: isValueDate(data.changedTo[index]) ?? "Not valid date",
+                  changedFrom: isValueDate(data.changedFrom[index]) ?? "Not valid date"
                })
             }
 

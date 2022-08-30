@@ -67,7 +67,7 @@ export interface ICredentialChange {
    smartContractId?: string
 }
 
-export interface ICredentialDidShare {
+export interface ICredentialSharePage {
    authenticatedAt: Date
    authenticatedBy: string
    authenticatedBySignatureUrl: string

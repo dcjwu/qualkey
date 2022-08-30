@@ -1,0 +1,148 @@
+@import "src/assets/styles/utils/constants";
+@import "src/assets/styles/utils/mixins";
+
+$uniLogoW: 196px;
+$uniLogoH: 64px;
+
+.logoWrapper {
+  height: calc(100% - 5rem);
+  align-self: center;
+  position: relative;
+  padding: calc(2.4rem + .1rem) 0;
+
+  @include breakpoint-max($bp-screen-md) {
+    display: none;
+  }
+}
+
+.uniLogo {
+  border: 1px solid $color-black-200;
+  border-radius: 1.2rem;
+  height: calc($uniLogoH - 1.6rem);
+  padding: .8rem 2.4rem;
+  max-width: calc($uniLogoW - 4.8rem);
+
+  > p {
+    &:last-child {
+      @include qualificationTitles();
+    }
+  }
+
+  &__wrapper {
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+}
+
+.qualificationWrapper {
+  margin-bottom: 1.6rem;
+
+  > div:last-child {
+    display: none;
+  }
+
+  &.active {
+    > div:last-child {
+      display: block;
+    }
+  }
+
+  &.moreThanOne {
+    &:not(:first-child) {
+      .item,
+      .status,
+      .date,
+      .actions,
+      .uniLogo, {
+        p:last-child {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.qualification {
+  padding: 0 2.4rem;
+  border-radius: 1.5rem;
+  background-color: $color-black-000;
+  display: grid;
+  grid-template-columns: .8fr 1fr 1fr;
+  gap: 1.2rem;
+
+  @include breakpoint-max($bp-screen-lg) {
+    grid-template-columns: .8fr 1fr .2fr
+  }
+
+  @include breakpoint-max($bp-screen-md) {
+    grid-template-columns: 1fr .5fr;
+    padding: 0 1.2rem;
+  }
+
+  @include breakpoint-max($bp-screen-sm) {
+    p {
+      font-size: 1.4rem;
+    }
+  }
+
+  &.active {
+    border-radius: 1.5rem 1.5rem 0 0;
+  }
+}
+
+.item {
+  padding: 2.4rem 0;
+  display: grid;
+  grid-template-columns: 0fr 1fr;
+  align-items: center;
+  gap: .8rem;
+  position: relative;
+
+  > p {
+    &:last-child {
+      @include qualificationTitles();
+    }
+  }
+}
+
+.actions {
+  position: relative;
+  padding: 1.2rem 0 1.2rem 2.4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-left: 1px solid $color-black-200;
+  align-items: center;
+  gap: 2.4rem;
+
+  @include breakpoint-max($bp-screen-md) {
+    padding-left: 1.2rem;
+  }
+
+  svg {
+    cursor: pointer;
+
+  }
+
+  > p:last-child {
+    @include qualificationTitles();
+    left: 2.4rem;
+  }
+
+  @include breakpoint-max($bp-screen-lg) {
+    > div:nth-child(2) {
+      button {
+        grid-template-columns: 1fr;
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.active {
+    > div:nth-child(2) button svg {
+      transform: rotate(180deg);
+    }
+  }
+}

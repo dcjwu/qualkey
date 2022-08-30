@@ -1,6 +1,6 @@
-import type { ICredential, ICredentialDidShare } from "@interfaces/credentials.interface"
+import type { ICredential, ICredentialSharePage } from "@interfaces/credentials.interface"
 
 export type CertificateType = {
-   data: ICredential | ICredentialDidShare
+   data: ICredential | ICredentialSharePage
    showQR: boolean
 }

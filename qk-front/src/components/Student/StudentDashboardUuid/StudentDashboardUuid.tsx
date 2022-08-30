@@ -119,7 +119,7 @@ export const StudentDashboardUuid: React.FC<StudentDashboardUuidType> = ({ data,
                     size="lg"
                     variant="primary"
                     onClick={handleShareCredentials}>
-               Share credentials
+               ShareItem credentials
             </Button>
          </WithHover>
 

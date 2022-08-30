@@ -50,7 +50,7 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
 
    const [stringData] = React.useState<{ [k: string]: string }>(initialStringData)
 
-   const [dateData] = React.useState<({ [k: string]: Date | string })>(initialDateData)
+   const [dateData] = React.useState<({ [k: string]: Date | string | null })>(initialDateData)
 
    const [activeForm, setActiveForm] = React.useState<"strings" | "dates" | null>(null)
 
@@ -191,7 +191,7 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                   <Text color="500" component="p" size="paragraph">
                      {qualkeyFieldsMapping.get("authenticatedDate")}
                   </Text>
-                  <input disabled type="text" value={formatDate("DD/MM/YYYY", data.authenticatedAt)}/>
+                  <input disabled type="text" value={formatDate("DD/MM/YYYY", data.authenticatedAt) ?? ""}/>
                </div>
             </div>
 

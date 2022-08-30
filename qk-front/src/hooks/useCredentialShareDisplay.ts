@@ -29,8 +29,8 @@ export const useCredentialShareDisplay = (data: ICredentialShare[], id: string |
 
          setSharedData({
             email: sharedDataToDisplay[0].recipientEmails[0],
-            sharedAt: formatDate("DD.MM.YYYY", sharedDataToDisplay[0].createdAt),
-            expiresAt: formatDate("DD.MM.YYYY", sharedDataToDisplay[0].expiresAt),
+            sharedAt: formatDate("DD.MM.YYYY", sharedDataToDisplay[0].createdAt) ?? "Not valid date",
+            expiresAt: formatDate("DD.MM.YYYY", sharedDataToDisplay[0].expiresAt) ?? "Not valid date",
             isLinkActive: isShareValid(sharedDataToDisplay[0].expiresAt),
             credentials: sharedDataToDisplay[0].credentialQualificationNames,
             uuids: sharedDataToDisplay[0].credentialUuids

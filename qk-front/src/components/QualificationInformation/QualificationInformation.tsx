@@ -11,7 +11,7 @@ import styles from "./QualificationInformation.module.scss"
 
 export const QualificationInformation: React.FC<QualificationInformationType> = ({ data }): JSX.Element => {
 
-   const smartContractId = useGetSmartContractId(data.credentialChanges)
+   const smartContractId = useGetSmartContractId("credentialChanges" in data ? data.credentialChanges : undefined)
 
    return (
       <div className={styles.info}>
@@ -158,15 +158,18 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
          </div>
 
          <div className={styles.block}>
-            <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
-               <Text color="blue" component="p"
-                     size="paragraph">
-                  Certificate ID:
-               </Text>
-               <Text color="800" component="p" size="paragraph">
-                  {data.certificateId}
-               </Text>
-            </div>
+
+            {"credentialChanges" in data &&
+               <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
+                  <Text color="blue" component="p"
+                        size="paragraph">
+                     Certificate ID:
+                  </Text>
+                  <Text color="800" component="p" size="paragraph">
+                     {data.certificateId}
+                  </Text>
+               </div>}
+
             <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
                <Text color="blue" component="p"
                      size="paragraph">

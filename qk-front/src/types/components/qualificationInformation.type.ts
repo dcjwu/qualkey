@@ -1,5 +1,5 @@
-import type { ICredential } from "@interfaces/credentials.interface"
+import type { ICredential, ICredentialSharePage } from "@interfaces/credentials.interface"
 
 export type QualificationInformationType = {
-   data: ICredential
+   data: ICredential | ICredentialSharePage
 }

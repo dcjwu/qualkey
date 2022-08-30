@@ -15,6 +15,7 @@ export * from "./University/UniversityQualificationItem/UniversityQualificationI
 export * from "./QualificationStatus/QualificationStatus"
 export * from "./ResendOtp/ResendOtp"
 export * from "./Settings/SettingsComponent"
+export * from "./Share/ShareItem"
 export * from "./Sidebar/Sidebar"
 export * from "./Sidebar/SidebarItem"
 export * from "./Student/StudentDashboard/StudentDashboard"

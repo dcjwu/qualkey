@@ -6,6 +6,8 @@ import dynamic from "next/dynamic"
 import Head from "next/head"
 import { useRouter } from "next/router"
 
+import { ShareItem } from "@components/Share/ShareItem"
+import { dashboardPageMaxWidth } from "@constants/styles"
 import { apiUrl, authUrl } from "@constants/urls"
 import { Button, Form, Heading, Input, Loading, Text } from "@lib/components"
 
@@ -85,12 +87,19 @@ const ShareUuid: NextPage<SharedUuidPageType> = ({ serverErrorMessage, userData,
 
          {shareData && <MainLayout shareId={shareId} userData={userData}>
             <Heading color="blue" component="h1" size="lg">
-               NAME has shared their credentials with you
+               {shareData && shareData[0].graduatedName} has shared their credentials with you
             </Heading>
             <Heading color="800" component="h2" size="subDisplay"
                      style={{ marginTop: ".8rem" }}>
                viewing shared credentials
             </Heading>
+
+            <div style={{ marginTop: "4.8rem", maxWidth: dashboardPageMaxWidth }}>
+               {shareData.map(item => (
+                  <ShareItem key={item.did} data={item} length={shareData?.length}/>
+               ))}
+            </div>
+
          </MainLayout>}
 
          {!shareData && <Modal handleCloseModal={(): void => void 0} isOpen={true} style={{ paddingBottom: "6.4rem" }}>
