@@ -24,7 +24,7 @@ const Analytics: NextPage<AnalyticsPageType> = ({ userData, actionData, statsDat
    return (
       <>
          <Head>
-            <title>About Us | QualKey</title>
+            <title>Analytics | QualKey</title>
          </Head>
 
          <MainLayout actionData={actionData} userData={userData}>
