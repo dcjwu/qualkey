@@ -1,18 +1,18 @@
 import React from "react"
 
 import {
-   Chart as ChartJS,
-   CategoryScale,
-   LinearScale,
-   PointElement,
-   LineElement,
-   Title,
-   Tooltip,
-   Legend,
    ArcElement,
-   BarElement
+   BarElement,
+   CategoryScale,
+   Chart,
+   Legend,
+   LinearScale,
+   LineElement,
+   PointElement,
+   Title,
+   Tooltip
 } from "chart.js"
-import { Chart, Doughnut, Bar } from "react-chartjs-2"
+import { Bar, Doughnut } from "react-chartjs-2"
 
 import {
    colorBlack300,
@@ -28,7 +28,7 @@ import type { AnalyticsComponentType } from "@customTypes/components"
 
 import styles from "./AnalyticsComponent.module.scss"
 
-ChartJS.register(
+Chart.register(
    BarElement,
    ArcElement,
    CategoryScale,
