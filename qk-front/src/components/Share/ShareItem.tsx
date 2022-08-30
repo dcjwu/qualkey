@@ -31,7 +31,8 @@ export const ShareItem: React.FC<ShareItemType> = ({ data, length }): JSX.Elemen
                <div className={styles.logoWrapper}>
                   <div className={styles.uniLogo}>
                      <div className={styles.uniLogo__wrapper}>
-                        <Image alt={data?.awardingInstitution ?? "University"} layout="fill" objectFit="contain"
+                        <Image unoptimized alt={data?.awardingInstitution ?? "University"} layout="fill"
+objectFit="contain"
                                src={transformToAwsUrl(data?.institutionLogoUrl ?? "")}/>
                      </div>
                      <Text color="500" component="p" size="label">

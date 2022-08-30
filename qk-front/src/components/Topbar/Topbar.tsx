@@ -154,7 +154,8 @@ export const Topbar: React.FC = (): JSX.Element => {
 
                   {userData?.institution?.logoUrl && <div className={styles.uniLogo}>
                      <div className={styles.uniLogo__wrapper}>
-                        <Image alt={userData?.institution.name ?? "University"} layout="fill" objectFit="contain"
+                        <Image unoptimized alt={userData?.institution.name ?? "University"} layout="fill"
+                               objectFit="contain"
                                src={transformToAwsUrl(userData?.institution.logoUrl)}/>
                      </div>
                   </div>}

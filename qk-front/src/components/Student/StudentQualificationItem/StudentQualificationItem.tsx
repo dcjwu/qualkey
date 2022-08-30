@@ -83,7 +83,8 @@ export const StudentQualificationItem: React.FC<QualificationItemType> = ({ data
             <div className={styles.logoWrapper}>
                <div className={styles.uniLogo}>
                   <div className={styles.uniLogo__wrapper}>
-                     <Image alt={data?.institution.name ?? "University"} layout="fill" objectFit="contain"
+                     <Image unoptimized alt={data?.institution.name ?? "University"} layout="fill"
+objectFit="contain"
                             src={transformToAwsUrl(data?.institution.logoUrl ?? "")}/>
                   </div>
                   <Text color="500" component="p" size="label">

@@ -22,10 +22,12 @@ export const Certificate: React.FC<CertificateType> = ({ data, showQR }): JSX.El
             <div className={styles.imageWrapper}>
 
                {"institution" in data &&
-                  <Image alt={data?.institution.name ?? "University"} layout="fill" objectFit="contain"
+                  <Image unoptimized alt={data?.institution.name ?? "University"} layout="fill"
+objectFit="contain"
                          src={transformToAwsUrl(data?.institution.logoUrl ?? "")}/>}
 
-               {"institutionLogoUrl" in data && <Image alt={data?.awardingInstitution ?? "University"} layout="fill" objectFit="contain"
+               {"institutionLogoUrl" in data && <Image unoptimized alt={data?.awardingInstitution ?? "University"} layout="fill"
+objectFit="contain"
                                                        src={transformToAwsUrl(data.institutionLogoUrl ?? "")}/>}
 
             </div>
@@ -74,7 +76,8 @@ export const Certificate: React.FC<CertificateType> = ({ data, showQR }): JSX.El
 
                {"institution" in data && <div className={styles.item}>
                   {data.institution.representatives[0].signatureUrl &&
-                     <Image alt={data.institution.representatives[0].fullName} height={80} objectFit="contain"
+                     <Image unoptimized alt={data.institution.representatives[0].fullName} height={80}
+objectFit="contain"
                             quality={100}
                             src={transformToAwsUrl(data.institution.representatives[0].signatureUrl ?? "")}
                             width={100}/>}
@@ -88,7 +91,8 @@ export const Certificate: React.FC<CertificateType> = ({ data, showQR }): JSX.El
 
                {"authenticatedBySignatureUrl" in data && <div className={styles.item}>
                   {data.authenticatedBySignatureUrl &&
-                     <Image alt={data.authenticatedBy} height={80} objectFit="contain"
+                     <Image unoptimized alt={data.authenticatedBy} height={80}
+objectFit="contain"
                             quality={100}
                             src={transformToAwsUrl(data.authenticatedBySignatureUrl ?? "")}
                             width={100}/>}
@@ -105,16 +109,20 @@ export const Certificate: React.FC<CertificateType> = ({ data, showQR }): JSX.El
          <div className={styles.bottom}>
 
             {"institution" in data && <div className={styles.bottomImages}>
-               <Image alt={data.institution.name} height={70} objectFit="contain"
+               <Image unoptimized alt={data.institution.name} height={70}
+objectFit="contain"
                       quality={100} src={transformToAwsUrl(data.institution.stampUrl ?? "")} width={90}/>
-               <Image alt="Qualkey | Qualifications protected" height={53} objectFit="contain"
+               <Image unoptimized alt="Qualkey | Qualifications protected" height={53}
+objectFit="contain"
                       quality={100} src={logoText} width={78}/>
             </div>}
 
             {"institutionStampUrl" in data && <div className={styles.bottomImages}>
-               <Image alt={data.awardingInstitution} height={70} objectFit="contain"
+               <Image unoptimized alt={data.awardingInstitution} height={70}
+objectFit="contain"
                       quality={100} src={transformToAwsUrl(data.institutionStampUrl ?? "")} width={90}/>
-               <Image alt="Qualkey | Qualifications protected" height={53} objectFit="contain"
+               <Image unoptimized alt="Qualkey | Qualifications protected" height={53}
+objectFit="contain"
                       quality={100} src={logoText} width={78}/>
             </div>}
 

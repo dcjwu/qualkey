@@ -52,7 +52,7 @@ export const faqQuestions: FaqQuestionType[] = [
    {
       question: "What are digital credentials?",
       answer: "Digital credentials are the inform," +
-         "isShown: falseation that underpin a qualification, such as the start, end, and" +
+         "isShown: falsification that underpin a qualification, such as the start, end, and" +
          " graduation date for a qualification, along with the name of the issuing educational institution. Additional credentials may be available depending on the educational institution.",
       categories: allCategories,
       isShown: false
