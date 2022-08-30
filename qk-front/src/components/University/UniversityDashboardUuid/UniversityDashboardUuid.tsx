@@ -5,15 +5,18 @@ import dynamic from "next/dynamic"
 import { useRecoilState } from "recoil"
 
 import { isWithdrawCredentialModalOpen } from "@atoms/isWthdrawCredentialModal.atom"
-import { WithdrawCredentialModal } from "@components/Modals"
 import { QualificationStatus } from "@components/QualificationStatus/QualificationStatus"
-import { UniversityDashboardUuidEdit } from "@components/University/UniversityDashboardUuidEdit/UniversityDashboardUuidEdit"
 import { WithHover } from "@components/WithHover/WithHover"
+import { WithdrawCredentialModalType } from "@customTypes/components/Modals"
 import { CredentialStatusEnum } from "@interfaces/credentials.interface"
 import { LoadingComponent, Text } from "@lib/components"
 import { formatDate } from "@utils/formatDate"
 
-import type { DashboardUuidNavigationType, UniversityDashboardUuidType } from "@customTypes/components"
+import type {
+   DashboardUuidNavigationType,
+   UniversityDashboardUuidEditType,
+   UniversityDashboardUuidType
+} from "@customTypes/components"
 
 import styles from "./UniversityDashboardUuid.module.scss"
 
@@ -21,6 +24,10 @@ const cx = classNames.bind(styles)
 
 const DashboardUuidNavigation = dynamic<DashboardUuidNavigationType>(() => import("@components/DashboardUuidNavigation/DashboardUuidNavigation")
    .then(module => module.DashboardUuidNavigation), { loading: () => <LoadingComponent/> })
+const UniversityDashboardUuidEdit = dynamic<UniversityDashboardUuidEditType>(() => import("@components/University/UniversityDashboardUuidEdit/UniversityDashboardUuidEdit")
+   .then(module => module.UniversityDashboardUuidEdit), { loading: () => <LoadingComponent/> })
+const WithdrawCredentialModal = dynamic<WithdrawCredentialModalType>(() => import("@components/Modals")
+   .then(module => module.WithdrawCredentialModal))
 
 export const UniversityDashboardUuid: React.FC<UniversityDashboardUuidType> = ({ data }): JSX.Element => {
 
