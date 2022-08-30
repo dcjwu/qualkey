@@ -1,5 +1,6 @@
 export * from "./Analytics/AnalyticsComponent"
 export * from "./Certificate/Certificate"
+export * from "./CookiesConsent/CookiesConsent"
 export * from "./Faq/Faq"
 export * from "./DashboardNavigation/DashboardNavigation"
 export * from "./DashboardUuidNavigation/DashboardUuidNavigation"

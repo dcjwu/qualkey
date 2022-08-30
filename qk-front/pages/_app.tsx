@@ -5,6 +5,8 @@ import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
 import { RecoilRoot } from "recoil"
 
+import { CookiesConsent } from "@components/CookiesConsent/CookiesConsent"
+
 import type { AppProps } from "next/app"
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
@@ -20,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
          <RecoilRoot>
 
             <Component {...pageProps} />
+            <CookiesConsent/>
 
          </RecoilRoot>
       </>

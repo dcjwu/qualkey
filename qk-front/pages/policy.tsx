@@ -816,11 +816,71 @@ const Policy: NextPage<PublicPageType> = ({ userData, actionData, shareId }): JS
                         <div className="policy__definition--item">
                            <Text bold color="800" component="p"
                                  size="paragraph">
-                              COOKIE
+                              first_login
                            </Text>
                            <Text thin color="800" component="p"
                                  size="paragraph">
-                              DESCRIPTION
+                              To detect if user needs to set password during the first login.
+                           </Text>
+                        </div>
+                        <div className="policy__definition--item">
+                           <Text bold color="800" component="p"
+                                 size="paragraph">
+                              jwt
+                           </Text>
+                           <Text thin color="800" component="p"
+                                 size="paragraph">
+                              Session token for controlling user authentication and access rights on the frontend.
+                           </Text>
+                        </div>
+                        <div className="policy__definition--item">
+                           <Text bold color="800" component="p"
+                                 size="paragraph">
+                              remember_me
+                           </Text>
+                           <Text thin color="800" component="p"
+                                 size="paragraph">
+                              Cookie which helps to handle refreshing of the jwt if active.
+                           </Text>
+                        </div>
+                        <div className="policy__definition--item">
+                           <Text bold color="800" component="p"
+                                 size="paragraph">
+                              credentialShare
+                           </Text>
+                           <Text thin color="800" component="p"
+                                 size="paragraph">
+                              To persist UI state when credentials were shared.
+                           </Text>
+                        </div>
+                        <div className="policy__definition--item">
+                           <Text bold color="800" component="p"
+                                 size="paragraph">
+                              credentialActivation
+                           </Text>
+                           <Text thin color="800" component="p"
+                                 size="paragraph">
+                              To persist UI state when getting redirected to payment page.
+                           </Text>
+                        </div>
+                        <div className="policy__definition--item">
+                           <Text bold color="800" component="p"
+                                 size="paragraph">
+                              publicShare
+                           </Text>
+                           <Text thin color="800" component="p"
+                                 size="paragraph">
+                              To persistUI state when public share takes place.
+                           </Text>
+                        </div>
+                        <div className="policy__definition--item">
+                           <Text bold color="800" component="p"
+                                 size="paragraph">
+                              qualkey
+                           </Text>
+                           <Text thin color="800" component="p"
+                                 size="paragraph">
+                              Root cookie for consent.
                            </Text>
                         </div>
                      </div>
