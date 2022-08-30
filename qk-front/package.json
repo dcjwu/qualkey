@@ -11,7 +11,7 @@
     "lint:common-styles": "stylelint --fix src/assets/styles/* --custom-syntax postcss-scss",
     "lint:component-styles": "stylelint --fix src/components/**/*.scss --custom-syntax postcss-scss",
     "lint:layout-styles": "stylelint --fix src/layouts/**/*.scss --custom-syntax postcss-scss",
-    "prepare": "if [ \"$NODE_ENV\" = \"production\" ]; then husky install; fi"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@types/papaparse": "^5.3.3",
