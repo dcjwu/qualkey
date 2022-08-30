@@ -23,7 +23,12 @@ const DashboardUuidNavigation = dynamic<DashboardUuidNavigationType>(() => impor
 
 export const UniversityDashboardUuid: React.FC<UniversityDashboardUuidType> = ({ data }): JSX.Element => {
 
-   const className = cx(styles.actions, { disabled: data.status !== CredentialStatusEnum.ACTIVATED })
+   const className = cx(styles.actions, {
+      disabled: (data.status === CredentialStatusEnum.NEW)
+          || (data.status === CredentialStatusEnum.WITHDRAWN)
+          || (data.status === CredentialStatusEnum.UPLOADING_TO_BLOCKCHAIN)
+          || (data.status === CredentialStatusEnum.EXPIRED)
+   })
 
    const [withdrawCredentialModalOpen, setWithdrawCredentialModalOpen] = useRecoilState(isWithdrawCredentialModalOpen)
    const [isEditOpen, setIsEditOpen] = React.useState<boolean>(false)
