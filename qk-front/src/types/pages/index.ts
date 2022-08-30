@@ -1,3 +1,4 @@
+export * from "./analyticsPage.type"
 export * from "./dashboardPage.type"
 export * from "./didPublicPage.type"
 export * from "./errorPage.type"

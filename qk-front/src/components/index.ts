@@ -1,3 +1,4 @@
+export * from "./Analytics/AnalyticsComponent"
 export * from "./Certificate/Certificate"
 export * from "./Faq/Faq"
 export * from "./DashboardNavigation/DashboardNavigation"

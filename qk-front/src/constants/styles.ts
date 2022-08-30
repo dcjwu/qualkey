@@ -1,6 +1,7 @@
 import type { HEX } from "@customTypes/constants"
 
 export const colorBrandBlue24: HEX = "#0880CE"
+export const colorBrandBlue25: HEX = "#05558A"
 
 export const colorSuccess: HEX =  "#16A34A"
 export const colorPending: HEX =  "#EA580C"

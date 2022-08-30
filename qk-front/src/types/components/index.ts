@@ -1,3 +1,4 @@
+export * from "./analyticsComponent.type"
 export * from "./certificate.type"
 export * from "./dashboard.type"
 export * from "./dashboardNavigation.type"
