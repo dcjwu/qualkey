@@ -1,1 +1,0 @@
-export const processingUrl = process.env.NEXT_PUBLIC_PROCESSING_URL
