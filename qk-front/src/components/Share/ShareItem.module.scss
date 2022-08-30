@@ -5,10 +5,10 @@ $uniLogoW: 196px;
 $uniLogoH: 64px;
 
 .logoWrapper {
-  height: calc(100% - 5rem);
   align-self: center;
-  position: relative;
+  height: calc(100% - 5rem);
   padding: calc(2.4rem + .1rem) 0;
+  position: relative;
 
   @include breakpoint-max($bp-screen-md) {
     display: none;
@@ -19,8 +19,8 @@ $uniLogoH: 64px;
   border: 1px solid $color-black-200;
   border-radius: 1.2rem;
   height: calc($uniLogoH - 1.6rem);
-  padding: .8rem 2.4rem;
   max-width: calc($uniLogoW - 4.8rem);
+  padding: .8rem 2.4rem;
 
   > p {
     &:last-child {
@@ -64,12 +64,12 @@ $uniLogoH: 64px;
 }
 
 .qualification {
-  padding: 0 2.4rem;
-  border-radius: 1.5rem;
   background-color: $color-black-000;
+  border-radius: 1.5rem;
   display: grid;
-  grid-template-columns: .8fr 1fr 1fr;
   gap: 1.2rem;
+  grid-template-columns: .8fr 1fr 1fr;
+  padding: 0 2.4rem;
 
   @include breakpoint-max($bp-screen-lg) {
     grid-template-columns: .8fr 1fr .2fr
@@ -92,11 +92,11 @@ $uniLogoH: 64px;
 }
 
 .item {
-  padding: 2.4rem 0;
-  display: grid;
-  grid-template-columns: 0fr 1fr;
   align-items: center;
+  display: grid;
   gap: .8rem;
+  grid-template-columns: 0fr 1fr;
+  padding: 2.4rem 0;
   position: relative;
 
   > p {
@@ -107,13 +107,13 @@ $uniLogoH: 64px;
 }
 
 .actions {
-  position: relative;
-  padding: 1.2rem 0 1.2rem 2.4rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-left: 1px solid $color-black-200;
   align-items: center;
+  border-left: 1px solid $color-black-200;
+  display: grid;
   gap: 2.4rem;
+  grid-template-columns: 1fr 1fr;
+  padding: 1.2rem 0 1.2rem 2.4rem;
+  position: relative;
 
   @include breakpoint-max($bp-screen-md) {
     padding-left: 1.2rem;
