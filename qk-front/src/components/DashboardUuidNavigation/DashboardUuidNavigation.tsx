@@ -62,18 +62,18 @@ export const DashboardUuidNavigation: React.FC<DashboardUuidNavigationType> = ({
 
 
          {(isStudent && data.status === CredentialStatusEnum.UPLOADED_TO_BLOCKCHAIN)
-            || (isStudent && data.status === CredentialStatusEnum.ACTIVATED) && <div className={styles.delete} onClick={handleDeleteCredentialModal}>
+            || (isStudent && data.status === CredentialStatusEnum.ACTIVATED) ? <div className={styles.delete} onClick={handleDeleteCredentialModal}>
                <Text color="500" component="p" size="paragraph">
                Delete Credential
                </Text>
-            </div>}
+            </div> : null}
 
          {(!isStudent && data.status === CredentialStatusEnum.UPLOADED_TO_BLOCKCHAIN)
-            || (!isStudent && data.status === CredentialStatusEnum.ACTIVATED) && <div className={styles.delete} onClick={handleWithdrawCredentialModal}>
+            || (!isStudent && data.status === CredentialStatusEnum.ACTIVATED) ? <div className={styles.delete} onClick={handleWithdrawCredentialModal}>
                <Text color="500" component="p" size="paragraph">
                Withdraw Credential
                </Text>
-            </div>}
+            </div> : null}
 
       </div>
    )
