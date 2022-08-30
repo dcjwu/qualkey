@@ -4,6 +4,8 @@ import React from "react"
 import { useRouter } from "next/router"
 
 
+import { dateDataEdit, stringDataEdit } from "@constants/qualkeyFieldsMapping"
+
 import type { FormDataType } from "@customTypes/common"
 import type { FormContextType } from "@customTypes/context"
 import type { FormType } from "@customTypes/lib/components"
@@ -12,7 +14,7 @@ import styles from "./Form.module.scss"
 
 export const FormContext = React.createContext<FormContextType>({ formData: {} })
 
-export const Form: React.FC<FormType> = ({ initialState, handleFormSubmit, resetValueOnQueryChange, children, ...props }): JSX.Element => {
+export const Form: React.FC<FormType> = ({ initialState, handleFormSubmit, resetValueOnQueryChange, editFunctionality, activeFormSetter, children, ...props }): JSX.Element => {
 
    const { query } = useRouter()
    
@@ -40,6 +42,15 @@ export const Form: React.FC<FormType> = ({ initialState, handleFormSubmit, reset
    const handleInputChange = (event: React.SyntheticEvent): void => {
       const target = event.target as HTMLInputElement
       const { name, value } = target
+      
+      if (editFunctionality && activeFormSetter) {
+         if (stringDataEdit.some(item => item === name)) {
+            activeFormSetter("strings")
+         } else if (dateDataEdit.some(item => item === name)) {
+            activeFormSetter("dates")
+         }
+      }
+      
       setFormData({
          ...formData,
          [name]: value

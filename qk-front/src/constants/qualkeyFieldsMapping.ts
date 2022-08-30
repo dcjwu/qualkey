@@ -9,7 +9,6 @@ export const qualkeyFieldsMapping = new Map([
    ["graduatedAt", "Graduated at"],
    ["graduatedName", "Graduated name"],
    ["info", "Info"],
-   ["majors", "Majors"],
    ["gpaFinalGrade", "GPA final grade"],
    ["qualificationLevel", "Qualification level"],
    ["qualificationName", "Qualification name"],
@@ -17,3 +16,21 @@ export const qualkeyFieldsMapping = new Map([
    ["studyLanguage", "Study language"],
    ["studyStartedAt", "Study started at"]
 ])
+
+export const stringDataEdit = [
+   "awardLevel",
+   "awardingInstitution",
+   "graduatedName",
+   "info",
+   "gpaFinalGrade",
+   "qualificationLevel",
+   "qualificationName",
+   "studyLanguage"
+]
+
+export const dateDataEdit = [
+   "expiresAt",
+   "graduatedAt",
+   "studyEndedAt",
+   "studyStartedAt"
+]

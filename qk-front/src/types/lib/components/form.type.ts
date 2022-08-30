@@ -8,5 +8,7 @@ export type FormType = {
     handleFormSubmit: (event: FormEvent<HTMLFormElement>, formData: FormDataType) => void
     resetValueOnQueryChange?: boolean
     children: React.ReactNode
+    editFunctionality?: boolean
+    activeFormSetter?: React.Dispatch<React.SetStateAction<"strings" | "dates" | null>>
     [k: string]: unknown
 }

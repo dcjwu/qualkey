@@ -1,4 +1,5 @@
 export * from "./capitalize"
+export * from "./compareObjects"
 export * from "./formatDate"
 export * from "./formatFullname"
 export * from "./generateArrayOfYears"

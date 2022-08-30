@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil"
 import { isWithdrawCredentialModalOpen } from "@atoms/isWthdrawCredentialModal.atom"
 import { WithdrawCredentialModal } from "@components/Modals"
 import { QualificationStatus } from "@components/QualificationStatus/QualificationStatus"
+import { UniversityDashboardUuidEdit } from "@components/University/UniversityDashboardUuidEdit/UniversityDashboardUuidEdit"
 import { WithHover } from "@components/WithHover/WithHover"
 import { CredentialStatusEnum } from "@interfaces/credentials.interface"
 import { LoadingComponent, Text } from "@lib/components"
@@ -115,7 +116,7 @@ export const UniversityDashboardUuid: React.FC<UniversityDashboardUuidType> = ({
             </div>
 
             {!isEditOpen && <DashboardUuidNavigation data={data} isStudent={false}/>}
-            {isEditOpen && <div>Edit is Open</div>}
+            {isEditOpen && <UniversityDashboardUuidEdit data={data} handleToggleIsEditOpen={handleToggleIsEditOpen}/>}
 
          </div>
 
