@@ -99,11 +99,11 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
       return {
          labels: [
             "Shared",
-            "Total"
+            "Not Shared"
          ],
          datasets: [{
             label: "Qualifications Shared",
-            data: [statsData.sharedQualifications, statsData.totalQualifications],
+            data: [statsData.sharedQualifications, (statsData.totalQualifications - statsData.sharedQualifications)],
             backgroundColor: [colorBrandBlue24, colorBlack300],
             hoverOffset: 3
          }]
@@ -124,7 +124,7 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             ctx.font = `${fontSize}em Montserrat, sans-serif`
             ctx.textBaseline = "top"
 
-            const text = handleCountPercent(statsData.totalQualifications, statsData.sharedQualifications),
+            const text = handleCountPercent((statsData.totalQualifications - statsData.sharedQualifications), statsData.sharedQualifications),
                textX = Math.round((width - ctx.measureText(text).width) / 2),
                textY = height / 2
             ctx.fillText(text, textX, textY)
@@ -137,11 +137,11 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
       return {
          labels: [
             "Edited",
-            "Total"
+            "Unedited"
          ],
          datasets: [{
             label: "Qualifications Edited",
-            data: [statsData.editedQualifications, statsData.totalQualifications],
+            data: [statsData.editedQualifications, (statsData.totalQualifications - statsData.editedQualifications)],
             backgroundColor: [colorPending, colorBlack300],
             hoverOffset: 3
          }]
@@ -162,7 +162,7 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             ctx.font = `${fontSize}em Montserrat, sans-serif`
             ctx.textBaseline = "top"
 
-            const text = handleCountPercent(statsData.totalQualifications, statsData.editedQualifications),
+            const text = handleCountPercent((statsData.totalQualifications - statsData.editedQualifications), statsData.editedQualifications),
                textX = Math.round((width - ctx.measureText(text).width) / 2),
                textY = height / 2
             ctx.fillText(text, textX, textY)
@@ -175,11 +175,11 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
       return {
          labels: [
             "Withdrawn",
-            "Total"
+            "Other"
          ],
          datasets: [{
             label: "Qualifications Withdrawn",
-            data: [statsData.withdrawnQualifications, statsData.totalQualifications],
+            data: [statsData.withdrawnQualifications, (statsData.totalQualifications - statsData.withdrawnQualifications)],
             backgroundColor: [colorDanger, colorBlack300],
             hoverOffset: 3
          }]
@@ -200,7 +200,7 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             ctx.font = `${fontSize}em Montserrat, sans-serif`
             ctx.textBaseline = "top"
 
-            const text = handleCountPercent(statsData.totalQualifications, statsData.withdrawnQualifications),
+            const text = handleCountPercent((statsData.totalQualifications - statsData.withdrawnQualifications), statsData.withdrawnQualifications),
                textX = Math.round((width - ctx.measureText(text).width) / 2),
                textY = height / 2
             ctx.fillText(text, textX, textY)
