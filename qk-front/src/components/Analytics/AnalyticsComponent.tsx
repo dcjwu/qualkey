@@ -86,12 +86,12 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             ctx.font = `${fontSize}em Montserrat, sans-serif`
             ctx.textBaseline = "top"
 
-            const text = handleCountPercent(statsData.totalQualifications - statsData.activatedQualifications, statsData.activatedQualifications),
+            const text = handleCountPercent(statsData.totalQualifications, statsData.activatedQualifications),
                textX = Math.round((width - ctx.measureText(text).width) / 2),
                textY = height / 2
             ctx.fillText(text, textX, textY)
             ctx.save()
-         }
+         },
       }]
    }, [statsData])
 
@@ -124,7 +124,7 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             ctx.font = `${fontSize}em Montserrat, sans-serif`
             ctx.textBaseline = "top"
 
-            const text = handleCountPercent((statsData.totalQualifications - statsData.sharedQualifications), statsData.sharedQualifications),
+            const text = handleCountPercent(statsData.totalQualifications, statsData.sharedQualifications),
                textX = Math.round((width - ctx.measureText(text).width) / 2),
                textY = height / 2
             ctx.fillText(text, textX, textY)
@@ -162,7 +162,7 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             ctx.font = `${fontSize}em Montserrat, sans-serif`
             ctx.textBaseline = "top"
 
-            const text = handleCountPercent((statsData.totalQualifications - statsData.editedQualifications), statsData.editedQualifications),
+            const text = handleCountPercent(statsData.totalQualifications, statsData.editedQualifications),
                textX = Math.round((width - ctx.measureText(text).width) / 2),
                textY = height / 2
             ctx.fillText(text, textX, textY)
@@ -200,7 +200,7 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             ctx.font = `${fontSize}em Montserrat, sans-serif`
             ctx.textBaseline = "top"
 
-            const text = handleCountPercent((statsData.totalQualifications - statsData.withdrawnQualifications), statsData.withdrawnQualifications),
+            const text = handleCountPercent(statsData.totalQualifications, statsData.withdrawnQualifications),
                textX = Math.round((width - ctx.measureText(text).width) / 2),
                textY = height / 2
             ctx.fillText(text, textX, textY)

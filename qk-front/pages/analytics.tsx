@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
          params: {
             filter: query.search ? query.search as string : undefined,
             dateCreatedFrom: query.from ? query.from as string : undefined,
-            dateCreatedUntil: query.to ? query.to as string : undefined
+            dateCreatedUntil: query.to ? parseInt(query.to as string) + 1 : undefined
          },
          withCredentials: true,
          headers: { Cookie: req.headers.cookie || "" }
