@@ -222,7 +222,7 @@ variant="primary"
 
             <Text color="danger" component="p" size="paragraph"
                   style={{ marginBottom: ".8rem" }}>
-               Parsed Fields:
+               Looking for these fields:
             </Text>
             <div style={{ marginBottom: "1.2rem", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: ".4rem" }}>
                {parsedFields?.map((field, index) => (
@@ -251,7 +251,7 @@ variant="primary"
             </Heading>
             <Text color="danger" component="p" size="paragraph"
                   style={{ marginBottom: ".8rem" }}>
-               Parsed Fields:
+               Looking for these fields:
             </Text>
             <div style={{ marginBottom: "1.2rem", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: ".4rem" }}>
                {parsedFields?.map((field, index) => (

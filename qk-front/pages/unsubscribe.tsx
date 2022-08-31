@@ -47,7 +47,7 @@ const Unsubscribe: NextPage = (): JSX.Element => {
    }
 
    const handleBackToLogin = async (): Promise<void> => {
-      await router.replace("/dashboard")
+      await router.push("/dashboard")
    }
 
    return (

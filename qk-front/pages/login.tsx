@@ -89,7 +89,7 @@ const Home: NextPage = (): JSX.Element => {
                setLoading(false)
                setError("")
                if (res.status === 200) {
-                  router.replace("/dashboard")
+                  router.push("/dashboard")
 
                } else {
                   setError("Unexpected response")

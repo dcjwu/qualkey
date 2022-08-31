@@ -77,7 +77,7 @@ const Forgot: NextPage = (): JSX.Element => {
     * Handle back to login page
     */
    const handleBackToLogin = async (): Promise<void> => {
-      await router.replace("/login")
+      await router.push("/login")
    }
 
    return (
