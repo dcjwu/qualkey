@@ -6,6 +6,39 @@
   max-width: 1440px;
 }
 
+.filter {
+  margin-bottom: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+
+  > div:not(:last-child) {
+    button {
+      margin-top: 0;
+      padding: 1.2rem 2.2rem;
+      background-color: $color-black-300;
+      border: 1px solid $color-black-500;
+      width: 12.5rem;
+
+      + ul {
+        background-color: $color-black-300;
+      }
+    }
+    &:nth-child(5) {
+      button {
+        width: 32rem;
+      }
+    }
+  }
+  > div:last-child {
+    button {
+      margin-top: 0;
+    }
+  }
+}
+
 .data {
   background-color: $color-black-000;
   border-radius: 1.2rem;
@@ -27,6 +60,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: .8rem;
+
     > p {
       max-width: 14ch;
     }
@@ -48,6 +82,7 @@
   background-color: $color-black-000;
   border-radius: 1.2rem;
   padding: 2.4rem;
+
   > p {
     margin-bottom: 1.2rem;
     text-align: center;

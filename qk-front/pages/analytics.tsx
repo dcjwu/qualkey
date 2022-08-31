@@ -46,7 +46,7 @@ const Analytics: NextPage<AnalyticsPageType> = ({ userData, actionData, statsDat
 export default Analytics
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-   const { req, res } = ctx
+   const { req, res, query } = ctx
 
    res.setHeader(
       "Cache-Control",
@@ -67,6 +67,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       const { data: actionData } = actionResponse
 
       const statsResponse = await axios.get(`${apiUrl}/stats`, {
+         params: {
+            filter: query.search ? query.search as string : undefined,
+            dateCreatedFrom: query.from ? query.from as string : undefined,
+            dateCreatedUntil: query.to ? query.to as string : undefined
+         },
          withCredentials: true,
          headers: { Cookie: req.headers.cookie || "" }
       })
