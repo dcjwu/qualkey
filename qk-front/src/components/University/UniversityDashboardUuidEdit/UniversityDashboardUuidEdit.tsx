@@ -27,7 +27,6 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
    const initialStringData = React.useMemo(() => {
       return {
          ["graduatedName"]: data.graduatedName ?? "",
-         ["awardingInstitution"]: data.awardingInstitution ?? "",
          ["qualificationName"]: data.qualificationName ?? "",
          ["qualificationLevel"]: data.qualificationLevel ?? "",
          ["studyLanguage"]: data.studyLanguage ?? "",
@@ -45,7 +44,7 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
          ["studyStartedAt"]: formatDate("DD/MM/YYYY", data.studyStartedAt),
       }
    }, [data])
-   
+
    const router = useRouter()
 
    const [stringData] = React.useState<{ [k: string]: string }>(initialStringData)
@@ -80,7 +79,7 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                      changedTo: Object.values(difference).map(value => moment(value, "DD/MM/YYYY").format()),
                      fieldName: Object.keys(difference)
                   }, { withCredentials: true })
-                  
+
                      .then(res => {
                         setLoading(false)
                         if (res.status === 200) {
@@ -88,12 +87,12 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                            setTimeout(() => {
                               router.reload()
                            }, 1500)
-                           
+
                         } else {
                            setError("Unexpected response")
                         }
                      })
-                  
+
                      .catch(err => {
                         handleAxiosError(err as never, setError, null, setLoading)
                      })
@@ -193,6 +192,12 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                   </Text>
                   <input disabled type="text" value={formatDate("DD/MM/YYYY", data.authenticatedAt) ?? ""}/>
                </div>
+               <div className={styles.item}>
+                  <Text color="500" component="p" size="paragraph">
+                     {qualkeyFieldsMapping.get("awardingInstitution")}
+                  </Text>
+                  <input disabled type="text" value={data.awardingInstitution}/>
+               </div>
             </div>
 
             {activeForm === "strings" && <Form editFunctionality activeFormSetter={setActiveForm}
@@ -203,12 +208,6 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                      {qualkeyFieldsMapping.get("graduatedName")}
                   </Text>
                   <Input name="graduatedName" type="text"/>
-               </div>
-               <div className={styles.item}>
-                  <Text color="500" component="p" size="paragraph">
-                     {qualkeyFieldsMapping.get("awardingInstitution")}
-                  </Text>
-                  <Input name="awardingInstitution" type="text"/>
                </div>
                <div className={styles.item}>
                   <Text color="500" component="p" size="paragraph">
@@ -252,7 +251,7 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                   <path d="M20.25 6.75L9.75 17.25L4.5 12" stroke="white" strokeLinecap="round"
                         strokeLinejoin="round" strokeWidth="1.5"/>
                </svg>}
-loading={loading}
+                        loading={loading}
                         size="lg"
                         success={success} type="submit"
                         variant="primary">
@@ -294,7 +293,7 @@ loading={loading}
                   <path d="M20.25 6.75L9.75 17.25L4.5 12" stroke="white" strokeLinecap="round"
                         strokeLinejoin="round" strokeWidth="1.5"/>
                </svg>}
-loading={loading}
+                       loading={loading}
                        size="lg"
                        success={success} type="submit"
                        variant="primary">
