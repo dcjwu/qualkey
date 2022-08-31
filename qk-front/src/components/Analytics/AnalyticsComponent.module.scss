@@ -7,19 +7,19 @@
 }
 
 .filter {
-  margin-bottom: 2.4rem;
-  display: flex;
   align-items: center;
-  justify-content: flex-end;
+  display: flex;
   flex-wrap: wrap;
   gap: 1.2rem;
+  justify-content: flex-end;
+  margin-bottom: 2.4rem;
 
   > div:not(:last-child) {
     button {
-      margin-top: 0;
-      padding: 1.2rem 2.2rem;
       background-color: $color-black-300;
       border: 1px solid $color-black-500;
+      margin-top: 0;
+      padding: 1.2rem 2.2rem;
       width: 12.5rem;
 
       + ul {
