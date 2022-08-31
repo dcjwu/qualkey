@@ -195,7 +195,7 @@ export const Sidebar: React.FC = (): JSX.Element => {
                         stroke="white" strokeLinecap="round"
                         strokeLinejoin="round" strokeWidth="1.5"/>
                   </svg>}
-                               isLink={false} text="Log Out"
+                               isLink={false} text="Logout"
                                onClick={handleLogout}/>
                   : <SidebarItem isLink isSecondary
                                  href="/login"

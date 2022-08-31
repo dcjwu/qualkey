@@ -63,7 +63,7 @@ export const TopbarMenu: React.FC = (): JSX.Element => {
                      stroke="#262626" strokeLinecap="round"
                      strokeLinejoin="round" strokeWidth="1.5"/>
             </svg>} isLink={false}
-                     text="Log Out"
+                     text="Logout"
                      onClick={handleLogout}/>
       </div>
    )
