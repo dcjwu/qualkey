@@ -1,5 +1,6 @@
 export enum AuthFlowStepsEnum {
    FORM = "FORM",
    OTP = "OTP",
-   SET = "SET"
+   SET = "SET",
+   SUCCESS = "SUCCESS"
 }
