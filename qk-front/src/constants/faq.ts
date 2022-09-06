@@ -41,7 +41,8 @@ export const faqQuestions: FaqQuestionType[] = [
       isShown: false
    },
    {
-      question: "Why should I trust the authenticity of qualifications in QualKey?", answer: "QualKey builds" +
+      question: "Why should I trust the authenticity of qualifications in QualKey?",
+      answer: "QualKey builds" +
          " relationships with educational institutions. Each institution that partners with us has an unique code" +
          " and will display on their website that QualKey is an official partner to provide their authenticated" +
          " qualification. In addition, each qualification can be independently verified on the public ledger of" +
@@ -188,7 +189,8 @@ export const faqQuestions: FaqQuestionType[] = [
    {
       question: "How can I delete my account?",
       answer: "All users can exercise their 'right to be forgotten' provided by EU-GDPR regulations. This includes the complete deletion of the account. The account can be deleted in the account settings.\n" +
-         "BE ADVISED: Deleting an account will be executed immediately with a cool-off period of 30 days. After the cool-ff period the account cannot be reactivated. All earned qualifications and the account will be permanently deleted. QualKey cannot restore your account and the entry on the public ledger will be disconnected. If one or more qualifications were activated by the time of the account deletion, QualKey cannot refund the costs.",
+         "BE ADVISED: Deleting an account will be executed immediately with a cool-off period of 30 days. After the" +
+         " cool-off period the account cannot be reactivated. All earned qualifications and the account will be permanently deleted. QualKey cannot restore your account and the entry on the public ledger will be disconnected. If one or more qualifications were activated by the time of the account deletion, QualKey cannot refund the costs.",
       categories: [FaqCategoriesEnum.ALL, FaqCategoriesEnum.STUDENTS],
       isShown: false
    },
