@@ -3,6 +3,7 @@ import React from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import Papa from "papaparse"
+import readXlsxFile from "read-excel-file"
 
 import { qualkeyUploadMapping } from "@constants/qualkeyUploadMapping"
 import { colorBrandBlue24, colorPending } from "@constants/styles"
@@ -57,6 +58,7 @@ export const UploadModal: React.FC<UploadModalType> = ({ isOpen, handleCloseModa
          const fileExtension = event.target.files[0].name.split(".").pop()
 
          if (fileExtension) {
+
             if (Object.values(FileExtensionEnum).includes(fileExtension as FileExtensionEnum)) {
                setSelectFileError("")
                setSelectedFile(event.target.files[0])
@@ -97,8 +99,8 @@ export const UploadModal: React.FC<UploadModalType> = ({ isOpen, handleCloseModa
 
                            }
                         },
-                        error: (error) => {
-                           setSelectFileError(`${error.message}. Unexpected error, please contact support`)
+                        error: (err) => {
+                           setSelectFileError(`${err.message}. Unexpected error, please contact support`)
                         }
                      })
 
@@ -106,8 +108,54 @@ export const UploadModal: React.FC<UploadModalType> = ({ isOpen, handleCloseModa
                      setSelectFileError("Please add Institution mapping in Admin Panel")
                   }
 
+               } else if (fileExtension === FileExtensionEnum.XLSX) {
+
+                  if (institutionData?.mapping) {
+
+                     readXlsxFile(event.target.files[0], { trim: false })
+                        .then(rows => {
+                           const isEmptyColumns = rows[0].some(field => field === null)
+
+                           if (isEmptyColumns) {
+                              setSelectFileError("Please remove empty columns and try again")
+
+                           } else {
+                              const fields = rows[0] as string[]
+                              setParsedFields(fields)
+                              rows.shift()
+                              const parsedData = rows.map(row => {
+                                 return Object.fromEntries(fields.map((_, i) => [fields[i], row[i]]))
+                              })
+
+                              const mappingDifference = institutionData?.mapping.filter(
+                                 data => !fields.includes(data.originalColumnName)
+                              )
+
+                              if (mappingDifference && mappingDifference.length > 0) {
+                                 setActiveStep(0)
+                                 setMappingIntersection(mappingDifference)
+
+                              } else {
+                                 handleValidation(institutionData.mapping, parsedData as { [k: string]: string }[], true)
+                                 setActiveStep(prevState => prevState + 1)
+                              }
+                           }
+
+                        })
+
+                        .catch(err => {
+                           setSelectFileError(`${err.message}. Unexpected error, please contact support`)
+                        })
+
+                  } else {
+                     setSelectFileError("Please add Institution mapping in Admin Panel")
+                  }
+
+               } else if (fileExtension === FileExtensionEnum.XLS) {
+                  setSelectFileError("Not possible to upload .xls file, please use .xlsx instead")
+
                } else {
-                  setSelectFileError("Not possible to upload .xls/.xlsx files. We are working on it")
+                  setSelectFileError("Not possible to upload file. Please contact support")
                }
 
             } else {
@@ -209,7 +257,7 @@ export const UploadModal: React.FC<UploadModalType> = ({ isOpen, handleCloseModa
                You may now return to the dashboard
             </Text>
             <Button center loading={false} size="lg"
-variant="primary"
+                    variant="primary"
                     onClick={handleReturnToDashboard}>
                Return to dashboard
             </Button>
@@ -282,7 +330,7 @@ variant="primary"
                   else return (
                      <Text key={index} color="danger" component="p"
                            size="paragraph">
-                        {index + 1}. Not possible to get field, please contact support
+                        {index + 1}. Not possible to get field, seems like it is empty
                      </Text>
                   )
                })}

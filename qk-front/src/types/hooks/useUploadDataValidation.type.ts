@@ -15,5 +15,5 @@ export type UseUploadDataValidationType = [
    ParsedDataType[],
    ValidationErrorType[],
    ((institutionDataMapping: InstitutionMappingType[],
-     data: Array<{[p: string]: string}>) => void)
+     data: Array<{[p: string]: string}>, isExcel?: boolean) => void)
 ]

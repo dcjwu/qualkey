@@ -35,9 +35,14 @@ export const useUploadDataValidation = (): UseUploadDataValidationType => {
    const [data, setData] = React.useState<ParsedDataType[]>([])
    const [validationErrors, setValidationErrors] = React.useState<ValidationErrorType[]>([])
 
-   const checkIsFieldEmpty = React.useCallback((value: string, row: number): string | undefined => {
-      if (value === "") return `empty on row ${row}`
-      return
+   const checkIsFieldEmpty = React.useCallback((value: string, row: number, isExcel?: boolean): string | undefined => {
+      if (!isExcel) {
+         if (value === "") return `empty on row ${row}`
+      }
+
+      if (isExcel) {
+         if (value === null) return `empty on row ${row}`
+      }
    }, [])
 
    const checkIfStringIsDate = React.useCallback((value: string, row: number) => {
@@ -45,7 +50,7 @@ export const useUploadDataValidation = (): UseUploadDataValidationType => {
       if (!date.isValid()) return `not valid date on row ${row}`
    }, [])
 
-   const handleValidation = React.useCallback((institutionDataMapping: InstitutionMappingType[], data: Array<{ [k: string]: string }>): void => {
+   const handleValidation = React.useCallback((institutionDataMapping: InstitutionMappingType[], data: Array<{ [k: string]: string }>, isExcel?: boolean): void => {
       const parsedData: ParsedDataType[] = []
       const errorData: ValidationErrorType[] = []
 
@@ -68,7 +73,7 @@ export const useUploadDataValidation = (): UseUploadDataValidationType => {
       parsedData.forEach((item) => {
          if (notEmptyFields.includes(item.originalKey)) {
             item.values.forEach((value, index) => {
-               const validationResult = checkIsFieldEmpty(value, index + 1)
+               const validationResult = checkIsFieldEmpty(value, index + 1, isExcel)
                if (validationResult) {
                   const errorColumnIndex = errorData.findIndex((value) => value.columnName == item.key)
                   errorData[errorColumnIndex].errors.push(validationResult)

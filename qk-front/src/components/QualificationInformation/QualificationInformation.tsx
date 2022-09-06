@@ -88,6 +88,15 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
                         {data.awardLevel}
                      </Text>
                   </div>
+                  <div className={styles.blockItem}>
+                     <Text thin color="500" component="p"
+                           size="paragraph">
+                        GPA final grade:
+                     </Text>
+                     <Text color="800" component="p" size="paragraph">
+                        {data.gpaFinalGrade}
+                     </Text>
+                  </div>
                </div>
 
             </div>
