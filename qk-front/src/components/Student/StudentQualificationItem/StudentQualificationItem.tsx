@@ -73,6 +73,15 @@ export const StudentQualificationItem: React.FC<QualificationItemType> = ({ data
       }
    }
 
+   /**
+    * Reset credentials checkbox state handler
+    */
+   React.useEffect(() => {
+      if (sharedUuids.length === 0) {
+         setIsCheckboxChecked(false)
+      }
+   }, [sharedUuids])
+
    return (
       <div className={classNameWrapper}>
          <div className={className}>
@@ -84,7 +93,7 @@ export const StudentQualificationItem: React.FC<QualificationItemType> = ({ data
                <div className={styles.uniLogo}>
                   <div className={styles.uniLogo__wrapper}>
                      <Image unoptimized alt={data?.institution.name ?? "University"} layout="fill"
-objectFit="contain"
+                            objectFit="contain"
                             src={transformToAwsUrl(data?.institution.logoUrl ?? "")}/>
                   </div>
                   <Text color="500" component="p" size="label">

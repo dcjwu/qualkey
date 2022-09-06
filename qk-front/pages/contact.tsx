@@ -72,8 +72,6 @@ const ContactUs: NextPage<PublicPageType> = ({ userData, actionData, shareId }):
             emailText: initialMessagePart ? initialMessagePart as string + message : message,
          }
 
-         console.table(messageFormData)
-
          await axios.post(`${apiUrl}/email/info`, messageFormData, { withCredentials: true })
 
             .then(res => {
