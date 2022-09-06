@@ -18,7 +18,6 @@ import type {
 
 import styles from "./DashboardUuidNavigation.module.scss"
 
-
 const QualificationHistory = dynamic<QualificationHistoryType>(() => import("@components/QualificationHistory/QualificationHistory")
    .then(module => module.QualificationHistory))
 const QualificationInformation = dynamic<QualificationInformationType>(() => import("@components/QualificationInformation/QualificationInformation")
