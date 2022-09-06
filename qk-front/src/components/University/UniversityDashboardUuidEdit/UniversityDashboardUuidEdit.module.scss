@@ -15,6 +15,7 @@
   align-items: center;
   justify-content: center;
   gap: 3.2rem;
+  position: relative;
 
   &.chosen {
     justify-content: flex-start;

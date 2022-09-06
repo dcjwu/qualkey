@@ -152,7 +152,7 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                         strokeLinejoin="round" strokeWidth="1.5"/>
                </svg>} loading={false} size="md"
                        variant="secondary"
-                       onClick={handleToggleIsEditOpen}>
+                       onClick={(): void => setActiveForm(null)}>
                   Return
                </Button>
                <Heading color="800" component="p" size="sm">
@@ -169,6 +169,18 @@ export const UniversityDashboardUuidEdit: React.FC<UniversityDashboardUuidEditTy
                        onClick={(): void => setActiveForm("strings")}>
                   Edit Other Information
                </Button>
+               <svg fill="none" height="27" style={{ cursor: "pointer", position: "absolute", right: "1.6rem", top: "1.6rem" }}
+                    viewBox="0 0 27 27"
+                    width="27"
+                    xmlns="http://www.w3.org/2000/svg" onClick={handleToggleIsEditOpen}>
+                  <path d="M22.1121 22.1122C26.7984 17.4259 26.7984 9.82796 22.1121 5.14167C17.4258 0.45538 9.82782 0.455381 5.14153 5.14167C0.45524 9.82796 0.45524 17.4259 5.14153 22.1122C9.82782 26.7985 17.4258 26.7985 22.1121 22.1122Z"
+                     stroke="#A3A3A3" strokeLinecap="round"
+                     strokeLinejoin="round" strokeWidth="1.5"/>
+                  <path d="M10.0938 17.1621L17.1648 10.091" stroke="#A3A3A3" strokeLinecap="round"
+                        strokeLinejoin="round" strokeWidth="1.5"/>
+                  <path d="M10.0938 10.0918L17.1648 17.1629" stroke="#A3A3A3" strokeLinecap="round"
+                        strokeLinejoin="round" strokeWidth="1.5"/>
+               </svg>
             </>}
          </div>
          <div className={styles.content}>
