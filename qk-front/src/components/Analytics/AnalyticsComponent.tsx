@@ -54,7 +54,9 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
    const router = useRouter()
 
    const handleCountPercent = (total: number, active: number): string => {
-      return `${(active / total * 100).toFixed(1)}%`
+      const percent = active / total * 100
+      if (!isNaN(percent)) return `${percent.toFixed(1)}%`
+      return ""
    }
 
    const dataActivated = React.useMemo(() => {
@@ -72,29 +74,6 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
       }
    }, [statsData])
 
-   const pluginActivated = React.useMemo(() => {
-      return [{
-         id: "custom_text_chart_activated",
-         beforeDraw: (chart: Chart): void => {
-
-            const width = chart.width,
-               height = chart.height,
-               ctx = chart.ctx
-            ctx.restore()
-
-            const fontSize = (height / 160).toFixed(2)
-            ctx.font = `${fontSize}em Montserrat, sans-serif`
-            ctx.textBaseline = "top"
-
-            const text = handleCountPercent(statsData.totalQualifications, statsData.activatedQualifications),
-               textX = Math.round((width - ctx.measureText(text).width) / 2),
-               textY = height / 2
-            ctx.fillText(text, textX, textY)
-            ctx.save()
-         },
-      }]
-   }, [statsData])
-
    const dataShared = React.useMemo(() => {
       return {
          labels: [
@@ -108,29 +87,6 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             hoverOffset: 3
          }]
       }
-   }, [statsData])
-
-   const pluginShared = React.useMemo(() => {
-      return [{
-         id: "custom_text_chart_shared",
-         beforeDraw: (chart: Chart): void => {
-
-            const width = chart.width,
-               height = chart.height,
-               ctx = chart.ctx
-            ctx.restore()
-
-            const fontSize = (height / 160).toFixed(2)
-            ctx.font = `${fontSize}em Montserrat, sans-serif`
-            ctx.textBaseline = "top"
-
-            const text = handleCountPercent(statsData.totalQualifications, statsData.sharedQualifications),
-               textX = Math.round((width - ctx.measureText(text).width) / 2),
-               textY = height / 2
-            ctx.fillText(text, textX, textY)
-            ctx.save()
-         }
-      }]
    }, [statsData])
 
    const dataEdited = React.useMemo(() => {
@@ -148,29 +104,6 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
       }
    }, [statsData])
 
-   const pluginEdited = React.useMemo(() => {
-      return [{
-         id: "custom_text_chart_edited",
-         beforeDraw: (chart: Chart): void => {
-
-            const width = chart.width,
-               height = chart.height,
-               ctx = chart.ctx
-            ctx.restore()
-
-            const fontSize = (height / 160).toFixed(2)
-            ctx.font = `${fontSize}em Montserrat, sans-serif`
-            ctx.textBaseline = "top"
-
-            const text = handleCountPercent(statsData.totalQualifications, statsData.editedQualifications),
-               textX = Math.round((width - ctx.measureText(text).width) / 2),
-               textY = height / 2
-            ctx.fillText(text, textX, textY)
-            ctx.save()
-         }
-      }]
-   }, [statsData])
-
    const dataWithdrawn = React.useMemo(() => {
       return {
          labels: [
@@ -184,29 +117,6 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
             hoverOffset: 3
          }]
       }
-   }, [statsData])
-
-   const pluginWithdrawn = React.useMemo(() => {
-      return [{
-         id: "custom_text_chart_withdrawn",
-         beforeDraw: (chart: Chart): void => {
-
-            const width = chart.width,
-               height = chart.height,
-               ctx = chart.ctx
-            ctx.restore()
-
-            const fontSize = (height / 160).toFixed(2)
-            ctx.font = `${fontSize}em Montserrat, sans-serif`
-            ctx.textBaseline = "top"
-
-            const text = handleCountPercent(statsData.totalQualifications, statsData.withdrawnQualifications),
-               textX = Math.round((width - ctx.measureText(text).width) / 2),
-               textY = height / 2
-            ctx.fillText(text, textX, textY)
-            ctx.save()
-         }
-      }]
    }, [statsData])
 
    const minutes = React.useMemo(() => {
@@ -411,25 +321,77 @@ export const AnalyticsComponent: React.FC<AnalyticsComponentType> = ({ statsData
                <Text color="800" component="p" size="paragraph">
                   Qualifications Activated
                </Text>
-               <Doughnut data={dataActivated} plugins={pluginActivated}/>
+               <div style={{ position: "relative" }}>
+                  <Doughnut data={dataActivated}/>
+                  <Text thin color="800" component="p"
+                        size="paragraph"
+                        style={{
+                           fontSize: "2.6rem",
+                           position: "absolute",
+                           top: "53%",
+                           left: "50%",
+                           transform: "translate(-50%, -50%)"
+                        }}>
+                     {handleCountPercent(statsData.totalQualifications, statsData.activatedQualifications)}
+                  </Text>
+               </div>
             </div>
             <div className={styles.chartItem}>
                <Text color="800" component="p" size="paragraph">
                   Qualifications Shared
                </Text>
-               <Doughnut data={dataShared} plugins={pluginShared}/>
+               <div style={{ position: "relative" }}>
+                  <Doughnut data={dataShared}/>
+                  <Text thin color="800" component="p"
+                        size="paragraph"
+                        style={{
+                           fontSize: "2.6rem",
+                           position: "absolute",
+                           top: "53%",
+                           left: "50%",
+                           transform: "translate(-50%, -50%)"
+                        }}>
+                     {handleCountPercent(statsData.totalQualifications, statsData.sharedQualifications)}
+                  </Text>
+               </div>
             </div>
             <div className={styles.chartItem}>
                <Text color="800" component="p" size="paragraph">
                   Qualifications Edited
                </Text>
-               <Doughnut data={dataEdited} plugins={pluginEdited}/>
+               <div style={{ position: "relative" }}>
+                  <Doughnut data={dataEdited}/>
+                  <Text thin color="800" component="p"
+                        size="paragraph"
+                        style={{
+                           fontSize: "2.6rem",
+                           position: "absolute",
+                           top: "53%",
+                           left: "50%",
+                           transform: "translate(-50%, -50%)"
+                        }}>
+                     {handleCountPercent(statsData.totalQualifications, statsData.editedQualifications)}
+                  </Text>
+               </div>
             </div>
             <div className={styles.chartItem}>
                <Text color="800" component="p" size="paragraph">
                   Qualifications Withdrawn
                </Text>
-               <Doughnut data={dataWithdrawn} plugins={pluginWithdrawn}/>
+               <div style={{ position: "relative" }}>
+                  <Doughnut data={dataWithdrawn}/>
+                  <Text thin color="800" component="p"
+                        size="paragraph"
+                        style={{
+                           fontSize: "2.6rem",
+                           position: "absolute",
+                           top: "53%",
+                           left: "50%",
+                           transform: "translate(-50%, -50%)"
+                        }}>
+                     {handleCountPercent(statsData.totalQualifications, statsData.withdrawnQualifications)}
+                  </Text>
+               </div>
             </div>
          </div>
          <div className={styles.productivity}>
