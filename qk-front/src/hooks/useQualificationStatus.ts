@@ -57,12 +57,12 @@ export const useQualificationStatus = (status: CredentialStatusEnum, isStudent: 
          [CredentialStatusEnum.UPLOADED_TO_BLOCKCHAIN, [
             colorPending,
             "Activate Credentials",
-            "Please submit your payment in order to activate credentials."
+            "Please submit a payment to activate your qualification."
          ]],
          [CredentialStatusEnum.ACTIVATED, [
             colorSuccess,
             "Activated",
-            "Certification has been activated and are ready to be used."]],
+            "Your qualification has been activated and can be shared."]],
          [CredentialStatusEnum.WITHDRAWN, [
             colorDanger,
             "Withdrawn",
@@ -71,7 +71,7 @@ export const useQualificationStatus = (status: CredentialStatusEnum, isStudent: 
          [CredentialStatusEnum.EXPIRED, [
             colorBlack300,
             "Expired",
-            "Your certification has expired. Please contact awarding institution."
+            "Your qualification has expired. Please contact awarding institution."
          ]],
       ])
    }, [])

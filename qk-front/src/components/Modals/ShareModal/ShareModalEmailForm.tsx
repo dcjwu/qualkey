@@ -150,12 +150,11 @@ export const ShareModalEmailForm: React.FC<ShareModalEmailFormType> = ({
                <Text thin color="800" component="p"
                      size="paragraph"
                      style={{ marginTop: "1.2rem", maxWidth: "55ch" }}>
-                  <span style={{ fontWeight: "600" }}>{name}</span> has chosen to share their authenticated
-                  education credentials with you.
+                  <span style={{ fontWeight: "600" }}>{name}</span> has chosen to share their certificate with you.
                   <br/><br/>
-                  QualKey uses blockchain technology to provide secure and instant credential verification.
+                  QualKey uses hashgraph technology to provide secure and instant credential verification.
                   <br/><br/>
-                  Please follow the link below to view the credentials. {expirationText && expirationText}
+                  Please follow the link below to view the certificate. {expirationText && expirationText}
                </Text>
                <div className={styles.button}>
 
