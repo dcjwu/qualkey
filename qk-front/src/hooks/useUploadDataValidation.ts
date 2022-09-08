@@ -8,16 +8,13 @@ import type { InstitutionMappingType } from "@interfaces/institution.interface"
 const notEmptyFields = [
    "email",
    "awardingInstitution",
-   "expiresAt",
    "graduatedAt",
    "graduatedFullName",
    "graduatedFirstName",
    "graduatedLastName",
-   "gpaFinalGrade",
    "qualificationLevel",
    "qualificationName",
    "studyEndedAt",
-   "studyLanguage",
    "studyStartedAt"
 ]
 
@@ -45,9 +42,16 @@ export const useUploadDataValidation = (): UseUploadDataValidationType => {
       }
    }, [])
 
-   const checkIfStringIsDate = React.useCallback((value: string, row: number) => {
+   const checkIfStringIsDate = React.useCallback((value: string, row: number, isExcel?: boolean) => {
       const date = moment(value)
-      if (!date.isValid()) return `not valid date on row ${row}`
+      if (!isExcel) {
+         if (value !== "" && !date.isValid()) return `not valid date on row ${row}`
+      }
+
+      if (isExcel) {
+         if (value !== null && !date.isValid()) return `not valid date on row ${row}`
+      }
+
    }, [])
 
    const handleValidation = React.useCallback((institutionDataMapping: InstitutionMappingType[], data: Array<{ [k: string]: string }>, isExcel?: boolean): void => {
@@ -82,7 +86,7 @@ export const useUploadDataValidation = (): UseUploadDataValidationType => {
          }
          if (dateFields.includes(item.originalKey)) {
             item.values.forEach((value, index) => {
-               const validationResult = checkIfStringIsDate(value, index + 1)
+               const validationResult = checkIfStringIsDate(value, index + 1, isExcel)
                if (validationResult) {
                   const errorColumnIndex = errorData.findIndex((value) => value.columnName == item.key)
                   errorData[errorColumnIndex].errors.push(validationResult)
