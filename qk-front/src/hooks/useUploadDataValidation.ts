@@ -7,7 +7,6 @@ import type { InstitutionMappingType } from "@interfaces/institution.interface"
 
 const notEmptyFields = [
    "email",
-   "awardingInstitution",
    "graduatedAt",
    "graduatedFullName",
    "graduatedFirstName",

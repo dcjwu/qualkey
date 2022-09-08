@@ -194,8 +194,9 @@ export const UserActionReviewUpload: React.FC<UserActionReviewUploadType> = ({
                </Heading>
                <Text color="800" component="p"
                      size="paragraph">
-                  {isDeclined && "Credentials are now available for use. You may now return to dashboard"}
-                  {isConfirmed && "You may now return to dashboard"}
+                  {isDeclined && "Credentials were not uploaded and the initiating uploader will be informed about" +
+                     " your decision."}
+                  {isConfirmed && "Credentials were approved by you and all other approvers and therefore successfully uploaded."}
                </Text>
                <Button center loading={false} size="lg"
                        variant="primary"

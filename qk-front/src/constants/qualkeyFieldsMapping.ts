@@ -19,7 +19,6 @@ export const qualkeyFieldsMapping = new Map([
 
 export const stringDataEdit = [
    "awardLevel",
-   "awardingInstitution",
    "graduatedName",
    "info",
    "gpaFinalGrade",

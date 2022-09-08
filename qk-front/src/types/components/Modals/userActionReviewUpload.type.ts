@@ -3,8 +3,8 @@ import { IUserAction } from "@interfaces/user.interface"
 export enum FileTypeEnum  {
    TEXT_CSV = "text/csv",
    APP_CSV = "application/csv",
-   APP_XLS = "application/vnd.ms-excel",
-   APP_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+   APPX_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+   APP_XLSX = "application/xlsx"
 }
 
 export type UserActionReviewUploadType = {
