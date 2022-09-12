@@ -4,6 +4,7 @@ import { WithHover } from "@components/WithHover/WithHover"
 import { useGetSmartContractId } from "@hooks/useGetSmartContractId"
 import { Button, Text } from "@lib/components"
 import { formatDate } from "@utils/formatDate"
+import { getDragonGlassLink } from "@utils/getDragonGlassLink"
 
 import type { QualificationInformationType } from "@customTypes/components"
 
@@ -194,7 +195,7 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
          <WithHover height={42} label="Find out more about verification in our Help & FAQ section."
                     style={{ margin: "0 auto" }}
                     width={236}>
-            <a href={`https://testnet.dragonglass.me/hedera/contracts/${smartContractId}`} rel="noreferrer"
+            <a href={getDragonGlassLink(smartContractId)} rel="noreferrer"
                target="_blank">
                <Button center icon={<svg fill="none" height="24" viewBox="0 0 24 24"
                                          width="24" xmlns="http://www.w3.org/2000/svg">
