@@ -244,7 +244,7 @@ export const UploadModal: React.FC<UploadModalType> = ({ isOpen, handleCloseModa
                Please double check all required fields before completing the upload process
             </Text>
 
-            <UploadModalMappingForm fields={data} handleNextStep={handleNextStep} selectedFile={selectedFile}/>
+            <UploadModalMappingForm handleCloseModal={handleCloseModal} fields={data} handleNextStep={handleNextStep} selectedFile={selectedFile}/>
          </>}
 
          {activeStep === 4 && <>

@@ -15,7 +15,8 @@ import styles from "./UploadModalMappingForm.module.scss"
 export const UploadModalMappingForm: React.FC<UploadModalMappingFormType> = ({
    fields,
    handleNextStep,
-   selectedFile
+   selectedFile,
+   handleCloseModal
 }): JSX.Element => {
 
    const [mappingFormInitialState, setMappingFormInitialState] = React.useState<{ [k: string]: string[] }>({})
@@ -38,7 +39,7 @@ export const UploadModalMappingForm: React.FC<UploadModalMappingFormType> = ({
          formData.append("mapping", originalKeysMapping)
 
          await axios.post(`${apiUrl}/upload`, formData, { withCredentials: true })
-            
+
             .then(res => {
                setLoading(false)
                if (res.status === 201) {
@@ -47,7 +48,7 @@ export const UploadModalMappingForm: React.FC<UploadModalMappingFormType> = ({
                   setError("Unexpected response")
                }
             })
-         
+
             .catch(err => {
                handleAxiosError(err as never, setError, null, setLoading)
             })
@@ -98,11 +99,20 @@ export const UploadModalMappingForm: React.FC<UploadModalMappingFormType> = ({
                   </div>
                ))}
             </div>
-            <Button center error={error} loading={loading}
-                    size="lg"
-                    variant="primary">
-               Complete Upload
-            </Button>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.6rem" }}>
+               <Button center loading={false} size="lg"
+                       type="button"
+                       variant="secondary"
+                       onClick={handleCloseModal}>
+                  Close
+               </Button>
+               <Button center error={error} loading={loading}
+                       size="lg"
+                       type="submit"
+                       variant="primary">
+                  Complete Upload
+               </Button>
+            </div>
          </Form>
       </div>
    )
