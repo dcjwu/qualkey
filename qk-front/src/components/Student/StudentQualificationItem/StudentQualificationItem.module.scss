@@ -15,9 +15,9 @@ $uniLogoH: 64px;
   -ms-user-select: none;
   user-select: none;
 
-  @include breakpoint-max($bp-screen-md) {
-    display: none;
-  }
+  //@include breakpoint-max($bp-screen-md) {
+  //  display: none;
+  //}
 
   > input {
     cursor: pointer;
@@ -25,8 +25,10 @@ $uniLogoH: 64px;
     height: 0;
     position: absolute;
     width: 0;
+
     &:checked ~ .checkmark {
       background-color: $color-brand-blue-v2-4;
+
       &:after {
         display: block;
       }
@@ -45,6 +47,7 @@ $uniLogoH: 64px;
 
   &.disabled {
     pointer-events: none;
+
     > span {
       background-color: $color-black-200;
       border: 1px solid $color-black-300;
@@ -63,11 +66,13 @@ $uniLogoH: 64px;
   transform: translateY(-50%);
   transition: background-color 0.2s ease-in-out;
   width: 1.6rem;
+
   &:after {
     content: "";
     display: none;
     position: absolute;
   }
+
   &:hover {
     background-color: $color-black-300;
   }
@@ -136,7 +141,7 @@ $uniLogoH: 64px;
 
   @include breakpoint-max($bp-screen-md) {
     padding: 0 1.2rem;
-    grid-template-columns: 1fr .2fr .3fr;
+    grid-template-columns: .1fr 1fr .2fr .3fr;
   }
 
   &.active {
@@ -151,17 +156,33 @@ $uniLogoH: 64px;
     }
   }
 
+  @include breakpoint-max($bp-screen-md) {
+    div.item:nth-child(3) {
+      grid-template-columns: 1fr;
+
+      svg {
+        display: none;
+      }
+    }
+  }
+
   @include breakpoint-max($bp-screen-sm) {
     div.item {
       p:not(:last-child) {
         font-size: 1.4rem;
       }
+
       &:nth-child(3) {
         padding: 1.2rem 0;
-        svg {
-          width: 3.5rem;
+
+        p {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: 25ch;
         }
       }
+
       &:nth-child(4) {
         padding: 1.2rem 0;
       }
@@ -176,6 +197,7 @@ $uniLogoH: 64px;
   align-items: center;
   gap: .8rem;
   position: relative;
+
   > p {
     &:last-child {
       @include qualificationTitles();
@@ -210,6 +232,7 @@ $uniLogoH: 64px;
     }
 
   }
+
   > p:last-child {
     @include qualificationTitles();
     left: 2.4rem;
@@ -225,6 +248,7 @@ $uniLogoH: 64px;
     > div:first-child {
       svg {
         pointer-events: none;
+
         path {
           stroke: $color-black-200;
         }

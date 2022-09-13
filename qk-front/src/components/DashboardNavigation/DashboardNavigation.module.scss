@@ -17,18 +17,20 @@
       padding: 1rem 2.2rem;
     }
 
-    @include breakpoint-max($bp-screen-md) {
-      display: block;
-      button {
-        display: none;
-      }
-      form {
-        display: block;
-      }
-      input {
-        width: calc(100% - 4.4rem);
+    @include breakpoint-max($bp-screen-sm) {
+      flex-direction: column;
+
+      div.search {
+        width: 100%;
+        div {
+          width: 100%;
+          input {
+            width: calc(100% - 4.4rem);
+          }
+        }
       }
     }
+
   }
 
   > p > span {
