@@ -44,11 +44,13 @@ export const QualificationHistory: React.FC<QualificationHistoryType> = ({
     * Check if data is available in UI
     */
    React.useEffect(() => {
-      const credentialChange = data.filter(item => item.changedByUuid !== null)
-      setIsDataAvailable(!!credentialChange.length)
+      if (data && data.length > 0) {
+         const credentialChange = data.filter(item => item.changedByUuid !== null)
+         setIsDataAvailable(!!credentialChange.length)
 
-      return () => {
-         setHistoryItemId(null)
+         return () => {
+            setHistoryItemId(null)
+         }
       }
    }, [isExpanded, data])
 
@@ -96,7 +98,7 @@ export const QualificationHistory: React.FC<QualificationHistoryType> = ({
                Empty
             </Text>}
 
-            {!credentialShareHistory.length && data
+            {(!credentialShareHistory.length && data && data.length) && data
                .filter(item => item.changedByUuid !== null)
                .map((item) => (
                   <QualificationHistoryItem key={item.id} data={item}
@@ -105,7 +107,7 @@ export const QualificationHistory: React.FC<QualificationHistoryType> = ({
                                             isShare={false}/>
                ))}
 
-            {credentialShareHistory.length > 0 && [...credentialShareHistory, ...data]
+            {(credentialShareHistory.length > 0 && data && data.length > 0) && [...credentialShareHistory, ...data]
                .sort((a, b) =>
                   new Date(b.createdAt as Date).valueOf() - new Date(a.createdAt as Date).valueOf())
                .filter(item => "changedByUuid" in item ? item.changedByUuid !== null : item)
@@ -128,7 +130,7 @@ export const QualificationHistory: React.FC<QualificationHistoryType> = ({
                Details
             </Heading>
 
-            {data
+            {(data && data.length > 0) && data
                .filter(item => item.id === historyItemId)
                .map(item => (
                   <QualificationHistoryCredentialChangeDetails key={item.id} data={item} id={historyItemId as number}/>
