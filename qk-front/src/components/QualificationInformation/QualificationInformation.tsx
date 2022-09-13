@@ -198,17 +198,6 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
                   </Text>
                </div>}
 
-            <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
-               <Text color="blue" component="p"
-                     size="paragraph">
-                  Hedera Hashgraph DID:
-               </Text>
-               <Text color="800" component="p" size="paragraph"
-                     style={{ maxWidth: "38ch", overflowX: "scroll" }}>
-                  {data.did}
-               </Text>
-            </div>
-
             {hederaData && <>
                <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
                   <Text color="blue" component="p"
@@ -221,16 +210,6 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
                   </Text>
                </div>
 
-               <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
-                  <Text color="blue" component="p"
-                        size="paragraph">
-                     Hedera Hashgraph Transaction ID:
-                  </Text>
-                  <Text color="800" component="p" size="paragraph"
-                        style={{ maxWidth: "38ch", overflowX: "scroll" }}>
-                     {hederaData.transactionId}
-                  </Text>
-               </div>
             </>}
          </div>
 

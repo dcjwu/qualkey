@@ -202,39 +202,19 @@ export const MinimizedCredential: React.FC<MinimizedCredentialType> = ({ data, .
                         Certificate ID:
                      </Text>
                      <Text color="800" component="p" size="paragraph">
-                        {data.certificateId}
-                     </Text>
-                  </div>
-                  <div className={`${styles.block__item} ${styles.did}`}>
-                     <Text color="blue" component="p"
-                           size="paragraph">
-                        Hedera Hashgraph DID:
-                     </Text>
-                     <Text color="800" component="p" size="paragraph">
-                        {data.did}
+                        {data.uuid}
                      </Text>
                   </div>
 
-                  {hederaData && <>
-                     <div className={`${styles.block__item} ${styles.did}`}>
-                        <Text color="blue" component="p"
+                  {hederaData && <div className={`${styles.block__item} ${styles.did}`}>
+                     <Text color="blue" component="p"
                               size="paragraph">
                            Hedera Hashgraph Transaction Hash:
-                        </Text>
-                        <Text color="800" component="p" size="paragraph">
-                           {hederaData.transactionHash}
-                        </Text>
-                     </div>
-                     <div className={`${styles.block__item} ${styles.did}`}>
-                        <Text color="blue" component="p"
-                              size="paragraph">
-                           Hedera Hashgraph Transaction ID:
-                        </Text>
-                        <Text color="800" component="p" size="paragraph">
-                           {hederaData.transactionId}
-                        </Text>
-                     </div>
-                  </>}
+                     </Text>
+                     <Text color="800" component="p" size="paragraph">
+                        {hederaData.transactionHash}
+                     </Text>
+                  </div>}
 
                </div>
             </div>
