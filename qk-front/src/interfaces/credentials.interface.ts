@@ -55,16 +55,18 @@ export interface ICredentialShare {
 }
 
 export interface ICredentialChange {
-   id: number
-   credentialUuid: string
-   credentialDid: string
    changedByUuid?: string
    changedFrom: string[]
    changedTo: string[]
-   fieldName: string[]
    createdAt: Date
+   credentialDid: string
+   credentialUuid: string
+   fieldName: string[]
    hash: string
+   id: number
    smartContractId?: string
+   transactionHash?: string
+   transactionId?: string
 }
 
 export interface ICredentialSharePage {
@@ -90,4 +92,5 @@ export interface ICredentialSharePage {
    studyEndedAt: Date
    studyLanguage: string
    studyStartedAt: Date
+   transactionId?: string
 }

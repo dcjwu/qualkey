@@ -1,7 +1,7 @@
 import React from "react"
 
 import { WithHover } from "@components/WithHover/WithHover"
-import { useGetSmartContractId } from "@hooks/useGetSmartContractId"
+import { useGetTransactionId } from "@hooks/useGetTransactionId"
 import { Button, Text } from "@lib/components"
 import { formatDate } from "@utils/formatDate"
 import { getDragonGlassLink } from "@utils/getDragonGlassLink"
@@ -12,7 +12,7 @@ import styles from "./QualificationInformation.module.scss"
 
 export const QualificationInformation: React.FC<QualificationInformationType> = ({ data }): JSX.Element => {
 
-   const smartContractId = useGetSmartContractId("credentialChanges" in data ? data.credentialChanges : undefined)
+   const hederaData = useGetTransactionId("credentialChanges" in data ? data.credentialChanges : undefined)
 
    return (
       <div className={styles.info}>
@@ -201,19 +201,43 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
             <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
                <Text color="blue" component="p"
                      size="paragraph">
-                  Hedera Hashgraph ID:
+                  Hedera Hashgraph DID:
                </Text>
                <Text color="800" component="p" size="paragraph"
                      style={{ maxWidth: "38ch", overflowX: "scroll" }}>
                   {data.did}
                </Text>
             </div>
+
+            {hederaData && <>
+               <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
+                  <Text color="blue" component="p"
+                        size="paragraph">
+                     Hedera Hashgraph Transaction Hash:
+                  </Text>
+                  <Text color="800" component="p" size="paragraph"
+                        style={{ maxWidth: "38ch", overflowX: "scroll" }}>
+                     {hederaData.transactionHash}
+                  </Text>
+               </div>
+
+               <div className={styles.blockItem} style={{ display: "flex", alignItems: "center" }}>
+                  <Text color="blue" component="p"
+                        size="paragraph">
+                     Hedera Hashgraph Transaction ID:
+                  </Text>
+                  <Text color="800" component="p" size="paragraph"
+                        style={{ maxWidth: "38ch", overflowX: "scroll" }}>
+                     {hederaData.transactionId}
+                  </Text>
+               </div>
+            </>}
          </div>
 
          <WithHover height={42} label="Find out more about verification in our Help & FAQ section."
                     style={{ margin: "0 auto" }}
                     width={236}>
-            <a href={getDragonGlassLink(smartContractId)} rel="noreferrer"
+            <a href={getDragonGlassLink(hederaData && hederaData.transactionId)} rel="noreferrer"
                target="_blank">
                <Button center icon={<svg fill="none" height="24" viewBox="0 0 24 24"
                                          width="24" xmlns="http://www.w3.org/2000/svg">

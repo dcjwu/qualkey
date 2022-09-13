@@ -1,5 +1,6 @@
 import React from "react"
 
+import { useGetTransactionId } from "@hooks/useGetTransactionId"
 import { Heading, Text, Modal } from "@lib/components"
 import { formatDate } from "@utils/formatDate"
 
@@ -10,6 +11,8 @@ import styles from "./MinimizedCredential.module.scss"
 export const MinimizedCredential: React.FC<MinimizedCredentialType> = ({ data, ...props }): JSX.Element => {
    
    const [isDataExpanded, setIsDataExpanded] = React.useState<boolean>(false)
+
+   const hederaData = useGetTransactionId(data.credentialChanges)
 
    return (
       <>
@@ -205,12 +208,34 @@ export const MinimizedCredential: React.FC<MinimizedCredentialType> = ({ data, .
                   <div className={`${styles.block__item} ${styles.did}`}>
                      <Text color="blue" component="p"
                            size="paragraph">
-                        Hedera Hashgraph ID:
+                        Hedera Hashgraph DID:
                      </Text>
                      <Text color="800" component="p" size="paragraph">
                         {data.did}
                      </Text>
                   </div>
+
+                  {hederaData && <>
+                     <div className={`${styles.block__item} ${styles.did}`}>
+                        <Text color="blue" component="p"
+                              size="paragraph">
+                           Hedera Hashgraph Transaction Hash:
+                        </Text>
+                        <Text color="800" component="p" size="paragraph">
+                           {hederaData.transactionHash}
+                        </Text>
+                     </div>
+                     <div className={`${styles.block__item} ${styles.did}`}>
+                        <Text color="blue" component="p"
+                              size="paragraph">
+                           Hedera Hashgraph Transaction ID:
+                        </Text>
+                        <Text color="800" component="p" size="paragraph">
+                           {hederaData.transactionId}
+                        </Text>
+                     </div>
+                  </>}
+
                </div>
             </div>
 

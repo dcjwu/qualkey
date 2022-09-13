@@ -5,6 +5,6 @@ import type { IUserAction, IUserData } from "@interfaces/user.interface"
 export type AnalyticsPageType = {
    userData: IUserData
    actionData: IUserAction[]
-   statsData: IStats
+   statsData?: IStats
    serverErrorMessage: ServerErrorMessageType
 }

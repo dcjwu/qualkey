@@ -10,7 +10,7 @@ import { Heading, Loading, LoadingComponent } from "@lib/components"
 
 import type { CertificateType } from "@customTypes/components"
 import type { MainLayoutType } from "@customTypes/layouts"
-import type { DidPublicPageType } from "@customTypes/pages"
+import type { UuidPublicPageType } from "@customTypes/pages"
 import type { GetServerSideProps } from "next"
 
 import Error from "./_error"
@@ -20,7 +20,7 @@ const MainLayout = dynamic<MainLayoutType>(() => import("@layouts/MainLayout/Mai
 const Certificate = dynamic<CertificateType>(() => import("@components/Certificate/Certificate")
    .then(module => module.Certificate), { loading: () => <LoadingComponent/> })
 
-const DidPublicShare: React.FC<DidPublicPageType> = ({
+const UuidPublicShare: React.FC<UuidPublicPageType> = ({
    userData,
    shareData,
    shareId,
@@ -43,15 +43,15 @@ const DidPublicShare: React.FC<DidPublicPageType> = ({
          <MainLayout shareId={shareId} userData={userData}>
             <Heading color="blue" component="h1" size="lg"
                      style={{ marginBottom: "4.8rem" }}>
-               {shareData.graduatedName} has shared their credentials with you
+               {shareData.graduatedName} has shared their credentials with you,
             </Heading>
-            <Certificate data={shareData} showQR={false}/>
+            <Certificate showQR data={shareData}/>
          </MainLayout>
       </>
    )
 }
 
-export default DidPublicShare
+export default UuidPublicShare
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
    const { res, query } = ctx
@@ -62,15 +62,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    )
 
    try {
-      const shareResponse = await axios.get(`${apiUrl}/credential/${query.did}`)
+      const shareResponse = await axios.get(`${apiUrl}/credential/${query.uuid}`)
       const { data: shareData } = shareResponse
 
       if (shareData) {
          setCookie("publicShare", true, ctx)
-         setCookie("credentialShare", `${query.did}`, ctx)
+         setCookie("credentialShare", `${query.uuid}`, ctx)
       }
 
-      return { props: { userData: { role: "SHARED" }, shareData, shareId: `${query.did}` } }
+      return { props: { userData: { role: "SHARED" }, shareData, shareId: `${query.uuid}` } }
 
    } catch (err) {
       if (err.code === "ECONNREFUSED" || err.code === "ECONNRESET") {

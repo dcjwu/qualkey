@@ -35,8 +35,8 @@ const Analytics: NextPage<AnalyticsPageType> = ({ userData, actionData, statsDat
                      style={{ marginTop: ".8rem" }}>
                dashboard of key performance indicators
             </Heading>
-            
-            <AnalyticsComponent statsData={statsData}/>
+
+            {statsData && <AnalyticsComponent statsData={statsData}/>}
          </MainLayout>
       </>
          
@@ -85,6 +85,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
       if (err.response.status === 401) {
          return { redirect: { destination: "/login", permanent: false } }
+      }
+      if (err.response.status === 404) {
+         return { redirect: { destination: "/dashboard", permanent: false } }
       }
       return { props: {} }
    }
