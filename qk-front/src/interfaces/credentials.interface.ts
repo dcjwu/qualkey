@@ -32,7 +32,7 @@ export interface ICredential {
    graduatedAt?: Date
    expiresAt?: Date
 
-   credentialChanges: ICredentialChange[]
+   credentialChanges?: ICredentialChange[]
 
    authenticatedAt?: Date
    authenticatedBy?: string

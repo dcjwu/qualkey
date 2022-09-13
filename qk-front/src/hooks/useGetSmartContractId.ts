@@ -1,8 +1,7 @@
 import type { ICredentialChange } from "@interfaces/credentials.interface"
 
 export const useGetSmartContractId = (credentialChange?: ICredentialChange[]): string | undefined => {
-   
-   if (credentialChange) {
+   if (credentialChange && credentialChange?.length > 0) {
       const sortedArray = credentialChange
          .sort((a, b) =>
             new Date(b.createdAt as Date).valueOf() - new Date(a.createdAt as Date).valueOf())
