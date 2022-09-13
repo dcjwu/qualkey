@@ -79,6 +79,8 @@ export interface ICredentialSharePage {
    gpaFinalGrade?: string
    graduatedAt: Date
    graduatedName: string
+   majors?: string
+   minors?: string
    info?: string
    institutionLogoUrl?: string
    institutionStampUrl?: string

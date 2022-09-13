@@ -161,6 +161,24 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
                         {data.info}
                      </Text>
                   </div>
+                  <div className={styles.blockItem}>
+                     <Text thin color="500" component="p"
+                           size="paragraph">
+                        Minors:
+                     </Text>
+                     <Text color="800" component="p" size="paragraph">
+                        {data.minors}
+                     </Text>
+                  </div>
+                  <div className={styles.blockItem}>
+                     <Text thin color="500" component="p"
+                           size="paragraph">
+                        Majors:
+                     </Text>
+                     <Text color="800" component="p" size="paragraph">
+                        {data.majors}
+                     </Text>
+                  </div>
                </div>
 
             </div>

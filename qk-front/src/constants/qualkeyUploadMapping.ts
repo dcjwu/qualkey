@@ -12,6 +12,7 @@ export const qualkeyUploadMapping = new Map([
    ["graduatedLastName", "Graduated Last Name"],
    ["graduatedMiddleName", "Graduated Middle Name"],
    ["info", "Info"],
+   ["minors", "Minors"],
    ["majors", "Majors"],
    ["gpaFinalGrade", "GPA Final Grade"],
    ["qualificationLevel", "Qualification Level"],

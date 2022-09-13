@@ -9,6 +9,8 @@ export const qualkeyFieldsMapping = new Map([
    ["graduatedAt", "Graduated at"],
    ["graduatedName", "Graduated name"],
    ["info", "Info"],
+   ["minors", "Minors"],
+   ["majors", "Majors"],
    ["gpaFinalGrade", "GPA final grade"],
    ["qualificationLevel", "Qualification level"],
    ["qualificationName", "Qualification name"],

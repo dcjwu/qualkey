@@ -15,6 +15,12 @@ export const qualkeyDataToShare: QualkeyDataToShareType[] = [
       title: "Info",
       value: "info"
    }, {
+      title: "Minors",
+      value: "minors"
+   }, {
+      title: "Majors",
+      value: "majors"
+   }, {
       title: "GPA Final Grade",
       value: "gpaFinalGrade"
    }, {
