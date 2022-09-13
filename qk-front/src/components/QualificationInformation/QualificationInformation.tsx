@@ -194,7 +194,7 @@ export const QualificationInformation: React.FC<QualificationInformationType> = 
                      Certificate ID:
                   </Text>
                   <Text color="800" component="p" size="paragraph">
-                     {data.certificateId}
+                     {data.uuid}
                   </Text>
                </div>}
 
