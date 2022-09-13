@@ -1,6 +1,7 @@
 import React from "react"
 
 import axios from "axios"
+import { getCookie } from "cookies-next"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 import Link from "next/link"
@@ -11,7 +12,7 @@ import { authUrl } from "@constants/urls"
 import { AuthFlowStepsEnum } from "@customTypes/common"
 import { useAuthFlow } from "@hooks/useAuthFlow"
 import { useGetOtp } from "@hooks/useGetOtp"
-import { Button, Checkbox, Input, InputOtp, Text, Form, Loading } from "@lib/components"
+import { Button, Checkbox, Form, Input, InputOtp, Loading, Text } from "@lib/components"
 import { handleAxiosError } from "@utils/handleAxiosError"
 
 import type { FormDataType } from "@customTypes/common"
@@ -89,7 +90,13 @@ const Home: NextPage = (): JSX.Element => {
                setLoading(false)
                setError("")
                if (res.status === 200) {
-                  router.push("/dashboard")
+                  const isRedirectRequired = getCookie("redirect")
+                  if (!isRedirectRequired) {
+                     router.push("/dashboard")
+
+                  } else {
+                     router.push(isRedirectRequired as string)
+                  }
 
                } else {
                   setError("Unexpected response")
@@ -107,7 +114,7 @@ const Home: NextPage = (): JSX.Element => {
          <Head>
             <title>Login | QualKey</title>
          </Head>
-         
+
          <IndexLayout header={currentAuthFlowStepData && currentAuthFlowStepData[0]}
                       subheader={currentAuthFlowStepData && currentAuthFlowStepData[1]}>
 

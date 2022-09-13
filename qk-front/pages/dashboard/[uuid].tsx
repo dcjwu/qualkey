@@ -1,7 +1,7 @@
 import React from "react"
 
 import axios from "axios"
-import { deleteCookie } from "cookies-next"
+import { deleteCookie, setCookie } from "cookies-next"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 
@@ -71,6 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
    deleteCookie("credentialShare", ctx)
    deleteCookie("publicShare", ctx)
+   deleteCookie("redirect", ctx)
 
    try {
       const credentialResponse = await axios.get(`${apiUrl}/credential?uuid=${query.uuid}`, {
@@ -98,6 +99,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
          return { props: { serverErrorMessage: "Network error, connection refused" } }
       }
       if (err.response.status === 401) {
+         setCookie("redirect", req.url, ctx)
          return { redirect: { destination: "/login", permanent: false } }
       }
       return { props: {} }
