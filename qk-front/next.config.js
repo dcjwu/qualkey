@@ -11,5 +11,5 @@ module.exports = {
       ]
    },
    reactStrictMode: true,
-   images: { domains: ["public-images-qualkey-test.s3.eu-north-1.amazonaws.com"] }
+   images: { domains: ["https://gurureal-test-bucket.s3.eu-north-1.amazonaws.com"] }
 }
