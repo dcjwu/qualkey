@@ -20,9 +20,6 @@ __April 2022 - August 2022.__ Development of commercial application MVP to manag
 #### Status:
 MVP is finished.
 
-#### After cloning the project start it by executing this command:
-    ```bash
-    make go
-```
+#### After cloning the project start it by executing this command: ```make go```
 
 
