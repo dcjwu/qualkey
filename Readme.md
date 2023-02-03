@@ -1,3 +1,4 @@
-#### After cloning the project start it by executing this command: ```make go```
-
-
+After cloning the project start it by executing this command:
+```
+make go
+```
